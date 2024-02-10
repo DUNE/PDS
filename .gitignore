@@ -1,0 +1,10 @@
+# Ignoring common build directories
+build/
+install/
+
+# Ignoring plot results
+*.pdf
+*.svg
+*.png
+*.jpg
+*.gif
