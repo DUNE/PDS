@@ -15,3 +15,4 @@ Now that we are in a DUNE-DAQ working environment, we still need a few more Pyth
 ```bash
 pip install -r requirements.txt
 ```
+This will also build this repository's custom `pdstools` Python package. For the moment, this package can be used to load DAPHNEStream HDF5 files. Additional documentation can be found [here](https://github.com/DUNE/PDS/tree/main/docs/pdstools.md).

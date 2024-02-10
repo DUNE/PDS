@@ -1,6 +1,7 @@
 # Ignoring common build directories
 build/
 install/
+*.egg-info
 
 # Ignoring plot results
 *.pdf
