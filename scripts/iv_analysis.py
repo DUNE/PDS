@@ -1,6 +1,5 @@
-import click
+import click, json
 import numpy as np
-import json
 from os import chdir, listdir
 from uproot import open as op
 from scipy.optimize import curve_fit
@@ -18,8 +17,17 @@ map = {
 
 
 def data_quality(data):
+    '''
+    Check the quality of the data set. Errors are returned if the sample:
+        - is smaller than 20,
+        - all the current values are NaN
+        - more than 10 NaN values are present
+        - all the current values are negative
+        - all the current values are below 50
+        - the current range is less than 100 [CHECKING THIS ONE]
+    '''
     if len(data) < 20:
-        return [' BAD', 'ERROR: Less than 20 samples !!!']
+        return ['BAD', 'ERROR: Less than 20 samples !!!']
     if np.count_nonzero(np.isnan(data)) == len(data):
         return ['BAD', 'ERROR: All current info is NaN !!!']
     elif (np.count_nonzero(np.isnan(data)) >= 10):
@@ -38,11 +46,17 @@ def data_quality(data):
 
 
 def fit_pulse(t, t0, T, A, P):
+    '''
+    Fit function for the pulse shape
+    '''
     x = (np.array(t) - t0+T)/T
     return P+A*np.power(x, 3)*np.exp(3*(1-x))
 
 
 def IV_PulseShape(bias, der_current,  savgol_window):
+    '''
+    Fit the pulse shape of the IV curve
+    '''
 
     b = bias/100
     # Filter with n=2, just to remove some noise
@@ -90,6 +104,9 @@ def IV_PulseShape(bias, der_current,  savgol_window):
 
 
 def IV_Polynomial(bias, der_current, step, savgol_window):
+    '''
+    Fit the polynomial of the IV curve (Savgol method)
+    '''
 
     # Second filter
     c = savgol_filter(der_current, savgol_window*3, 2)
@@ -140,7 +157,7 @@ def main(dir):
     # Output File
     output_file = open(f"{dir}/breakdown_output.txt", 'w')
     output_file.write(
-        f"IP File SIPM Status Vdb(Suggested) Vdbd(Pulse) Vbd(Poly) \n")
+        f"IP\tFile\tSIPM\tStatus\tVdb(Suggested)\tVdbd(Pulse)\tVbd(Poly)\n")
 
     folders = sorted(listdir())
     for i in range(len(folders)):
@@ -185,6 +202,8 @@ def main(dir):
                     bias = root_file["tree/bias/bias_v"].array()
                     DAC_BIAS = np.polyfit(bias, dac, 1)
                     conversion_list[afe].append([DAC_BIAS[0], DAC_BIAS[1]])
+                    print(f'AFE: {afe}')
+                    print(f'CONVERSION FACTOR: {conversion_list[afe]}') ## slope and intercept values
 
                     # Breakdown via trim
                     current = (root_file["tree/iv_trim/current"].array())[::-1]
@@ -235,16 +254,16 @@ def main(dir):
                             status = "Good data set"
                         elif Vbd_pulse != 0 and Vbd_poly != 0 and Delta >= 200:
                             Vbd_trim = Vbd_pulse = Vbd_poly = 0
-                            status = f" ERROR: The Difference between the Vbd_poly and Vbd_pulse is too large ({Delta}). "
+                            status = f"ERROR: The Difference between the Vbd_poly and Vbd_pulse is too large ({Delta}). "
                         elif Vbd_pulse == 0 and Vbd_poly != 0:
                             Vbd_trim = int(Vbd_poly)
-                            status = " WARNING: the pulse shape fitting method failled, please check the plots. "
+                            status = "WARNING: the pulse shape fitting method failled, please check the plots. "
                         elif Vbd_pulse != 0 and Vbd_poly == 0:
                             Vbd_trim = int(Vbd_pulse)
-                            status = " WARNING: the polynomial fitting method failled, please check the plots. "
+                            status = "WARNING: the polynomial fitting method failled, please check the plots. "
                         else:
                             Vbd_trim = Vbd_pulse = Vbd_poly = 0
-                            status = " ERROR: Both fitting methods failed. "
+                            status = "ERROR: Both fitting methods failed. "
 
                     channel_afe[afe].append(channel)
                     bias_AFE[afe].append(int(dac[len(dac)-1]))
@@ -253,7 +272,7 @@ def main(dir):
                     print(
                         f" {ip_address} file:{files[j]} SiPM: {sipm} Status: {status} Vbd_TRIM(DAC) = {Vbd_trim}")
                     output_file.write(
-                        f"{ip_address} {files[j]} {sipm} {status} {Vbd_trim} {Vbd_pulse} {Vbd_poly} \n")
+                        f"{ip_address}\t{files[j]}\t{sipm}\t{status}\t{Vbd_trim}\t{Vbd_pulse}\t{Vbd_poly} \n")
 
             conversion_list_mean = []
             for vector in range(len(conversion_list)):
