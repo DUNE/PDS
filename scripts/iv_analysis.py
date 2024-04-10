@@ -157,7 +157,7 @@ def main(dir):
     # Output File
     output_file = open(f"{dir}/breakdown_output.txt", 'w')
     output_file.write(
-        f"IP\tFile\tSIPM\tStatus\tVdb(Suggested)\tVdbd(Pulse)\tVbd(Poly)\n")
+        f"IP\tFile\tSIPM\tStatus\tVbd(Suggested)\tVdbd(Pulse)\tVbd(Poly)\n")
 
     folders = sorted(listdir())
     for i in range(len(folders)):
