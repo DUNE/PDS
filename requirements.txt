@@ -1,4 +1,8 @@
 click
 numpy
 matplotlib
+pandas
+plotly
+rich
+scipy
 .
