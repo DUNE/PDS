@@ -23,9 +23,10 @@ If you want to test on a single file, we recommend using `iv_one.ipynb` notebook
 - [x] Safe in a unique file all the outputs from the fits and the possibility to run over all the folders with the same scripts
 - [ ] Add in the fit plots more data?
 - [ ] Add a json file or a function based on the date that selects the flip or *(-1) data particular treatment
-- [ ] Check the missing folders (why?), change permissions 21-Apr, see if other iv folders could be merged now
+- [ ] Check the missing folders (why?), see if other iv folders could be merged now
+- [x] change permissions 21-Apr
 - [ ] Deploy PulseShape method as it is not converging in general
 - [ ] Avoid hard-coding conditions that may not work in general cases
-- [ ] Move important prints to log.txt to be able to look at them later and remove as much as possible terminal printing to be more efficient
+- [x] Move important prints to log.txt to be able to look at them later and remove as much as possible terminal printing to be more efficient
 - [ ] Separate/check the V_op computation that is now inside iv_ana.py
 - [ ] The Vbd given by the iv_trim/current branch is always "bad"? Investigate this to see if old data can be used
