@@ -58,6 +58,8 @@ def iv_ana(in_dir, ips, out_dir):
 
     # List of folders in the directory
     folders = sorted([folder for folder in listdir(f'{in_dir}') if path.isdir(f'{in_dir}/{folder}')])
+    folders = filter(lambda x: not x.startswith('.'), folders)
+
     if ips == 'ALL': print('Analysing all endpoints')
     elif ips.isdigit() and len(ips) == 3: folders = [item for item in folders if item.endswith(ips)]; print(f'Analysing endpoint {ips}')
     else: print("Invalid endpoint"); return
@@ -118,10 +120,10 @@ def iv_ana(in_dir, ips, out_dir):
                     if f==0 and ch==0: bias = False;  print("We have the iv_trim/current data :)")
                     curr = np.flip(array_dict['iv_trim/current'])*(-1)
                     status_quality = data_quality(data=curr,bias_mode=bias); 
-                elif 'bias/current' in array_dict.keys(): 
-                    if f==0 and ch==0: bias = True; print("And bias/current data!!")
-                    curr = array_dict['bias/current']*(-1)
-                    status_quality = data_quality(data=curr,bias_mode=bias)
+                #elif 'bias/current' in array_dict.keys(): 
+                #    if f==0 and ch==0: bias = True; print("And bias/current data!!")
+                #    curr = array_dict['bias/current']*(-1)
+                #    status_quality = data_quality(data=curr,bias_mode=bias)
                 else: 
                     if f==0 and ch==0: print(f'No bias/current or iv_trim/current data found. Check {array_dict.keys()}')
                     return
@@ -134,8 +136,13 @@ def iv_ana(in_dir, ips, out_dir):
                 
                 # #If the data is good, we do two fits if bias/current is present, one otherwise
                 # else: 
-                curr = np.flip(array_dict['iv_trim/current'])*(-1)
-                volt = array_dict['iv_trim/trim']
+                #curr = np.flip(array_dict['iv_trim/current'])*(-1)
+                curr = np.flip(array_dict['iv_trim/current'])
+                curr = np.flip(curr)*(-1)
+                #volt = array_dict['iv_trim/trim']
+                volt = (-array_dict['iv_trim/trim'] * (4.4/4095.0)) + array_dict['bias/bias_v'][-1]
+                print(curr)
+                print(volt)
 
                 curr_trim_AFE[afe].append(curr)
                 volt_trim_AFE[afe].append(volt) 
@@ -153,12 +160,12 @@ def iv_ana(in_dir, ips, out_dir):
                 Vbd_trim, Vbd_puls, Vbd_poly, status_quality, PulseShape_trim, Polynomial_trim = Vbd_determination(volt,curr)
 
                 #If we do not have bias_current data we cannot use it
-                if bias: 
+                '''if bias: 
                     curr = array_dict['bias/current']*(-1)
                     volt = array_dict['bias/bias_dac']
                     Vbd_bias, Vbd_puls, Vbd_poly, status_quality, PulseShape_bias, Polynomial_bias = Vbd_determination(volt,curr)
                     curr_bias_AFE[afe].append(curr)
-                    volt_bias_AFE[afe].append(volt) 
+                    volt_bias_AFE[afe].append(volt) '''
                 if 'PulseShape_bias' not in locals(): 
                     Vbd_bias = 0; Vdb_puls = 0; Vbd_poly = 0
                     status_quality = "WARNING: No bias/current data available"

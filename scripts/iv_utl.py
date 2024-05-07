@@ -200,7 +200,7 @@ def Vbd_determination(volt,curr):
     # # elif np.isnan(Vbd_poly): Vbd_trim = 0
     # # else:                    Vbd_trim = int((Vbd_puls + Vbd_poly)/2)
     # else: Vbd_trim = 0
-    status_quality = "Good data set"
+    status_quality = "good_data_set"
 
 
     # if Vbd_pulse != 0 and Vbd_poly != 0 and Delta < 200:
@@ -304,6 +304,12 @@ def plot_bias_trim(bias, current_bias, bias_conversion, trim, current_trim):
     To create the plot of the whole IV curve (trim and bias) in terms of volts
     '''
     bias_v = bias_conversion[0]*np.array(bias) + bias_conversion[1] 
+    print("__________________________")
+    print("__________________________")
+    print(bias_v)
+    print(np.array(trim))
+    print("__________________________")
+    print("__________________________")
     trim_v = bias_v[-1] - np.array(trim) * (4.4/4095.0)
     fig, ax = plt.subplots(figsize=(8,6))
     ax.set_xlabel("Volt")
@@ -343,8 +349,12 @@ def iv_subplots(filename,ip,pdf_pages,array_dict,dac2v,PulseShape_trim,PulseShap
     slope = dac2v[0]; intercept = dac2v[1]
     bias_dac = array_dict['bias/bias_dac']
     bias_v = array_dict['bias/bias_v']
-    trim_volt = array_dict['iv_trim/trim'] *slope + intercept
-    trim_curr = array_dict['iv_trim/current']
+    #trim_volt = array_dict['iv_trim/trim'] *slope + intercept
+    print(bias_v[-1])
+    print(bias_v)
+    trim_volt = (-array_dict['iv_trim/trim'] * (4.4/4095.0)) + bias_v[-1]
+    print(trim_volt)
+    trim_curr = np.flip(array_dict['iv_trim/current'])
     fit_bias = False
     if 'bias/current' in array_dict.keys(): 
         fit_bias = True
