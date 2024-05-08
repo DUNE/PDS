@@ -12,28 +12,14 @@ import warnings
 warnings.filterwarnings("ignore")
 from iv_utl import *
 
-
-enpoints_map = {
-    '10.73.137.104': {'apa': 1, 'fbk': [0, 1, 2, 3, 4, 5, 6, 7], 'hpk': [8, 9, 10, 11, 12, 13, 14, 15]},
-    '10.73.137.105': {'apa': 1, 'fbk': [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 13, 15], 'hpk': [17, 19, 20, 22]},
-    '10.73.137.107': {'apa': 1, 'fbk': [0, 2, 5, 7], 'hpk': [8, 10, 13, 15]},
-    '10.73.137.109': {'apa': 2, 'fbk': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 'hpk': [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]},
-    '10.73.137.111': {'apa': 3, 'fbk': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 'hpk': [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]},
-    '10.73.137.112': {'apa': 4, 'fbk': [], 'hpk': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 34, 37, 39]},
-    '10.73.137.113': {'apa': 4, 'fbk': [0, 2, 5, 7], 'hpk': []},
-}
-
-Vdb_map = {
-            "RT":{"FBK": 32.5, "HPK": 51},
-            "CT":{"FBK": 26.9, "HPK": 41.5},
-          }
-
 @click.command()
 @click.option("--in_dir",  default='/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/ivcurves/Mar-21-2024-run00', help='Input directory to look for data folders.')
 @click.option("--ips",     default='ALL',  help='IP address to analyse. Default is ALL')
 @click.option("--out_dir", default='SAME', help='Output directory to save the summary file. Default is SAME')
-def iv_ana(in_dir, ips, out_dir):
-    '''
+
+def iv_ana(in_dir, ips, out_dir, verbose = False):
+    
+    message =  '''
     This script generates a breakdown_output.txt file with the results for IV curves.
 
     Args:
@@ -45,6 +31,17 @@ def iv_ana(in_dir, ips, out_dir):
         - output.txt with information about the Vbd determination 
         - dic.json with information about the operating voltage of each channel
     '''
+    if verbose: print(message)
+
+    map_file = "../maps/channel_map.json"
+
+    with open(map_file, "r") as fp:
+        channel_map = json.load(fp)  
+    if verbose:
+        print("Imported map from ",map_file,":")
+        print(channel_map)
+
+    Vdb_map = {"RT":{"FBK": 32.5, "HPK": 51}, "CT":{"FBK": 26.9, "HPK": 41.5}}
 
     #We create the output and logout files
     if out_dir == 'SAME': out_dir = in_dir
@@ -52,11 +49,9 @@ def iv_ana(in_dir, ips, out_dir):
     logout_file = open(f'{out_dir}/log.txt', 'w') # Logout File
     output_file.write(f"IP\tFile\tAPA\tAFE\tCH\tSIPM\tSlope[V/DAC]\tIntercept[V]\tVbd(Suggested)\tVbd(Pulse)\tVbd(Poly)\tStatus\n")
     # output_file.write(f'IP\tFile_name\tEndpoint_timestamp\tStart_time\tEnd_time\tSIPM_type\tBias_data_quality\tBias_min_I\tBias_max_I\tVbd_bias(DAC)\tVbd_bias(V)\tVbd_bias_error(V)\tBias_conversion_slope\tBias_conversion_intercept\tTrim_data_quality\tTrim_min_I\tTrim_max_I\tFit_status\tPoly_Vbd_trim(DAC)\tPoly_Vbd_trim_error(DAC)\tPulse_Vbd_trim(DAC)\tPulse_Vbd_trim_error(DAC)\tVbd(V)\tVbd_error(V)\n')
-
-    #We create the pdf file to store the plots
     pdf_pages = PdfPages(f'{out_dir}/{out_dir.split("/")[-1]}_IVplots.pdf')
 
-    # List of folders in the directory
+    # List of folders in the directory (ignoring ipython folder)
     folders = sorted([folder for folder in listdir(f'{in_dir}') if path.isdir(f'{in_dir}/{folder}')])
     folders = filter(lambda x: not x.startswith('.'), folders)
 
@@ -70,16 +65,15 @@ def iv_ana(in_dir, ips, out_dir):
         # Check the date of the data
         timestamp_string = f"{(folder.split('/')[-1]).split('_')[0]}_{(folder.split('/')[-1]).split('_')[1]}" #Ex run
         timestamp = datetime.strptime(timestamp_string, '%b-%d-%Y_%H%M')
-        if timestamp <  datetime(2024, 4, 19) and f==0: print('\033[91mData previous to 19th April 2024. Wrong V range, computing 2nd Vbd point.\033[0m')
+        if timestamp <  datetime(2024, 4, 19) and f==0: print('\033[91mData previous to 19th April 2024 takend with wrong V range; computing 2nd Vbd point.\033[0m')
 
         # Get the run number, IP address and the sipm type
-        # run = f"{(folder.split('/')[-1]).split('_')[0]}_{(folder.split('/')[-1]).split('_')[1]}"
         apa = int((folder.split('/')[-1].split('apa')[-1]).split('_')[0])
-        ip_address = (folder.split('/')[-1]).split('ip')[-1]
-        # endpoint = ip_address[-3:]
-        dic = enpoints_map[ip_address]
-        fbk = enpoints_map[ip_address]['fbk']
-        hpk = enpoints_map[ip_address]['hpk']
+        ip = (folder.split('/')[-1]).split('ip')[-1]
+
+        dic = channel_map[ip]
+        fbk = channel_map[ip]['fbk']
+        hpk = channel_map[ip]['hpk']
 
         # To save information of each channel, divided by AFE
         DAC_V_bias_AFE = [[[],[]], [[],[]], [[],[]], [[],[]], [[],[]]] 
@@ -88,22 +82,20 @@ def iv_ana(in_dir, ips, out_dir):
         VbdV_AFE = [[], [], [], [], []] 
         Vbd_bias_dac_AFE = [[], [], [], [], []]
         Vbd_trim_dac_AFE = [[], [], [], [], []]
-        curr_bias_AFE = [[], [], [], [], []]
-        volt_bias_AFE = [[], [], [], [], []]
-        curr_trim_AFE = [[], [], [], [], []]
-        volt_trim_AFE = [[], [], [], [], []]
+        has_trim = False; has_bias = False
 
-        logout_file.write(f'\n\n--------------------------------------------------------------- \nBIAS scan and Trim IV CURVE analysis \n\nENDPOINT: {ip_address} \t {timestamp} \n\n')
+        logout_file.write(f'\n\n--------------------------------------------------------------- \nBIAS scan and Trim IV CURVE analysis \n\nENDPOINT: {ip} \t {timestamp} \n\n')
         files = sorted(listdir(f"{in_dir}/{folder}")) # List of files in the folder
         for my_file in track(files, description=f'Analysing {folder}...'): # Loop over the files
             if my_file.endswith('.root'): # Check if the file is a root file
-                apa = (my_file.split('.root')[0].replace('apa_','')).split('_')[0]
+
                 ch = int(my_file.split('.root')[0].split('ch_')[-1])
                 afe =  ch//8
-                if ch in fbk: sipm = 'FBK'
-                else:         sipm = 'HPK'
-                sipm_AFE[afe].append(sipm)
+                sipm = 'FBK' if ch in fbk else 'HPK'
+                iv_dataset = iv_data(ip,apa,afe,ch,sipm)
 
+                sipm_AFE[afe].append(sipm)
+                
                 # General dictionary independent from the root file structure
                 root_file = op(f'{in_dir}/{folder}/{my_file}')
                 if f == 0 and ch == 0: #Only doing this for the first root file to save time
@@ -115,17 +107,18 @@ def iv_ana(in_dir, ips, out_dir):
                     path_to_var = f'{directory.split(";1")[0]}/{tree}'
                     for var in root_file[path_to_var].keys():
                         array_dict[f'{tree}/{var}'] = root_file[path_to_var+"/"+var].array(library="np")
+                
                 #Breakdown voltage determination (TRIM AND BIAS INDEPENDLY)
                 if 'iv_trim/current' in array_dict.keys():
-                    if f==0 and ch==0: bias = False;  print("We have the iv_trim/current data :)")
+                    if f==0 and ch==0: has_trim = True; print("We have the iv_trim/current data :)")
                     curr = np.flip(array_dict['iv_trim/current'])*(-1)
-                    status_quality = data_quality(data=curr,bias_mode=bias); 
-                #elif 'bias/current' in array_dict.keys(): 
-                #    if f==0 and ch==0: bias = True; print("And bias/current data!!")
-                #    curr = array_dict['bias/current']*(-1)
-                #    status_quality = data_quality(data=curr,bias_mode=bias)
+                    status_quality = data_quality(data=curr,bias_mode=has_bias); 
+                if 'bias/current' in array_dict.keys(): 
+                    if f==0 and ch==0: has_bias = True; print("And bias/current data!!")
+                    curr = array_dict['bias/current']*(-1)
+                    status_quality = data_quality(data=curr,bias_mode=has_bias)
                 else: 
-                    if f==0 and ch==0: print(f'No bias/current or iv_trim/current data found. Check {array_dict.keys()}')
+                    if f==0 and ch==0: print(f'No bias/current nor iv_trim/current data found. Check {array_dict.keys()}')
                     return
 
                 #If the data is bad, we don't do anything
@@ -133,20 +126,14 @@ def iv_ana(in_dir, ips, out_dir):
                 #     print('BAD DATA')
                 #     Vbd_trim = Vbd_pulse = Vbd_poly = 0
                 #     status_quality = status_quality.split('BAD')[1]
-                
+                                    
                 # #If the data is good, we do two fits if bias/current is present, one otherwise
-                # else: 
-                #curr = np.flip(array_dict['iv_trim/current'])*(-1)
-                curr = np.flip(array_dict['iv_trim/current'])
-                curr = np.flip(curr)*(-1)
-                #volt = array_dict['iv_trim/trim']
-                volt = (-array_dict['iv_trim/trim'] * (4.4/4095.0)) + array_dict['bias/bias_v'][-1]
-                print(curr)
-                print(volt)
+                # else:
+                iv_dataset.trim_curr = array_dict['iv_trim/current'] * (-1)
+                # We shift current to positive values
+                if(any(value<0 for value in iv_dataset.trim_curr)): iv_dataset.trim_curr = iv_dataset.trim_curr - min(iv_dataset.trim_curr)
+                iv_dataset.trim_volt = (-array_dict['iv_trim/trim'] * (4.4/4095.0)) + array_dict['bias/bias_v'][-1]
 
-                curr_trim_AFE[afe].append(curr)
-                volt_trim_AFE[afe].append(volt) 
-                
                 # DAC -> VOLT bias conversion (linear fit)
                 DAC_V_bias_conversion,covar = curve_fit(linear_function, array_dict['bias/bias_dac'], array_dict['bias/bias_v'])
                 DAC_V_bias_conversion_error = np.sqrt(np.diag(covar))
@@ -157,22 +144,23 @@ def iv_ana(in_dir, ips, out_dir):
                 Vbd_bias_V_error = np.sqrt((Vbd_bias_V*DAC_V_bias_conversion_error[0])**2+(DAC_V_bias_conversion_error[1])**2)
 
                 # status_quality = data_quality(data=curr,bias_mode=bias)
-                Vbd_trim, Vbd_puls, Vbd_poly, status_quality, PulseShape_trim, Polynomial_trim = Vbd_determination(volt,curr)
+                Vbd_trim, Vbd_puls, Vbd_poly, status_quality, PulseShape_trim, Polynomial_trim = Vbd_determination(iv_dataset.trim_volt,iv_dataset.trim_curr)
 
                 #If we do not have bias_current data we cannot use it
-                '''if bias: 
-                    curr = array_dict['bias/current']*(-1)
-                    volt = array_dict['bias/bias_dac']
-                    Vbd_bias, Vbd_puls, Vbd_poly, status_quality, PulseShape_bias, Polynomial_bias = Vbd_determination(volt,curr)
-                    curr_bias_AFE[afe].append(curr)
-                    volt_bias_AFE[afe].append(volt) '''
+                iv_dataset.bias_dac  = array_dict['bias/bias_dac']
+                iv_dataset.bias_volt = array_dict['bias/bias_v']
+
+                if has_bias: 
+                    iv_dataset.bias_curr = array_dict['bias/current']*(-1)
+                    Vbd_bias, Vbd_puls, Vbd_poly, status_quality, PulseShape_bias, Polynomial_bias = Vbd_determination(iv_dataset.bias_volt,iv_dataset.bias_curr)
+                
                 if 'PulseShape_bias' not in locals(): 
                     Vbd_bias = 0; Vdb_puls = 0; Vbd_poly = 0
                     status_quality = "WARNING: No bias/current data available"
                     PulseShape_bias = [0,0,[[0],[0]],[[0],[0]],[0,0]]
                     Polynomial_bias = [0,0,[[0],[0]],[[0],[0]],[0,0]]
 
-                iv_subplots(filename=my_file, ip=ip_address, pdf_pages=pdf_pages, array_dict=array_dict, 
+                iv_subplots(filename=my_file, pdf_pages=pdf_pages,iv_dataset=iv_dataset,
                             dac2v=[DAC_V_bias_conversion[0],DAC_V_bias_conversion[1]],
                             PulseShape_trim=PulseShape_trim, Polynomial_trim=Polynomial_trim, 
                             PulseShape_bias=PulseShape_bias, Polynomial_bias=Polynomial_bias)
@@ -192,7 +180,6 @@ def iv_ana(in_dir, ips, out_dir):
                 DAC_V_bias_AFE[afe][1].append(DAC_V_bias_conversion[1])
                 Vbd_bias_dac_AFE[afe].append(Vbd_bias)
                 Vbd_trim_dac_AFE[afe].append(Vbd_trim)
-
                             
                 #Print information 
                 logout_file.write(f'Quality: {status_quality}\n')
@@ -204,7 +191,7 @@ def iv_ana(in_dir, ips, out_dir):
                 # bias_vol_AFE[afe].append(array_dict['bias/bias_v'][len(array_dict['bias/bias_v'])-1]) 
                 
                 # save_output = f"{ip_address}\tfile:{files[j]}\tSiPM: {sipm} Status: {status} Vbd_TRIM(DAC) = {Vbd_trim}" 
-                save_output = f"{ip_address}\t{my_file}\t{apa}\t{afe}\t{ch}\t{sipm}\t{DAC_V_bias_conversion[0]}\t{DAC_V_bias_conversion[1]}\t{Vbd_trim}\t{Vbd_puls}\t{Vbd_poly}\t{status_quality}\n"
+                save_output = f"{ip}\t{my_file}\t{apa}\t{afe}\t{ch}\t{sipm}\t{DAC_V_bias_conversion[0]}\t{DAC_V_bias_conversion[1]}\t{Vbd_trim}\t{Vbd_puls}\t{Vbd_poly}\t{status_quality}\n"
                 output_file.write(save_output)
 
         # #To determine the BIAS and TRIM (in terms of DAC) to set, taking into account Overvoltage  #TODO: Fix this

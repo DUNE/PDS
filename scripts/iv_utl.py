@@ -2,10 +2,24 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from dataclasses import dataclass
 from scipy.signal import savgol_filter
 from scipy.optimize import curve_fit
 import warnings
 warnings.filterwarnings("ignore")
+
+@dataclass
+class iv_data:
+    ip: str
+    apa: int
+    afe: int
+    ch: int
+    sipm: str
+    bias_dac: list[float] = None
+    bias_volt: list[float] = None
+    bias_curr: list[float] = None
+    trim_dac: list[float] = None
+    trim_curr: list[float] = None
 
 
 def get_tree_info(root_file, debug=False):
@@ -242,10 +256,10 @@ def DAC_VOLT_full_conversion (bias_dac, trim_dac, bias_conversion):
 def VOLT_DAC_full_conversion (V_volt, bias_conversion):
     ''' From VOLTS, to DAC BIAS and TRIM to set (integer counts) '''
     bias_dac = int( (V_volt - bias_conversion[1])/bias_conversion[0]) + 2 #Integer number of DAC counts for BIAS
-    bias_V = DAC_VOLT_bias_conversion(bias_dac,bias_conversion)
-    trim_dac = int ((bias_V - V_volt) / (4.4/4095.0)) #Integer number of DAC counts for TRIM
+    bias_volt = DAC_VOLT_bias_conversion(bias_dac,bias_conversion)
+    trim_dac = int ((bias_volt - V_volt) / (4.4/4095.0)) #Integer number of DAC counts for TRIM
     trim_V = DAC_VOLT_trim_conversion(trim_dac)
-    V_volt_set = bias_V - trim_V
+    V_volt_set = bias_volt - trim_V
     if (trim_dac < 0) or (trim_dac > 4090) or (abs(V_volt_set-V_volt)>0.1):
         print('VOLT - DAC Error conversion')
         return np.nan,np.nan,np.nan
@@ -303,19 +317,13 @@ def plot_bias_trim(bias, current_bias, bias_conversion, trim, current_trim):
     '''
     To create the plot of the whole IV curve (trim and bias) in terms of volts
     '''
-    bias_v = bias_conversion[0]*np.array(bias) + bias_conversion[1] 
-    print("__________________________")
-    print("__________________________")
-    print(bias_v)
-    print(np.array(trim))
-    print("__________________________")
-    print("__________________________")
-    trim_v = bias_v[-1] - np.array(trim) * (4.4/4095.0)
+    bias_volt = bias_conversion[0]*np.array(bias) + bias_conversion[1]
+    trim_v = bias_volt[-1] - np.array(trim) * (4.4/4095.0)
     fig, ax = plt.subplots(figsize=(8,6))
     ax.set_xlabel("Volt")
     ax.set_ylabel("Current") #Unit of measure(?)
     #ax.set_yscale('log')
-    ax.scatter(bias_v, current_bias, marker='o',s=5, color='blue', label='Acquired Bias IV curve')
+    ax.scatter(bias_volt, current_bias, marker='o',s=5, color='blue', label='Acquired Bias IV curve')
     ax.scatter(trim_v, current_trim, marker='o',s=5, color='red', label='Acquired Trim IV curve')
     ax.legend(loc='center left',fontsize='7')
     return fig
@@ -336,7 +344,7 @@ def plot_IVbias_AFE(bias_list, current_list, Vbd_list, channels):
     return fig
 
     
-def iv_subplots(filename,ip,pdf_pages,array_dict,dac2v,PulseShape_trim,PulseShape_bias,Polynomial_trim,Polynomial_bias):
+def iv_subplots(filename,pdf_pages,iv_dataset,dac2v,PulseShape_trim,PulseShape_bias,Polynomial_trim,Polynomial_bias):
     '''
     Function to create the IV curve plots for a single channel.
     It creates a 2x2 subplot with the following plots:
@@ -345,79 +353,53 @@ def iv_subplots(filename,ip,pdf_pages,array_dict,dac2v,PulseShape_trim,PulseShap
     - Derivative of the current vs Trim Voltage
     - Derivative of the current vs Trim Voltage with the fit results
     ''' 
-
     slope = dac2v[0]; intercept = dac2v[1]
-    bias_dac = array_dict['bias/bias_dac']
-    bias_v = array_dict['bias/bias_v']
-    #trim_volt = array_dict['iv_trim/trim'] *slope + intercept
-    print(bias_v[-1])
-    print(bias_v)
-    trim_volt = (-array_dict['iv_trim/trim'] * (4.4/4095.0)) + bias_v[-1]
-    print(trim_volt)
-    trim_curr = np.flip(array_dict['iv_trim/current'])
-    fit_bias = False
-    if 'bias/current' in array_dict.keys(): 
-        fit_bias = True
-        bias_curr = array_dict['bias/current']
-        bias_curr = bias_curr*(-1)
-        trim_curr = np.flip(trim_curr)*(-1)
+
+    fit_bias = False if iv_dataset.bias_curr is None else True
+
+    if fit_bias:
         Vbd_puls_bias, Vbd_error_puls_bias, puls_filter_bias, puls_2nd_bias, puls_sgf_bias = PulseShape_bias
         Vbd_poly_bias, Vbd_error_poly_bias, poly_filter_bias, poly_2nd_bias, poly_sgf_bias = Polynomial_bias
-    apa = (filename.split('.root')[0].replace('apa_','')).split('_')[0]
-    ch  = int(filename.split('.root')[0].split('ch_')[-1])
-    afe =  ch//8
 
     Vbd_puls_trim, Vbd_error_puls_trim, puls_filter_trim, puls_2nd_trim, puls_sgf_trim = PulseShape_trim
     Vbd_poly_trim, Vbd_error_poly_trim, poly_filter_trim, poly_2nd_trim, poly_sgf_trim = Polynomial_trim
 
-    # Create a figure with all the subplots
     fig, axs = plt.subplots(2,2, figsize=(15,10))
 
-    axs[0,0].scatter(bias_dac,bias_v,label=f'y=mx+n\nm={slope:0.2f} [V/DAC]\nn={intercept:0.2f} [V]',color="teal")
-    axs[0,0].set_title(f'CONVERSION - IP:{ip} APA: {apa} AFE: {afe} CH: {ch}')
-    axs[0,0].set_xlabel('Bias Voltage [DAC]')
-    axs[0,0].set_ylabel('Bias Voltage [V]')
-    axs[0,0].grid(True)
-    axs[0,0].legend()
+    if iv_dataset.bias_volt is not None: 
+        axs[0,0].scatter(iv_dataset.bias_dac,iv_dataset.bias_volt,label=f'y=mx+n\nm={slope:0.3f} [V/DAC]\nn={intercept:0.2f} [V]',color="teal")
+        axs[0,0].set_title(f'CONVERSION - IP:{iv_dataset.ip} APA: {iv_dataset.apa} AFE: {iv_dataset.afe} CH: {iv_dataset.ch}')
+        axs[0,0].set_xlabel('Bias Voltage [DAC]')
+        axs[0,0].set_ylabel('Bias Voltage [V]')
+        axs[0,0].grid(True)
+        axs[0,0].legend()
     # TODO: add diferent ylim for hpk and fbk types
     
-    axs[0,1].axvline(x=Vbd_poly_trim*slope + intercept, color='purple' ,linestyle='dotted', label=r'$V_{bd}\ (trim)$' f'= {Vbd_poly_trim*slope + intercept:.1f}'  +r'$\pm$'+ f'{Vbd_error_poly_trim*slope + intercept:.1f} [V]') 
-    axs[0,1].scatter(trim_volt,trim_curr, marker='o',s=5,color="orange", label='Trim')  
+    axs[0,1].axvline(x=Vbd_poly_trim, color='purple' ,linestyle='dotted', label=r'$V_{bd}\ (trim)$' f'= {Vbd_poly_trim:.1f}'  +r'$\pm$'+ f'{Vbd_error_poly_trim:.1f} [V]') 
+    axs[0,1].scatter(iv_dataset.trim_volt,iv_dataset.trim_curr, marker='o',s=5,color="orange", label='Trim')  
     if fit_bias:  
-        axs[0,1].scatter(bias_v,bias_curr,marker='o',s=5, color="teal",label='Bias')
+        axs[0,1].scatter(iv_dataset.bias_volt,iv_dataset.bias_curr,marker='o',s=5, color="teal",label='Bias')
         try: 
-            axs[0,1].axvline(x=Vbd_poly_bias*slope + intercept, color='purple' ,linestyle='--', label=r'$V_{bd}\ (bias)$' rf'= {Vbd_poly_bias*slope + intercept:.1f}' +r'$\pm$'+ f'{Vbd_error_poly_bias*slope + intercept:.1f} [V]') 
+            axs[0,1].axvline(x=Vbd_poly_bias, color='purple' ,linestyle='--', label=r'$V_{bd}\ (bias)$' rf'= {Vbd_poly_bias:.1f}' +r'$\pm$'+ f'{Vbd_error_poly_bias:.1f} [V]') 
         except TypeError: pass
     axs[0,1].set_xlabel('Voltage [V]')
     axs[0,1].set_ylabel('Current [mA]')
-    axs[0,1].set_title(f'REV IV - IP:{ip} APA: {apa} AFE: {afe} CH: {ch}')
+    axs[0,1].set_title(f'REV IV - IP:{iv_dataset.ip} APA: {iv_dataset.apa} AFE: {iv_dataset.afe} CH: {iv_dataset.ch}')
     axs[0,1].legend()
     axs[0,1].grid(True)
 
-    # axs[1,0].scatter(puls_filter_trim[0]*slope + intercept,puls_filter_trim[1],marker='o',s=5,color='orange', label = 'Der1_Sav1 PulseTrim')
-    # axs[1,0].scatter(puls_2nd_trim[0]*slope + intercept,puls_2nd_trim[1],marker='^',s=5,color='salmon', label = 'Der1_Sav2 PulseTrim (Fit)')
-    # if len(puls_filter_bias[0])!=1: axs[1,0].scatter(puls_filter_bias[0]*slope + intercept,puls_filter_bias[1],marker='o',s=5,color='teal',label = '1Der1_Sav1 PulseBias')
-    # if len(puls_2nd_bias[0])!=1: axs[1,0].scatter(puls_2nd_bias[0]*slope + intercept,puls_2nd_bias[1],marker='^',s=5,color='cyan',label = 'Der1_Sav2 PulseBias (Fit)')
-    # axs[1,0].axvline(x=Vbd_puls_trim*slope + intercept, color='purple' ,linestyle='dotted', label=r'$V_{bd}\ (trim)$' f'= {Vbd_puls_trim*slope + intercept:.1f}'  +r'$\pm$'+ f'{Vbd_error_puls_trim*slope + intercept:.1f} [V]') 
-    # if not np.isnan(Vbd_puls_bias): axs[1,0].axvline(x=Vbd_poly_bias*slope + intercept, color='purple' ,linestyle='--', label=r'$V_{bd}\ (bias)$' rf'= {Vbd_puls_bias*slope + intercept:.1f}' +r'$\pm$'+ f'{Vbd_error_puls_bias*slope + intercept:.1f} [V]')
-    # axs[1,0].set_xlabel('Voltage [V]')
-    # axs[1,0].set_ylabel('Current [mA]')
-    # axs[1,0].set_title(f'DER PULSESHAPE - IP:{ip} APA: {apa} AFE: {afe} CH: {ch}')
-    # axs[1,0].legend()
-    # axs[1,0].grid(True)
-
-    axs[1,1].scatter(np.array(poly_filter_trim[0])*slope + intercept,poly_filter_trim[1],marker='s',s=5,color='red', label = 'Der1_Sav1 PolyTrim')
-    axs[1,1].scatter(np.array(poly_2nd_trim[0])*slope + intercept,poly_2nd_trim[1],marker='^',s=5,color='salmon', label = 'Der1_Sav2 PolyTrim (Fit)')
-    axs[1,1].axvline(x=Vbd_poly_trim*slope + intercept, color='purple' ,linestyle='dotted', label=r'$V_{bd}\ (trim)$' f'= {Vbd_poly_trim*slope + intercept:.1f}'  +r'$\pm$'+ f'{Vbd_error_poly_trim*slope + intercept:.1f} [V]') 
+    axs[1,1].scatter(np.array(poly_filter_trim[0]),poly_filter_trim[1],marker='s',s=5,color='red', label = 'Der1_Sav1 PolyTrim')
+    axs[1,1].scatter(np.array(poly_2nd_trim[0]),poly_2nd_trim[1],marker='^',s=5,color='salmon', label = 'Der1_Sav2 PolyTrim (Fit)')
+    axs[1,1].axvline(x=Vbd_poly_trim, color='purple' ,linestyle='dotted', label=r'$V_{bd}\ (trim)$' f'= {Vbd_poly_trim:.1f}'  +r'$\pm$'+ f'{Vbd_error_poly_trim:.1f} [V]') 
     if fit_bias:
-        axs[1,1].scatter(np.array(poly_filter_bias[0])*slope + intercept,poly_filter_bias[1],marker='s',s=5,color='blue',label = 'Der1_Sav1 PolyBias')
-        axs[1,1].scatter(np.array(poly_2nd_bias[0])*slope + intercept,poly_2nd_bias[1],marker='^',s=5,color='cyan',label = 'Der1_Sav2 PolyBias (Fit)')
+        axs[1,1].scatter(np.array(poly_filter_bias[0]),poly_filter_bias[1],marker='s',s=5,color='blue',label = 'Der1_Sav1 PolyBias')
+        axs[1,1].scatter(np.array(poly_2nd_bias[0]),poly_2nd_bias[1],marker='^',s=5,color='cyan',label = 'Der1_Sav2 PolyBias (Fit)')
         try: 
-            axs[1,1].axvline(x=Vbd_poly_bias*slope + intercept, color='purple' ,linestyle='--', label=r'$V_{bd}\ (bias)$' rf'= {Vbd_poly_bias*slope + intercept:.1f}' +r'$\pm$'+ f'{Vbd_error_poly_bias*slope + intercept:.1f} [V]') 
+            axs[1,1].axvline(x=Vbd_poly_bias, color='purple' ,linestyle='--', label=r'$V_{bd}\ (bias)$' rf'= {Vbd_poly_bias:.1f}' +r'$\pm$'+ f'{Vbd_error_poly_bias:.1f} [V]') 
         except TypeError: pass
     axs[1,1].set_xlabel('Voltage [V]')
     axs[1,1].set_ylabel('Current [mA]')
-    axs[1,1].set_title(f'DER POLYNIMIAL - IP:{ip} APA: {apa} AFE: {afe} CH: {ch}')
+    axs[1,1].set_title(f'DER POLYNIMIAL - IP:{iv_dataset.ip} APA: {iv_dataset.apa} AFE: {iv_dataset.afe} CH: {iv_dataset.ch}')
     axs[1,1].legend()
     axs[1,1].grid(True)
     
