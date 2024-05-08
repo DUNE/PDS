@@ -1,6 +1,7 @@
 click
 numpy
 matplotlib
+jupyter
 pandas
 plotly
 rich
