@@ -84,10 +84,11 @@ if __name__ == "__main__":
 	if not os.path.exists(outputDir):
 		# Create the directory
 		os.makedirs(outputDir)
+	f_name_ch = { ch: f"{outputDir}/pds_waveforms_{run}_wf_ep{ep}_ch{ch}.dat" for ch in ch_to_save }
 	if args['refresh']:
 		for ch in ch_to_save:
-			open(f"{outputDir}/pds_waveforms_{run}_wf_ep{ep}_ch{ch}.dat","w").close()
-	f_name_ch = { ch: open(f"{outputDir}/pds_waveforms_{run}_wf_ep{ep}_ch{ch}.dat","ab") for ch in ch_to_save }
+			open(f_name_ch[ch], "w").close()
+	f_wvf_ch = { ch: open(f_name_ch[ch], 'ab') for ch in ch_to_save }
 
 	det = 'HD_PDS'
 
@@ -120,6 +121,11 @@ if __name__ == "__main__":
 				if ch in ch_to_save:
 					if ch == debugCh:
 						print(frag_id, adcs)
-					write_file(f_name_ch[ch], lenwvfbytes, timestamps[ch_index], adcs[ch_index])
+					write_file(f_wvf_ch[ch], lenwvfbytes, timestamps[ch_index], adcs[ch_index])
+	for ch in ch_to_save:
+		f_wvf_ch[ch].close()
+		if os.path.getsize(f_name_ch[ch]) == 0:
+			os.remove(f_name_ch[ch])
 
+	
 
