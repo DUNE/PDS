@@ -38,8 +38,7 @@ def write_file(fout, lenwvfbytes: bytes, timestamps: np.ndarray, adcs:np.ndarray
 	fout.write(adcs.tobytes())
 
 """
-Read hdf5 files and convert it into binary files
-
+Read hdf5 files and convert it into binary files, example of how to read binary below.
 Example
 -------
 >>> import numpy as np
