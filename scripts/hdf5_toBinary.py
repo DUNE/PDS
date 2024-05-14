@@ -5,6 +5,7 @@ from daqdataformats import FragmentType
 import detdataformats
 from rawdatautils.unpack.daphne import *
 
+import os
 from glob import glob
 import numpy as np
 from tqdm import tqdm
@@ -55,6 +56,7 @@ if __name__ == "__main__":
 	parse = argparse.ArgumentParser()
 	parse.add_argument('-f', '--folder', type=str, help="Folder in which hdf5 files are located", default= '/afs/cern.ch/work/h/hvieirad/public/protoDUNE_HD_data/')
 	parse.add_argument('-r', '--run', type=str, help='Run you which to process, ex: run025474', default="run025474")
+	parse.add_argument('-outdir', '--outputDir', type=str, help='Directory for output binary files', default="./")
 	parse.add_argument("-ch", "--channels", type=int, nargs="+", help="(If empty, all 48 channels is analyzed). List of channels to be saved, ex: 13 15 (ordering is not required)")
 	parse.add_argument("-nskip", "--nskip", type=int, help="Skip first nskip records")
 	parse.add_argument("-dCh", "--debugCh", type=int,  help="Set a channel to be printed", default=None)
@@ -69,6 +71,8 @@ if __name__ == "__main__":
 	if (args['channels'] is not None):
 		ch_to_save = args['channels']
 	debugCh = args['debugCh']
+
+	outputDir = args['outputDir']
 	
 	nrecords  = None #None if you want to run all the folder
 
@@ -76,10 +80,14 @@ if __name__ == "__main__":
 	ep = 111
 	geoid_to_save = geoids[ep-111]
 
+
+	if not os.path.exists(outputDir):
+		# Create the directory
+		os.makedirs(outputDir)
 	if args['refresh']:
 		for ch in ch_to_save:
-			open(f"pds_waveforms_{run}_wf_ep{ep}_ch{ch}.dat","w").close()
-	f_name_ch = { ch: open(f"pds_waveforms_{run}_wf_ep{ep}_ch{ch}.dat","ab") for ch in ch_to_save }
+			open(f"{outputDir}/pds_waveforms_{run}_wf_ep{ep}_ch{ch}.dat","w").close()
+	f_name_ch = { ch: open(f"{outputDir}/pds_waveforms_{run}_wf_ep{ep}_ch{ch}.dat","ab") for ch in ch_to_save }
 
 	det = 'HD_PDS'
 
