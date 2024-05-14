@@ -47,7 +47,7 @@ Example
 ... npts = np.fromfile(filename,dtype=np.uint32,count=1)[0]
 ... dt = np.dtype([
 ...     ('npts', np.uint32),
-...     ('timestamp', np.uint64),
+...     ('timestamps', np.uint64),
 ...     ('wvfs', (np.uint16,npts))])
 ... data = np.fromfile(filename, dtype=dt)
 >>> len(data['wvfs'])
@@ -61,6 +61,7 @@ if __name__ == "__main__":
 	parse.add_argument("-nskip", "--nskip", type=int, help="Skip first nskip records")
 	parse.add_argument("-dCh", "--debugCh", type=int,  help="Set a channel to be printed", default=None)
 	parse.add_argument("-refresh", "--refresh", action='store_true', help='Ovewrite existing data')
+	parse.add_argument("-geoid", "--geoid", type=int, help='geoid: 111, 112 or 113', default=111)
 	args = vars(parse.parse_args())
 
 	
@@ -77,7 +78,7 @@ if __name__ == "__main__":
 	nrecords  = None #None if you want to run all the folder
 
 	geoids = [47244771330,51539738626,55834705922]
-	ep = 111
+	ep = args['geoid']
 	geoid_to_save = geoids[ep-111]
 
 
@@ -96,7 +97,7 @@ if __name__ == "__main__":
 
 	files = sorted(glob(f'{folder}/*{run}*.hdf5.copied'))
 	if len(files) == 0:
-		print(f"No file with ${run} found in ${folder}")
+		print(f"No file with {run} found in {folder}")
 		exit(0)
 
 
@@ -107,6 +108,8 @@ if __name__ == "__main__":
 		records = h5_file.get_all_record_ids()
 		
 		if nrecords is None: nrecord = len(records)
+
+		timestamp_list = {ch: [] for ch in ch_to_save}
 		# Iterate through records
 		for r in tqdm(records[nskip:nrecords]):
 			
@@ -116,12 +119,15 @@ if __name__ == "__main__":
 			if lenwvfbytes == 0 and len(adcs)>0:
 				lenwvfbytes = (len(adcs[0])).to_bytes(4,'little')
 
-			
 			for ch_index, ch in enumerate(channels):
 				if ch in ch_to_save:
-					if ch == debugCh:
-						print(frag_id, adcs)
-					write_file(f_wvf_ch[ch], lenwvfbytes, timestamps[ch_index], adcs[ch_index])
+					if timestamps[ch_index] not in timestamp_list[ch]:
+						if ch == debugCh:
+							print(frag_id, adcs)
+						timestamp_list[ch].append(timestamps[ch_index])
+						write_file(f_wvf_ch[ch], lenwvfbytes, timestamps[ch_index], adcs[ch_index])
+					# else:
+					# 	print("Removing duplicated...")
 	for ch in ch_to_save:
 		f_wvf_ch[ch].close()
 		if os.path.getsize(f_name_ch[ch]) == 0:
