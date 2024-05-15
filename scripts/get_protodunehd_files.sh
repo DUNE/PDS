@@ -22,6 +22,8 @@ if rucio whoami; then
          setup kx509
 
          kdestroy
+         echo "Configuration done"
+         
          read -p "Enter your @FNAL.GOV username: " username
          echo "Please enter your password: "
          read -s password
