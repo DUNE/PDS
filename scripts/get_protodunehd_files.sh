@@ -36,7 +36,7 @@ if [ -n "$3" ];then
 fi
 
 run0=$(printf "%06d" $run)
-rucio_paths_file="/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/rucio_paths/${run0}.txt"
+rucio_paths_file="/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/waffles/rucio_paths/${run0}.txt"
 # Check if already someone have run this script and rucio paths are stored already
 if [ -f ${rucio_paths_file} ]; then
    echo -e "\e[92mRucio paths already stored :) No rucio setup needed!!\e[0m"
