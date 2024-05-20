@@ -109,6 +109,7 @@ if [ -f ${rucio_paths_file} ]; then
                local)
                foo="/eos"${line//*'//eos'/}
                echo $foo
+               echo $foo >> $rucio_paths_file
                ;;
                grid)
                echo $line
