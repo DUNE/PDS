@@ -45,7 +45,7 @@ def get_files_list_glob(folder, run):
 	return files
 
 def get_files_list_from_input(run):
-	rucio_f_path = '/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/rucio_paths/'
+	rucio_f_path = '/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/waffles/1_rucio_paths/'
 	run = run.strip('run')
 	files = []
 	try: 
@@ -84,8 +84,7 @@ if __name__ == "__main__":
 	parse = argparse.ArgumentParser()
 	parse.add_argument('-f', '--folder', type=str, help="Folder in which hdf5 files are located", default= '/afs/cern.ch/work/h/hvieirad/public/protoDUNE_HD_data/')
 	parse.add_argument('-r', '--run', type=str, help='Run you which to process, ex: run025474', default="run025474")
-	parse.add_argument('-rucio','--rucio', action='store_true', help='Set this option to automaticly grab runs from rucio entries\n\
-					The files are located at /eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/rucio_paths', default=None)
+	parse.add_argument('-rucio','--rucio', action='store_true', help='Set this option to automaticly grab runs from rucio entries', default=None)
 	parse.add_argument('-outpath', '--outputPath', type=str, help='Path for the output', default="/afs/cern.ch/work/h/hvieirad/public/protoDUNE_HD_data_decoded/")
 	parse.add_argument("-ch", "--channels", type=int, nargs="+", help="(If empty, all 48 channels is analyzed). List of channels to be saved, ex: 13 15 (ordering is not required)")
 	parse.add_argument("-nskip", "--nskip", type=int, help="Skip first nskip records, set to -100 for a quicky processing", default=0)
@@ -112,7 +111,7 @@ if __name__ == "__main__":
 	outputDir = f'{args["outputPath"]}/{run}'
 	userucio = args['rucio']
 	
-	nrecords  = None #None if you want to run all the folder
+	nrecords  = 0
 
 	geoids = [47244771330,51539738626,55834705922]
 	ep = args['geoid']
@@ -140,11 +139,7 @@ if __name__ == "__main__":
 			open(f_name_ch[ch], "w").close()
 	f_wvf_ch = { ch: open(f_name_ch[ch], 'ab') for ch in ch_to_save }
 
-	det = 'HD_PDS'
-
 	lenwvfbytes = 0 # lenght of waveform, will be extract in the code
-
-
 
 	if not userucio:
 		files = get_files_list_glob(folder, run)
@@ -176,7 +171,7 @@ if __name__ == "__main__":
 		h5_file = HDF5RawDataFile(file)
 		records = h5_file.get_all_record_ids()
 		
-		if nrecords is None: nrecord = len(records)
+		nrecords = len(records)
 
 
 		inittime = 0
@@ -188,6 +183,7 @@ if __name__ == "__main__":
 
 			timestamp = thre_head.get_header().trigger_timestamp
 			if inittime == timestamp:
+				totalev+=1
 				continue
 			else:
 				inittime = timestamp
@@ -203,15 +199,15 @@ if __name__ == "__main__":
 				if ch in ch_to_save:
 					if timestamps[ch_index] not in timestamp_list[ch]:
 						if ch == debugCh:
-							# print(frag_id, adcs)
-							totalev+=1
+							print(frag_id, adcs)
+							# totalev+=1
 						timestamp_list[ch].append(timestamps[ch_index])
 						write_file(f_wvf_ch[ch], lenwvfbytes, timestamps[ch_index], adcs[ch_index])
-						# totalev+=1
+						totalev+=1
 					else:
-						if ch == debugCh:
+						# if ch == debugCh:
 							# print("Removing duplicated...")
-							totaldouble+=1
+						totaldouble+=1
 
 	for ch in ch_to_save:
 		f_wvf_ch[ch].close()
