@@ -21,7 +21,7 @@ if __name__ == "__main__":
     def parallel_func(it):
         ret = subprocess.run(it, capture_output=True, text=True)
         if getout:
-            cmddone = '_'.join(it).replace('-','')
+            cmddone = '_'.join(it).replace('-','').replace('/','_')
             with open(f'tmp_{cmddone}.tmp', 'w') as f:
                 f.write(ret.stdout)
                 f.write(ret.stderr)
