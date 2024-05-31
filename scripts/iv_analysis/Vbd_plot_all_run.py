@@ -61,8 +61,8 @@ def main(plot_type, input_dir, output_dir):
             DATA_df = DATA_df.dropna(subset=['Vbd(V)'])
             df_ip = DATA_df.loc[DATA_df['IP'] == ip]
             if len(df_ip) > 0 :
-                AFE_list = df_ip['AFE'].unique()
                 '''
+                AFE_list = df_ip['AFE'].unique()
                 num_plots = len(AFE_list)
                 if num_plots == 1:
                     fig, axs = plt.subplots(1, 1, figsize=(10, 8))

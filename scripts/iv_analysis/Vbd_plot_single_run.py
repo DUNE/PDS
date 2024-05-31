@@ -39,31 +39,35 @@ def main(plot_type, input_dir, output_dir, run):
     if (plot_type.upper() == 'CH_VBD_X_RUN') or (plot_type.upper() == 'ALL'):
         print('Plot of Vbd as a function of channel number, for a given run')
         DATA_df = DATA_df.dropna(subset=['Vbd(V)'])
+        pdf_CH_VBD_all = PdfPages(f'{output_dir}/CH_VBD_vs_RUN_all.pdf')
         for run_data in DATA_df['Run'].unique():
             df_run = DATA_df.loc[DATA_df['Run'] == run_data]
             if path.exists(f'{output_dir}/{run_data}'):
-                pdf_CH_VBD = PdfPages(f'{output_dir}/{run_data}/CH_VBD_plot.pdf')
+                pdf_CH_VBD_single = PdfPages(f'{output_dir}/{run_data}/CH_VBD_plot.pdf')
             else:
-                pdf_CH_VBD = PdfPages(f'{output_dir}/{run_data}_CH_VBD_plot.pdf')
+                pdf_CH_VBD_single = PdfPages(f'{output_dir}/{run_data}_CH_VBD_plot.pdf')
 
             df_run_completed = full_map_dataframe(df_run, run_data)    
 
             fig, ax = plt.subplots(1, figsize=(16, 7))
             fig.suptitle(f'Channel Vbd \n RUN: {run_data}')
-            for i, ip in enumerate(df_run_completed['IP'].unique()):
+            i=0
+            for ip in df_run_completed['IP'].unique():
                 df_ip = df_run_completed.loc[df_run_completed['IP'] == ip]
                 ax.errorbar(df_ip['Stringa_DAQch'], df_ip['Vbd(V)'], yerr=df_ip['Vbd_error(V)'] , marker='o', markersize=3.5, capsize=2,linewidth=0 , elinewidth=0.6, color=color_list[i] , label=f'Endpoint: {ip}')
-
+                i+=1
             ax.set_xlabel('DAQ channel')
             ax.set_ylabel('Vbd (V)') 
             plt.xticks(rotation=90, fontsize=5)
             plt.grid(linewidth=0.3)
             plt.legend()
             plt.tight_layout()
-            pdf_CH_VBD.savefig(fig)
+            pdf_CH_VBD_single.savefig(fig)
+            pdf_CH_VBD_all.savefig(fig)
             plt.close(fig)
             
-            pdf_CH_VBD.close()
+            pdf_CH_VBD_single.close()
+        pdf_CH_VBD_all.close()
     
     
 

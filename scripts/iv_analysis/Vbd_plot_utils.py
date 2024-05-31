@@ -75,9 +75,10 @@ def full_map_dataframe(df,run_data=''):
             if ch not in df_ip['Config_CH'].values:
                 df = pd.concat([df, pd.DataFrame([{'IP':ip , 'AFE':ch//8 , 'Config_CH':ch , 'DAQ_CH':daq_channel_conversion(ch) , 'Run':run_data , 'Vbd(V)':0 , 'Vbd_error(V)':0}])], ignore_index=True)
 
-                df['Stringa_DAQch'] = 'IP' + df['IP'].str[-3:] + '_CH' + df['DAQ_CH'].astype(int).astype(str).str.zfill(2)
-                df['Stringa_CONFIGch'] = 'IP' + df['IP'].str[-3:] + '_CH' + df['Config_CH'].astype(int).astype(str).str.zfill(2)
-                df = df.sort_values(by='Stringa_DAQch')
+    df['Stringa_DAQch'] = 'IP' + df['IP'].str[-3:] + '_CH' + df['DAQ_CH'].astype(int).astype(str).str.zfill(2)
+    df['Stringa_CONFIGch'] = 'IP' + df['IP'].str[-3:] + '_CH' + df['Config_CH'].astype(int).astype(str).str.zfill(2)
+    df = df.sort_values(by='Stringa_DAQch')
+    
     if len(df) != 160:
         print('ERROR')
         return 0
