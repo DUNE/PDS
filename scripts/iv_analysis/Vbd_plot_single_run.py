@@ -2,7 +2,7 @@ import re
 from datetime import datetime, timedelta
 import numpy as np
 import click
-from os import chdir, listdir, path
+from os import chdir, listdir, path, getcwd
 from os.path import isdir
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -24,13 +24,23 @@ def VB_HIST_X_RUN(ax,df,sipm):
     ax.legend(fontsize=8)
 
 
-
-
 @click.command()
-@click.option("--plot_type", default='ALL') #Vbd_Run
-@click.option("--input_dir", default='/afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis')
-@click.option("--output_dir", default='/afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis')
-@click.option("--run", default='ALL') #Apr-19-2024-run00
+@click.option("--plot_type", 
+              default='ALL',
+              type=click.Choice(['CH_VBD_X_RUN', 'VB_HIST_X_RUN', 'ALL'], case_sensitive=False),
+              help="Type of plot you want (options: CH_VBD_X_RUN, VB_HIST_X_RUN, 'ALL', default: 'ALL')")
+@click.option("--input_dir", 
+              default= getcwd() + '/../../data/iv_analysis',
+              help="Path directory where all iv analysis results are saved, of all runs (default: 'PDS/data/iv_analysis'")
+@click.option("--output_dir", 
+              default= getcwd() + '/../../data/iv_analysis',
+              help="Path directory where save plots (default: 'PDS/data/iv_analysis')")
+@click.option("--run", 
+              default='ALL',
+              help="Run you want to study, such as May-17-2024_run00 (default: 'ALL'") 
+
+
+
 
 def main(plot_type, input_dir, output_dir, run):
     DATA_df = read_data(input_dir,run)  
@@ -40,7 +50,11 @@ def main(plot_type, input_dir, output_dir, run):
         print('Plot of Vbd as a function of channel number, for a given run')
         DATA_df = DATA_df.dropna(subset=['Vbd(V)'])
         pdf_CH_VBD_all = PdfPages(f'{output_dir}/CH_VBD_vs_RUN_all.pdf')
-        for run_data in DATA_df['Run'].unique():
+        if run == 'ALL':
+            run_list = DATA_df['Run'].unique()
+        else:
+            run_list = [run]
+        for run_data in run_list:
             df_run = DATA_df.loc[DATA_df['Run'] == run_data]
             if path.exists(f'{output_dir}/{run_data}'):
                 pdf_CH_VBD_single = PdfPages(f'{output_dir}/{run_data}/CH_VBD_plot.pdf')
@@ -74,7 +88,11 @@ def main(plot_type, input_dir, output_dir, run):
     if (plot_type.upper() == 'VB_HIST_X_RUN') or (plot_type.upper() == 'ALL'):
         print('Histogram of Vbd grouped by endpoint number')
         DATA_df = DATA_df.dropna(subset=['Vbd(V)'])
-        for run_data in DATA_df['Run'].unique():
+        if run == 'ALL':
+            run_list = DATA_df['Run'].unique()
+        else:
+            run_list = [run]
+        for run_data in run_list:
             df_run = DATA_df.loc[DATA_df['Run'] == run_data]
             if path.exists(f'{output_dir}/{run_data}'):
                 pdf_VBD_hist = PdfPages(f'{output_dir}/{run_data}/VBD_histogram.pdf')

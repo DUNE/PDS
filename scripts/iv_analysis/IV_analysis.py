@@ -8,7 +8,7 @@ IV analysis
 
 import click, json
 import numpy as np
-from os import chdir, listdir, path, makedirs
+from os import chdir, listdir, path, makedirs, getcwd
 from uproot import open as op
 from scipy.optimize import curve_fit
 from scipy.signal import savgol_filter
@@ -23,12 +23,35 @@ warnings.filterwarnings("ignore", category=matplotlib.MatplotlibDeprecationWarni
 from IV_analysis_utils import *
 
 @click.command()
-@click.option("--input_dir", default='/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/ivcurves/May-09-2024-run00') #Run folder
-@click.option("--output_dir", default='/afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis') #Where to save data
-@click.option("--endpoint", default='ALL') #ALL or 104,105,107,109,111,112,113
-@click.option("--trimfit", default='poly') #poly or pulse or both 
-@click.option("--map_path", default='/afs/cern.ch/user/a/anbalbon/IV_curve/PDS/maps/original_channel_map.json') #update json map (without dead channels)
-def main(input_dir, output_dir, endpoint, trimfit, map_path):
+@click.option("--input_dir", 
+              default='/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/ivcurves/May-17-2024_run00',
+              help="Folder with iv curve to analyze, related to a given run (default = '/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/ivcurves/May-17-2024_run00' ") 
+@click.option("--output_dir", 
+              default= getcwd() + '/../../data/iv_analysis',
+              help="Folder where save sada (default: 'PDS/data/iv_analysis") 
+@click.option("--endpoint", 
+              default='ALL',
+              type=click.Choice(['104', '105', '107', '109', '111', '112', '113', 'ALL'], case_sensitive=False),
+              help="Endpoint to analyze (options: 104, 105, 107, 109, 111, 112, 113, 'ALL', default: 'ALL')")
+@click.option("--trimfit", 
+              default='poly', 
+              type=click.Choice(['poly', 'pulse', 'both'], case_sensitive=False),
+              help="Fit type (options: 'poly', 'pulse', or 'both', default: 'poly')")
+@click.option("--map_path", 
+              default= getcwd() + '/../../maps/original_channel_map.json', 
+              help='Map used to acquired IV curves (maybe withoud disconnected or dead channels)')
+@click.option("--fbk-ov", 
+              default=4.5, 
+              help='Overvoltage for fbk')
+@click.option("--hpk-ov", 
+              default=3 , 
+              help='Overvoltage for hpk')
+@click.option("--json-name", 
+              default='dic' , 
+              help="Name for the json file with operation voltage (default: 'DIC')")
+
+
+def main(input_dir, output_dir, endpoint, trimfit, map_path, fbk_ov, hpk_ov,json_name):
     with open(map_path, 'r') as file:
         map = json.load(file)
     
@@ -324,9 +347,9 @@ def main(input_dir, output_dir, endpoint, trimfit, map_path):
                        
                     else:
                         if sipm_AFE[AFE][0] == 'FBK':
-                            ov_V = 4.5
+                            ov_V = fbk_ov #4.5
                         else:
-                            ov_V = 3
+                            ov_V = hpk_ov  # 3
 
                         mean_DAC_V_bias = [np.nanmean(DAC_V_bias_AFE[AFE][0]),np.nanmean(DAC_V_bias_AFE[AFE][1])] #Mean conversion coefficients
 
@@ -385,17 +408,19 @@ def main(input_dir, output_dir, endpoint, trimfit, map_path):
                 output_json = {key: dic[key] for key in dic if key in ['apa','fbk','hpk']} #Per pulire la mappa
                 
                 # Since JSON file doesn't support NaN, i convert it to None
-                output_json['FBK_op_bias'] = [int(x) if not np.isnan(x) else None for x in FBK_op_bias_dac]
-                output_json['FBK_op_trim'] = [int(x) if not np.isnan(x) else None for x in FBK_op_trim_dac]
-                output_json['HPK_op_bias'] = [int(x) if not np.isnan(x) else None for x in HPK_op_bias_dac]
-                output_json['HPK_op_trim'] = [int(x) if not np.isnan(x) else None for x in HPK_op_trim_dac]
+                output_json['fbk_op_bias'] = [int(x) if not np.isnan(x) else None for x in FBK_op_bias_dac]
+                output_json['fbk_op_trim'] = [int(x) if not np.isnan(x) else None for x in FBK_op_trim_dac]
+                output_json['hpk_op_bias'] = [int(x) if not np.isnan(x) else None for x in HPK_op_bias_dac]
+                output_json['hpk_op_trim'] = [int(x) if not np.isnan(x) else None for x in HPK_op_trim_dac]
                 output_json['timestamp'] = timestamp_stringa
                 output_json['run'] = run
                 output_json['ip'] = ip_address
+                output_json['fbk_ov'] = fbk_ov
+                output_json['hpk_ov'] = hpk_ov
                 
 
                 
-                with open(f'{endpoint_dir_output}/{ip_address}_dic.json', "w") as fp:
+                with open(f'{endpoint_dir_output}/{ip_address}_{json_name}.json', "w") as fp:
                     json.dump(output_json, fp) # Vbd=None means some error!!
 
                 

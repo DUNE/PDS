@@ -1,6 +1,11 @@
+'''
+If you want to analyze all runs
+'''
+
 import subprocess
 from pathlib import Path
 from datetime import datetime
+from os import getcwd
 
 def get_directories(path):
     run_folders = []
@@ -18,10 +23,10 @@ for input_dir in dir_list:
     subprocess.run([
         'python', 'IV_analysis.py',
         '--input_dir', input_dir,
-        '--output_dir', '/afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/prova_all',
+        '--output_dir', getcwd() + '/../../data/iv_analysis',
         '--endpoint', '113',
         '--trimfit', 'poly',
-        '--map_path', '/afs/cern.ch/user/a/anbalbon/IV_curve/PDS/maps/original_channel_map.json'
+        '--map_path', getcwd() + '/../../maps/original_channel_map.json'
     ])
 
 

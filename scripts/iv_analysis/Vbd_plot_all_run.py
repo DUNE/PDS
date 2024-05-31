@@ -2,7 +2,7 @@ import re
 from datetime import datetime, timedelta
 import numpy as np
 import click
-from os import chdir, listdir
+from os import chdir, listdir, getcwd
 from os.path import isdir
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -44,9 +44,18 @@ def AFE_VBD_VS_RUN_plot(ax,df,sipm):
 
 
 @click.command()
-@click.option("--plot_type", default='ALL') #Vbd_Run
-@click.option("--input_dir", default='/afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis')
-@click.option("--output_dir", default='/afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis')
+@click.option("--plot_type", 
+              default='ALL',
+              type=click.Choice(['CH_VBD_VS_RUN', 'AFE_VBD_VS_RUN', 'MEAN_CH_VDB', 'ALL'], case_sensitive=False),
+              help="Type of plot you want (options: CH_VBD_VS_RUN, AFE_VBD_VS_RUN, MEAN_CH_VDB, 'ALL', default: 'ALL')")
+@click.option("--input_dir", 
+              default= getcwd() + '/../../data/iv_analysis',
+              help="Path directory where all iv analysis results are saved, of all runs (default: 'PDS/data/iv_analysis'")
+@click.option("--output_dir", 
+              default= getcwd() + '/../../data/iv_analysis',
+              help="Path directory where save plots (default: 'PDS/data/iv_analysis')")
+
+
 def main(plot_type, input_dir, output_dir):
 
     DATA_df = read_data(input_dir)  
@@ -130,6 +139,8 @@ def main(plot_type, input_dir, output_dir):
         #pd.set_option('display.max_rows', None)
         #print(df_grouped)
 
+
+    # TO BE FINISHED!
     if (plot_type.upper() == 'MEAN_CH_VDB') or (plot_type.upper() == 'ALL'): 
         print('Plot of mean Vbd per CH in time')
         min_data = DATA_df['Endpoint_time'].min()
