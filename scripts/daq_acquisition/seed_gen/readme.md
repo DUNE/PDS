@@ -1,7 +1,7 @@
 # readme.md
 This tool needs a fddaq environment version > 4.4.1
 
-set the variables in `seed.py`
+set the variables in `seed`
 
 set the endpoints in `daphne_conf.json`
 
