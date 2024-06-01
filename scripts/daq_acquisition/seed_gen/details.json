@@ -1,0 +1,78 @@
+{
+  "details": [
+    {
+      "id": 0,
+      "value": {
+        "afes": {
+          "adcs": [
+            {
+              "id": 0,
+              "value": {
+                "SB_first": false,
+                "output_format": true,
+                "resolution": false
+              }
+            }
+          ],
+          "lnas": [
+            {
+              "id": 0,
+              "value": {
+                "clamp": 0,
+                "gain": 0,
+                "integrator_disable": false
+              }
+            }
+          ],
+          "pgas": [
+            {
+              "id": 0,
+              "value": {
+                "gain": true,
+                "integrator_disable": false,
+                "lpf_cut_frequnecy": 0
+              }
+            }
+          ],
+          "v_biases": [
+            {
+              "id": 0,
+              "value": 0
+            }
+          ],
+          "v_gains": [
+            {
+              "id": 0,
+              "value": 0
+            }
+          ]
+        },
+        "channels": {
+          "gains": [
+            {
+              "id": 0,
+              "value": 0
+            }
+          ],
+          "offsets": [
+            {
+              "id": 0,
+              "value": 0
+            }
+          ],
+          "trims": [
+            {
+              "id": 0,
+              "value": 0
+            }
+          ]
+        },
+        "full_stream_channels": [
+          0,
+          0
+        ],
+        "self_trigger_threshold": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "boot": {
+      "capture_env_vars" : [],
+      "disable_trace": false,
+      "opmon_impl": "local",
+      "ers_impl": "local"
+  },
+    "daphne":  {
+	"slots": [4,5,7,9,11,12,13]
+    }
+}

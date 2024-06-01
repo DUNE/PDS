@@ -1,0 +1,3035 @@
+{
+    "modules": [
+        {
+            "data": {
+                "afes": [
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 0,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 788,
+                        "v_gain": 2318
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 1,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1136,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 2,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 0,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 3,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 0,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 4,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 0,
+                        "v_gain": 2667
+                    }
+                ],
+                "biasctrl": 4095,
+                "channels": [
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 0
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 1
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 2
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 3
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 4
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 5
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 6
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 7
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 8
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 9
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 10
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 11
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 12
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 13
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 14
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 15
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 16
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 17
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 18
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 19
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 20
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 21
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 22
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 23
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 24
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 25
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 26
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 27
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 28
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 29
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 30
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 31
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 32
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 33
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 34
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 35
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 36
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 37
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 38
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 39
+                    }
+                ],
+                "daphne_address": "10.73.137.104",
+                "full_stream_channels": [],
+                "self_trigger_threshold": 20000
+            },
+            "match": "controller_4"
+        },
+        {
+            "data": {
+                "afes": [
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 0,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 824,
+                        "v_gain": 2318
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 1,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 817,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 2,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1190,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 3,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 0,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 4,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 0,
+                        "v_gain": 2667
+                    }
+                ],
+                "biasctrl": 4095,
+                "channels": [
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 0
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 1
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 2
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 3
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 4
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 5
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 6
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 7
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 8
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 9
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 10
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 11
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 12
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 13
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 14
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 15
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 16
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 17
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 18
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 19
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 20
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 21
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 22
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 23
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 24
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 25
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 26
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 27
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 28
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 29
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 30
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 31
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 32
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 33
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 34
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 35
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 36
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 37
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 38
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 39
+                    }
+                ],
+                "daphne_address": "10.73.137.105",
+                "full_stream_channels": [],
+                "self_trigger_threshold": 20000
+            },
+            "match": "controller_5"
+        },
+        {
+            "data": {
+                "afes": [
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 0,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 818,
+                        "v_gain": 2318
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 1,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1161,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 2,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 0,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 3,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 0,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 4,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 0,
+                        "v_gain": 2667
+                    }
+                ],
+                "biasctrl": 4095,
+                "channels": [
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 0
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 1
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 2
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 3
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 4
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 5
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 6
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 7
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 8
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 9
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 10
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 11
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 12
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 13
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 14
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 15
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 16
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 17
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 18
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 19
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 20
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 21
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 22
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 23
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 24
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 25
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 26
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 27
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 28
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 29
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 30
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 31
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 32
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 33
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 34
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 35
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 36
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 37
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 38
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 39
+                    }
+                ],
+                "daphne_address": "10.73.137.107",
+                "full_stream_channels": [],
+                "self_trigger_threshold": 20000
+            },
+            "match": "controller_7"
+        },
+        {
+            "data": {
+                "afes": [
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 0,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 807,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 1,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 844,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 2,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1158,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 3,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1163,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 4,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1126,
+                        "v_gain": 2667
+                    }
+                ],
+                "biasctrl": 4095,
+                "channels": [
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 0
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 1
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 2
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 3
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 4
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 5
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 6
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 7
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 8
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 9
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 10
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 11
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 12
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 13
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 14
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 15
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 16
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 17
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 18
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 19
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 20
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 21
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 22
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 23
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 24
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 25
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 26
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 27
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 28
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 29
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 30
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 31
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 32
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 33
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 34
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 35
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 36
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 37
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 38
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 39
+                    }
+                ],
+                "daphne_address": "10.73.137.109",
+                "full_stream_channels": [],
+                "self_trigger_threshold": 20000
+            },
+            "match": "controller_9"
+        },
+        {
+            "data": {
+                "afes": [
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 0,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 813,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 1,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 826,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 2,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 816,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 3,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1204,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 4,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1196,
+                        "v_gain": 2667
+                    }
+                ],
+                "biasctrl": 4095,
+                "channels": [
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 0
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 1
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 2
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 3
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 4
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 5
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 6
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 7
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 8
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 9
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 10
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 11
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 12
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 13
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 14
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 15
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 16
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 17
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 18
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 19
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 20
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 21
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 22
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 23
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 24
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 25
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 26
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 27
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 28
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 29
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 30
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 31
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 32
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 33
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 34
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 35
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 36
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 37
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 38
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 39
+                    }
+                ],
+                "daphne_address": "10.73.137.111",
+                "full_stream_channels": [],
+                "self_trigger_threshold": 20000
+            },
+            "match": "controller_11"
+        },
+        {
+            "data": {
+                "afes": [
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 0,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1186,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 1,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1153,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 2,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1134,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 3,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1173,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 4,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 1195,
+                        "v_gain": 2667
+                    }
+                ],
+                "biasctrl": 4095,
+                "channels": [
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 0
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 1
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 2
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 3
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 4
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 5
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 6
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 7
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 8
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 9
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 10
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 11
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 12
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 13
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 14
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 15
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 16
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 17
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 18
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 19
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 20
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 21
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 22
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 23
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 24
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 25
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 26
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 27
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 28
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 29
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 30
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 31
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 32
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 33
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 34
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 35
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 36
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 37
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 38
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 39
+                    }
+                ],
+                "daphne_address": "10.73.137.112",
+                "full_stream_channels": [],
+                "self_trigger_threshold": 20000
+            },
+            "match": "controller_12"
+        },
+        {
+            "data": {
+                "afes": [
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 0,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 824,
+                        "v_gain": 2318
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 1,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 0,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 2,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 0,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 3,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 0,
+                        "v_gain": 2667
+                    },
+                    {
+                        "adc": {
+                            "SB_first": false,
+                            "output_format": true,
+                            "resolution": false
+                        },
+                        "id": 4,
+                        "lna": {
+                            "clamp": 1,
+                            "gain": 1,
+                            "integrator_disable": false
+                        },
+                        "pga": {
+                            "gain": true,
+                            "integrator_disable": false,
+                            "lpf_cut_frequency": 0
+                        },
+                        "v_bias": 0,
+                        "v_gain": 2667
+                    }
+                ],
+                "biasctrl": 4095,
+                "channels": [
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 0
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 1
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 2
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 3
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 4
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 5
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 6
+                    },
+                    {
+                        "conf": {
+                            "gain": 1,
+                            "offset": 2200,
+                            "trim": 0
+                        },
+                        "id": 7
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 8
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 9
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 10
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 11
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 12
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 13
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 14
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 15
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 16
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 17
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 18
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 19
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 20
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 21
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 22
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 23
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 24
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 25
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 26
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 27
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 28
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 29
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 30
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 31
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 32
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 33
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 34
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 35
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 36
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 37
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 38
+                    },
+                    {
+                        "conf": {
+                            "gain": 2,
+                            "offset": 1468,
+                            "trim": 0
+                        },
+                        "id": 39
+                    }
+                ],
+                "daphne_address": "10.73.137.113",
+                "full_stream_channels": [],
+                "self_trigger_threshold": 20000
+            },
+            "match": "controller_13"
+        }
+    ]
+}

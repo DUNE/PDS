@@ -1,0 +1,83 @@
+{
+    "apps": {
+        "daphneapp": {
+            "exec": "daq_application_ssh",
+            "host": "daphneapp",
+            "port": 3333
+        }
+    },
+    "env": {
+        "DUNEDAQ_ERS_DEBUG_LEVEL": "getenv_ifset",
+        "DUNEDAQ_ERS_ERROR": "erstrace,throttle,lstdout",
+        "DUNEDAQ_ERS_FATAL": "erstrace,lstdout",
+        "DUNEDAQ_ERS_INFO": "erstrace,throttle,lstdout",
+        "DUNEDAQ_ERS_VERBOSITY_LEVEL": "getenv:1",
+        "DUNEDAQ_ERS_WARNING": "erstrace,throttle,lstdout"
+    },
+    "exec": {
+        "consvc_ssh": {
+            "args": [
+                "--bind=0.0.0.0:{APP_PORT}",
+                "--workers=1",
+                "--worker-class=gthread",
+                "--threads=2",
+                "--graceful-timeout=0",
+                "--timeout=0",
+                "--pid={APP_NAME}_{APP_PORT}.pid",
+                "connection-service.connection-flask:app"
+            ],
+            "cmd": "gunicorn",
+            "env": {
+                "CONNECTION_FLASK_DEBUG": "getenv:2",
+                "PATH": "getenv",
+                "PYTHONPATH": "getenv"
+            }
+        },
+        "daq_application_ssh": {
+            "args": [
+                "--name",
+                "{APP_NAME}",
+                "-c",
+                "{CMD_FAC}",
+                "-i",
+                "{INFO_SVC}",
+                "--configurationService",
+                "{CONF_LOC}"
+            ],
+            "cmd": "daq_application",
+            "comment": "Application profile using PATH variables (lower start time)",
+            "env": {
+                "CET_PLUGIN_PATH": "getenv",
+                "CMD_FAC": "rest://localhost:{APP_PORT}",
+                "CONNECTION_SERVER": "np04-srv-024",
+                "DUNEDAQ_SHARE_PATH": "getenv",
+                "INFO_SVC": "file://info_{APP_NAME}_{APP_PORT}.json",
+                "LD_LIBRARY_PATH": "getenv",
+                "PATH": "getenv",
+                "TRACE_FILE": "getenv:/tmp/trace_buffer_{APP_HOST}_{DUNEDAQ_PARTITION}"
+            }
+        }
+    },
+    "external_connections": [],
+    "hosts-ctrl": {
+        "connectionservice": "np04-srv-024",
+        "daphneapp": "np04-srv-015"
+    },
+    "hosts-data": {
+        "daphneapp": "np04-srv-015"
+    },
+    "response_listener": {
+        "port": 56789
+    },
+    "rte_script": "/nfs/home/marroyav/fddaq-4.4.1-a9/install/daq_app_rte.sh",
+    "services": {
+        "connectionservice": {
+            "exec": "consvc_ssh",
+            "host": "connectionservice",
+            "port": 15000,
+            "update-env": {
+                "CONNECTION_PORT": "{APP_PORT}"
+            }
+        }
+    }
+}

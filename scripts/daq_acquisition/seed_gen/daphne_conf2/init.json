@@ -1,0 +1,5 @@
+{
+    "apps": {
+        "daphneapp": "data/daphneapp_init"
+    }
+}

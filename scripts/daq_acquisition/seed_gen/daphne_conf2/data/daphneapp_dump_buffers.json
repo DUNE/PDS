@@ -1,0 +1,11 @@
+{
+    "modules": [
+        {
+            "data": {
+                "directory": "./",
+                "n_samples": 1024
+            },
+            "match": ""
+        }
+    ]
+}
