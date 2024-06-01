@@ -1,13 +1,13 @@
 # readme.md
-This tool needs a fddaq environment version > 4.4.1
+This tool needs a fddaq environment version  ` > 4.4.1`
 
-using a text editor set the variables in `seed` and generate the details seed:
+using a text editor set the variables in `seed` and generate the details file  seed.json:
 
 ```
 ./seed
 ```
 
-using a test editor set the endpoints in `daphne_conf.json`
+using a text editor set the endpoints in `daphne_conf.json`
 
 then, use the following command, using a meaningful name for the folder in the last argument to generate the final configuration:
 
