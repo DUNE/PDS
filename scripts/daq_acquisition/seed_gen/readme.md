@@ -1,6 +1,8 @@
 # readme.md
+This tool needs a fddaq environment version > 4.4.1
 
 set the variables in `seed.py`
+
 set the endpoints in `daphne_conf.json`
 
 then, use the following command, using a meaningful name for the folder in the last argument:
@@ -9,7 +11,7 @@ then, use the following command, using a meaningful name for the folder in the l
 ./daphne_gen -c daphne_example_config.json -f seed.json daphne_conf2
 ```
 
-##doc
+## Usage
 ```
 Usage: daphne_gen [OPTIONS] JSON_DIR
 
