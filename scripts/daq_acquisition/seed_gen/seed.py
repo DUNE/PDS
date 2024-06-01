@@ -11,7 +11,7 @@ endpoints = [4, 5, 7, 9, 11, 12, 13]
 order = [0,2,5,7,1,3,4,6,8, 10, 13, 15, 9, 11, 12, 14, 16, 18, 21, 23, 17, 19, 20, 22]
 details = {"details":
            [{"id": i, "value":
-             {"self_trigger_threshold": 20000 if i>8 else 0,
+             {"self_trigger_threshold": 600 if i>8 else 0,
               "full_stream_channels": sorted(map[f'10.73.137.{100+i}']['id'], key=order.index) if i<8 else [8],
               "channels": {
                   "gains": [{"id": j, "value": 1} for j in map[f'10.73.137.{100+i}']["id"]],

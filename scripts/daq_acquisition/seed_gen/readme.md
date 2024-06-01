@@ -1,8 +1,16 @@
-# use this tool using the following command:
+# readme.md
+
+set the variables in `seed.py`
+set the endpoints in `daphne_conf.json`
+
+then, use the following command, using a meaningful name for the folder in the last argument:
+
 ```
 ./daphne_gen -c daphne_example_config.json -f seed.json daphne_conf2
+```
 
-
+##doc
+```
 Usage: daphne_gen [OPTIONS] JSON_DIR
 
 Options:

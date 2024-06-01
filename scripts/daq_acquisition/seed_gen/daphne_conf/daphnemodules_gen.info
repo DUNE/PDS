@@ -1,6 +1,0 @@
-{
-    "build_info": {},
-    "command_line": "./daphne_gen -c daphne_example_config.json -f seed.json daphne_conf",
-    "config_file": "daphne_example_config.json",
-    "daqconf_exe_dir": "/nfs/home/marroyav/fddaq-4.4.1-a9/sourcecode/daphnemodules/scripts"
-}
