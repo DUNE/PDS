@@ -3,6 +3,10 @@ This tool needs a fddaq environment version > 4.4.1
 
 set the variables in `seed`
 
+```
+./seed
+```
+
 set the endpoints in `daphne_conf.json`
 
 then, use the following command, using a meaningful name for the folder in the last argument:
