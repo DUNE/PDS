@@ -31,7 +31,9 @@ def cli(config,
         json_dir):
 
     if os.path.exists(json_dir):
-        raise RuntimeError(f"Directory {json_dir} already exists")
+        # raise RuntimeError(f"Directory {json_dir} already exists")
+        print (f"Directory {json_dir} already exists. REMOVING IT TO RECREATE...")
+        os.system(f"rm -rf {json_dir}")
 
     config_data = config[0]
     config_file = config[1]
