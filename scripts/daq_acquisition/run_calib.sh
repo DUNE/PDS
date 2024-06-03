@@ -36,20 +36,25 @@ fi
 # Look for the APAs in the filename and set the IPs accordingly
 apas=${config_file#*_} # Get the last part of the filename after the first underscore
 apas=${apas%_SSP.json} # Remove the SSP.json suffix
-if [ "$apas" == "DAPHNE_APA1"];  then
+if [ "$apas" == "DAPHNE_APA1" ]; then
     your_ips=("4" "5" "7")
+    your_apa="apa12"
 fi
 if [ "$apas" == "DAPHNE_APA2" ]; then
     your_ips=("9")
+    your_apa="apa2"
 fi
 if [ "$apas" == "DAPHNE_APA3" ]; then
     your_ips=("11")
+    your_apa="apa34"
 fi
 if [ "$apas" == "DAPHNE_APA4" ]; then
     your_ips=("12" "13")
+    your_apa="apa34"
 fi
 if [ "$apas" == "DAPHNE_APAs34" ]; then
     your_ips=("11" "12" "13")
+    your_apa="apa34"
 fi
 
 # Print the IPs and the Bias [V] for the user to confirm and save into the log file
@@ -83,6 +88,10 @@ echo "Running for $runtime seconds" | tee -a $log
 echo "dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3" | tee -a $log
 echo "dtsbutler mst MASTER_PC059_1 faketrig-conf 0x7 0 1000" | tee -a $log
 echo "nano04rc --partition-number 7 --timeout 120 global_configs/pds_calibration/${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 10 wait ${runtime} stop_run" | tee -a $log
+echo "==================================================" >> $log
+echo "\nYOUR CONFIGURATION FOR DAPHNE:\n" >> $log
+cat /nfs/home/np04daq/DAQ_NP04_HD_AREA/np04daq-configs/DAPHNE_CONFS/Calib_$your_apa/data/daphneapp_conf.json >> $log
+echo "==================================================" >> $log
 
 # Execute the commands
 dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3
