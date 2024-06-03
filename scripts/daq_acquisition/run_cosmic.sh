@@ -36,6 +36,9 @@ fi
 # Look for the APAs in the filename and set the IPs accordingly
 apas=${config_file#*_} # Get the last part of the filename after the first underscore
 apas=${apas%_SSP.json} # Remove the SSP.json suffix
+if [ "$apas" == "DAPHNE_APA1" ]; then
+    your_ips=("4" "5" "7")
+fi
 if [ "$apas" == "DAPHNE_APA2" ]; then
     your_ips=("9")
 fi
@@ -79,12 +82,12 @@ echo "***** Running $config_file *****" | tee -a $log
 echo "Running for $runtime seconds" | tee -a $log
 echo "dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3" | tee -a $log
 echo "dtsbutler mst MASTER_PC059_1 faketrig-clear 0" | tee -a $log
-echo "nano04rc --partition-number 6 --timeout 120 global_configs/pds_calibration/${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 100 wait ${runtime} stop_run" | tee -a $log
+echo "nano04rc --partition-number 7 --timeout 120 global_configs/pds_calibration/${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 10 wait ${runtime} stop_run" | tee -a $log
 
 # Execute the commands
 dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3
 dtsbutler mst MASTER_PC059_1 faketrig-clear 0
-nano04rc --partition-number 6 --timeout 120 global_configs/pds_calibration/${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 100 wait ${runtime} stop_run
+nano04rc --partition-number 7 --timeout 120 global_configs/pds_calibration/${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 10 wait ${runtime} stop_run
 
 # Check if the commands were executed successfully
 if [ $? -ne 0 ]; then

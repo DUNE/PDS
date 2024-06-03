@@ -82,12 +82,12 @@ echo "***** Running $config_file *****" | tee -a $log
 echo "Running for $runtime seconds" | tee -a $log
 echo "dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3" | tee -a $log
 echo "dtsbutler mst MASTER_PC059_1 faketrig-conf 0x7 0 1000" | tee -a $log
-echo "nano04rc --partition-number 6 --timeout 120 global_configs/pds_calibration/${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 100 wait ${runtime} stop_run" | tee -a $log
+echo "nano04rc --partition-number 7 --timeout 120 global_configs/pds_calibration/${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 10 wait ${runtime} stop_run" | tee -a $log
 
 # Execute the commands
 dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3
 dtsbutler mst MASTER_PC059_1 faketrig-conf 0x7 0 1000
-nano04rc --partition-number 6 --timeout 120 global_configs/pds_calibration/${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 100 wait ${runtime} stop_run
+nano04rc --partition-number 7 --timeout 120 global_configs/pds_calibration/${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 10 wait ${runtime} stop_run
 
 # Check if the commands were executed successfully
 if [ $? -ne 0 ]; then
