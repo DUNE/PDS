@@ -44,6 +44,10 @@ if [ "$apas" == "DAPHNE_APA2" ]; then
     your_ips=("9")
     your_apa="apa2"
 fi
+if [ "$apas" == "DAPHNE_APAs12" ]; then
+    your_ips=("4" "5" "7" "9")
+    your_apa="apa12"
+fi
 if [ "$apas" == "DAPHNE_APA3" ]; then
     your_ips=("11")
     your_apa="apa34"
@@ -57,12 +61,13 @@ if [ "$apas" == "DAPHNE_APAs34" ]; then
     your_apa="apa34"
 fi
 
-# Print the IPs and the Bias [V] for the user to confirm and save into the log file
-log="pds_log/calib_log_$(date "+%F-%T").txt"
 ip_string=$(IFS=,; echo "${your_ips[*]}")
+echo -e "\e[32mYou selected $your_apa with enpoints ($ip_string) !\n\e[0m"
+log="pds_log/calib_log_$(date "+%F-%T").txt"
 echo -e "\n"
-echo -e "You are going to acquire data with IPs: ($ip_string), which Bias [V] are: "
-python /nfs/home/np04daq/daphne/daphne_interface/scripts/readV.py --ip_address $ip_string | tee -a $log
+# Print the IPs and the Bias [V] for the user to confirm and save into the log file
+# echo -e "You are going to acquire data with IPs: ($ip_string), which Bias [V] are: "
+# python /nfs/home/np04daq/daphne/daphne_interface/scripts/readV.py --ip_address $ip_string | tee -a $log
 
 # Once all the arguments are set, ask for confirmation
 if [ -n "$5" ] && [ "$5" = "True" ]; then
