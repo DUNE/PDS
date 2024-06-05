@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo -e "\e[36m[INFO] Welcome to the script for acquiring \033[1mCALIBRATION RUNS!\033[0m"
-echo -e "\e[36m To execute the script just run: \033[1msh run_calib.sh <username> <config_file> <runtime> <message> <expert_mode>\033[0m"
+echo -e "\e[36m To execute the script just run: \033[1msh run_calib.sh <username> <apa_number> <runtime> <message> <expert_mode>\033[0m"
 echo -e "\e[36m A log.txt file will be generated each time you run this script."
 echo -e " If any of the arguments is missing, the script will ask for it."
 echo -e " Enjoy! :) \n \e[0m"
@@ -18,9 +18,9 @@ if [ -n "$1" ];then
         read -p "Enter your username: " username
 fi
 if [ -n "$2" ];then
-    config_file=$2
+    apa_number=$2
     else
-        read -p "Enter the configuration file [np04_DAPHNE_APAs34_SSP.json]: " config_file
+        read -p "Enter the apas you want to acquire [34]: " apa_number
 fi
 if [ -n "$3" ];then
     runtime=$3
@@ -34,37 +34,24 @@ if [ -n "$4" ];then
 fi
 
 # Look for the APAs in the filename and set the IPs accordingly
-apas=${config_file#*_} # Get the last part of the filename after the first underscore
-apas=${apas%_SSP.json} # Remove the SSP.json suffix
-if [ "$apas" == "DAPHNE_APA1" ]; then
-    your_ips=("4" "5" "7")
-    your_apa="apa12"
-fi
-if [ "$apas" == "DAPHNE_APA2" ]; then
-    your_ips=("9")
-    your_apa="apa2"
-fi
-if [ "$apas" == "DAPHNE_APAs12" ]; then
-    your_ips=("4" "5" "7" "9")
-    your_apa="apa12"
-fi
-if [ "$apas" == "DAPHNE_APA3" ]; then
-    your_ips=("11")
-    your_apa="apa34"
-fi
-if [ "$apas" == "DAPHNE_APA4" ]; then
-    your_ips=("12" "13")
-    your_apa="apa34"
-fi
-if [ "$apas" == "DAPHNE_APAs34" ]; then
-    your_ips=("11" "12" "13")
-    your_apa="apa34"
-fi
+declare -A apa_map
+apa_map[1]="4 5 7"
+apa_map[2]="9"
+apa_map[3]="11"
+apa_map[4]="12 13"
 
+your_ips=()
+for apa in $(echo $apa_number | fold -w1); do
+    your_ips+=(${apa_map[$apa]})
+done
 ip_string=$(IFS=,; echo "${your_ips[*]}")
-echo -e "\e[32mYou selected $your_apa with enpoints ($ip_string) !\n\e[0m"
+
 log="pds_log/calib_log_$(date "+%F-%T").txt"
-echo -e "\n"
+config_file=global_configs/pds_calibration/np04_DAPHNE_APAs${apa_number}_SSP.json
+
+echo -e "\e[32m\nYou selected APA(s) ($apa_number) with enpoints ($ip_string) !\e[0m"
+echo -e "\e[35mWe are going to use $config_file if exists :) \e[0m"
+
 # Print the IPs and the Bias [V] for the user to confirm and save into the log file
 # echo -e "You are going to acquire data with IPs: ($ip_string), which Bias [V] are: "
 # python /nfs/home/np04daq/daphne/daphne_interface/scripts/readV.py --ip_address $ip_string | tee -a $log
@@ -73,9 +60,9 @@ echo -e "\n"
 if [ -n "$5" ] && [ "$5" = "True" ]; then
     echo "EXPERT_MODE ON: running without confirmation message"
 else
+    echo -e "\e[33mWARNING: You MUST be (in np04daq@np04-srv-024) inside \033[1mnp04_pds tmux!\033[0m \e[33m[tmux a -t np04_pds]\e[0m"
+    # echo -e "\e[31mCheck the endpoints are correctly setup and \033[1mbiased\033[0m\e[31m [careful with \033[1mnoise\033[0m\e[31m runs!]\e[0m"
     echo -e "\n"
-    echo -e "\e[31mWARNING: You MUST be (in np04daq@np04-srv-024) inside \033[1mnp04_pds tmux!\033[0m\e[31m [tmux a -t np04_pds]\e[0m"
-    echo -e "\e[31mCheck the endpoints are correctly setup and \033[1mbiased\033[0m\e[31m [careful with \033[1mnoise\033[0m\e[31m runs!]\e[0m"
     read -p "Are you sure you want to continue? (y/n) " -n 1 -r
     echo -e "\n"
 
@@ -88,20 +75,21 @@ else
 fi
 
 # Print the configuration and the command to be executed
-echo "***** Running $config_file *****" | tee -a $log
-echo "Running for $runtime seconds" | tee -a $log
-echo "dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3" | tee -a $log
-echo "dtsbutler mst MASTER_PC059_1 faketrig-conf 0x7 0 1000" | tee -a $log
-echo "nano04rc --partition-number 7 --timeout 120 global_configs/pds_calibration/${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 10 wait ${runtime} stop_run" | tee -a $log
-echo "==================================================" >> $log
-echo "\nYOUR CONFIGURATION FOR DAPHNE:\n" >> $log
-cat /nfs/home/np04daq/DAQ_NP04_HD_AREA/np04daq-configs/DAPHNE_CONFS/Calib_$your_apa/data/daphneapp_conf.json >> $log
-echo "==================================================" >> $log
+echo -e "***** Running $config_file *****" | tee -a $log
+cat $config_file >> $log
+echo -e "\nRunning for $runtime seconds" | tee -a $log
+echo -e "dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3" | tee -a $log
+echo -e "dtsbutler mst MASTER_PC059_1 faketrig-conf 0x7 0 6250" | tee -a $log
+echo -e "nano04rc --partition-number 7 --timeout 120 $config_file $username np04pds boot start_run --message "\"${message}\"" change_rate 10 wait ${runtime} stop_run" | tee -a $log
+echo -e "==================================================" >> $log
+echo -e "\nYOUR CONFIGURATION FOR DAPHNE:\n" >> $log
+cat /nfs/home/np04daq/DAQ_NP04_HD_AREA/np04daq-configs/DAPHNE_CONFS/Calib_apa$apa_number/data/daphneapp_conf.json >> $log
+echo -e "==================================================" >> $log
 
 # Execute the commands
 dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3
-dtsbutler mst MASTER_PC059_1 faketrig-conf 0x7 0 1000
-nano04rc --partition-number 7 --timeout 120 global_configs/pds_calibration/${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 10 wait ${runtime} stop_run
+dtsbutler mst MASTER_PC059_1 faketrig-conf 0x7 0 6250
+nano04rc --partition-number 7 --timeout 120 ${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 10 wait ${runtime} stop_run
 
 # Check if the commands were executed successfully
 if [ $? -ne 0 ]; then
