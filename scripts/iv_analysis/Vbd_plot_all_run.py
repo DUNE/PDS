@@ -18,6 +18,7 @@ def CH_VBD_VS_RUN_plot(ax,df,afe):
     for config_ch in df['Config_CH'].unique():
         df_ch = df.loc[df['Config_CH'] == config_ch].copy()
         df_ch.loc[:, 'Endpoint_time_shift'] = df_ch['Endpoint_time'] + pd.to_timedelta(4*i, unit='h')
+        df_ch=df_ch.sort_values(by='Endpoint_time_shift')
         ax.errorbar(df_ch['Endpoint_time_shift'], df_ch['Vbd(V)'], yerr=df_ch['Vbd_error(V)'] , marker='o', markersize=3.5, capsize=2,linewidth=1 , elinewidth=0.6, color=color_list[int(config_ch)-8*(int(config_ch)//8)] , label=f'Config_CH={config_ch} DAQ_CH={daq_channel_conversion(config_ch):.0f}')
         i+=1
     ax.legend(fontsize=3)
@@ -34,6 +35,7 @@ def AFE_VBD_VS_RUN_plot(ax,df,sipm):
     for afe in df['AFE'].unique():
         df_afe = df.loc[df['AFE'] == afe].copy()
         df_afe.loc[:, 'Endpoint_time_shift'] = df_afe['Endpoint_time'] + pd.to_timedelta(4*afe, unit='h')
+        df_afe=df_afe.sort_values(by='Endpoint_time_shift')
         ax.errorbar(df_afe['Endpoint_time_shift'], df_afe['mean'], yerr=df_afe['std'] , marker='o', markersize=3.5, capsize=2,linewidth=1 , elinewidth=0.6, color=color_list[afe] , label=f'AFE {afe:.0f}')
     ax.legend(fontsize=7)
     ax.tick_params(axis='x', rotation=45, which='both', labelsize=5)
