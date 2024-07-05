@@ -28,7 +28,7 @@ It produces three output files:
 
 
 ## Vbd_quality.py
-It allows check automatically if the Vbd results of a given run should be good or not by comparing them with previous runs.
+It allows you to check automatically if the Vbd results of a given run should be good or not by comparing them with previous runs.
 
 It requires the following input parameters:
 * `run` : run to analyze (by default, the last run)
@@ -197,3 +197,34 @@ It produces a json file, containing all info about the operation voltage in term
                    "run": "Jun-18-2024-run00"}
                   }
 ```
+
+
+## IV_analysis.py
+
+It computes the Breakdown voltage of each channels, starting from IV root files, and the operating voltage. NOTE: it's better to use Vbd_determination.py + Vop_determination.py (last algorithm versions), 
+
+It requires the following input parameters:
+* `input_dir` : path of the directory related to the run studied (typically */eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/ivcurves/{run}*)
+* `output_dir` : path of the directory where to save data (by default *PDS/data/iv_analysis*)
+* `endpoint` : the endpoint number to analyze (*104, 105, 107, 109, 111, 112, 113*) or *ALL* by default 
+* `trimfit` : fit function to use for Trim IV curve (*poly* by default, or *pulse*)
+* `map_path` : path of the map to use as reference (by default *PDS/maps/original_channel_map.json*)
+* `fbk-ov` : overvoltage for FBK SiPM (by default *4.5 V*)
+* `hpk-ov` : overvoltage for HPK SiPM (by default *3.0 V*)
+* `json-name` : name for the json outputfile with info about operation voltage (*dic* by default)
+
+Run example: 
+```bash 
+python Vbd_determination.py --input_dir /eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/ivcurves/May-17-2024_run00 --output_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --endpoint ALL --trimfit poly  --map_path afs/cern.ch/user/a/anbalbon/IV_curve/PDS/maps/original_channel_map.json --fbk-ov 4.5 --hpk-ov 3 --json-name dic
+```
+It returns the same output file of `Vbd_determination.py` + `Vop_determination.py`:
+* `{ip_address}_output.txt` for each endpoint, containg all info about the Bias and Trim IV curve and fit results. NaN values means missing channel or error in the fitting (see comments). For more datails about the structure see `Vbd_determination.py`.
+* `{ip_address}_plots.pdf` for each endpoint, containing IV curve plots (both for bias and trim) of each channel
+* `{ip_address}_Bias_IVplots_AFE.pdf` for each endpoint, containing a plot of Bias IV curve for each AFE
+* `dic.json` for each endpoint, containg the Voperation info of each channels in terms of Bias DAC counts (for each AFE) and Trim DAC counts (for each channels). None value for bias or trim means that there is a missing channel (disconnected or dead) or there is a fit error. For more datails about the structure see `Vop_determination.py`.
+
+
+# IV_run_ALL.py
+
+It runs IV_analysis.py on all runs, in */eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/ivcurves*.
+Attention: it is not update!
