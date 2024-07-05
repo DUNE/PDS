@@ -3,9 +3,6 @@ IV analysis
 
 '''
 
-
-# sistema fit polinomial!!
-
 import click, json
 import numpy as np
 from os import chdir, listdir, path, makedirs, getcwd

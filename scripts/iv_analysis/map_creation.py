@@ -22,16 +22,17 @@ from os import chdir, listdir, path, makedirs, getcwd
               default= getcwd() + '/../../data/iv_analysis/',
               help="Path of the directory where to save the new compelte map (default: 'PDS/data/iv_analysis')")
 @click.option("--output-json-name", 
-              default='complete_dic' , 
-              help="Name for the json file with complete information (default: 'dic')")
+              default=None , 
+              help="Name for the json file with complete information (default: 'complete_dic_FBK(x,xV)_HPK(y,yV)')")
 
 def main(run, input_dir, input_json_name, output_dir, output_json_name):
     map_complete = {'10.73.137.104':{},'10.73.137.105':{},'10.73.137.107':{},'10.73.137.109':{},'10.73.137.111':{},'10.73.137.112':{},'10.73.137.113':{}}
     chdir(input_dir+'/'+run)
     for folder in listdir():
-        if (folder.startswith(run.split('-run')[0])) and (any(folder.endswith(ip) for ip in list(map_complete.keys()))):
+        if any(folder.endswith(ip) for ip in list(map_complete.keys())):
             ip = folder.split('ip')[-1]
             id = int(folder.split('.')[-1][-2:])
+            apa = int(folder.split('apa')[-1][0])
 
             chdir(input_dir+'/'+run+'/'+folder)
             dic_file_endpoint = [item for item in listdir() if item.endswith(input_json_name + '.json')][0]
@@ -62,6 +63,7 @@ def main(run, input_dir, input_json_name, output_dir, output_json_name):
             trim_list = [0 if x is None else x for x in trim_list]
             
             map_complete[ip]['id'] = id
+            map_complete[ip]['apa'] = apa
             map_complete[ip]['ch']= ch_list
             map_complete[ip]['bias'] = bias_list
             map_complete[ip]['trim'] = trim_list
@@ -75,6 +77,9 @@ def main(run, input_dir, input_json_name, output_dir, output_json_name):
 
     chdir(f'{output_dir}/{run}')
     print()
+
+    if output_json_name is None:
+        output_json_name = f'complete_dic_FBK('+(str(map_endpoint['fbk_ov'])).replace('.', ',') + 'V)_HPK(' +(str(map_endpoint['hpk_ov'])).replace('.', ',') +'V)' 
     
     with open(f'{run}_{output_json_name}.json', "w") as fp:
         json.dump(map_complete, fp)

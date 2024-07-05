@@ -1,10 +1,9 @@
 '''
-IV analysis
+IV analysis: Vbd determination + Vop determination 
 
 '''
 
 
-# sistema fit polinomial!!
 
 import click, json
 import numpy as np
@@ -44,7 +43,7 @@ from IV_analysis_utils import *
               default=4.5, 
               help='Overvoltage for fbk')
 @click.option("--hpk-ov", 
-              default=3 , 
+              default=3.0, 
               help='Overvoltage for hpk')
 @click.option("--json-name", 
               default='dic' , 

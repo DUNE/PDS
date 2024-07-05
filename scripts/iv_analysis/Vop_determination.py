@@ -1,6 +1,6 @@
 '''
 Determination of the operation voltage
-- Input: output.txt of Vbd_determination.py
+- Input: output.txt of Vbd_determination.py or Vbd_best.py
 - Output: one json for endpoint 
 
 '''
@@ -27,9 +27,10 @@ def is_date_valid(file_name):
 
 
 def check_header(file):
-    header_output_file = 'IP\tFile_name\tAPA\tAFE\tConfig_CH\tDAQ_CH\tSIPM_type\tRun\tEndpoint_timestamp\tStart_time\tEnd_time\tBias_data_quality\tBias_min_I\tBias_max_I\tVbd_bias(DAC)\tVbd_bias(V)\tVbd_bias_error(V)\tBias_conversion_slope\tBias_conversion_intercept\tTrim_data_quality\tTrim_min_I\tTrim_max_I\tFit_status\tPoly_Vbd_trim(DAC)\tPoly_Vbd_trim_error(DAC)\tPulse_Vbd_trim(DAC)\tPulse_Vbd_trim_error(DAC)\tVbd(V)\tVbd_error(V)\n'
+    header_output_file_1 = 'IP\tFile_name\tAPA\tAFE\tConfig_CH\tDAQ_CH\tSIPM_type\tRun\tEndpoint_timestamp\tStart_time\tEnd_time\tBias_data_quality\tBias_min_I\tBias_max_I\tVbd_bias(DAC)\tVbd_bias(V)\tVbd_bias_error(V)\tBias_conversion_slope\tBias_conversion_intercept\tTrim_data_quality\tTrim_min_I\tTrim_max_I\tFit_status\tPoly_Vbd_trim(DAC)\tPoly_Vbd_trim_error(DAC)\tPulse_Vbd_trim(DAC)\tPulse_Vbd_trim_error(DAC)\tVbd(V)\tVbd_error(V)\n'
+    header_output_file_1 = 'IP\tAPA\tAFE\tConfig_CH\tDAQ_CH\tSIPM_type\tRuns\tBias_conversion_slope\tBias_conversion_intercept\tVbd(V)\tVbd_error(V)\n'
     with open(file, 'r') as ifile:
-        if  ifile.readline() == header_output_file:
+        if  (ifile.readline() == header_output_file_1) or (ifile.readline() == header_output_file_2):
             return True
         else:
             return False
@@ -43,7 +44,7 @@ def check_header(file):
               help="Folder with the run you are interested in (default = '/data/iv_analysis/Jun-18-2024-run00' ") 
 @click.option("--input_filename", 
               default= 'output.txt',
-              help="Name of the file you want to read, containing Vbd info (default = 'XX.XX.XXX.XXX_output.txt' ") 
+              help="Name of the file you want to read, containing Vbd info (default = 'output.txt' ") 
 @click.option("--output_dir", 
               default= None,
               help="Folder where results are saved (default: equal to input_dir)")
@@ -51,10 +52,6 @@ def check_header(file):
               default='ALL',
               type=click.Choice(['104', '105', '107', '109', '111', '112', '113', 'ALL'], case_sensitive=False),
               help="Endpoint to analyze (options: 104, 105, 107, 109, 111, 112, 113, 'ALL', default: 'ALL')")
-@click.option("--trimfit", 
-              default='poly', 
-              type=click.Choice(['poly', 'pulse', 'both'], case_sensitive=False),
-              help="Fit type (options: 'poly', 'pulse', or 'both', default: 'poly')")
 @click.option("--fbk-ov", 
               default=4.5, 
               help='Overvoltage for fbk (default: 4.5 V)')
@@ -66,7 +63,7 @@ def check_header(file):
               help="Name for the json file with operation voltage (default: 'dic_FBKxx_HPKyy')")
 
 
-def main(input_dir, input_filename, output_dir, endpoint, trimfit, fbk_ov, hpk_ov, json_name):
+def main(input_dir, input_filename, output_dir, endpoint, fbk_ov, hpk_ov, json_name):
     if output_dir is None:
         output_dir = input_dir
     if json_name is None:
@@ -81,7 +78,7 @@ def main(input_dir, input_filename, output_dir, endpoint, trimfit, fbk_ov, hpk_o
         ip = d.split('ip')[-1]
         apa = d.split('apa')[1][0]
         run = input_dir.split('/')[-1]
-        print(ip)
+        print(f'\n\n-------------------------- \n\n --- {ip} --- \n')
         chdir(f'{input_dir}/{str(d)}')
         txt_files = [stringa for stringa in listdir() if stringa.endswith(input_filename)] 
         if len(txt_files) == 1:
@@ -97,7 +94,7 @@ def main(input_dir, input_filename, output_dir, endpoint, trimfit, fbk_ov, hpk_o
                 HPK_Vop_trim_dac = []
 
                 for AFE in range(5):
-                    print(f'\n\n------------- \nAFE: {AFE:.0f}\n')
+                    print(f'\n-- AFE: {AFE:.0f} --\n')
                     df_afe = df[df['AFE'] == AFE]
                     Vop_trim_dac_list= []
                     
@@ -171,7 +168,7 @@ def main(input_dir, input_filename, output_dir, endpoint, trimfit, fbk_ov, hpk_o
                 output_json['hpk_op_bias'] = [int(x) if not np.isnan(x) else None for x in HPK_Vop_bias_dac]
                 output_json['hpk_op_trim'] = [int(x) if not np.isnan(x) else None for x in HPK_Vop_trim_dac]
                 
-                #output_json['timestamp'] = timestamp_stringa
+
                 
 
                 with open(f'{ip}_{json_name}.json', "w") as fp:
