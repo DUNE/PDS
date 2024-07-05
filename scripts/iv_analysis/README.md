@@ -1,6 +1,32 @@
 # IV CURVE ANALYSIS 
+---
+### What to do after acquiring IV curve
+1. Compute the Breakdown voltage by using `Vbd_determination.py` 
+2. Check if the acquired data (run) is good or not 
+    * Check manually all plots created and write [here](https://docs.google.com/spreadsheets/d/1mbGphkpz9gtm8gb8Aemhs1N0M7QyICqJmlw3_XZAFR0/edit?usp=share_link) any anomalies
+    * Use `Vbd_quality.py` to automatically check the behavior of this run with respect to previous runs
+    * Use `Vbd_plot_single_run.py` to check the overall behaviour of all channels
+    * Use `Vbd_plot_all_run.py` to check the behaviour in time of the breakdown voltage
+3. Write [here](https://docs.google.com/spreadsheets/d/1mbGphkpz9gtm8gb8Aemhs1N0M7QyICqJmlw3_XZAFR0/edit?usp=share_link) if overall the run is good or not!
+  
+  
+### If you want to change operation bias 
+You have two possibilities:
+* Use Vbd data of a given good run
+* Use Vbd mean value obtained by comparing all good runs you have, by using `Vbd_best.py`
 
-## Vbd_determination.py
+
+After making a decision:
+1. Compute the operation voltage in terms of Bias and Trim DAC counts by using `Vop_determination.py` (a map for each endpoint)
+2. Create the json map to use for DAPHNE configuration, by using `map_creation.py`
+
+---
+___
+
+## Python scripts
+Description of all programs in the respository.
+
+### Vbd_determination.py
 It computes the Breakdown voltage of each channels, starting from IV root files.
 
 It requires the following input parameters:
@@ -25,9 +51,9 @@ It produces three output files:
 * `{ip_address}_plots.pdf` for each endpoint, containing IV curve plots (both for bias and trim) of each channel
 * `{ip_address}_Bias_IVplots_AFE.pdf` for each endpoint, containing a plot of Bias IV curve for each AFE 
 
+---
 
-
-## Vbd_quality.py
+### Vbd_quality.py
 It allows you to check automatically if the Vbd results of a given run should be good or not by comparing them with previous runs.
 
 It requires the following input parameters:
@@ -40,15 +66,16 @@ It requires the following input parameters:
 
 Run example: 
 ```bash 
-python Vbd_quality.py --run Jul-02-2024-run00 --good_runs ['May-09-2024-run00','May-17-2024_run00','May-28-2024_run00','Jun-18-2024-run00'] --input_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis  --output_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --threshold 0.250
+python Vbd_quality.py --run Jul-02-2024-run00 --good_runs "['May-09-2024-run00','May-17-2024_run00','May-28-2024_run00','Jun-18-2024-run00']" --input_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis  --output_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --threshold 0.250
 ```
 
 It produces two output files:
 * `Vbd_comparison.txt`, containing information about the analysis done for each channels, focusing on NAN value and discrepancy from the mean Vbd value (--> to be done!!!)
 * `diff_histogram.pdf`, an histogram of the difference between the current Vbd value and the mean value obtained from previous runs
 
+---
 
-## Vbd_plot_single_run.py
+### Vbd_plot_single_run.py
 It produces plots for monitoring the Vbd results of a given run.
 
 It requires the following input parameters:
@@ -66,7 +93,9 @@ It produces two output files:
 * `VB_HIST_X_RUN.pdf`, an histogram with all endpoints (FBK separated from HPK channels)
 * `CH_VBD_X_RUN.pdf`, a plot where on the y axis there is the Vbd of each channel and on the x axis the name of the corresponding daq channel (all channels in the same plot)
 
-## Vbd_plot_all_run.py
+---
+
+### Vbd_plot_all_run.py
 It produces plots for monitoring the breakdown voltage in time.
 
 It requires the following input parameters:
@@ -84,9 +113,34 @@ It produces two output files:
 * `CH_VBD_plot.pdf`, a plot for each AFE (of each endpoint) with the channel Vbd as a function of time
 * `AFE_VBD_VS_RUN.pdf`, a plot for each endpoint with mean AFE Vbd as a function of time
 
+---
 
-## Vop_determination.py
-It computes the operation voltage of each channel, starting from the _output.txt file created by `Vbd_determination.py`.
+### Vbd_best.py
+It computes the best estimation for the Breakdown voltage of each channel, by using the mean value of good runs.
+
+It requires the following input parameters:
+* `good_runs` : list of good runs (by default *['May-09-2024-run00', 'May-17-2024_run00', 'May-28-2024_run00', 'Jun-18-2024-run00']*)
+* `input_dir` : path of the directory where all iv analysis results are saved (by default *PDS/data/iv_analysis*)
+* `input_filename` : name of the file you want to read, containing Vbd info (by default = *output.txt*)
+* `output_dir` : path of the directory where data are saved (by default equal to *input_dir*)
+* `output_dir_name` : name you want to give to the directory where data are saved  (**mandatory**)
+
+
+Run example: 
+```bash 
+python Vbd_best.py --good_runs "['May-09-2024-run00','May-17-2024_run00','May-28-2024_run00','Jun-18-2024-run00']" --input_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --input_filename output.txt --output_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --output_dir_name Mean_Vbd_data_1
+```
+
+It produces a `{ip_address}_output.txt` for each endpoint, which contains info about the mean value of Bias-Volt conversion parameters and of Vbd. A Nan value for Vbd now means that all the Vbd values associated with that channel are always Nan; if there is at least one no-Nan data then that is used. Here the structure of the txt file, where *Runs* is the list of runs used to evalute Vbd mean and Vbd_error(V) is the standard deviation of those values.
+
+| IP | APA | AFE | Config_CH | DAQ_CH | SIPM_type | Runs | Bias_conversion_slope | Bias_conversion_intercept | Vbd(V) | Vbd_error(V) |
+|----|-----|-----|-----------|--------|-----------|------|-----------------------|-----------------------------|--------|-------------|
+
+
+---
+
+### Vop_determination.py
+It computes the operation voltage of each channel, starting from the _output.txt file created by `Vbd_determination.py` or `Vbd_best.py`.
 
 It requires the following input parameters:
 * `input_dir` : path of the directory where the data you want to analyze are present (by default *PDS/data/iv_analysis/{run}*)
@@ -100,7 +154,7 @@ It requires the following input parameters:
 
 Run example: 
 ```bash 
-python Vop_determination.py --input_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis/Jun-18-2024-run00 --input_filename output.txt --output_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis/Jun-18-2024-run00s --endpoint ALL --fbk-ov 4.5 --hpk-ov 3 --json-name dic
+python Vop_determination.py --input_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis/Jun-18-2024-run00 --input_filename output.txt --output_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis/Jun-18-2024-run00s --endpoint ALL --fbk-ov 4.5 --hpk-ov 3 --json-name "dic_FBK(4,5)_HPK(3,0)"
 ```
 
 It produces a json file for each endpoint, containing the operation voltage in terms of Bias and Trim DAC counts. None value for bias or trim means that there is a missing channel (disconnected or dead) or there is a fit error. Here the structure, where `apa` is the number of the APA, `fbk` is the list of FBK channels used, `hpk` is the list of HPK channels used, `fbk_op_bias` is the list of Bias DAC counts (one for each FBK AFE used), `fbk_op_trim` is the list of Trim DAC counts (one for each FBK channel used), `hpk_op_bias` is the list of Bias DAC counts (one for each HPK AFE used), `hpk_op_trim` is the list of Trim DAC counts (one for each HPK channel used), `timestamp` refers to the time of IV acquisition,  `run` refers to the name of the IV run, `ip` is the ip number of the endpoint, `fbk_ov` is the overvoltage (in Volts) applied to FBK SiPMs and `hpk_ov` is the overvoltage (in Volts) applied to HPK SiPMs.
@@ -120,7 +174,9 @@ It produces a json file for each endpoint, containing the operation voltage in t
 "hpk_ov": 0.5}
 ```
 
-## map_creation.py
+---
+
+### map_creation.py
 It creates the complete map with operation voltage of each channels in terms of Bias and Trim DAC counts that must be used in the DAPHNE configuration. 
 
 It requires the following input parameters:
@@ -198,8 +254,9 @@ It produces a json file, containing all info about the operation voltage in term
                   }
 ```
 
+---
 
-## IV_analysis.py
+### IV_analysis.py
 
 It computes the Breakdown voltage of each channels, starting from IV root files, and the operating voltage. NOTE: it's better to use Vbd_determination.py + Vop_determination.py (last algorithm versions), 
 
@@ -223,8 +280,9 @@ It returns the same output file of `Vbd_determination.py` + `Vop_determination.p
 * `{ip_address}_Bias_IVplots_AFE.pdf` for each endpoint, containing a plot of Bias IV curve for each AFE
 * `dic.json` for each endpoint, containg the Voperation info of each channels in terms of Bias DAC counts (for each AFE) and Trim DAC counts (for each channels). None value for bias or trim means that there is a missing channel (disconnected or dead) or there is a fit error. For more datails about the structure see `Vop_determination.py`.
 
+---
 
-# IV_run_ALL.py
+### IV_run_ALL.py
 
 It runs IV_analysis.py on all runs, in */eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/ivcurves*.
 Attention: it is not update!
