@@ -1,7 +1,7 @@
 '''
 Determination of the operation voltage
 - Input: output.txt of Vbd_determination.py or Vbd_best.py
-- Output: one json for endpoint 
+- Output: one json for endpoint + complete map
 
 '''
 
@@ -30,10 +30,8 @@ def check_header(file):
     with open(file, 'r') as ifile:
         first_line = ifile.readline()
         if  (first_line == header_output_file_1) or (first_line == header_output_file_2):
-            print('SI')
             return True
         else:
-            print('NO')
             return False
 
 
@@ -41,18 +39,17 @@ def check_header(file):
 
 @click.command()
 @click.option("--input_dir", 
-              default= getcwd() + '/../../data/iv_analysis/Jun-18-2024-run00',
-              help="Folder with the run you are interested in (default = '/data/iv_analysis/Jun-18-2024-run00' ") 
+              default= getcwd() + '/../../data/iv_analysis',
+              help="Folder where all iv results are (default = 'PDS/data/iv_analysis' ")
+@click.option("--run", 
+              default= 'Jun-18-2024-run00',
+              help="Run to analyze (default = 'Jun-18-2024-run00' ") 
 @click.option("--input_filename", 
               default= 'output.txt',
               help="Name of the file you want to read, containing Vbd info (default = 'output.txt' ") 
 @click.option("--output_dir", 
               default= None,
-              help="Folder where results are saved (default: equal to input_dir)")
-@click.option("--endpoint", 
-              default='ALL',
-              type=click.Choice(['104', '105', '107', '109', '111', '112', '113', 'ALL'], case_sensitive=False),
-              help="Endpoint to analyze (options: 104, 105, 107, 109, 111, 112, 113, 'ALL', default: 'ALL')")
+              help="Folder where results are saved (default: equal to the run input_dir)")
 @click.option("--fbk-ov", 
               default=4.5, 
               help='Overvoltage for fbk (default: 4.5 V)')
@@ -64,23 +61,22 @@ def check_header(file):
               help="Name for the json file with operation voltage (default: 'dic_FBKxx_HPKyy')")
 
 
-def main(input_dir, input_filename, output_dir, endpoint, fbk_ov, hpk_ov, json_name):
+def main(input_dir, run, input_filename, output_dir, fbk_ov, hpk_ov, json_name):
+    map_complete = {'10.73.137.104':{},'10.73.137.105':{},'10.73.137.107':{},'10.73.137.109':{},'10.73.137.111':{},'10.73.137.112':{},'10.73.137.113':{}}
+    endpoint_list = ['104','105','107','109','111','112','113']
+    
     if output_dir is None:
-        output_dir = input_dir
+        output_dir = input_dir + '/' + run
     if json_name is None:
         json_name = f'dic_FBK('+(str(fbk_ov)).replace('.', ',') + 'V)_HPK(' +(str(hpk_ov)).replace('.', ',') +'V)' 
-    if endpoint == 'ALL' :
-        endpoint_list = ['104','105','107','109','111','112','113']
-    else:
-        endpoint_list = [endpoint]
 
-    directories = [d for d in listdir(input_dir) if (path.isdir(path.join(input_dir, d))) and ('ip10.73.137.' in d) and (d[-3:] in endpoint_list)]
+    directories = [d for d in listdir(f'{input_dir}/{run}') if (f'{input_dir}/{run}/{d}') and ('ip10.73.137.' in d)]
     for d in directories:
         ip = d.split('ip')[-1]
+        id = int(ip[-1][-2:])
         apa = d.split('apa')[1][0]
-        run = input_dir.split('/')[-1]
         print(f'\n\n-------------------------- \n\n --- {ip} --- \n')
-        chdir(f'{input_dir}/{str(d)}')
+        chdir(f'{input_dir}/{run}/{d}')
         txt_files = [stringa for stringa in listdir() if stringa.endswith(input_filename)] 
         if len(txt_files) == 1:
             txt_file = txt_files[0]
@@ -152,7 +148,7 @@ def main(input_dir, input_filename, output_dir, endpoint, fbk_ov, hpk_ov, json_n
                         HPK_Vop_bias_dac += [Vop_bias_dac] 
                         HPK_Vop_trim_dac += Vop_trim_dac_list
                             
-                # JSON FILE
+                # SINGLE ENDPOINT JSON FILE
                 output_json = {} 
                 
                 output_json['ip'] = ip
@@ -169,13 +165,60 @@ def main(input_dir, input_filename, output_dir, endpoint, fbk_ov, hpk_ov, json_n
                 output_json['hpk_op_bias'] = [int(x) if not np.isnan(x) else None for x in HPK_Vop_bias_dac]
                 output_json['hpk_op_trim'] = [int(x) if not np.isnan(x) else None for x in HPK_Vop_trim_dac]
                 
-
                 
-
                 with open(f'{ip}_{json_name}.json', "w") as fp:
                     json.dump(output_json, fp) # Vbd=None means some error!!
 
+                
 
+                ch_list = FBK_CH + HPK_CH
+                if ch_list != sorted(ch_list):
+                    print('\nEndpoint ' + ip + '--> Attention: channel ordering!')
+        
+                bias_list = FBK_Vop_bias_dac + HPK_Vop_bias_dac
+                while len(bias_list) < 5:
+                    bias_list.append(0)
+                
+                trim_list = [0] * 40
+            
+                trim_data = FBK_Vop_trim_dac + HPK_Vop_trim_dac
+        
+                for i in range(len(ch_list)):
+                    trim_list[ch_list[i]] = trim_data[i]
+        
+                index_none = [index for index, value in enumerate(trim_list) if np.isnan(value)]
+                if len(index_none) > 0: 
+                    print('\nEndpoint ' + ip + ' --> Attention: Config channels ' + ' '.join(map(str, index_none)) + ' have Vop_trim_value = NaN --> it was set to zero!')
+                else:
+                    print('\nEndpoint ' + ip + ' is okay!')
+            
+                trim_list = [0 if np.isnan(x) else x for x in trim_list]
+            
+                map_complete[ip]['id'] = id
+                map_complete[ip]['apa'] = apa
+                map_complete[ip]['ch']= ch_list
+                map_complete[ip]['bias'] = bias_list
+                map_complete[ip]['trim'] = trim_list
+                map_complete[ip]['ov'] = {'fbk': fbk_ov, 'hpk': hpk_ov }
+                map_complete[ip]['run'] = run
+
+
+    print('\n\n')
+    print(map_complete)
+
+    chdir(f'{output_dir}')
+    print()
+
+
+    with open(f'{run}_{json_name}.json', "w") as fp:
+        json.dump(map_complete, fp)
+
+    for key, inner_dict in map_complete.items():
+        if len(inner_dict) == 0:
+            print(f'\nData about endpoint {key} not present! --> Incomplete json map!!\n')
+
+    
+    print('\n\nDONE\n\n')
 ######################################################################################
 
 if __name__ == "__main__":
