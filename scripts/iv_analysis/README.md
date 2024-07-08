@@ -12,13 +12,11 @@
   
 ### If you want to change operation bias 
 You have two possibilities:
-* Use Vbd data of a given good run
+* Use Vbd data from a given good run
 * Use Vbd mean value obtained by comparing all good runs you have, by using `Vbd_best.py`
 
 
-After making a decision:
-1. Compute the operation voltage in terms of Bias and Trim DAC counts by using `Vop_determination.py` (a map for each endpoint)
-2. Create the json map to use for DAPHNE configuration, by using `map_creation.py`
+After making a decision, run `Vop_map.py` in order to create the json maps (or `Vop_determination.py` + `map_creation.py`).
 
 ---
 ___
@@ -119,7 +117,7 @@ It produces two output files:
 It computes the best estimation for the Breakdown voltage of each channel, by using the mean value of good runs.
 
 It requires the following input parameters:
-* `good_runs` : list of good runs (by default *['May-09-2024-run00', 'May-17-2024_run00', 'May-28-2024_run00', 'Jun-18-2024-run00']*)
+* `good_runs` : list of good runs (by default *['Apr-22-2024-run01','Apr-23-2024-run00','Apr-27-2024-run00','May-02-2024-run00','May-09-2024-run00', 'May-17-2024_run00', 'May-28-2024_run00', 'Jun-18-2024-run00']*)
 * `input_dir` : path of the directory where all iv analysis results are saved (by default *PDS/data/iv_analysis*)
 * `input_filename` : name of the file you want to read, containing Vbd info (by default = *output.txt*)
 * `output_dir` : path of the directory where data are saved (by default equal to *input_dir*)
@@ -128,7 +126,7 @@ It requires the following input parameters:
 
 Run example: 
 ```bash 
-python Vbd_best.py --good_runs "['May-09-2024-run00','May-17-2024_run00','May-28-2024_run00','Jun-18-2024-run00']" --input_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --input_filename output.txt --output_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --output_dir_name Mean_Vbd_data_1
+python Vbd_best.py --good_runs "['Apr-22-2024-run01','Apr-23-2024-run00','Apr-27-2024-run00','May-02-2024-run00','May-09-2024-run00','May-17-2024_run00','May-28-2024_run00','Jun-18-2024-run00']" --input_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --input_filename output.txt --output_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --output_dir_name Mean_Vbd_data_1
 ```
 
 It produces a `{ip_address}_output.txt` for each endpoint, which contains info about the mean value of Bias-Volt conversion parameters and of Vbd. A Nan value for Vbd now means that all the Vbd values associated with that channel are always Nan; if there is at least one no-Nan data then that is used. Here the structure of the txt file, where *Runs* is the list of runs used to evalute Vbd mean and Vbd_error(V) is the standard deviation of those values.
@@ -253,6 +251,30 @@ It produces a json file, containing all info about the operation voltage in term
                    "run": "Jun-18-2024-run00"}
                   }
 ```
+
+---
+
+### Vov_map.py
+It computes the Operation voltage of each channel, ofr a given overvoltage, and create a map for each endpoint and the complete map with in terms of Bias and Trim DAC counts that must be used in the DAPHNE configuration. 
+
+It requires the following input parameters:
+* `run` : run to analyze (for example *Jun-18-2024-run00*)
+* `input_dir` : path of the directory where all iv analysis results are saved (by default *PDS/data/iv_analysis*)
+* `input_filename` : name of the file you want to read containing Vbd info(produced by *Vbd_determination.py* or *IV_analysis.py*, by default: *output*)
+* `output_dir` : path of the directory where to save data (by default *PDS/data/iv_analysis*)
+* `fbk-ov` : overvoltage for FBK SiPM (by default *4.5 V*)
+* `hpk-ov` : overvoltage for HPK SiPM (by default *3.0 V*)
+* `json-name` : name for the output json files with  information about Vop (by default, *dic_FBK(fbk-ov)_HPK(hpk-ov)*)
+
+
+
+Run example: 
+```bash 
+python map_creation.py --run Jun-18-2024-run00 --input_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --input-filename output --output_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --fbk-ov 3 --hpk-ov 2 --json-name dic
+```
+
+It produces json files, containing all info about the operation voltage in terms of Bias and Trim DAC counts. Zero value for bias or trim means that we have no info about the corresponding channel (maybe we aren't using that channel, or the channel is dead/disconnected or there was a fit error). It creates one json file for endpoint (as `Vop_determination.py`) and a complete map (as `map_creation.py`).
+
 
 ---
 
