@@ -57,7 +57,7 @@ def daq_channel_conversion(ch_config):
 
 @click.command()
 @click.option("--good_runs", 
-              default= ['May-09-2024-run00','May-17-2024_run00','May-28-2024_run00','Jun-18-2024-run00'], # 17May E112C12D14 missing , 18Jun all CH
+              default= ['Apr-22-2024-run01','Apr-23-2024-run00','Apr-27-2024-run00','May-02-2024-run00','May-09-2024-run00','May-17-2024_run00','May-28-2024_run00','Jun-18-2024-run00'], # only 18Jun has all CH
               help="Good runs, used to make the comparison")
 @click.option("--input_dir", 
               default= getcwd() + '/../../data/iv_analysis',

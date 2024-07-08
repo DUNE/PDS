@@ -28,11 +28,14 @@ def is_date_valid(file_name):
 
 def check_header(file):
     header_output_file_1 = 'IP\tFile_name\tAPA\tAFE\tConfig_CH\tDAQ_CH\tSIPM_type\tRun\tEndpoint_timestamp\tStart_time\tEnd_time\tBias_data_quality\tBias_min_I\tBias_max_I\tVbd_bias(DAC)\tVbd_bias(V)\tVbd_bias_error(V)\tBias_conversion_slope\tBias_conversion_intercept\tTrim_data_quality\tTrim_min_I\tTrim_max_I\tFit_status\tPoly_Vbd_trim(DAC)\tPoly_Vbd_trim_error(DAC)\tPulse_Vbd_trim(DAC)\tPulse_Vbd_trim_error(DAC)\tVbd(V)\tVbd_error(V)\n'
-    header_output_file_1 = 'IP\tAPA\tAFE\tConfig_CH\tDAQ_CH\tSIPM_type\tRuns\tBias_conversion_slope\tBias_conversion_intercept\tVbd(V)\tVbd_error(V)\n'
+    header_output_file_2 = 'IP\tAPA\tAFE\tConfig_CH\tDAQ_CH\tSIPM_type\tRuns\tBias_conversion_slope\tBias_conversion_intercept\tVbd(V)\tVbd_error(V)\n'
     with open(file, 'r') as ifile:
-        if  (ifile.readline() == header_output_file_1) or (ifile.readline() == header_output_file_2):
+        first_line = ifile.readline()
+        if  (first_line == header_output_file_1) or (first_line == header_output_file_2):
+            print('SI')
             return True
         else:
+            print('NO')
             return False
 
 
@@ -64,6 +67,8 @@ def check_header(file):
 
 
 def main(input_dir, input_filename, output_dir, endpoint, fbk_ov, hpk_ov, json_name):
+    print(fbk_ov)
+    print(fbk_ov-fbk_ov)
     if output_dir is None:
         output_dir = input_dir
     if json_name is None:
