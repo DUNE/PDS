@@ -57,7 +57,7 @@ def daq_channel_conversion(ch_config):
 
 @click.command()
 @click.option("--good_runs", 
-              default= ['Apr-22-2024-run01','Apr-23-2024-run00','Apr-27-2024-run00','May-02-2024-run00','May-09-2024-run00','May-17-2024_run00','May-28-2024_run00','Jun-18-2024-run00'], # only 18Jun has all CH
+              default= ['Apr-22-2024-run01','Apr-23-2024-run00','Apr-27-2024-run00','May-02-2024-run00','May-09-2024-run00','May-17-2024-run00','May-28-2024-run00','Jun-18-2024-run00'], # only 18Jun has all CH
               help="Good runs, used to make the comparison")
 @click.option("--input_dir", 
               default= getcwd() + '/../../data/iv_analysis',
@@ -99,7 +99,7 @@ def main(good_runs, input_dir, input_filename, output_path, output_dir_name):
             makedirs(dir_ip)
 
         text_file = open(f'{dir_ip}/{ip}_output.txt', 'w') # Fit info
-        text_file.write(f'IP\tAPA\tAFE\tConfig_CH\tDAQ_CH\tSIPM_type\tRuns\tBias_conversion_slope\tBias_conversion_intercept\tVbd(V)\tVbd_error(V)\n')
+        text_file.write(f'IP\tAPA\tAFE\tConfig_CH\tDAQ_CH\tSIPM_type\tRun\tBias_conversion_slope\tBias_conversion_intercept\tVbd(V)\tVbd_error(V)\n')
         
         for ch in df_ip['Config_CH'].unique().tolist():
             df_ch = df_ip[df_ip['Config_CH'] == ch]

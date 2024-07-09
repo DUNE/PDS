@@ -177,10 +177,24 @@ def main(input_dir, output_dir, endpoint, trimfit, map_path):
                                     while (np.isnan(Polynomial[0]) and (sgf_poly[0]<40)):
                                         sgf_poly[0] += 2 
                                         Polynomial = IV_Polynomial(der_trim, der_c, sgf_poly)
-                                    
-                                    
-                                    
 
+                                    # Exception for endpoint 107 afe 0 (noisy)
+                                    if (endpoint == '107') and (afe == 0) : 
+                                        sgf_IV_window = 30
+                                        c_filtered = [savgol_filter(trim_c, sgf_IV_window, sgf_IV_degree), sgf_IV_window, sgf_IV_degree]
+                                        der_c =  derivative_cactus(trim_dac, c_filtered[0])
+                                        sgf_poly[0] = 10
+                                        Polynomial = IV_Polynomial(der_trim, der_c, sgf_poly)
+
+                                    # Exception for endpoint 109 afe 1 (noisy)
+                                    if (endpoint == '109') and (afe == 1) : 
+                                        sgf_IV_window = 25
+                                        c_filtered = [savgol_filter(trim_c, sgf_IV_window, sgf_IV_degree), sgf_IV_window, sgf_IV_degree]
+                                        der_c =  derivative_cactus(trim_dac, c_filtered[0])
+                                        sgf_poly[0] = 20
+                                        print('rumoreee')
+                                        Polynomial = IV_Polynomial(der_trim, der_c, sgf_poly) 
+                                    
                                     PulseShape = [np.nan,np.nan, [0,0],[0,0],[0,0]]
                             
                                 if (trimfit == 'pulse') or (trimfit == 'both') :
