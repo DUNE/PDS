@@ -49,22 +49,26 @@ def main(plot_type, input_dir, output_dir, run):
     if (plot_type.upper() == 'CH_VBD_X_RUN') or (plot_type.upper() == 'ALL'):
         print('Plot of Vbd as a function of channel number, for a given run')
         DATA_df = DATA_df.dropna(subset=['Vbd(V)'])
-        pdf_CH_VBD_all = PdfPages(f'{output_dir}/CH_VBD_vs_RUN_all.pdf')
+        if run == 'ALL':
+            pdf_CH_VBD_all = PdfPages(f'{output_dir}/CH_VBD_plot_all.pdf')
         if run == 'ALL':
             run_list = DATA_df['Run'].unique()
         else:
             run_list = [run]
         for run_data in run_list:
+            run_check = ''
             df_run = DATA_df.loc[DATA_df['Run'] == run_data]
-            if path.exists(f'{output_dir}/{run_data}'):
-                pdf_CH_VBD_single = PdfPages(f'{output_dir}/{run_data}/CH_VBD_plot.pdf')
+            if len(df_run) == 0:
+                df_run = DATA_df[~DATA_df['Run'].isin([item for item in run_list if item != run_data])]
+            if path.exists(f"{output_dir}/{df_run['RunFolder'].iloc[0]}"):
+                pdf_CH_VBD_single = PdfPages(f"{output_dir}/{df_run['RunFolder'].iloc[0]}/CH_VBD_plot.pdf")
             else:
-                pdf_CH_VBD_single = PdfPages(f'{output_dir}/{run_data}_CH_VBD_plot.pdf')
+                pdf_CH_VBD_single = PdfPages(f"{output_dir}/{df_run['RunFolder'].iloc[0]}_CH_VBD_plot.pdf")
 
             df_run_completed = full_map_dataframe(df_run, run_data)    
 
             fig, ax = plt.subplots(1, figsize=(16, 7))
-            fig.suptitle(f'Channel Vbd \n RUN: {run_data}')
+            fig.suptitle(f"Channel Vbd \n RUN: {df_run['RunFolder'].iloc[0]}")
             i=0
             for ip in df_run_completed['IP'].unique():
                 df_ip = df_run_completed.loc[df_run_completed['IP'] == ip]
@@ -77,16 +81,18 @@ def main(plot_type, input_dir, output_dir, run):
             plt.legend()
             plt.tight_layout()
             pdf_CH_VBD_single.savefig(fig)
-            pdf_CH_VBD_all.savefig(fig)
+            if run == 'ALL':
+                pdf_CH_VBD_all.savefig(fig)
             plt.close(fig)
             
             pdf_CH_VBD_single.close()
-        pdf_CH_VBD_all.close()
+        if run == 'ALL':
+            pdf_CH_VBD_all.close()
     
     
 
     if (plot_type.upper() == 'VB_HIST_X_RUN') or (plot_type.upper() == 'ALL'):
-        print('Histogram of Vbd grouped by endpoint number')
+        print('Histogram of Vbd grouped by endpoint number, for a given run')
         DATA_df = DATA_df.dropna(subset=['Vbd(V)'])
         if run == 'ALL':
             run_list = DATA_df['Run'].unique()
@@ -94,13 +100,15 @@ def main(plot_type, input_dir, output_dir, run):
             run_list = [run]
         for run_data in run_list:
             df_run = DATA_df.loc[DATA_df['Run'] == run_data]
-            if path.exists(f'{output_dir}/{run_data}'):
-                pdf_VBD_hist = PdfPages(f'{output_dir}/{run_data}/VBD_histogram.pdf')
+            if len(df_run) == 0:
+                df_run = DATA_df[~DATA_df['Run'].isin([item for item in run_list if item != run_data])]
+            if path.exists(f"{output_dir}/{df_run['RunFolder'].iloc[0]}"):
+                pdf_VBD_hist = PdfPages(f"{output_dir}/{df_run['RunFolder'].iloc[0]}/VBD_histogram.pdf")
             else:
-                pdf_VBD_hist = PdfPages(f'{output_dir}/{run_data}_VBD_histogram.pdf')
+                pdf_VBD_hist = PdfPages(f"{output_dir}/{df_run['RunFolder'].iloc[0]}_VBD_histogram.pdf")
 
             fig, axs = plt.subplots(1, 2, figsize=(10, 8))
-            fig.suptitle(f'Vbd histogram \n RUN:{run_data}')
+            fig.suptitle(f"Vbd histogram \n RUN:{df_run['RunFolder'].iloc[0]}")
             axs = np.ravel(axs)
             for i, sipm in enumerate(['HPK','FBK']):
                 df_run_sipm = df_run.loc[df_run['SIPM_type'] == sipm]

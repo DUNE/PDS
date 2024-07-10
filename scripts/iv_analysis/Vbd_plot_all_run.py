@@ -7,6 +7,7 @@ from os.path import isdir
 import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
+import ast
 from Vbd_plot_utils import *
 
 
@@ -56,17 +57,32 @@ def AFE_VBD_VS_RUN_plot(ax,df,sipm):
 @click.option("--output_dir", 
               default= getcwd() + '/../../data/iv_analysis',
               help="Path directory where save plots (default: 'PDS/data/iv_analysis')")
+@click.option("--run_exluded", 
+              default= None ,
+              help="Run to exlude from the analysis, by default we consider all data but for example you can remove ['Jun-07-2024-run00','Jul-02-2024-run00']")
 
 
-def main(plot_type, input_dir, output_dir):
 
+def main(plot_type, input_dir, output_dir,run_exluded):
+
+    if run_exluded is None:
+        run_exluded = []
+    else:
+        run_exluded = ast.literal_eval(run_exluded)
+    
     DATA_df = read_data(input_dir)  
+    DATA_df['Endpoint_time'] = pd.to_datetime(DATA_df['Endpoint_timestamp'], format='%b-%d-%Y_%H%M')
+    DATA_df = DATA_df[DATA_df['RunFolder'].apply(is_date_valid)]
+    DATA_df = DATA_df[~DATA_df['RunFolder'].isin(run_exluded)]
     print('\nALL DATA READ\n')  
 
     
     if (plot_type.upper() == 'CH_VBD_VS_RUN') or (plot_type.upper() == 'ALL'):
         print('Plot of Vbd as a function of run time, for each channel')
-        pdf_CH_VBD_VS_RUN = PdfPages(f'{output_dir}/CH_VBD_VS_RUN_plots.pdf') 
+        if len(run_exluded)==0:
+            pdf_CH_VBD_VS_RUN = PdfPages(f'{output_dir}/CH_VBD_VS_RUN_complete_plots.pdf') 
+        else:
+            pdf_CH_VBD_VS_RUN = PdfPages(f'{output_dir}/CH_VBD_VS_RUN_good_plots.pdf') 
         
         for ip in ['10.73.137.104', '10.73.137.105', '10.73.137.107', '10.73.137.109', '10.73.137.111', '10.73.137.112', '10.73.137.113']:
             DATA_df = DATA_df.dropna(subset=['Vbd(V)'])
@@ -112,7 +128,11 @@ def main(plot_type, input_dir, output_dir):
 
     if (plot_type.upper() == 'AFE_VBD_VS_RUN') or (plot_type.upper() == 'ALL'):
         print('Plot of mean Vbd per afe as a function of run time, for each afe')
-        pdf_AFE_VBD_VS_RUN = PdfPages(f'{output_dir}/AFE_VBD_VS_RUN_plots.pdf') 
+        if len(run_exluded)==0:
+            pdf_AFE_VBD_VS_RUN = PdfPages(f'{output_dir}/AFE_VBD_VS_RUN_complete_plots.pdf') 
+        else:
+            pdf_AFE_VBD_VS_RUN = PdfPages(f'{output_dir}/AFE_VBD_VS_RUN_good_plots.pdf') 
+        
         DATA_df = DATA_df.dropna(subset=['Vbd(V)'])
         df_grouped = DATA_df.groupby(['IP', 'APA', 'SIPM_type', 'AFE', 'Run', 'Endpoint_time'])['Vbd(V)'].agg(['mean', 'std']).reset_index()
 
@@ -141,7 +161,7 @@ def main(plot_type, input_dir, output_dir):
         #pd.set_option('display.max_rows', None)
         #print(df_grouped)
 
-
+    '''
     # TO BE FINISHED!
     if (plot_type.upper() == 'MEAN_CH_VDB') or (plot_type.upper() == 'ALL'): 
         print('Plot of mean Vbd per CH in time')
@@ -171,7 +191,7 @@ def main(plot_type, input_dir, output_dir):
         
         pdf_MEAN_CH_VDB.close()
 
-            
+     '''       
         
 
 if __name__ == "__main__":

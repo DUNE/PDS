@@ -36,16 +36,18 @@ def is_date_valid(file_name):
 
 
 def check_header(file):
-    header_output_file = 'IP\tFile_name\tAPA\tAFE\tConfig_CH\tDAQ_CH\tSIPM_type\tRun\tEndpoint_timestamp\tStart_time\tEnd_time\tBias_data_quality\tBias_min_I\tBias_max_I\tVbd_bias(DAC)\tVbd_bias(V)\tVbd_bias_error(V)\tBias_conversion_slope\tBias_conversion_intercept\tTrim_data_quality\tTrim_min_I\tTrim_max_I\tFit_status\tPoly_Vbd_trim(DAC)\tPoly_Vbd_trim_error(DAC)\tPulse_Vbd_trim(DAC)\tPulse_Vbd_trim_error(DAC)\tVbd(V)\tVbd_error(V)\n'
+    header_output_file_1 = 'IP\tFile_name\tAPA\tAFE\tConfig_CH\tDAQ_CH\tSIPM_type\tRun\tEndpoint_timestamp\tStart_time\tEnd_time\tBias_data_quality\tBias_min_I\tBias_max_I\tVbd_bias(DAC)\tVbd_bias(V)\tVbd_bias_error(V)\tBias_conversion_slope\tBias_conversion_intercept\tTrim_data_quality\tTrim_min_I\tTrim_max_I\tFit_status\tPoly_Vbd_trim(DAC)\tPoly_Vbd_trim_error(DAC)\tPulse_Vbd_trim(DAC)\tPulse_Vbd_trim_error(DAC)\tVbd(V)\tVbd_error(V)\n'
+    header_output_file_2 = 'IP\tAPA\tAFE\tConfig_CH\tDAQ_CH\tSIPM_type\tRun\tBias_conversion_slope\tBias_conversion_intercept\tVbd(V)\tVbd_error(V)\n'
     with open(file, 'r') as ifile:
-        if  ifile.readline() == header_output_file:
+        first_line = ifile.readline()
+        if  (first_line == header_output_file_1) or (first_line == header_output_file_2):
             return True
         else:
             return False
 
 def read_data(input_dir, run='ALL'):
     chdir(input_dir)
-    RUN_FOLDERS = [file for file in sorted(listdir()) if is_date_valid(file)]
+    RUN_FOLDERS = [file for file in sorted(listdir()) if isdir(file)] #if is_date_valid(file)
     if run != 'ALL':
         RUN_FOLDERS = [file for file in RUN_FOLDERS if file == run]
     
@@ -59,11 +61,12 @@ def read_data(input_dir, run='ALL'):
             if len(txt_files) == 1:
                 txt_file = txt_files[0]
                 if check_header(txt_file):
-                    df = pd.concat([df,pd.read_csv(txt_file, sep='\t')], ignore_index=True)
+                    new_df = pd.read_csv(txt_file, sep='\t')
+                    new_df['RunFolder'] = run_folder
+                    df = pd.concat([df,new_df], ignore_index=True)
                 else:
                     print(f'{str(endpoint_folder)}/{txt_file} has different output header')
                     
-    df['Endpoint_time'] = pd.to_datetime(df['Endpoint_timestamp'], format='%b-%d-%Y_%H%M')
     return df
 
 
