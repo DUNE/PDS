@@ -7,7 +7,7 @@
     * Use `Vbd_quality.py` to automatically check the behavior of this run with respect to previous runs
     * Use `Vbd_plot_single_run.py` to check the overall behaviour of all channels
     * Use `Vbd_plot_all_run.py` to check the behaviour in time of the breakdown voltage
-3. Write [here](https://docs.google.com/spreadsheets/d/1mbGphkpz9gtm8gb8Aemhs1N0M7QyICqJmlw3_XZAFR0/edit?usp=share_link) if overall the run is good or not!
+3. Write [here](https://docs.google.com/spreadsheets/d/1mbGphkpz9gtm8gb8Aemhs1N0M7QyICqJmlw3_XZAFR0/edit?usp=share_link) if the run studied is good or not!
   
   
 ### If you want to change operation bias 
@@ -100,6 +100,7 @@ It requires the following input parameters:
 * `plot_type` : the plot to create (*CH_VBD_VS_RUN*, *AFE_VBD_VS_RUN* and *ALL* by default)
 * `input_dir` : path of the directory where all iv analysis results are saved (by default *PDS/data/iv_analysis*)
 * `output_dir` : path of the directory where to save data (by default *PDS/data/iv_analysis*)
+* `run_exluded` : runs to exlude from the analysis, by default we consider all data but for example you can remove *['Jun-07-2024-run00','Jul-02-2024-run00']*
 
 
 Run example: 
@@ -120,18 +121,18 @@ It requires the following input parameters:
 * `good_runs` : list of good runs (by default *['Apr-22-2024-run01','Apr-23-2024-run00','Apr-27-2024-run00','May-02-2024-run00','May-09-2024-run00', 'May-17-2024_run00', 'May-28-2024_run00', 'Jun-18-2024-run00']*)
 * `input_dir` : path of the directory where all iv analysis results are saved (by default *PDS/data/iv_analysis*)
 * `input_filename` : name of the file you want to read, containing Vbd info (by default = *output.txt*)
-* `output_dir` : path of the directory where data are saved (by default equal to *input_dir*)
+* `output_path` : path of the directory where data are saved (by default equal to *input_dir*)
 * `output_dir_name` : name you want to give to the directory where data are saved  (**mandatory**)
 
 
 Run example: 
 ```bash 
-python Vbd_best.py --good_runs "['Apr-22-2024-run01','Apr-23-2024-run00','Apr-27-2024-run00','May-02-2024-run00','May-09-2024-run00','May-17-2024_run00','May-28-2024_run00','Jun-18-2024-run00']" --input_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --input_filename output.txt --output_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --output_dir_name Mean_Vbd_data_1
+python Vbd_best.py --good_runs "['Apr-22-2024-run01','Apr-23-2024-run00','Apr-27-2024-run00','May-02-2024-run00','May-09-2024-run00','May-17-2024_run00','May-28-2024_run00','Jun-18-2024-run00']" --input_dir afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --input_filename output.txt --output_path afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis --output_dir_name Mean_Vbd_data_1
 ```
 
 It produces a `{ip_address}_output.txt` for each endpoint, which contains info about the mean value of Bias-Volt conversion parameters and of Vbd. A Nan value for Vbd now means that all the Vbd values associated with that channel are always Nan; if there is at least one no-Nan data then that is used. Here the structure of the txt file, where *Runs* is the list of runs used to evalute Vbd mean and Vbd_error(V) is the standard deviation of those values.
 
-| IP | APA | AFE | Config_CH | DAQ_CH | SIPM_type | Runs | Bias_conversion_slope | Bias_conversion_intercept | Vbd(V) | Vbd_error(V) |
+| IP | APA | AFE | Config_CH | DAQ_CH | SIPM_type | Run | Bias_conversion_slope | Bias_conversion_intercept | Vbd(V) | Vbd_error(V) |
 |----|-----|-----|-----------|--------|-----------|------|-----------------------|-----------------------------|--------|-------------|
 
 
@@ -254,12 +255,12 @@ It produces a json file, containing all info about the operation voltage in term
 
 ---
 
-### Vov_map.py
+### Vop_map.py
 It computes the Operation voltage of each channel, ofr a given overvoltage, and create a map for each endpoint and the complete map with in terms of Bias and Trim DAC counts that must be used in the DAPHNE configuration. 
 
 It requires the following input parameters:
-* `run` : run to analyze (for example *Jun-18-2024-run00*)
 * `input_dir` : path of the directory where all iv analysis results are saved (by default *PDS/data/iv_analysis*)
+* `run` : run to analyze (for example *Jun-18-2024-run00*)
 * `input_filename` : name of the file you want to read containing Vbd info(produced by *Vbd_determination.py* or *IV_analysis.py*, by default: *output*)
 * `output_dir` : path of the directory where to save data (by default *PDS/data/iv_analysis*)
 * `fbk-ov` : overvoltage for FBK SiPM (by default *4.5 V*)
@@ -306,5 +307,12 @@ It returns the same output file of `Vbd_determination.py` + `Vop_determination.p
 
 ### IV_run_ALL.py
 
-It runs IV_analysis.py on all runs, in */eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/ivcurves*.
+It runs `IV_analysis.py` on all runs, in */eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/ivcurves*.
 Attention: it is not update!
+
+
+---
+
+### Vbd_all_run.py
+
+It runs `Vbd_determination.py` on all runs, in */eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/ivcurves*.
