@@ -82,7 +82,7 @@ def main(run, input_dir, input_json_name, output_dir, output_json_name):
         output_json_name = f'complete_dic_FBK('+(str(map_endpoint['fbk_ov'])).replace('.', ',') + 'V)_HPK(' +(str(map_endpoint['hpk_ov'])).replace('.', ',') +'V)' 
     
     with open(f'{run}_{output_json_name}.json', "w") as fp:
-        json.dump(map_complete, fp)
+        json.dump(map_complete, fp, indent=4)
 
     for key, inner_dict in map_complete.items():
         if len(inner_dict) == 0:

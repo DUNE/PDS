@@ -211,7 +211,7 @@ def main(input_dir, run, input_filename, output_dir, fbk_ov, hpk_ov, json_name):
 
 
     with open(f'{run}_complete_{json_name}.json', "w") as fp:
-        json.dump(map_complete, fp)
+        json.dump(map_complete, fp, indent=4)
 
     for key, inner_dict in map_complete.items():
         if len(inner_dict) == 0:
