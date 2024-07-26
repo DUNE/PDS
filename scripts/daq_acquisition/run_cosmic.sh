@@ -23,6 +23,13 @@ if [ -n "$2" ];then
         # read -p "Enter the configuration file [np04_DAPHNE_APAs34.json]: " apa_number
         read -p "Enter the the apas you want to acquire [34]: " apa_number
 fi
+
+if [[ ${#apa_number} -ge 2 ]]; then
+    suffix="s"
+else
+    suffix=""
+fi
+
 if [ -n "$3" ];then
     runtime=$3
     else
@@ -51,7 +58,7 @@ done
 ip_string=$(IFS=,; echo "${your_ips[*]}")
 
 log="pds_log/cosmic_log_$(date "+%F-%T").txt"
-config_file=global_configs/pds_cosmics/np04_DAPHNE_APAs${apa_number}.json
+config_file=global_configs/pds_daphne/np04_DAPHNE_APA${apa_number}_Cosmics.json
 
 echo -e "\e[32m\nYou selected APA(s) ($apa_number) with enpoints ($ip_string) !\e[0m"
 echo -e "\e[35mWe are going to use $config_file if exists :) \e[0m"
@@ -63,7 +70,7 @@ echo -e "\e[35mWe are going to use $config_file if exists :) \e[0m"
 
 # Once all the arguments are set, ask for confirmation
 if [ -n "$5" ] && [ "$5" = "True" ]; then
-    echo "EXPERT_MODE ON: running without confirmation message"
+    echo "EXPERT_MODE ON: running without confirmation message. Make sure you move your logs to eos."
 else
     echo -e "\e[33mWARNING: You MUST be (in np04daq@np04-srv-024) inside \033[1mnp04_pds tmux!\033[0m \e[33m[tmux a -t np04_pds]\e[0m"
     # echo -e "\e[31mCheck the endpoints are correctly setup and \033[1mbiased\033[0m\e[31m [careful with \033[1mnoise\033[0m\e[31m runs!]\e[0m"
@@ -88,8 +95,8 @@ echo -e "dtsbutler mst MASTER_PC059_1 faketrig-clear 0" | tee -a $log
 echo -e "nano04rc --partition-number 7 --timeout 120 $config_file $username np04pds boot start_run --message "\"${message}\"" change_rate 10 wait ${runtime} stop_run" | tee -a $log
 echo -e "==================================================" >> $log
 echo -e "\nYOUR CONFIGURATION FOR DAPHNE:\n" >> $log
-cat /nfs/home/np04daq/DAQ_NP04_HD_AREA/np04daq-configs/DAPHNE_CONFS/Cosmics_apa$apa_number/data/daphneapp_conf.json >> $log
-echo -e "==================================================" >> $log
+cat /nfs/home/np04daq/DAQ_NP04_HD_AREA/np04daq-configs/DAPHNE_CONFS/np04_DAPHNE_APA${apa_number}_cosmics_ssh_conf/data/daphneapp_conf.json >> $log
+echo -e "/n==================================================" >> $log
 
 # Execute the commands
 dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3
@@ -102,4 +109,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-scp /nfs/home/np04daq/DAQ_NP04_HD_AREA/$log $username@lxplus.cern.ch:/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/log_files/.
+if [ "$5" != "True" ]; then
+    echo "Moving log file to /eos/.../log_files/ folder"
+    scp /nfs/home/np04daq/DAQ_NP04_HD_AREA/$log $username@lxplus.cern.ch:/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/log_files/.
+fi
