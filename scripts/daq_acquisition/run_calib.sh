@@ -61,7 +61,7 @@ echo -e "\e[35mWe are going to use $config_file if exists :) \e[0m"
 
 echo "$apa_number"
 if [[ "$apa_number" == *1* ]]; then
-    Hztrigger_0x7=20
+    Hztrigger_0x7=50
 else
     Hztrigger_0x7=6250
 fi
