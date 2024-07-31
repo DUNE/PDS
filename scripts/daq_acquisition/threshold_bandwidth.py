@@ -16,6 +16,6 @@ for th in range(100,0,-5):
     subprocess.call(f"./recreate_daphne_configurations.sh",shell=True) # recreate_daphne_configurations      
  
     print(f"\n--- {ov} + {th} DONE ---")
-    
+    os.chdir("/nfs/home/np04daq/DAQ_NP04_HD_AREA/")
     subprocess.call(f"sh run_cosmic.sh {username} 1234 80 Cosmic\ run.\ To\ test\ the\ threshold:{th}\ bandwidth\ value. True",shell=True)          
 subprocess.call(f"scp /nfs/home/np04daq/DAQ_NP04_HD_AREA/pds_log/cosmic_log*.txt {username}@lxplus.cern.ch:/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/log_files/.",shell=True)
