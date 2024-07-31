@@ -211,7 +211,7 @@ It produces a json file, containing all info about the operation voltage in term
                    "ov": {"fbk": 4.5, "hpk": 3},
                    "run": "Jun-18-2024-run00"
                   },
-"10.73.137.107": { "id": 7,
+"10.73.137.110": { "id": 7,
                    "apa" : 1,
                    "ch": [0, 2, 5, 7, 8, 10, 13, 15],
                    "bias": [820, 1159, 0, 0, 0],
