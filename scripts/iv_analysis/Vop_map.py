@@ -62,7 +62,7 @@ def check_header(file):
 
 
 def main(input_dir, run, input_filename, output_dir, fbk_ov, hpk_ov, json_name):
-    map_complete = {'10.73.137.104':{},'10.73.137.105':{},'10.73.137.107':{},'10.73.137.109':{},'10.73.137.111':{},'10.73.137.112':{},'10.73.137.113':{}}
+    map_complete = {'10.73.137.104':{},'10.73.137.105':{},'10.73.137.110':{},'10.73.137.109':{},'10.73.137.111':{},'10.73.137.112':{},'10.73.137.113':{}}
     endpoint_list = ['104','105','107','109','111','112','113']
     
     if output_dir is None:
@@ -73,7 +73,7 @@ def main(input_dir, run, input_filename, output_dir, fbk_ov, hpk_ov, json_name):
     directories = [d for d in listdir(f'{input_dir}/{run}') if (f'{input_dir}/{run}/{d}') and ('ip10.73.137.' in d)]
     for d in directories:
         ip = d.split('ip')[-1]
-        id = int(ip[-1][-2:])
+        id = int(ip[-2:])
         apa = d.split('apa')[1][0]
         print(f'\n\n-------------------------- \n\n --- {ip} --- \n')
         chdir(f'{input_dir}/{run}/{d}')
@@ -150,6 +150,10 @@ def main(input_dir, run, input_filename, output_dir, fbk_ov, hpk_ov, json_name):
                             
                 # SINGLE ENDPOINT JSON FILE
                 output_json = {} 
+                
+                if id == 7:
+                    ip = '10.73.137.110'
+                    id = 10
                 
                 output_json['ip'] = ip
                 output_json['apa'] = apa
