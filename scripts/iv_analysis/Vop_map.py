@@ -151,10 +151,6 @@ def main(input_dir, run, input_filename, output_dir, fbk_ov, hpk_ov, json_name):
                 # SINGLE ENDPOINT JSON FILE
                 output_json = {} 
                 
-                if id == 7:
-                    ip = '10.73.137.110'
-                    id = 10
-                
                 output_json['ip'] = ip
                 output_json['apa'] = apa
                 output_json['run'] = run
@@ -197,6 +193,9 @@ def main(input_dir, run, input_filename, output_dir, fbk_ov, hpk_ov, json_name):
                     print('\nEndpoint ' + ip + ' is okay!')
             
                 trim_list = [0 if np.isnan(x) else x for x in trim_list]
+            
+                if id == 7:
+                    ip = '10.73.137.110'
             
                 map_complete[ip]['id'] = id
                 map_complete[ip]['apa'] = apa
