@@ -51,7 +51,7 @@ def main(input_dir, output_dir, endpoint, trimfit, map_path):
     run_dir_output = output_dir+'/'+run
     if not path.exists(run_dir_output):
         makedirs(run_dir_output)
-        
+     
     ENDPOINT_FOLDERS = sorted(listdir()) #List of folders in the input directory, each one is realetd to an endpoint
     if endpoint.isdigit() and len(endpoint) == 3:
         ENDPOINT_FOLDERS = [item for item in ENDPOINT_FOLDERS if item.endswith(endpoint)]

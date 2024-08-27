@@ -59,7 +59,7 @@ def AFE_VBD_VS_RUN_plot(ax,df,sipm):
               help="Path directory where save plots (default: 'PDS/data/iv_analysis')")
 @click.option("--run_exluded", 
               default= None ,
-              help="Run to exlude from the analysis, by default we consider all data but for example you can remove ['Jun-07-2024-run00','Jul-02-2024-run00']")
+              help="Run to exlude from the analysis, by default we consider all data but for example you can remove ['Jun-07-2024-run00','Jul-02-2024-run00', 'Jul-31-2024-run00']")
 
 
 
