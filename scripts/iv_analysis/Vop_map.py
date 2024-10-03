@@ -1,3 +1,6 @@
+# MODIFIED AFTER CHANGE ENDPOINT 104 --> 104+105+107
+
+
 '''
 Determination of the operation voltage
 - Input: output.txt of Vbd_determination.py or Vbd_best.py
@@ -10,6 +13,7 @@ import click, json
 import numpy as np
 import pandas as pd
 from os import chdir, listdir, path, makedirs, getcwd
+import ast
 
 import warnings
 from datetime import datetime
@@ -50,6 +54,9 @@ def check_header(file):
 @click.option("--output_dir", 
               default= None,
               help="Folder where results are saved (default: equal to the run input_dir)")
+@click.option("--end_list", 
+              default=None, 
+              help="List of endpoint you are using, by default ['104','105','107','109','111','112','113']")
 @click.option("--fbk-ov", 
               default=4.5, 
               help='Overvoltage for fbk (default: 4.5 V)')
@@ -61,9 +68,16 @@ def check_header(file):
               help="Name for the json file with operation voltage (default: 'dic_FBKxx_HPKyy')")
 
 
-def main(input_dir, run, input_filename, output_dir, fbk_ov, hpk_ov, json_name):
-    map_complete = {'10.73.137.104':{},'10.73.137.105':{},'10.73.137.110':{},'10.73.137.109':{},'10.73.137.111':{},'10.73.137.112':{},'10.73.137.113':{}}
-    endpoint_list = ['104','105','107','109','111','112','113']
+def main(input_dir, run, input_filename, output_dir, end_list, fbk_ov, hpk_ov, json_name):
+    if end_list is None:
+        mappp = endpoint_list_data(run)
+        endpoint_list = [ip.split('.')[-1] for ip in list(mappp.keys())]
+        if datetime.strptime(run.split('-run')[0], '%b-%d-%Y') > datetime(2024, 7, 30):
+            endpoint_list = ['110' if num == '107' else num for num in endpoint_list]
+    else:    
+        endpoint_list = ast.literal_eval(end_list) 
+    
+    map_complete = {f'10.73.137.{num}': {} for num in endpoint_list}
     
     if output_dir is None:
         output_dir = input_dir + '/' + run
@@ -194,7 +208,7 @@ def main(input_dir, run, input_filename, output_dir, fbk_ov, hpk_ov, json_name):
             
                 trim_list = [0 if np.isnan(x) else x for x in trim_list]
             
-                if id == 7:
+                if (datetime.strptime(run.split('-run')[0], '%b-%d-%Y') > datetime(2024, 7, 30)) and (id == 7):
                     ip = '10.73.137.110'
             
                 map_complete[ip]['id'] = id

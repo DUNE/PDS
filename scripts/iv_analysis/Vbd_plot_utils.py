@@ -10,7 +10,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 
 #Original map
-map = {
+original_map  = {
     '10.73.137.104': {'apa': 1, 'fbk': [0, 1, 2, 3, 4, 5, 6, 7], 'hpk': [8, 9, 10, 11, 12, 13, 14, 15]},
     '10.73.137.105': {'apa': 1, 'fbk': [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 13, 15], 'hpk': [17, 19, 20, 22]},
     '10.73.137.107': {'apa': 1, 'fbk': [0, 2, 5, 7], 'hpk': [8, 10, 13, 15]},
@@ -20,7 +20,19 @@ map = {
     '10.73.137.113': {'apa': 4, 'fbk': [0, 2, 5, 7], 'hpk': []},
 }
 
+
+
+# New map from 24/09/2024
+map_mod_20240924= {
+    '10.73.137.104': {'apa': 1, 'fbk': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 'hpk': [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]},
+    '10.73.137.109': {'apa': 2, 'fbk': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 'hpk': [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]},
+    '10.73.137.111': {'apa': 3, 'fbk': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], 'hpk': [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]},
+    '10.73.137.112': {'apa': 4, 'fbk': [], 'hpk': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 34, 37, 39]},
+    '10.73.137.113': {'apa': 4, 'fbk': [0, 2, 5, 7], 'hpk': []},
+}
+
 color_list = ['red','blue','green','purple','orange','grey','aqua','violet']
+color_list_dark = ['darkred','darkblue','darkgreen','indigo','darkorange','darkgrey','deepskyblue','darkviolet']
 
 def daq_channel_conversion(ch_config):
     afe = int(int(ch_config)//8)
@@ -71,7 +83,7 @@ def read_data(input_dir, run='ALL'):
 
 
 
-def full_map_dataframe(df,run_data=''):
+def full_map_dataframe(df,map,run_data=''):
     for ip, value in map.items():
         df_ip = df.loc[df['IP'] == ip]
         for ch in value['fbk']+value['hpk']:
@@ -99,4 +111,16 @@ def custom_std(x):
         return 0
     else:
         return x.std()
-
+    
+    
+    
+def endpoint_list_data(folder_name):
+    new_conf_data = datetime(2024, 9, 24)
+    string_data = datetime.strptime(folder_name.split('-run')[0], '%b-%d-%Y')
+    if string_data >= new_conf_data:
+        endpoint_list = ['104','109', '111', '112', '113']
+        map_to_use = map_mod_20240924
+    else:
+        endpoint_list = ['104', '105', '107', '109', '111', '112', '113']
+        map_to_use = original_map
+    return map_to_use

@@ -44,6 +44,8 @@ def VB_HIST_X_RUN(ax,df,sipm):
 
 def main(plot_type, input_dir, output_dir, run):
     DATA_df = read_data(input_dir,run)  
+    
+    map = endpoint_list_data(run)
     print('\nALL DATA READ\n')  
 
     if (plot_type.upper() == 'CH_VBD_X_RUN') or (plot_type.upper() == 'ALL'):
@@ -65,7 +67,7 @@ def main(plot_type, input_dir, output_dir, run):
             else:
                 pdf_CH_VBD_single = PdfPages(f"{output_dir}/{df_run['RunFolder'].iloc[0]}_CH_VBD_plot.pdf")
 
-            df_run_completed = full_map_dataframe(df_run, run_data)    
+            df_run_completed = full_map_dataframe(df_run, map, run_data)    
 
             fig, ax = plt.subplots(1, figsize=(16, 7))
             fig.suptitle(f"Channel Vbd \n RUN: {df_run['RunFolder'].iloc[0]}")
