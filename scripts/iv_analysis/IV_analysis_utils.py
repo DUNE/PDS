@@ -18,6 +18,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 import warnings
 from datetime import datetime
 warnings.filterwarnings("ignore", category=matplotlib.MatplotlibDeprecationWarning)
+import sys
 #warnings.filterwarnings("ignore", category=OptimizeWarning)
 
 
@@ -364,9 +365,16 @@ def daq_channel_conversion(ch_config):
     afe = int(ch_config//8)
     return 10*(afe) + (ch_config - afe*8)
 
+
 def endpoint_list_data(folder_name):
     new_conf_data = datetime(2024, 9, 24)
-    string_data = datetime.strptime(folder_name.split('-run')[0], '%b-%d-%Y')
+    if 'run' in folder_name:
+        string_data = datetime.strptime(folder_name.split('-run')[0], '%b-%d-%Y')
+    elif 'Vbd_best_' in folder_name:
+        string_data = datetime.strptime(folder_name.split('Vbd_best_')[-1], '%Y%m%d')
+    else:
+        sys.exit('Error: not valid folder name!') 
+        
     if string_data >= new_conf_data:
         endpoint_list = ['104','109', '111', '112', '113']
         map_to_use = map_mod_20240924

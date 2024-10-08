@@ -40,13 +40,11 @@ from IV_analysis_utils import *
 @click.option("--map_path", 
               default= None, 
               help='Map used to acquired IV curves (maybe withoud disconnected or dead channels), by defuld the original one')
-@click.option("--vbd-correction", 
-              default= 'Yes', 
-              help='Do you want to apply che Vbd channel correction (Yes/No)? By default is Yes')
 
 
 
-def main(input_dir, run, output_dir, endpoint, trimfit, map_path, vbd_correction):
+
+def main(input_dir, run, output_dir, endpoint, trimfit, map_path):
     
     if map_path is None:
         map = endpoint_list_data(run)
@@ -203,7 +201,6 @@ def main(input_dir, run, output_dir, endpoint, trimfit, map_path, vbd_correction
                                             c_filtered = [savgol_filter(trim_c, sgf_IV_window, sgf_IV_degree), sgf_IV_window, sgf_IV_degree]
                                             der_c =  derivative_cactus(trim_dac, c_filtered[0])
                                             sgf_poly[0] = 20
-                                            print('rumoreee')
                                             Polynomial = IV_Polynomial(der_trim, der_c, sgf_poly) 
                                         
                                         PulseShape = [np.nan,np.nan, [0,0],[0,0],[0,0]]
@@ -268,14 +265,7 @@ def main(input_dir, run, output_dir, endpoint, trimfit, map_path, vbd_correction
                                 Vbd_V = DAC_VOLT_full_conversion(Vbd_bias_dac, Vbd_trim_dac, DAC_V_bias_conversion)
                                 Vbd_V_error = np.sqrt(DAC_VOLT_trim_conversion(Vbd_trim_dac_error)**2 + Vbd_bias_V_error**2)
                                 
-                                if (vbd_correction == 'Yes') : 
-                                    if ((ch == 8) and (ip_address == '10.73.137.107')) or ((ch == 33) and (ip_address == '10.73.137.104')):
-                                        Vbd_V += 2
-                                    elif (ch == 18) and (ip_address == '10.73.137.112'):
-                                        Vbd_V += 0.6
-                                    elif (ch == 27) and (ip_address == '10.73.137.112'):
-                                        Vbd_V += 0.86   
-                                    
+                                                                    
                                 text_file.write(f'{ip_address}\t{file_name}\t{apa:.0f}\t{afe:.0f}\t{ch:.0f}\t{daq_channel_conversion(ch):.0f}\t{sipm}\t{run}\t{timestamp_stringa}\t{start_time}\t{end_time}\t{bias_status}\t{min(bias_c):.3f}\t{max(bias_c):.3f}\t{Vbd_bias_dac}\t{Vbd_bias_V:.3f}\t{Vbd_bias_V_error:.3f}\t{DAC_V_bias_conversion[0]:.5f}\t{DAC_V_bias_conversion[1]:.3f}\t{trim_status}\t{min(trim_c_original):.3f}\t{max(trim_c_original):.3f}\t{trim_fit_status}\t{Vbd_trim_dac_poly:.0f}\t{Vbd_trim_dac_poly_error:.0f}\t{Vbd_trim_dac_pulse:.0f}\t{Vbd_trim_dac_pulse_error:.0f}\t{Vbd_V:.3f}\t{Vbd_V_error:.3f}\n')
                                 
                                 
@@ -374,8 +364,7 @@ def main(input_dir, run, output_dir, endpoint, trimfit, map_path, vbd_correction
                 plot_IVbias_AFE(pdf_file_bias_AFE,endpoint,apa,sipm_AFE,bias_dac_AFE, current_bias_AFE, Vbd_bias_dac_AFE, channel_AFE)
                 pdf_file_bias_AFE.close()
                
-    if (vbd_correction == 'Yes') : 
-        print('\nAttention: Vbd was corrected for some channels!!!!\n')
+    
                 
                 
 

@@ -7,6 +7,7 @@ from os.path import isdir
 import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
+import sys
 
 
 #Original map
@@ -35,6 +36,7 @@ color_list = ['red','blue','green','purple','orange','grey','aqua','violet']
 color_list_dark = ['darkred','darkblue','darkgreen','indigo','darkorange','darkgrey','deepskyblue','darkviolet']
 
 def daq_channel_conversion(ch_config):
+    ch_config = int(ch_config)
     afe = int(int(ch_config)//8)
     return 10*(afe) + (ch_config - afe*8)
 
@@ -116,7 +118,13 @@ def custom_std(x):
     
 def endpoint_list_data(folder_name):
     new_conf_data = datetime(2024, 9, 24)
-    string_data = datetime.strptime(folder_name.split('-run')[0], '%b-%d-%Y')
+    if 'run' in folder_name:
+        string_data = datetime.strptime(folder_name.split('-run')[0], '%b-%d-%Y')
+    elif 'Vbd_best_' in folder_name:
+        string_data = datetime.strptime(folder_name.split('Vbd_best_')[-1], '%Y%m%d')
+    else:
+        sys.exit('Error: you must specify the name of this analysis!') 
+        
     if string_data >= new_conf_data:
         endpoint_list = ['104','109', '111', '112', '113']
         map_to_use = map_mod_20240924
@@ -124,3 +132,5 @@ def endpoint_list_data(folder_name):
         endpoint_list = ['104', '105', '107', '109', '111', '112', '113']
         map_to_use = original_map
     return map_to_use
+
+        

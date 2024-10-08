@@ -28,8 +28,8 @@ def format_endch(num):
               default= getcwd() + '/../../data/iv_analysis',
               help="Folder with all IV curve results (default = '/data/iv_analysis')") 
 @click.option("--new_run", 
-              default= 'Sep-24-2024-run00',
-              help="Run with new configuration (default = 'Sep-24-2024-run00')") 
+              default= 'Vbd_best_20241007',
+              help="Run with new configuration (default = 'Vbd_best_20241007')") 
 @click.option("--old_run", 
               default= 'Vbd_best_20240730',
               help="Run with old configuration (default = 'Vbd_best_20240730')") 

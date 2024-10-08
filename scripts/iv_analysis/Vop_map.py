@@ -69,11 +69,19 @@ def check_header(file):
 
 
 def main(input_dir, run, input_filename, output_dir, end_list, fbk_ov, hpk_ov, json_name):
-    if end_list is None:
+    if 'run' in run:
+        run_data = datetime.strptime(run.split('-run')[0], '%b-%d-%Y')
+    elif 'Vbd_best' in run:
+        run_data = datetime.strptime(run.split('Vbd_best_')[-1], '%Y%m%d')
+    else:
+        sys.exit('Error: not valid folder name!') 
+        
+    if end_list is None:    
         mappp = endpoint_list_data(run)
         endpoint_list = [ip.split('.')[-1] for ip in list(mappp.keys())]
-        if datetime.strptime(run.split('-run')[0], '%b-%d-%Y') > datetime(2024, 7, 30):
+        if run_data > datetime(2024, 7, 30):
             endpoint_list = ['110' if num == '107' else num for num in endpoint_list]
+        
     else:    
         endpoint_list = ast.literal_eval(end_list) 
     
@@ -179,10 +187,10 @@ def main(input_dir, run, input_filename, output_dir, end_list, fbk_ov, hpk_ov, j
                 output_json['hpk_op_bias'] = [int(x) if not np.isnan(x) else None for x in HPK_Vop_bias_dac]
                 output_json['hpk_op_trim'] = [int(x) if not np.isnan(x) else None for x in HPK_Vop_trim_dac]
                 
-                
+                '''
                 with open(f'{ip}_{json_name}.json', "w") as fp:
                     json.dump(output_json, fp) # Vbd=None means some error!!
-
+                '''
                 
 
                 ch_list = FBK_CH + HPK_CH
@@ -208,7 +216,7 @@ def main(input_dir, run, input_filename, output_dir, end_list, fbk_ov, hpk_ov, j
             
                 trim_list = [0 if np.isnan(x) else x for x in trim_list]
             
-                if (datetime.strptime(run.split('-run')[0], '%b-%d-%Y') > datetime(2024, 7, 30)) and (id == 7):
+                if (run_data > datetime(2024, 7, 30)) and (id == 7):
                     ip = '10.73.137.110'
             
                 map_complete[ip]['id'] = id
@@ -234,7 +242,6 @@ def main(input_dir, run, input_filename, output_dir, end_list, fbk_ov, hpk_ov, j
         if len(inner_dict) == 0:
             print(f'\nData about endpoint {key} not present! --> Incomplete json map!!\n')
 
-    
     print('\n\nDONE\n\n')
 ######################################################################################
 

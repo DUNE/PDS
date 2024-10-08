@@ -57,7 +57,7 @@ def daq_channel_conversion(ch_config):
 
 @click.command()
 @click.option("--good_runs", 
-              default= ['Apr-22-2024-run01','Apr-23-2024-run00','Apr-27-2024-run00','May-02-2024-run00','May-09-2024-run00','May-17-2024-run00','May-28-2024-run00','Jun-18-2024-run00','Jul-29-2024-run00'], # only 18Jun has all CH
+              default= ['Apr-22-2024-run01','Apr-23-2024-run00','Apr-27-2024-run00','May-02-2024-run00','May-09-2024-run00','May-17-2024-run00','May-28-2024-run00','Jun-18-2024-run00','Jul-29-2024-run00', 'Sep-24-2024-run00', 'Oct-04-2024-run00'], # only 18Jun has all CH, from 24/09/2024 change of configurration (104 105 107 --> 104)
               help="Good runs, used to make the comparison")
 @click.option("--input_dir", 
               default= getcwd() + '/../../data/iv_analysis',
@@ -71,10 +71,13 @@ def daq_channel_conversion(ch_config):
 @click.option("--output_dir_name", 
               default= None,
               help="Name of the folder, to identify this data analysis ")
+@click.option("--vbd-correction", 
+              default= 'Yes', 
+              help='Do you want to apply che Vbd channel correction (Yes/No)? By default is Yes')
 
 
 
-def main(good_runs, input_dir, input_filename, output_path, output_dir_name):
+def main(good_runs, input_dir, input_filename, output_path, output_dir_name, vbd_correction):
     good_runs = ast.literal_eval(good_runs)
     if output_path is None:
         output_path = input_dir
@@ -85,10 +88,21 @@ def main(good_runs, input_dir, input_filename, output_path, output_dir_name):
     if not path.exists(dir):
         makedirs(dir)
 
-    
     df_RUNS = read_data(input_dir, good_runs, input_filename)
-
     
+    data_to_exclude = [{'IP' : '10.73.137.111', 'Config_CH' : 32, 'DAQ_CH' : 40, 'Run' : 'Oct-04-2024-run00'},
+                      {'IP' : '10.73.137.109', 'Config_CH' : 36, 'DAQ_CH' : 44, 'Run' : 'Oct-04-2024-run00'}]
+    df_exclude = pd.DataFrame(data_to_exclude)
+    df_filtered = df_RUNS.merge(df_exclude, on=['IP', 'Config_CH', 'DAQ_CH', 'Run'], how='left', indicator=True)
+    df_RUNS = (df_filtered[df_filtered['_merge'] == 'left_only']).drop(columns='_merge')
+    del df_exclude, df_filtered
+
+    run_dates = pd.to_datetime([x.split('-run')[0] for x in good_runs], format='%b-%d-%Y')
+    date_limit = pd.to_datetime('Sep-24-2024')
+    if len(run_dates[run_dates >= date_limit]) > 0:
+        df_RUNS = df_RUNS[~((df_RUNS['IP'].isin(['10.73.137.104', '10.73.137.105', '10.73.137.107'])) & (df_RUNS['Endpoint_time'] < date_limit))]
+
+
     for ip in df_RUNS['IP'].unique().tolist():
         print(f'\n\n --- ENDPOINT {ip} --- \n')
         df_ip = df_RUNS[df_RUNS['IP'] == ip]
@@ -109,14 +123,24 @@ def main(good_runs, input_dir, input_filename, output_path, output_dir_name):
             mean_bias_conversion_intercept = df_ch['Bias_conversion_intercept'].mean()
             mean_Vbd = df_ch['Vbd(V)'].mean()
             std_Vbd = df_ch['Vbd(V)'].std()
+            
+            if (vbd_correction == 'Yes') : 
+                if ((ch == 8) and (ip == '10.73.137.107')) or ((ch == 33) and (ip == '10.73.137.104')):
+                    mean_Vbd += 2
+                elif (ch == 18) and (ip == '10.73.137.112'):
+                    mean_Vbd += 0.6
+                elif (ch == 27) and (ip == '10.73.137.112'):
+                    mean_Vbd += 0.86 
+            
+            
             print(f'Config_CH {ch} --> Vbd_mean = {mean_Vbd:.3f} +/- {std_Vbd:.3f} V \n')
 
             text_file.write(f"{ip}\t{apa}\t{afe}\t{ch}\t{daq_channel_conversion(ch)}\t{sipm}\t[{', '.join(good_runs)}]\t{mean_bias_conversion_slope:.5f}\t{mean_bias_conversion_intercept:.5f}\t{mean_Vbd:.4f}\t{std_Vbd:.4f}\n")
     
         text_file.close()
-        
-    
 
+    if vbd_correction == 'Yes':
+        print('\n Vbd of some channels was corrected with an additional overvoltage')
 
 ######################################################################################
 

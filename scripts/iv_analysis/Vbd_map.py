@@ -1,8 +1,14 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import json
+
+def daq_channel_conversion(ch_config):
+    ch_config = int(ch_config)
+    afe = int(ch_config//8)
+    return 10*(afe) + (ch_config - afe*8)
 
 # Numeri delle celle (esattamente come nella tua immagine)
-numeri = [
+numeri_old = [
     ['104-7', '104-5', '104-2', '104-0', '109-27', '109-25', '109-22', '109-20', '111-1', '111-3', '111-4', '111-6', '112-0', '112-2', '112-5', '112-7'],
     ['104-1', '104-3', '104-4', '104-6', '109-21', '109-23', '109-24', '109-26', '111-36', '111-34', '111-33', '111-31', '112-6', '112-4', '112-3', '112-1'],
     ['104-17', '104-15', '104-12', '104-10', '109-37', '109-35', '109-32', '109-30', '111-0', '111-2', '111-5', '111-7', '112-10', '112-12', '112-15', '112-17'],
@@ -15,12 +21,86 @@ numeri = [
     ['107-0', '107-2', '107-5', '107-7', '109-41', '109-43', '109-44', '109-46', '111-27', '111-25', '111-22', '111-20', '112-47', '112-45', '112-42','112-40']
 ]
 
-# Celle da colorare con colori specifici
-celle_colori = {
+celle_colori_old = {
     '107-0': 'yellow', '107-2': 'yellow', '107-5': 'yellow', '107-7': 'yellow', '109-15': 'yellow', '109-12': 'yellow',
     '107-10': 'purple', '112-11': 'purple', '112-22': 'purple', '112-33': 'purple',
     '109-10': 'red', '109-11': 'red', '109-13': 'red', '109-14': 'red', '109-16': 'red', '109-17': 'red'
 }
+
+
+numeri_new = [['104-7', '104-5', '104-2', '104-0', '109-27', '109-25', '109-22', '109-20', '111-1', '111-3', '111-4', '111-6', '112-0', '112-2', '112-5', '112-7'], 
+              ['104-1', '104-3', '104-4', '104-6', '109-21', '109-23', '109-24', '109-26', '111-36', '111-34', '111-33', '111-31', '112-6', '112-4', '112-3', '112-1'], 
+              ['104-37', '104-35', '104-32', '104-30', '109-37', '109-35', '109-32', '109-30', '111-0', '111-2', '111-5', '111-7', '112-10', '112-12', '112-15', '112-17'], 
+              ['104-31', '104-33', '104-34', '104-36', '109-31', '109-33', '109-34', '109-36', '111-37', '111-35', '111-32', '111-30', '112-16', '112-14*', '112-13', '112-11'], 
+              ['104-17', '104-15', '104-12', '104-10', '109-7', '109-5', '109-2', '109-0', '111-41', '111-43', '111-44', '111-46', '113-0', '113-2', '113-5', '113-7'], 
+              ['104-11', '104-13', '104-14', '104-16', '109-1', '109-3', '109-4', '109-6', '111-16', '111-14', '111-13', '111-11', '112-27', '112-25', '112-22+0.6V', '112-20'], 
+              ['104-47', '104-45', '104-42', '104-40', '109-17', '109-15', '109-12', '109-10', '111-10', '111-12', '111-15', '111-17', '112-21', '112-23', '112-24', '112-26'], 
+              ['104-20', '104-22', '104-25', '104-27', '109-11', '109-13', '109-14', '109-16', '111-26', '111-24', '111-23', '111-21', '112-37', '112-35', '112-32', '112-30'], 
+              ['104-46', '104-44', '104-43', '104-41+2.0V', '109-47', '109-45', '109-42', '109-40', '111-40', '111-42', '111-45', '111-47', '112-31', '112-33+0.86V', '112-34', '112-36'], 
+              ['104-21', '104-23', '104-24', '104-26', '109-41', '109-43', '109-44', '109-46', '111-27', '111-25', '111-22', '111-20', '112-47', '112-45', '112-42', '112-40']]
+
+celle_colori_new = {
+    '109-15': 'yellow', '109-12': 'yellow',
+    '104-41': 'purple', '112-11': 'purple', '112-22': 'purple', '112-33': 'purple',
+    '109-10': 'red', '109-11': 'red', '109-13': 'red', '109-14': 'red', '109-16': 'red', '109-17': 'red'
+}
+
+changed_channels = ['104-7', '104-5', '104-2', '104-0',
+                    '104-1', '104-3', '104-4', '104-6', 
+                    '104-17', '104-15', '104-12', '104-10',
+                    '104-11', '104-13', '104-14', '104-16', 
+                    '105-7', '105-5', '105-2', '105-0', 
+                    '105-1', '105-3', '105-4', '105-6',
+                    '105-26', '105-24', '105-23', '105-21', 
+                    '105-10', '105-12', '105-15', '105-17',
+                    '107-17', '107-15', '107-12', '107-10+2.0V',
+                    '107-0', '107-2', '107-5', '107-7']
+
+data_analysis = 'new'
+if data_analysis == 'new':
+    numeri = numeri_new
+    celle_colori = celle_colori_new
+else:
+    numeri = numeri_old
+    celle_colori = celle_colori_old
+
+'''
+with open('/afs/cern.ch/user/a/anbalbon/IV_curve/PDS/maps/map_changing_20240924/correlation_map_end104.json', 'r') as f:
+    correlation_map = json.load(f)
+    
+old_new_correlation_map = {}
+
+for key, value in correlation_map.items():
+    new_config_channel = key
+    new_daq_channel = daq_channel_conversion(new_config_channel)
+    old_config_channel = value['channel']
+    old_daq_channel = daq_channel_conversion(old_config_channel)
+    old_endpoint = value['endpoint']
+    old_string = f"{old_endpoint}-{old_daq_channel}"
+    if old_string == '107-10':
+        old_string += '+2.0V'
+        new_string = f"104-{new_daq_channel}+2.0V"
+    else:
+        new_string = f"104-{new_daq_channel}"
+    
+    old_new_correlation_map[old_string] = { 'endpoint' : 104,
+                                                                    'config_ch' : new_config_channel,
+                                                                    'daq_ch' : new_daq_channel,
+                                                                    'new_string' : new_string
+                                                                    }
+numeri = [] 
+for old_riga in numeri:
+    new_riga = []
+    for old_name in old_riga:
+        if old_name in changed_channels:
+            new_name = old_new_correlation_map[old_name]['new_string']
+            new_riga.append(new_name)
+        else:
+            new_riga.append(old_name)
+    new_numeri.append(new_riga)            
+
+'''
+
 
 # Impostazioni della figura
 fig, ax = plt.subplots(figsize=(12, 8))
@@ -79,7 +159,7 @@ ax.axis('off')
 plt.suptitle('IV and Vbd map', fontsize=18, color='black', fontweight='bold')
 
 # Salva l'immagine
-plt.savefig('/afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis/Vbd_heatmap.png', dpi=300, bbox_inches='tight')
+plt.savefig(f'/afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis/Vbd_heatmap_{data_analysis}.png', dpi=300, bbox_inches='tight')
 
 # Mostra l'immagine (opzionale)
 plt.show()

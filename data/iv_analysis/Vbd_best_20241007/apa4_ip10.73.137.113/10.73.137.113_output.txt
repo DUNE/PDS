@@ -1,0 +1,5 @@
+IP	APA	AFE	Config_CH	DAQ_CH	SIPM_type	Run	Bias_conversion_slope	Bias_conversion_intercept	Vbd(V)	Vbd_error(V)
+10.73.137.113	4	0	0	0	FBK	[Apr-22-2024-run01, Apr-23-2024-run00, Apr-27-2024-run00, May-02-2024-run00, May-09-2024-run00, May-17-2024-run00, May-28-2024-run00, Jun-18-2024-run00, Jul-29-2024-run00, Sep-24-2024-run00, Oct-04-2024-run00]	0.03917	0.48991	27.5244	0.0455
+10.73.137.113	4	0	2	2	FBK	[Apr-22-2024-run01, Apr-23-2024-run00, Apr-27-2024-run00, May-02-2024-run00, May-09-2024-run00, May-17-2024-run00, May-28-2024-run00, Jun-18-2024-run00, Jul-29-2024-run00, Sep-24-2024-run00, Oct-04-2024-run00]	0.03915	0.50091	27.4001	0.0845
+10.73.137.113	4	0	5	5	FBK	[Apr-22-2024-run01, Apr-23-2024-run00, Apr-27-2024-run00, May-02-2024-run00, May-09-2024-run00, May-17-2024-run00, May-28-2024-run00, Jun-18-2024-run00, Jul-29-2024-run00, Sep-24-2024-run00, Oct-04-2024-run00]	0.03916	0.49800	27.5394	0.0489
+10.73.137.113	4	0	7	7	FBK	[Apr-22-2024-run01, Apr-23-2024-run00, Apr-27-2024-run00, May-02-2024-run00, May-09-2024-run00, May-17-2024-run00, May-28-2024-run00, Jun-18-2024-run00, Jul-29-2024-run00, Sep-24-2024-run00, Oct-04-2024-run00]	0.03918	0.48491	27.4255	0.0683
