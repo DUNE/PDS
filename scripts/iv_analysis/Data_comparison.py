@@ -381,7 +381,7 @@ def main(input_dir, new_run, old_run, correlation_map_path, ln2t_data_path, outp
         
   
     
-
+    df.to_csv('/afs/cern.ch/user/a/anbalbon/IV_curve/PDS/data/iv_analysis/Comparison_plots/dataset.csv', index=False)
     
     
 if __name__ == "__main__":

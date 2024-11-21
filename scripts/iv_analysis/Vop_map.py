@@ -69,13 +69,17 @@ def check_header(file):
 
 
 def main(input_dir, run, input_filename, output_dir, end_list, fbk_ov, hpk_ov, json_name):
+    print(run)
     if 'run' in run:
         run_data = datetime.strptime(run.split('-run')[0], '%b-%d-%Y')
+    elif run == 'Vbd_LN2T_corrected':
+        run_data = datetime.strptime("Oct-21-2024", "%b-%d-%Y")
     elif 'Vbd_best' in run:
         run_data = datetime.strptime(run.split('Vbd_best_')[-1], '%Y%m%d')
     else:
-        sys.exit('Error: not valid folder name!') 
-        
+        sys.exit('Error: not valid folder name!!!')
+
+    
     if end_list is None:    
         mappp = endpoint_list_data(run)
         endpoint_list = [ip.split('.')[-1] for ip in list(mappp.keys())]

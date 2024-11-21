@@ -372,6 +372,8 @@ def endpoint_list_data(folder_name):
         string_data = datetime.strptime(folder_name.split('-run')[0], '%b-%d-%Y')
     elif 'Vbd_best_' in folder_name:
         string_data = datetime.strptime(folder_name.split('Vbd_best_')[-1], '%Y%m%d')
+    elif 'Vbd_LN2T_' in folder_name:
+        string_data = datetime.strptime("Oct-21-2024", "%b-%d-%Y")
     else:
         sys.exit('Error: not valid folder name!') 
         
