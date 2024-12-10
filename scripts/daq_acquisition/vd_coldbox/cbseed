@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+
+import json
+import click
+import ast
+
+def build_details(map_data, endpoints, thresholds, constants, vgain=None, use_cosmic=False):
+    """Generate details dictionary for calibration or cosmic seed."""
+    default_threshold_calib = constants["DEFAULT_THRESHOLD_CALIB"]
+    default_offset = constants["DEFAULT_OFFSET"]
+    gain_default = constants["GAIN_DEFAULT"]
+
+    details = {
+        "details": []
+    }
+
+    for i in endpoints:
+        device_key = f'10.73.137.{100 + i}'
+        if device_key not in map_data:
+            print(f"Warning: Device {device_key} not found in map data.")
+            continue
+
+        device_data = map_data[device_key]
+
+        # Determine channels: use channel_list if present, otherwise use channel_range
+        channel_list = device_data.get("channel_list", [])
+        if channel_list:
+            channels = channel_list
+        else:
+            channel_range = device_data.get("channel_range", [])
+            if channel_range:
+                channels = list(range(channel_range[0], channel_range[1] + 1))
+            else:
+                print(f"Warning: No valid channels found for {device_key}.")
+                continue
+
+        # Use provided vgain or fall back to details file
+        if vgain is not None:
+            v_gains_for_device = [int(vgain)] * 5
+        else:
+            v_gains_for_device = device_data.get("v_gains", [2500] * 5)  # Default if missing in details file
+
+        trim_values = device_data.get("trim", [])
+
+        # Fetch AFE configurations
+        afe_adcs = device_data["afe"]["adcs"]
+        afe_pgas = device_data["afe"]["pgas"]
+        afe_lnas = device_data["afe"]["lnas"]
+
+        details["details"].append({
+            "id": device_data["id"],
+            "value": {
+                "self_trigger_threshold": thresholds.get(i, default_threshold_calib),
+                "full_stream_channels": [],
+                "channels": {
+                    "gains": [{"id": ch, "value": gain_default} for ch in channels],
+                    "offsets": [{"id": ch, "value": default_offset} for ch in channels],
+                    "trims": [
+                        {"id": ch, "value": trim_values[ch]}
+                        for ch in channels if ch < len(trim_values)
+                    ],
+                },
+                "afes": {
+                    "v_gains": [{"id": afe, "value": v_gains_for_device[afe]} for afe in range(5)],
+                    "v_biases": [{"id": afe, "value": bias} for afe, bias in enumerate(device_data.get("bias", [0] * 5))],
+                    "adcs": [{"id": afe, "value": afe_adcs[afe]} for afe in range(5)],
+                    "pgas": [{"id": afe, "value": afe_pgas[afe]} for afe in range(5)],
+                    "lnas": [{"id": afe, "value": afe_lnas[afe]} for afe in range(5)],
+                },
+            },
+        })
+
+    return details
+
+
+@click.command()
+@click.option(
+    "--details", "-df",
+    default="Configuration_CB_20241209.json",
+    help="IV json file"
+)
+@click.option(
+    "--threshold", "-thr",
+    default="{6: 45}",
+    help="Threshold for cosmic seeds"
+)
+@click.option(
+    "--vgain", "-vg",
+    default=None,
+    help="Vgain for calib seeds (leave empty to use values from the details file)"
+)
+def run_seed(details, threshold, vgain):
+    try:
+        with open(details, "r") as f:
+            map_data = json.load(f)
+    except FileNotFoundError:
+        print(f"Error: File {details} not found.")
+        return
+    except json.JSONDecodeError:
+        print(f"Error: Failed to parse JSON from file {details}.")
+        return
+
+    if "constants" not in map_data:
+        print(f"Error: No 'constants' section found in {details}.")
+        return
+
+    constants = map_data["constants"]
+    confs = {"CB": [6]}
+
+    # Parse threshold values
+    try:
+        threshold_cosmics = ast.literal_eval(threshold)
+    except (ValueError, SyntaxError):
+        print(f"Error: Invalid threshold format: {threshold}")
+        return
+
+    # Generate files for each device group
+    for dev, endpoints in confs.items():
+        threshold_calib = {i: constants["DEFAULT_THRESHOLD_CALIB"] for i in endpoints}
+
+        # Calibration seed
+        calibration_details = build_details(
+            map_data, endpoints, threshold_calib, constants, vgain, use_cosmic=False
+        )
+        with open(f"np02_daphne_{dev}_calib_seed.json", "w") as outfile:
+            json.dump(calibration_details, outfile, indent=4)
+
+        # Cosmic seed
+        cosmic_details = build_details(
+            map_data, endpoints, threshold_cosmics, constants, vgain, use_cosmic=True
+        )
+        with open(f"np02_daphne_{dev}_cosmics_seed.json", "w") as outfile:
+            json.dump(cosmic_details, outfile, indent=4)
+
+        print(f"Files for {dev} written successfully.")
+
+
+if __name__ == "__main__":
+    run_seed()
+

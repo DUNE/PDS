@@ -1,0 +1,174 @@
+{
+    "10.73.137.106": {
+        "id": 6,
+        "coldbox": "1",
+        "channel_range": [],
+        "channel_list": [
+            0,
+            1,
+            2,
+            3,
+            16,
+            17,
+            22,
+            23,
+            24,
+            25,
+            30,
+            31,
+            32,
+            33,
+            38,
+            39
+        ],
+        "bias": [
+            806,
+            0,
+            1200,
+            0,
+            0
+        ],
+        "trim": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "v_gains": [
+            2000,
+            2000,
+            2000,
+            2000,
+            2000
+        ],
+        "afe": {
+            "adcs": [
+                {
+                    "resolution": 0,
+                    "output_format": 1,
+                    "SB_first": 1
+                },
+                {
+                    "resolution": 0,
+                    "output_format": 1,
+                    "SB_first": 1
+                },
+                {
+                    "resolution": 0,
+                    "output_format": 1,
+                    "SB_first": 1
+                },
+                {
+                    "resolution": 0,
+                    "output_format": 1,
+                    "SB_first": 1
+                },
+                {
+                    "resolution": 0,
+                    "output_format": 1,
+                    "SB_first": 1
+                }
+            ],
+            "pgas": [
+                {
+                    "lpf_cut_frequnecy": 0,
+                    "integrator_disable": 1,
+                    "gain": 0
+                },
+                {
+                    "lpf_cut_frequnecy": 0,
+                    "integrator_disable": 1,
+                    "gain": 0
+                },
+                {
+                    "lpf_cut_frequnecy": 0,
+                    "integrator_disable": 1,
+                    "gain": 0
+                },
+                {
+                    "lpf_cut_frequnecy": 0,
+                    "integrator_disable": 1,
+                    "gain": 0
+                },
+                {
+                    "lpf_cut_frequnecy": 0,
+                    "integrator_disable": 1,
+                    "gain": 0
+                }
+            ],
+            "lnas": [
+                {
+                    "clamp": 0,
+                    "integrator_disable": 1,
+                    "gain": 2
+                },
+                {
+                    "clamp": 0,
+                    "integrator_disable": 1,
+                    "gain": 2
+                },
+                {
+                    "clamp": 0,
+                    "integrator_disable": 1,
+                    "gain": 2
+                },
+                {
+                    "clamp": 0,
+                    "integrator_disable": 1,
+                    "gain": 2
+                },
+                {
+                    "clamp": 0,
+                    "integrator_disable": 1,
+                    "gain": 2
+                }
+            ]
+        },
+        "ov": {
+            "fbk": 4.5,
+            "hpk": 4.5
+        },
+        "run": "Conf_Coldbox_Dec24"
+    },
+    "constants": {
+        "DEFAULT_THRESHOLD_CALIB": 8000,
+        "DEFAULT_OFFSET": 2250,
+        "GAIN_DEFAULT": 1
+    }
+}
