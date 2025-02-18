@@ -1,0 +1,10 @@
+{
+    "hztrigger": 5000,
+    "change_rate": 40.0,
+    "wait_time": 4,
+    "daphne_details": "/nfs/home/marroyav/fddaq-v5.2.1-a9/pds/scripts/daq_acquisition/np02/details.json",
+    "daphne_xml": "/nfs/home/marroyav/fddaq-v5.2.1-a9/ehn1-daqconfigs/segments/np02-pds.data.xml",
+    "daphne_obj": "np02-daphne-running",
+    "attenuators": "0,0,0,0,0",
+    "bias": "0,0,0,0,0"
+}

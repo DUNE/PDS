@@ -1,0 +1,110 @@
+{
+    "metadata": {
+        "type": "daphne_configuration",
+        "version": "1.0",
+        "configuration": "Configuration_np02"
+    },
+    "common_conf": {
+        "ov": {
+            "fbk": 4.5,
+            "hpk": 2.5
+        },
+        "offset_gain": 1,
+        "offset": 2200,
+        "bias_ctrl": 4095,
+        "resolution": 0,
+        "output_format": 1,
+        "SB_first": 1,
+        "lpf_cut_frequency": 4,
+        "pga_integrator_disable": 1,
+        "pga_gain": 0,
+        "clamp": 0,
+        "lna_integrator_disable": 1,
+        "lna_gain": 2
+    },
+    "devices": [
+        {
+            "ip": "10.73.137.107",
+            "slot": 7,
+            "det_id": "9",
+            "mode": "self-trigger",
+            "self_trigger_threshold": 9000,
+            "channels": {
+                "indices": [
+                    0,
+                    7,
+                    8,
+                    15,
+                    16,
+                    23,
+                    24,
+                    31,
+                    32,
+                    33,
+                    34,
+                    35,
+                    36,
+                    37,
+                    38,
+                    39
+                ],
+                "attenuators": [
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                "bias": [
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                "trim": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            }
+        }
+    ]
+}

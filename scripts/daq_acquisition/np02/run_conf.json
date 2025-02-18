@@ -1,0 +1,18 @@
+{
+    "hztrigger": 5000,
+    "change_rate": 40.0,
+    "wait_time": 4,
+    "oks_file": "/nfs/home/marroyav/fddaq-v5.2.1-a9/ehn1-daqconfigs/segments/np02-pds.data.xml",
+    "oks_session": "ehn1-daqconfigs/sessions/np02-session.data.xml",
+    "session_name": "np02-session",
+    "daphne_details": "/nfs/home/marroyav/fddaq-v5.2.1-a9/pds/scripts/daq_acquisition/np02/details.json",
+    "daphne_obj": "np02-daphne-running",
+    "mask_values": [1],
+    "min_bias": 4000,
+    "max_bias": 8000,
+    "step": 500,
+    "web_proxy_cmd": "source ~np04daq/bin/web_proxy.sh -u",
+    "dts_align_cmd": "dtsbutler mst MASTER_PC059_0 align apply-delay 0 0 0 --force -m 3",
+    "dts_faketrig_cmd_template": "dtsbutler mst MASTER_PC059_0 faketrig-conf 0x7 0 {hztrigger}",
+    "drunc_working_dir": "/nfs/home/marroyav/fddaq-v5.2.1-a9/"
+}
