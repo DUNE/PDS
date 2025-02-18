@@ -66,6 +66,19 @@ def generate_configuration(data):
         channel_ids = get_channel_ids(device)
         full_stream_channels = channel_ids if device["mode"] == "full_streaming" else []
 
+        # Validate self_trigger_threshold based on mode
+        if device["mode"] == "full_streaming":
+            self_trigger_threshold = 0
+        elif device["mode"] == "self-trigger":
+            if not (10 <= device["self_trigger_threshold"] <= 9000):
+                raise ValueError(
+                    f"Invalid self_trigger_threshold={device['self_trigger_threshold']} "
+                    f"for device {device['ip']}. It must be between 10 and 9000."
+                )
+            self_trigger_threshold = device["self_trigger_threshold"]
+        else:
+            raise ValueError(f"Invalid mode '{device['mode']}' for device {device['ip']}.")
+
         # Initialize channel_analog_conf
         channel_analog_conf = get_channel_analog_conf(channel_ids, common_conf, device)
 
@@ -73,7 +86,7 @@ def generate_configuration(data):
         configuration = {
             "slot": device['slot'],
             "bias_ctrl": common_conf['bias_ctrl'],
-            "self_trigger_threshold": device["self_trigger_threshold"],
+            "self_trigger_threshold": self_trigger_threshold,
             "full_stream_channels": full_stream_channels,
             "channel_analog_conf": channel_analog_conf,
             "afes": {
