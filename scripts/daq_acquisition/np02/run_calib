@@ -2,42 +2,62 @@
 
 import subprocess
 import sys
+import argparse
 
 # Define the location of the OKS file
-OKS_FILE = "ehn1-daqconfigs/segments/np02-pds.data.xml"
+OKS_FILE = "/nfs/home/marroyav/fddaq-v5.2.1-a9/ehn1-daqconfigs/segments/np02-pds.data.xml"
 
-# Define the drunc-unified-shell command
-DRUNC_CMD = (
-    "drunc-unified-shell ssh-standalone "
-    "ehn1-daqconfigs/sessions/np02-session.data.xml np02-session "
-    "boot conf start enable-triggers change-rate 2. wait 4 "
-    "disable-triggers drain-dataflow stop-trigger-sources stop scrap terminate"
-)
+class WebProxy:
+    """Handles sourcing the web proxy at the beginning of execution."""
+    
+    WEB_PROXY_CMD = "source ~np04daq/bin/web_proxy.sh -u"
+    
+    @staticmethod
+    def setup():
+        """Sources the web proxy script."""
+        print("\n=== Sourcing web_proxy.sh ===")
+        result = subprocess.call(f"bash -c '{WebProxy.WEB_PROXY_CMD}'", shell=True)
+        if result != 0:
+            print("\nError: Failed to source web_proxy.sh")
+            sys.exit(1)
 
-# Define the web proxy sourcing command
-WEB_PROXY_CMD = "source ~np04daq/bin/web_proxy.sh -u"
+class DTSButler:
+    """Handles the execution of DTS commands."""
+    
+    DTS_ALIGN_CMD = "dtsbutler mst MASTER_PC059_0 align apply-delay 0 0 0 --force -m 3"
+    DTS_FAKETRIG_CMD_TEMPLATE = "dtsbutler mst MASTER_PC059_0 faketrig-conf 0x7 0 {hztrigger}"
 
-def source_web_proxy():
-    """
-    Sources the web proxy script at the beginning of execution.
-    """
-    print("\n=== Sourcing web_proxy.sh ===")
-    result = subprocess.call(f"bash -c '{WEB_PROXY_CMD}'", shell=True)
-    if result != 0:
-        print("\nError: Failed to source web_proxy.sh")
-        sys.exit(1)
+    def __init__(self, hztrigger):
+        self.hztrigger = hztrigger
+
+    def run(self):
+        """Runs DTS alignment and fake trigger configuration."""
+        print("\n=== Running DTS Alignment Command ===")
+        result = subprocess.call(DTSButler.DTS_ALIGN_CMD, shell=True)
+        if result != 0:
+            print("\nError: DTS alignment command failed.")
+            sys.exit(1)
+
+        dts_faketrig_cmd = DTSButler.DTS_FAKETRIG_CMD_TEMPLATE.format(hztrigger=self.hztrigger)
+        print(f"\n=== Running DTS Fake Trigger Command: {dts_faketrig_cmd} ===")
+        result = subprocess.call(dts_faketrig_cmd, shell=True)
+        if result != 0:
+            print("\nError: DTS fake trigger command failed.")
+            sys.exit(1)
+
+def generate_drunc_command(change_rate, wait_time):
+    """Generates the drunc-unified-shell command with dynamic parameters."""
+    return (
+        f"drunc-unified-shell ssh-standalone "
+        f"ehn1-daqconfigs/sessions/np02-session.data.xml np02-session "
+        f"boot conf start enable-triggers change-rate {change_rate} wait {wait_time} "
+        f"disable-triggers drain-dataflow stop-trigger-sources stop scrap terminate"
+    )
 
 def run_set_ssp_conf(oksfile, **kwargs):
-    """
-    Runs the set_ssp_conf script with the provided arguments.
-    
-    Args:
-        oksfile (str): The required OKS file argument.
-        **kwargs: Optional named arguments to pass as CLI options.
-    """
+    """Runs the set_ssp_conf script with the provided arguments."""
     cmd = ["set_ssp_conf", oksfile]  # Base command
     
-    # Add optional arguments if provided
     for key, value in kwargs.items():
         if value is not None:
             option = f"--{key.replace('_', '-')}"  # Convert Python-style names to CLI format
@@ -46,44 +66,76 @@ def run_set_ssp_conf(oksfile, **kwargs):
 
     try:
         result = subprocess.run(cmd, check=True, text=True, capture_output=True)
-        print(f"\n=== Running set_ssp_conf with channel_mask={kwargs.get('channel_mask')} ===")
+        print(f"\n=== Running set_ssp_conf with {kwargs} ===")
         print("Output:\n", result.stdout)
     except subprocess.CalledProcessError as e:
-        print(f"\nError running set_ssp_conf with channel_mask={kwargs.get('channel_mask')}:")
+        print(f"\nError running set_ssp_conf with {kwargs}:")
         print("stderr:", e.stderr)
         sys.exit(1)
 
-def run_drunc_command():
-    """
-    Runs the drunc-unified-shell command.
-    """
-    print("\n=== Running drunc-unified-shell sequence ===")
-    result = subprocess.call(DRUNC_CMD, shell=True)
+def run_drunc_command(change_rate, wait_time):
+    """Runs the drunc-unified-shell command with dynamic parameters."""
+    drunc_cmd = generate_drunc_command(change_rate, wait_time)
+    print(f"\n=== Running drunc-unified-shell sequence with change-rate={change_rate} and wait-time={wait_time} ===")
+    result = subprocess.call(drunc_cmd, shell=True)
     if result != 0:
         print("\nError: drunc-unified-shell command failed.")
         sys.exit(1)
 
+class ScanMaskIntensity:
+    """Iterates over both channel_mask and pulse_bias_percent_270nm."""
+    
+    def __init__(self, mask_values=None, min_bias=4000, max_bias=4000, step=500, change_rate=2., wait_time=4):
+        if mask_values is None:
+            mask_values = [1]  # Default values
+        self.mask_values = mask_values
+        self.min_bias = min_bias
+        self.max_bias = max_bias
+        self.step = step
+        self.change_rate = change_rate
+        self.wait_time = wait_time
+
+    def run(self):
+        """Nested loop over channel_mask and pulse_bias_percent_270nm."""
+        for mask in self.mask_values:
+            for bias in range(self.min_bias, self.max_bias + self.step, self.step):
+                run_set_ssp_conf(
+                    oksfile=OKS_FILE,
+                    object_name="np02-ssp-on",
+                    number_channels=12,
+                    channel_mask=mask,
+                    pulse_mode="single",
+                    burst_count=1,
+                    double_pulse_delay_ticks=0,
+                    pulse1_width_ticks=5,
+                    pulse2_width_ticks=0,
+                    pulse_bias_percent_270nm=bias,
+                    pulse_bias_percent_367nm=0
+                )
+                run_drunc_command(self.change_rate, self.wait_time)
+
 if __name__ == "__main__":
-    # Source web_proxy.sh once at the beginning
-    source_web_proxy()
+    # Set up argument parser
+    parser = argparse.ArgumentParser(description="Run Mask Test, Pulse Bias Test, or Scan Mask & Intensity.")
+    parser.add_argument("--test", choices=["scan"], required=True,
+                        help="Choose 'scan' to run both mask and intensity iterations.")
+    parser.add_argument("--hztrigger", type=int, default=1000,
+                        help="Set the Hz trigger for faketrig-conf (default: 1000).")
+    parser.add_argument("--change-rate", type=float, default=2.,
+                        help="Set the change-rate parameter for drunc-unified-shell (default: 2.).")
+    parser.add_argument("--wait-time", type=int, default=4,
+                        help="Set the wait time parameter for drunc-unified-shell (default: 4).")
+    
+    args = parser.parse_args()
 
-    channel_mask_values = [1]  # Values to iterate over
+    # Setup Web Proxy
+    WebProxy.setup()
 
-    for mask in channel_mask_values:
-        # Run set_ssp_conf
-        run_set_ssp_conf(
-            oksfile=OKS_FILE,
-            object_name="np02-ssp-on",
-            number_channels=12,
-            channel_mask=mask,
-            pulse_mode="single",
-            burst_count=1,
-            double_pulse_delay_ticks=0,
-            pulse1_width_ticks=5,
-            pulse2_width_ticks=0,
-            pulse_bias_percent_270nm=4000,
-            pulse_bias_percent_367nm=0
-        )
+    # Setup and run DTSButler
+    dtsbutler = DTSButler(args.hztrigger)
+    dtsbutler.run()
 
-        # Run drunc-unified-shell command after each iteration
-        run_drunc_command()
+    # Execute the Scan Test with the given parameters
+    print("\n=== Running SCAN MASK & INTENSITY TEST ===")
+    scan_test = ScanMaskIntensity(change_rate=args.change_rate, wait_time=args.wait_time)
+    scan_test.run()

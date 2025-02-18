@@ -1,119 +1,160 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-echo -e "\e[36m[INFO] Welcome to the script for acquiring \033[1mCALIBRATION RUNS!\033[0m"
-echo -e "\e[36m To execute the script just run: \033[1msh run_calib.sh <username> <apa_number> <runtime> <message> <expert_mode>\033[0m"
-echo -e "\e[36m A log.txt file will be generated each time you run this script."
-echo -e " If any of the arguments is missing, the script will ask for it."
-echo -e " Enjoy! :) \n \e[0m"
+import subprocess
+import sys
+import argparse
 
-# The confirmation message need to be run with $ bash setup.sh (this lines are to allow $ sh setup.sh too)
-if [ ! "$BASH_VERSION" ] ; then
-    exec /bin/bash "$0" "$@"
-fi
+# Define the location of the OKS file
+OKS_FILE = "/nfs/home/marroyav/fddaq-v5.2.1-a9/ehn1-daqconfigs/segments/np02-pds.data.xml"
 
-# Check if the arguments are provided and if not ask for them
-if [ -n "$1" ];then
-    username=$1
-    else
-        read -p "Enter your username: " username
-fi
-if [ -n "$2" ];then
-    apa_number=$2
-    else
-        read -p "Enter the apas you want to acquire [34]: " apa_number
-fi
+# Define the drunc-unified-shell command
+DRUNC_CMD = (
+    "drunc-unified-shell ssh-standalone "
+    "ehn1-daqconfigs/sessions/np02-session.data.xml np02-session "
+    "boot conf start enable-triggers change-rate 2. wait 40 "
+    "disable-triggers drain-dataflow stop-trigger-sources stop scrap terminate"
+)
 
-if [[ ${#apa_number} -ge 2 ]]; then
-    suffix="s"
-else
-    suffix=""
-fi
+class WebProxy:
+    """Handles sourcing the web proxy at the beginning of execution."""
+    
+    WEB_PROXY_CMD = "source ~np04daq/bin/web_proxy.sh -u"
+    
+    @staticmethod
+    def setup():
+        """Sources the web proxy script."""
+        print("\n=== Sourcing web_proxy.sh ===")
+        result = subprocess.call(f"bash -c '{WebProxy.WEB_PROXY_CMD}'", shell=True)
+        if result != 0:
+            print("\nError: Failed to source web_proxy.sh")
+            sys.exit(1)
 
-if [ -n "$3" ];then
-    runtime=$3
-    else
-        read -p "Enter the runtime in seconds [RECOMMENDED 180]: " runtime
-fi
-if [ -n "$4" ];then
-    message=$4
-    else
-        read -p "Please enter a message to be added in the ELisA describing the run: " message
-fi
+class DTSButler:
+    """Handles the execution of DTS commands."""
+    
+    DTS_ALIGN_CMD = "dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3"
+    DTS_FAKETRIG_CMD_TEMPLATE = "dtsbutler mst MASTER_PC059_1 faketrig-conf 0x7 0 {hztrigger}"
 
-# Look for the APAs in the filename and set the IPs accordingly
-declare -A apa_map
-apa_map[1]="4 5 7"
-apa_map[2]="9"
-apa_map[3]="11"
-apa_map[4]="12 13"
+    def __init__(self, hztrigger):
+        self.hztrigger = hztrigger
 
-your_ips=()
-for apa in $(echo $apa_number | fold -w1); do
-    your_ips+=(${apa_map[$apa]})
-done
-ip_string=$(IFS=,; echo "${your_ips[*]}")
+    def run(self):
+        """Runs DTS alignment and fake trigger configuration."""
+        print("\n=== Running DTS Alignment Command ===")
+        result = subprocess.call(DTSButler.DTS_ALIGN_CMD, shell=True)
+        if result != 0:
+            print("\nError: DTS alignment command failed.")
+            sys.exit(1)
 
-log="pds_log/calib_log_$(date "+%F-%T").txt"
-config_file=global_configs/pds_daphne/np04_DAPHNE_APA${apa_number}_SSP.json
+        dts_faketrig_cmd = DTSButler.DTS_FAKETRIG_CMD_TEMPLATE.format(hztrigger=self.hztrigger)
+        print(f"\n=== Running DTS Fake Trigger Command: {dts_faketrig_cmd} ===")
+        result = subprocess.call(dts_faketrig_cmd, shell=True)
+        if result != 0:
+            print("\nError: DTS fake trigger command failed.")
+            sys.exit(1)
 
-echo -e "\e[32m\nYou selected APA(s) ($apa_number) with enpoints ($ip_string) !\e[0m"
-echo -e "\e[35mWe are going to use $config_file if exists :) \e[0m"
+def run_set_ssp_conf(oksfile, **kwargs):
+    """Runs the set_ssp_conf script with the provided arguments."""
+    cmd = ["set_ssp_conf", oksfile]  # Base command
+    
+    for key, value in kwargs.items():
+        if value is not None:
+            option = f"--{key.replace('_', '-')}"  # Convert Python-style names to CLI format
+            cmd.append(option)
+            cmd.append(str(value))
 
-echo "$apa_number"
-if [[ "$apa_number" == *1* ]]; then
-    Hztrigger_0x7=50
-else
-    Hztrigger_0x7=6250
-fi
-echo -e "\e[35mThe TRIGGER_AD-HOC (0x7) is set to ${Hztrigger_0x7} [Change it manually if it is not wat you want]\e[0m"
+    try:
+        result = subprocess.run(cmd, check=True, text=True, capture_output=True)
+        print(f"\n=== Running set_ssp_conf with {kwargs} ===")
+        print("Output:\n", result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"\nError running set_ssp_conf with {kwargs}:")
+        print("stderr:", e.stderr)
+        sys.exit(1)
 
-# Print the IPs and the Bias [V] for the user to confirm and save into the log file
-# echo -e "You are going to acquire data with IPs: ($ip_string), which Bias [V] are: "
-# python /nfs/home/np04daq/daphne/daphne_interface/scripts/readV.py --ip_address $ip_string | tee -a $log
+def run_drunc_command():
+    """Runs the drunc-unified-shell command."""
+    print("\n=== Running drunc-unified-shell sequence ===")
+    result = subprocess.call(DRUNC_CMD, shell=True)
+    if result != 0:
+        print("\nError: drunc-unified-shell command failed.")
+        sys.exit(1)
 
-# Once all the arguments are set, ask for confirmation
-if [ -n "$5" ] && [ "$5" = "True" ]; then
-    echo "EXPERT_MODE ON: running without confirmation message. Make sure you move your logs to eos."
-else
-    echo -e "\e[33mWARNING: You MUST be (in np04daq@np04-srv-024) inside \033[1mnp04_pds tmux!\033[0m \e[33m[tmux a -t np04_pds]\e[0m"
-    # echo -e "\e[31mCheck the endpoints are correctly setup and \033[1mbiased\033[0m\e[31m [careful with \033[1mnoise\033[0m\e[31m runs!]\e[0m"
-    echo -e "\n"
-    read -p "Are you sure you want to continue? (y/n) " -n 1 -r
-    echo -e "\n"
+class MaskTest:
+    """Iterates over different channel masks to test the response."""
+    
+    def __init__(self, mask_values=None):
+        if mask_values is None:
+            mask_values = [1, 2, 4, 8, 16, 32]  # Default values
+        self.mask_values = mask_values
 
-    # If the user did not answer with y, exit the script
-    if [[ ! $REPLY =~ ^[Yy]$ ]]
-    then
-        rm $log
-        exit 1
-    fi
-fi
+    def run(self):
+        """Iterates over channel masks and runs set_ssp_conf."""
+        for mask in self.mask_values:
+            run_set_ssp_conf(
+                oksfile=OKS_FILE,
+                object_name="np02-ssp-on",
+                number_channels=12,
+                channel_mask=mask,
+                pulse_mode="single",
+                burst_count=1,
+                double_pulse_delay_ticks=0,
+                pulse1_width_ticks=5,
+                pulse2_width_ticks=0,
+                pulse_bias_percent_270nm=4000,
+                pulse_bias_percent_367nm=0
+            )
+            run_drunc_command()
 
-# Print the configuration and the command to be executed
-echo -e "***** Running $config_file *****" | tee -a $log
-cat $config_file >> $log
-echo -e "\nRunning for $runtime seconds" | tee -a $log
-echo -e "dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3" | tee -a $log
-echo -e "dtsbutler mst MASTER_PC059_1 faketrig-conf 0x7 0 ${Hztrigger_0x7}" | tee -a $log
-echo -e "nano04rc --partition-number 7 --timeout 120 $config_file $username np04pds boot start_run --message "\"${message}\"" change_rate 20 wait ${runtime} stop_run" | tee -a $log
-echo -e "==================================================" >> $log
-echo -e "\nYOUR CONFIGURATION FOR DAPHNE:\n" >> $log
-cat /nfs/home/np04daq/DAQ_NP04_HD_AREA/np04daq-configs/DAPHNE_CONFS/np04_DAPHNE_APA${suffix}${apa_number}_calib_ssh_conf/data/daphneapp_conf.json >> $log
-echo -e "/n==================================================" >> $log
+class PulseBiasTest:
+    """Iterates over pulse_bias_percent_270nm in steps of 500."""
+    
+    def __init__(self, min_bias=0, max_bias=4000, step=500):
+        self.min_bias = min_bias
+        self.max_bias = max_bias
+        self.step = step
 
-# Execute the commands
-dtsbutler mst MASTER_PC059_1 align apply-delay 0 0 0 --force -m 3
-dtsbutler mst MASTER_PC059_1 faketrig-conf 0x7 0 ${Hztrigger_0x7}
-# nano04rc --partition-number 6 --timeout 120 ${config_file} $username np04pds boot start_run --message "\"${message}\"" wait ${runtime} stop_run
-nano04rc --partition-number 6 --timeout 120 ${config_file} $username np04pds boot start_run --message "\"${message}\"" change_rate 20 wait ${runtime} stop_run
+    def run(self):
+        """Iterates over pulse_bias_percent_270nm and runs set_ssp_conf."""
+        for bias in range(self.min_bias, self.max_bias + self.step, self.step):
+            run_set_ssp_conf(
+                oksfile=OKS_FILE,
+                object_name="np02-ssp-on",
+                number_channels=12,
+                channel_mask=0xFFF,  # Default mask (can be adjusted)
+                pulse_mode="single",
+                burst_count=1,
+                double_pulse_delay_ticks=0,
+                pulse1_width_ticks=5,
+                pulse2_width_ticks=0,
+                pulse_bias_percent_270nm=bias,
+                pulse_bias_percent_367nm=0
+            )
+            run_drunc_command()
 
-# Check if the commands were executed successfully
-if [ $? -ne 0 ]; then
-    echo "nanorc exited with errors!" | tee -a $log
-    exit 1
-fi
+if __name__ == "__main__":
+    # Set up argument parser
+    parser = argparse.ArgumentParser(description="Run either the Mask Test or the Pulse Bias Test.")
+    parser.add_argument("--test", choices=["mask", "intensity"], required=True,
+                        help="Choose whether to run the 'mask' test or the 'intensity' (pulse bias) test.")
+    parser.add_argument("--hztrigger", type=int, default=1000,
+                        help="Set the Hz trigger for faketrig-conf (default: 1000).")
+    
+    args = parser.parse_args()
 
-if [ "$5" != "True" ]; then
-    echo "Moving log file to /eos/.../log_files/ folder"
-    scp /nfs/home/np04daq/DAQ_NP04_HD_AREA/$log $username@lxplus.cern.ch:/eos/experiment/neutplatform/protodune/experiments/ProtoDUNE-II/PDS_Commissioning/log_files/.
-fi
+    # Setup Web Proxy
+    WebProxy.setup()
+
+    # Setup and run DTSButler
+    dtsbutler = DTSButler(args.hztrigger)
+    dtsbutler.run()
+
+    # Execute the selected test
+    if args.test == "mask":
+        print("\n=== Running MASK TEST ===")
+        mask_test = MaskTest()
+        mask_test.run()
+    elif args.test == "intensity":
+        print("\n=== Running PULSE INTENSITY TEST ===")
+        pulse_bias_test = PulseBiasTest()
+        pulse_bias_test.run()
