@@ -2,16 +2,18 @@ import os
 import click
 import json
 
-@click.command()
+@click.command(help="details_path: path to details file to modify (required) \n \
+                     xml_path: path to DAPHNE configuration XML file (required) )\n \
+                     obj_name: name of object in XML to modify (required)")
 @click.argument('details_path')
 @click.argument('xml_path')
 @click.argument('obj_name')
-@click.option('--attenuators', type=str, default=None)
-@click.option('--daphne_channels', type=str, default=None)
-@click.option('--bias', type=str, default=None)
-@click.option('--trim', type=str, default=None)
-@click.option('--mode', type=int, default=None)
-@click.option('--self_trigger_threshold', type=int, default=None)
+@click.option('--attenuators', type=str, default=None, help="VGAIN values for the 5 AFEs, e.g. 2600,2600,2600,2600,2600 (optional)")
+@click.option('--daphne_channels', type=str, default=None, help="list of DAPHNE channels, e.g. 0,1,2,3 (optional)")
+@click.option('--bias', type=str, default=None, help="bias DAC values for the 5 AFEs, e.g. 100,100,100,100,100 (optional)")
+@click.option('--trim', type=str, default=None, help="trim values to use, expects 40 elements in comma sep. list (optional)")
+@click.option('--mode', type=int, default=None, help="trigger mode (0 for full streaming, 1 for self-triggering)")
+@click.option('--self_trigger_threshold', type=int, default=None, help="self-triggering threshold in ADCs (optional)")
 def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, trim, mode, self_trigger_threshold):
     """ Script to update DAPHNE configuration files """
     if not os.path.exists(details_path):
@@ -26,25 +28,25 @@ def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, tr
          details_json_data = json.load(file)
      
     if bias:
-        new_bias = [item.strip() for item in bias.split(",")]
+        new_bias = [int(item.strip()) for item in bias.split(",")]
         if len(new_bias) != 5:
             raise Exception('Error reading bias list, should be five comma separated values.')
         details_json_data["devices"][0]["channels"]["bias"] = new_bias
 
     if attenuators:
-        new_attenuators = [item.strip() for item in attenuators.split(",")]
+        new_attenuators = [int(item.strip()) for item in attenuators.split(",")]
         if len(new_attenuators) != 5:
             raise Exception('Error reading attenuators list, should be five comma separated values.')
         details_json_data["devices"][0]["channels"]["attenuators"] = new_attenuators
     
     if daphne_channels:
-        new_daphne_channels = [item.strip() for item in daphne_channels.split(",")]
+        new_daphne_channels = [int(item.strip()) for item in daphne_channels.split(",")]
         if len(daphne_channels) == 0:
             raise Exception('Error: Must provide non-empty list of channels.')
         details_json_data["devices"][0]["channels"]["indices"] = new_daphne_channels
 
     if trim:
-        new_trim = [item.strip() for item in trim.split(",")]
+        new_trim = [int(item.strip()) for item in trim.split(",")]
         if len(new_trim) != 40:
             raise Exception('Error: list of trims must have a length of 40.')
         details_json_data["devices"][0]["channels"]["trim"] = new_trim
@@ -72,6 +74,7 @@ def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, tr
     command = f'add_daphne_conf {xml_path} {output_path} -n {obj_name}'
     print(command)
     os.system(command)
+    
     # read back updated values to make sure they were set correctly
     with open(details_path, "r") as file:
         updated_data = json.load(file)
