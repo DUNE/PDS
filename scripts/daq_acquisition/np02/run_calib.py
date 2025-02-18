@@ -5,6 +5,13 @@ import sys
 import argparse
 import json
 
+# ANSI escape codes for colors
+GREEN = "\033[92m"  # Success
+YELLOW = "\033[93m"  # Warnings / Start messages
+RED = "\033[91m"  # Errors
+BLUE = "\033[94m"  # Information
+RESET = "\033[0m"  # Reset color
+
 class WebProxy:
     """Handles sourcing the web proxy at the beginning of execution."""
     
@@ -12,11 +19,12 @@ class WebProxy:
     def setup(config):
         """Sources the web proxy script from JSON configuration."""
         web_proxy_cmd = config["web_proxy_cmd"]
-        print("\n=== Sourcing web_proxy.sh ===")
+        print(f"{YELLOW}📢 Sourcing web proxy...{RESET}")
         result = subprocess.call(f"bash -c '{web_proxy_cmd}'", shell=True)
         if result != 0:
-            print("\nError: Failed to source web_proxy.sh")
+            print(f"{RED}❌ Error: Failed to source web_proxy.sh{RESET}")
             sys.exit(1)
+        print(f"{GREEN}✅ Web proxy sourced successfully.{RESET}")
 
 class DTSButler:
     """Handles the execution of DTS commands."""
@@ -28,35 +36,38 @@ class DTSButler:
 
     def run(self):
         """Runs DTS alignment and fake trigger configuration."""
-        print("\n=== Running DTS Alignment Command ===")
+        print(f"{YELLOW}📢 Running DTS alignment...{RESET}")
         result = subprocess.call(self.dts_align_cmd, shell=True)
         if result != 0:
-            print("\nError: DTS alignment command failed.")
+            print(f"{RED}❌ Error: DTS alignment command failed.{RESET}")
             sys.exit(1)
+        print(f"{GREEN}✅ DTS alignment completed.{RESET}")
 
         dts_faketrig_cmd = self.dts_faketrig_cmd_template.format(hztrigger=self.hztrigger)
-        print(f"\n=== Running DTS Fake Trigger Command: {dts_faketrig_cmd} ===")
+        print(f"{YELLOW}📢 Configuring DTS fake trigger...{RESET}")
         result = subprocess.call(dts_faketrig_cmd, shell=True)
         if result != 0:
-            print("\nError: DTS fake trigger command failed.")
+            print(f"{RED}❌ Error: DTS fake trigger command failed.{RESET}")
             sys.exit(1)
+        print(f"{GREEN}✅ DTS fake trigger configured.{RESET}")
 
 def run_daphne_config(config):
     """Executes set_daphne_conf.py using parameters from the config dictionary."""
     cmd = [
         sys.executable,
-        "set_daphne_conf.py",
+        "/nfs/home/marroyav/fddaq-v5.2.1-a9/pds/scripts/daq_acquisition/np02/set_daphne_conf.py",
         config["daphne_details"],
         config["oks_file"],
         config["daphne_obj"]
     ]
 
-    print(f"\n=== Running set_daphne_conf.py with arguments: {' '.join(cmd)} ===")
+    print(f"{YELLOW}📢 Running set_daphne_conf.py...{RESET}")
     result = subprocess.call(cmd)
 
     if result != 0:
-        print("\nError: set_daphne_conf.py command failed.")
+        print(f"{RED}❌ Error: set_daphne_conf.py command failed.{RESET}")
         sys.exit(1)
+    print(f"{GREEN}✅ Daphne configuration completed.{RESET}")
 
 def generate_drunc_command(config):
     """Generates the drunc-unified-shell command dynamically using values from the config."""
@@ -70,20 +81,20 @@ def generate_drunc_command(config):
 def run_drunc_command(config):
     """Runs the drunc-unified-shell command with dynamic parameters."""
     drunc_cmd = generate_drunc_command(config)
-    drunc_working_dir = config["drunc_working_dir"]  # Get working directory from config
+    drunc_working_dir = config["drunc_working_dir"]
 
-    print(f"\n=== Running drunc-unified-shell from {drunc_working_dir} ===")
-    print(f'{drunc_cmd}')
+    print(f"{YELLOW}📢 Running drunc-unified-shell from {drunc_working_dir}...{RESET}")
+    print(f"{BLUE}{drunc_cmd}{RESET}")
     result = subprocess.call(drunc_cmd, shell=True, cwd=drunc_working_dir)
 
     if result != 0:
-        print("\nError: drunc-unified-shell command failed.")
+        print(f"{RED}❌ Error: drunc-unified-shell command failed.{RESET}")
         sys.exit(1)
+    print(f"{GREEN}✅ drunc-unified-shell completed successfully.{RESET}")
 
 def run_set_ssp_conf(config, **kwargs):
     """Runs the set_ssp_conf script with the provided arguments."""
     oks_file = config["oks_file"]
-
     cmd = ["set_ssp_conf", oks_file]
 
     for key, value in kwargs.items():
@@ -92,13 +103,14 @@ def run_set_ssp_conf(config, **kwargs):
             cmd.append(option)
             cmd.append(str(value))
 
+    print(f"{YELLOW}📢 Running set_ssp_conf...{RESET}")
     try:
         result = subprocess.run(cmd, check=True, text=True, capture_output=True)
-        print(f"\n=== Running set_ssp_conf with {kwargs} ===")
-        print("Output:\n", result.stdout)
+        print(f"{GREEN}✅ set_ssp_conf executed successfully.{RESET}")
+        print(f"{BLUE}Output:\n{result.stdout}{RESET}")
     except subprocess.CalledProcessError as e:
-        print(f"\nError running set_ssp_conf with {kwargs}:")
-        print("stderr:", e.stderr)
+        print(f"{RED}❌ Error running set_ssp_conf:{RESET}")
+        print(f"{RED}stderr: {e.stderr}{RESET}")
         sys.exit(1)
 
 class ScanMaskIntensity:
@@ -113,6 +125,7 @@ class ScanMaskIntensity:
 
     def run(self):
         """Nested loop over channel_mask and pulse_bias_percent_270nm."""
+        print(f"{YELLOW}📢 Starting SCAN MASK & INTENSITY TEST...{RESET}")
         for mask in self.mask_values:
             for bias in range(self.min_bias, self.max_bias + self.step, self.step):
                 run_set_ssp_conf(
@@ -152,6 +165,5 @@ if __name__ == "__main__":
     run_daphne_config(config)
 
     # Execute the Scan Test
-    print("\n=== Running SCAN MASK & INTENSITY TEST ===")
     scan_test = ScanMaskIntensity(config)
     scan_test.run()
