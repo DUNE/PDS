@@ -76,13 +76,13 @@ def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, tr
     with open(details_path, "r") as file:
         updated_data = json.load(file)
         if bias: 
-            print("Updated bias values:", updated_data["devices"][0]["channels"]["bias"])    
+            print("Updated bias values:", list(map(int, updated_data["devices"][0]["channels"]["bias"])))    
         if attenuators: 
-            print("Updated attenuator values:", updated_data["devices"][0]["channels"]["attenuators"])
+            print("Updated attenuator values:", list(map(int, updated_data["devices"][0]["channels"]["attenuators"])))
         if daphne_channels:
-            print("Updated channel values:", updated_data["devices"][0]["channels"]["indices"])
+            print("Updated channel values:", list(map(int, updated_data["devices"][0]["channels"]["indices"])))
         if trim:
-            print("Updated trim values:", updated_data["devices"][0]["channels"]["trim"])
+            print("Updated trim values:", list(map(int, updated_data["devices"][0]["channels"]["trim"])))
         if mode:
             print("Updated mode:", details_json_data["devices"][0]["mode"])
         if self_trigger_threshold:
