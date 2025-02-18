@@ -10,12 +10,18 @@ import json
 @click.option('--daphne_channels', type=str, default=None)
 @click.option('--bias', type=str, default=None)
 @click.option('--trim', type=str, default=None)
-def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, trim):
+@click.option('--mode', type=int, default=None)
+@click.option('--self_trigger_threshold', type=int, default=None)
+def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, trim, mode, self_trigger_threshold):
     """ Script to update DAPHNE configuration files """
     if not os.path.exists(details_path):
         raise Exception('details.json does not exist at ', details_path)
     if not os.path.exists(xml_path):
         raise Exception('xml file does not exist at ', xml_path)
+    if mode is not None and (mode != 0 and mode != 1):
+        raise Exception('Please specify a correct triggering mode (0 for full streaming, 1 for self-triggering), you provided ', mode)
+    if mode == 1 and self_trigger_threshold is None:
+        raise Exception('Since you are using self-triggering, please provide a self_trigger_threshold')
     with open(details_path, "r") as file:
          details_json_data = json.load(file)
      
@@ -43,6 +49,14 @@ def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, tr
             raise Exception('Error: list of trims must have a length of 40.')
         details_json_data["devices"][0]["channels"]["trim"] = new_trim
     
+    if mode:
+        if mode == 0:
+            details_json_data["devices"][0]["mode"] = "full_streaming"
+            details_json_data["devices"][0]["self_trigger_threshold"] = 0
+        elif mode == 1:
+            details_json_data["devices"][0]["mode"] = "self-trigger"
+            details_json_data["devices"][0]["self_trigger_threshold"] = self_trigger_threshold
+
     # dump new config
     with open(details_path, "w") as file:
         json.dump(details_json_data, file, indent=4)
@@ -51,7 +65,8 @@ def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, tr
         details_dir = '.'
     output_path = details_dir + '/output.json'
     print('output path = ', output_path)
-    command = f'python3 seed.py --details {details_path} --output {output_path}'
+    seed_path = details_dir + '/seed.py'
+    command = f'python3 {seed_path} --details {details_path} --output {output_path}'
     print('seed command: ', command)
 
     command = f'add_daphne_conf {xml_path} {output_path} -n {obj_name}'
@@ -68,7 +83,11 @@ def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, tr
             print("Updated channel values:", updated_data["devices"][0]["channels"]["indices"])
         if trim:
             print("Updated trim values:", updated_data["devices"][0]["channels"]["trim"])
-        print('Updated details json')
+        if mode:
+            print("Updated mode:", details_json_data["devices"][0]["mode"])
+        if self_trigger_threshold:
+            print("Updated self_trigger_threshold:", details_json_data["devices"][0]["self_trigger_threshold"])
+        print('Updated DAPHNE config')
 
 if __name__ == '__main__':
     cli()
