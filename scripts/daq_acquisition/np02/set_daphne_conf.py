@@ -1,6 +1,7 @@
 import os
 import click
 import json
+import xml.etree.ElementTree as ET
 
 @click.command(help="details_path: path to details file to modify (required) \n \
                      xml_path: path to DAPHNE configuration XML file (required) )\n \
@@ -74,7 +75,39 @@ def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, tr
     command = f'add_daphne_conf {xml_path} {output_path} -n {obj_name}'
     print(command)
     os.system(command)
-    
+
+    root = ET.parse(xml_path)
+    daphne_conf = root.find(".//obj[@class='DaphneConf'][@id='np02-daphne-running']")
+
+    if daphne_conf is not None:
+        attributes = {}
+        for attr in daphne_conf.findall("attr"):
+            attr_name = attr.get("name")
+            attr_type = attr.get("type")
+            attr_val = attr.get("val")
+            attributes[attr_name] = {"type": attr_type, "value": attr_val}
+
+    for key, value in attributes.items():
+        if key == 'json_file':
+            json_file = json.loads(value['value'])
+            for key in json_file.keys():
+                print('For key=', key, ', json=', json_file[key])
+                if bias:
+                    print("Updated bias values: ", list(map(int, json_file[key]['afes']['v_biases'])))
+                if attenuators:
+                    print("Updated attenuator values: ", list(map(int, json_file[key]['afes']['attenuators'])))
+                if daphne_channels:
+                    print("Updated channel values:", list(map(int, json_file[key]['channel_analog_conf']['ids'])))
+                if trim:
+                    print("Updated trim values:", list(map(int, json_file[key]['channel_analog_conf']['trim'])))
+                if mode:
+                    if len(json_file[key]['full_stream_channels']) == 0:
+                        print("Updated mode:", "full_streaming")
+                    else:
+                        print("Updated mode:", "self-triggering")
+                if self_trigger_threshold:
+                    print("Updated self_trigger_threshold:", int(json_file[key]['self_trigger_threshold']))
+
     # read back updated values to make sure they were set correctly
     with open(details_path, "r") as file:
         updated_data = json.load(file)
