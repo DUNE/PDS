@@ -1,7 +1,6 @@
 import os
 import click
 import json
-import ast
 
 @click.command()
 @click.argument('details_path')
@@ -27,12 +26,9 @@ def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, tr
         details_json_data["devices"][0]["channels"]["bias"] = new_bias
 
     if attenuators:
-        new_attenuators = ast.literal_eval(attenuators)
-        #new_attenuators = attenuators #[item.strip() for item in attenuators.split(",")]
-        print(new_attenuators)
-        return 0
-        #if len(new_attenuators) != 5:
-        #    raise Exception('Error reading attenuators list, should be five comma separated values.')
+        new_attenuators = [item.strip() for item in attenuators.split(",")]
+        if len(new_attenuators) != 5:
+            raise Exception('Error reading attenuators list, should be five comma separated values.')
         details_json_data["devices"][0]["channels"]["attenuators"] = new_attenuators
     
     if daphne_channels:
