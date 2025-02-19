@@ -58,7 +58,8 @@ def run_daphne_config(config):
         "/nfs/home/marroyav/fddaq-v5.2.1-a9/pds/scripts/daq_acquisition/np02/set_daphne_conf.py",
         config["daphne_details"],
         config["oks_file"],
-        config["daphne_obj"]
+        config["daphne_obj"],
+        config["bias"]
     ]
 
     print(f"{YELLOW}📢 Running set_daphne_conf.py...{RESET}")
