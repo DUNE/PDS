@@ -2,6 +2,7 @@ import os
 import click
 import json
 import xml.etree.ElementTree as ET
+import pprint
 
 @click.command(help="details_path: path to details file to modify (required) \n \
                      xml_path: path to DAPHNE configuration XML file (required) )\n \
@@ -15,8 +16,11 @@ import xml.etree.ElementTree as ET
 @click.option('--trim', type=str, default=None, help="trim values to use, expects 40 elements in comma sep. list (optional)")
 @click.option('--mode', type=int, default=None, help="trigger mode (0 for full streaming, 1 for self-triggering)")
 @click.option('--self_trigger_threshold', type=int, default=None, help="self-triggering threshold in ADCs (optional)")
-def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, trim, mode, self_trigger_threshold):
-    """ Script to update DAPHNE configuration files """
+@click.option('--offsets', type=str, default=None, help="offsets to use for each channels, expects 40 elements in comma sep. list (optional)")
+def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, trim, mode, self_trigger_threshold, offsets):
+    """ Script to update DAPHNE configuration files 
+        Author: Sam Fogarty
+    """
     if not os.path.exists(details_path):
         raise Exception('details.json does not exist at ', details_path)
     if not os.path.exists(xml_path):
@@ -40,7 +44,6 @@ def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, tr
         if len(new_attenuators) != 5:
             raise Exception('Error reading attenuators list, should be five comma-separated values.')
         details_json_data["devices"][0]["channels"]["attenuators"] = new_attenuators
-    
     if daphne_channels:
         new_daphne_channels = [int(item.strip()) for item in daphne_channels.split(",")]
         if len(new_daphne_channels) == 0:
@@ -60,6 +63,12 @@ def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, tr
         else:
             details_json_data["devices"][0]["mode"] = "self-trigger"
             details_json_data["devices"][0]["self_trigger_threshold"] = self_trigger_threshold
+    
+    if offsets:
+        new_offsets = [int(item.strip()) for item in offsets.split(",")]
+        if len(new_offsets) != 40:
+            raise Exception('Error: list of offsets must have a length of 40.')
+        details_json_data["devices"][0]["channels"]["offsets"] = new_offsets
 
     with open(details_path, "w") as file:
         json.dump(details_json_data, file, indent=4)
@@ -91,7 +100,8 @@ def cli(details_path, xml_path, obj_name, attenuators, daphne_channels, bias, tr
         if key == 'json_file':
             json_file = json.loads(value['value'])
             for key in json_file.keys():
-                print('For key=', key, ', json=', json_file[key])
+                print('For key=', key, ', json=')#, json_file[key])
+                pprint.pp(json_file[key])
     
     with open(details_path, "r") as file:
         updated_data = json.load(file)

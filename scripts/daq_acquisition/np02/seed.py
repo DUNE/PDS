@@ -12,7 +12,7 @@ def get_channel_ids(device):
 # Function to initialize analog configurations
 def get_channel_analog_conf(channel_ids, common_conf, device):
     gains = [common_conf["offset_gain"]] * len(channel_ids)
-    offsets = [common_conf["offset"]] * len(channel_ids)
+    offsets = list(device["channels"]["offsets"])
     trims = [
         device["channels"]["trim"][idx] if idx < len(device["channels"]["trim"]) else 0
         for idx in channel_ids
