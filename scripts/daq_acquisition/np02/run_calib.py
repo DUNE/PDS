@@ -59,7 +59,10 @@ def run_daphne_config(config):
         config["daphne_details"],
         config["oks_file"],
         config["daphne_obj"],
-        config["bias"]
+        "--bias",
+        f"{config['bias']}",
+        "--attenuators",
+        f"{config['attenuators']}",
     ]
 
     print(f"{YELLOW}📢 Running set_daphne_conf.py...{RESET}")

@@ -15,12 +15,14 @@ def run_daphne_config(config):
     """Executes set_daphne_conf.py using parameters from the config dictionary."""
     cmd = [
         sys.executable,
-        "/nfs/home/marroyav/fddaq-v5.2.1-a9/pds/scripts/daq_acquisition/np02/set_daphne_conf_new.py",
+        "/nfs/home/marroyav/fddaq-v5.2.1-a9/pds/scripts/daq_acquisition/np02/set_daphne_conf.py",
         config["daphne_details"],
         config["oks_file"],
         config["daphne_obj"],
         "--bias",
-        f"{config['bias']}"
+        f"{config['bias']}",
+        "--attenuators",
+        f"{config['attenuators']}",
     ]
 
     print(f"{YELLOW}📢 Running set_daphne_conf.py...{RESET}")
