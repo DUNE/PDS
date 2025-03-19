@@ -14,11 +14,11 @@ RESET = "\033[0m"  # Reset color
 
 class WebProxy:
     """Handles sourcing the web proxy at the beginning of execution."""
-    
+
     @staticmethod
     def setup(config):
         """Sources the web proxy script from JSON configuration."""
-        web_proxy_cmd = config["web_proxy_cmd"]
+        web_proxy_cmd = f"cd {config['drunc_working_dir']} && {config['web_proxy_cmd']}"
         print(f"{YELLOW}📢 Sourcing web proxy...{RESET}")
         result = subprocess.call(f"bash -c '{web_proxy_cmd}'", shell=True)
         if result != 0:
@@ -28,11 +28,13 @@ class WebProxy:
 
 class DTSButler:
     """Handles the execution of DTS commands."""
-    
+
     def __init__(self, config):
         self.hztrigger = config["hztrigger"]
-        self.dts_align_cmd = config["dts_align_cmd"]
-        self.dts_faketrig_cmd_template = config["dts_faketrig_cmd_template"]
+        self.dts_align_cmd = f"cd {config['drunc_working_dir']} && {config['dts_align_cmd']}"
+        self.dts_faketrig_cmd_template = (
+            f"cd {config['drunc_working_dir']} && {config['dts_faketrig_cmd_template']}"
+        )
 
     def run(self):
         """Runs DTS alignment and fake trigger configuration."""
@@ -55,14 +57,8 @@ def run_daphne_config(config):
     """Executes set_daphne_conf.py using parameters from the config dictionary."""
     cmd = [
         sys.executable,
-        "/nfs/home/marroyav/fddaq-v5.2.1-a9/pds/scripts/daq_acquisition/np02/set_daphne_conf.py",
-        config["daphne_details"],
-        config["oks_file"],
-        config["daphne_obj"],
-        "--bias",
-        f"{config['bias']}",
-        "--attenuators",
-        f"{config['attenuators']}",
+        f"{config['drunc_working_dir']}/pds/scripts/daq_acquisition/np02/set_daphne_conf.py",
+        args.config  
     ]
 
     print(f"{YELLOW}📢 Running set_daphne_conf.py...{RESET}")
@@ -98,7 +94,7 @@ def run_drunc_command(config):
 
 def run_set_ssp_conf(config, **kwargs):
     """Runs the set_ssp_conf script with the provided arguments."""
-    oks_file = config["oks_file"]
+    oks_file = config["drunc_working_dir"]+ config["oks_file"]
     cmd = ["set_ssp_conf", oks_file]
 
     for key, value in kwargs.items():
@@ -108,6 +104,8 @@ def run_set_ssp_conf(config, **kwargs):
             cmd.append(str(value))
 
     print(f"{YELLOW}📢 Running set_ssp_conf...{RESET}")
+    print(cmd)
+
     try:
         result = subprocess.run(cmd, check=True, text=True, capture_output=True)
         print(f"{GREEN}✅ set_ssp_conf executed successfully.{RESET}")
@@ -158,12 +156,12 @@ if __name__ == "__main__":
     with open(args.config, "r") as file:
         config = json.load(file)
 
-    # Setup Web Proxy
-    WebProxy.setup(config)
-
     # Setup and run DTSButler
     dtsbutler = DTSButler(config)
     dtsbutler.run()
+
+    # Setup Web Proxy
+    WebProxy.setup(config)
 
     # Execute the Daphne configuration
     run_daphne_config(config)
