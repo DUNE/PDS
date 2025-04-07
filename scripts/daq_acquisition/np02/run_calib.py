@@ -221,8 +221,8 @@ if __name__ == "__main__":
         config = json.load(file)
 
     # 1) DTS Setup (skip if 'skip_dts': true)
-    dtsbutler = DTSButler(config)
-    dtsbutler.run()
+    #dtsbutler = DTSButler(config)
+    #dtsbutler.run()
 
     # 2) Web Proxy Setup (skip if 'skip_proxy': true)
     WebProxy.setup(config)

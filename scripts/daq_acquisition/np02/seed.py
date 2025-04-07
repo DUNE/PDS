@@ -120,7 +120,7 @@ def generate_configuration(data, config_name, log=lambda *a, **k: None, deep_log
         log(f"\n[INFO] Generating config='{config_name}' for device='{device['ip']}'")
         device = copy.deepcopy(device)
         channel_ids = get_channel_ids(device)
-        full_stream_channels = channel_ids if device["mode"] == "full_streaming" else []
+        full_stream_channels = channel_ids if config_name == "daphne_full_mode" or config_name == "full_mode_bias_off" else []
 
         trigger = device.get("self_trigger", {})
         threshold = trigger.get("threshold", 0)

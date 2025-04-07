@@ -4,7 +4,22 @@
     "bias_ctrl": 4095,
     "self_trigger_threshold": 0,
     "full_stream_channels": [
-
+      0,
+      7,
+      8,
+      15,
+      16,
+      23,
+      24,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39
     ],
     "channel_analog_conf": {
       "ids": [
@@ -172,7 +187,7 @@
         ]
       }
     },
-    "self_trigger_xcorr": 1073993482239,
+    "self_trigger_xcorr": 1073741829000,
     "tp_conf": 1104641,
     "compensator": 1097389408641,
     "inverter": 1095216660480
