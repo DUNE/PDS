@@ -4,20 +4,30 @@ import subprocess
 import sys
 import argparse
 import json
+import time
 
 # ANSI escape codes for colors
-GREEN = "\033[92m"  # Success
+GREEN = "\033[92m"   # Success
 YELLOW = "\033[93m"  # Warnings / Start messages
-RED = "\033[91m"  # Errors
-BLUE = "\033[94m"  # Information
-RESET = "\033[0m"  # Reset color
+RED = "\033[91m"     # Errors
+BLUE = "\033[94m"    # Information
+RESET = "\033[0m"    # Reset color
+
+
+# ------------------------------------------------------------------------------
+# CLASSES
+# ------------------------------------------------------------------------------
 
 class WebProxy:
     """Handles sourcing the web proxy at the beginning of execution."""
 
     @staticmethod
     def setup(config):
-        """Sources the web proxy script from JSON configuration."""
+        """Sources the web proxy script from JSON configuration, unless skipped."""
+        if config.get("skip_proxy", False):
+            print(f"{YELLOW}⚠️ Skipping Web Proxy setup (skip_proxy=True).{RESET}")
+            return
+
         web_proxy_cmd = f"cd {config['drunc_working_dir']} && {config['web_proxy_cmd']}"
         print(f"{YELLOW}📢 Sourcing web proxy...{RESET}")
         result = subprocess.call(f"bash -c '{web_proxy_cmd}'", shell=True)
@@ -26,80 +36,101 @@ class WebProxy:
             sys.exit(1)
         print(f"{GREEN}✅ Web proxy sourced successfully.{RESET}")
 
+
 class DTSButler:
-    """Handles the execution of DTS commands."""
+    """Handles the execution of DTS commands (alignment and fake triggers)."""
 
     def __init__(self, config):
         self.hztrigger = config["hztrigger"]
-        self.dts_align_cmd = f"cd {config['drunc_working_dir']} && {config['dts_align_cmd']}"
-        self.dts_faketrig_cmd_template = (
-            f"cd {config['drunc_working_dir']} && {config['dts_faketrig_cmd_template']}"
-        )
+        workdir = config["drunc_working_dir"]
+        self.skip_dts = config.get("skip_dts", False)
+
+        self.dts_align_cmd = f"cd {workdir} && {config['dts_align_cmd']}"
+        self.dts_faketrig_cmd_template = f"cd {workdir} && {config['dts_faketrig_cmd_template']}"
 
     def run(self):
-        """Runs DTS alignment and fake trigger configuration."""
+        """Runs DTS alignment and fake trigger configuration, unless skipped."""
+        if self.skip_dts:
+            print(f"{YELLOW}⚠️ Skipping DTS alignment & fake trigger (skip_dts=True).{RESET}")
+            return
+
         print(f"{YELLOW}📢 Running DTS alignment...{RESET}")
-        result = subprocess.call(self.dts_align_cmd, shell=True)
-        if result != 0:
+        if subprocess.call(self.dts_align_cmd, shell=True) != 0:
             print(f"{RED}❌ Error: DTS alignment command failed.{RESET}")
             sys.exit(1)
         print(f"{GREEN}✅ DTS alignment completed.{RESET}")
 
         dts_faketrig_cmd = self.dts_faketrig_cmd_template.format(hztrigger=self.hztrigger)
         print(f"{YELLOW}📢 Configuring DTS fake trigger...{RESET}")
-        result = subprocess.call(dts_faketrig_cmd, shell=True)
-        if result != 0:
+        if subprocess.call(dts_faketrig_cmd, shell=True) != 0:
             print(f"{RED}❌ Error: DTS fake trigger command failed.{RESET}")
             sys.exit(1)
         print(f"{GREEN}✅ DTS fake trigger configured.{RESET}")
 
-def run_daphne_config(config):
-    """Executes set_daphne_conf.py using parameters from the config dictionary."""
+
+# ------------------------------------------------------------------------------
+# HELPER FUNCTIONS
+# ------------------------------------------------------------------------------
+
+def run_daphne_config(config, config_path):
+    """
+    Executes set_daphne_conf.py using parameters from 'config' plus your JSON file path.
+    """
+    # We pass the JSON config path as an argument to the python script
     cmd = [
         sys.executable,
         f"{config['drunc_working_dir']}/pds/scripts/daq_acquisition/np02/set_daphne_conf.py",
-        args.config  
+        config_path
     ]
 
     print(f"{YELLOW}📢 Running set_daphne_conf.py...{RESET}")
-    result = subprocess.call(cmd)
-
-    if result != 0:
+    if subprocess.call(cmd) != 0:
         print(f"{RED}❌ Error: set_daphne_conf.py command failed.{RESET}")
         sys.exit(1)
     print(f"{GREEN}✅ Daphne configuration completed.{RESET}")
 
+
 def generate_drunc_command(config):
-    """Generates the drunc-unified-shell command dynamically using values from the config."""
+    """
+    Generates the drunc-unified-shell command dynamically using values from the config.
+    Adjust the final steps or commands as needed.
+    """
     return (
         f"drunc-unified-shell ssh-standalone "
-        f"{config['oks_session']} {config['session_name']} manu-test-np02 "
+        f"{config['oks_session']} {config['session_name']} np02-pds "
         f"boot conf start enable-triggers change-rate --trigger-rate {config['change_rate']} wait {config['wait_time']} "
-        f"disable-triggers drain-dataflow stop-trigger-sources stop scrap terminate"
+        f"disable-triggers drain-dataflow stop-trigger-sources stop terminate"
     )
 
-def run_drunc_command(config):
-    """Runs the drunc-unified-shell command with dynamic parameters."""
+
+def run_drunc_command(config, post_delay_s=20):
+    """
+    Runs the drunc-unified-shell command with dynamic parameters,
+    then sleeps for 'post_delay_s' seconds to let it finish cleaning up.
+    """
     drunc_cmd = generate_drunc_command(config)
     drunc_working_dir = config["drunc_working_dir"]
 
     print(f"{YELLOW}📢 Running drunc-unified-shell from {drunc_working_dir}...{RESET}")
     print(f"{BLUE}{drunc_cmd}{RESET}")
-    result = subprocess.call(drunc_cmd, shell=True, cwd=drunc_working_dir)
 
-    if result != 0:
+    if subprocess.call(drunc_cmd, shell=True, cwd=drunc_working_dir) != 0:
         print(f"{RED}❌ Error: drunc-unified-shell command failed.{RESET}")
         sys.exit(1)
+
     print(f"{GREEN}✅ drunc-unified-shell completed successfully.{RESET}")
+
+    # Sleep so drunc can fully shut down before next iteration
+    time.sleep(post_delay_s)
+
 
 def run_set_ssp_conf(config, **kwargs):
     """
     Runs set_ssp_conf using:
-      - Hardcoded defaults in code
-      - Overridden by config['ssp_conf'] dictionary if present
-      - Overridden by function kwargs (like channel_mask, etc.)
+      - Hardcoded defaults
+      - Overridden by config['ssp_conf'] (if present)
+      - Overridden by function kwargs
     """
-    # 1) Our code defaults
     ssp_defaults = {
         "object_name": "np02-ssp-on",
         "number_channels": 12,
@@ -113,25 +144,23 @@ def run_set_ssp_conf(config, **kwargs):
         "pulse_bias_percent_367nm": 0
     }
 
-    # 2) Overwrite defaults with any fields from config["ssp_conf"]
     user_conf = config.get("ssp_conf", {})
     for key, val in user_conf.items():
-        # if user_conf["channel_mask"] is "8", we might parse to int
-        # or keep string if set_ssp_conf expects str. Let's parse int for numeric fields:
-        if key in ["channel_mask", "number_channels",
-                    "burst_count", "double_pulse_delay_ticks",
-                    "pulse1_width_ticks", "pulse2_width_ticks",
-                    "pulse_bias_percent_270nm", "pulse_bias_percent_367nm"]:
+        if key in [
+            "channel_mask", "number_channels", "burst_count",
+            "double_pulse_delay_ticks", "pulse1_width_ticks",
+            "pulse2_width_ticks", "pulse_bias_percent_270nm",
+            "pulse_bias_percent_367nm"
+        ]:
             ssp_defaults[key] = int(val)
         else:
             ssp_defaults[key] = val
 
-    # 3) Overwrite again with any function kwargs
     for key, val in kwargs.items():
         if val is not None:
             ssp_defaults[key] = val
 
-    # Build the final command
+    # Build final command
     oks_file = f"{config['drunc_working_dir']}/{config['oks_file']}"
     cmd = ["set_ssp_conf", oks_file]
     for key, val in ssp_defaults.items():
@@ -141,24 +170,30 @@ def run_set_ssp_conf(config, **kwargs):
 
     print(f"{YELLOW}📢 Running set_ssp_conf...{RESET}")
     print(f"{BLUE}{cmd}{RESET}")
-
     try:
         result = subprocess.run(cmd, check=True, text=True, capture_output=True)
         print(f"{GREEN}✅ set_ssp_conf executed successfully.{RESET}")
-        print(f"{BLUE}Output:\n{result.stdout}{RESET}")
+        if result.stdout:
+            print(f"{BLUE}Output:\n{result.stdout}{RESET}")
     except subprocess.CalledProcessError as e:
         print(f"{RED}❌ Error running set_ssp_conf:{RESET}")
         print(f"{RED}stderr: {e.stderr}{RESET}")
         sys.exit(1)
 
+
 class ScanMaskIntensity:
-    """Iterates over both channel_mask and pulse_bias_percent_270nm."""
+    """
+    Iterates over both 'channel_mask' and 'pulse_bias_percent_270nm' values,
+    calling run_set_ssp_conf() then run_drunc_command() each time.
+    """
+
     def __init__(self, config):
         self.config = config
         self.mask_values = config.get("mask_values", [1])
         self.min_bias = config.get("min_bias", 4000)
         self.max_bias = config.get("max_bias", 4000)
         self.step = config.get("step", 500)
+        self.drunc_delay_s = config.get("drunc_delay_s", 20)
 
     def run(self):
         print(f"{YELLOW}📢 Starting SCAN MASK & INTENSITY TEST...{RESET}")
@@ -169,51 +204,32 @@ class ScanMaskIntensity:
                     channel_mask=mask,
                     pulse_bias_percent_270nm=bias
                 )
-                run_drunc_command(self.config)
-                
+                run_drunc_command(self.config, post_delay_s=self.drunc_delay_s)
+
+
+# ------------------------------------------------------------------------------
+# MAIN
+# ------------------------------------------------------------------------------
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run configuration script using JSON input.")
     parser.add_argument("--config", required=True, help="Path to the configuration JSON file.")
     args = parser.parse_args()
 
+    # Load the config from JSON
     with open(args.config, "r") as file:
         config = json.load(file)
 
-    # DTS setup
+    # 1) DTS Setup (skip if 'skip_dts': true)
     dtsbutler = DTSButler(config)
     dtsbutler.run()
 
-    # Web Proxy
+    # 2) Web Proxy Setup (skip if 'skip_proxy': true)
     WebProxy.setup(config)
 
-    # Daphne config
-    run_daphne_config(config)
+    # 3) Daphne config
+    run_daphne_config(config, args.config)
 
-    # Scan test
+    # 4) The scanning test
     scan_test = ScanMaskIntensity(config)
     scan_test.run()
-
-# if __name__ == "__main__":
-#     # Set up argument parser
-#     parser = argparse.ArgumentParser(description="Run configuration script using JSON input.")
-#     parser.add_argument("--config", required=True, help="Path to the configuration JSON file.")
-    
-#     args = parser.parse_args()
-
-#     # Load configuration from JSON file
-#     with open(args.config, "r") as file:
-#         config = json.load(file)
-
-#     # Setup and run DTSButler
-#     dtsbutler = DTSButler(config)
-#     dtsbutler.run()
-
-#     # Setup Web Proxy
-#     WebProxy.setup(config)
-
-#     # Execute the Daphne configuration
-#     run_daphne_config(config)
-
-#     # Execute the Scan Test
-#     scan_test = ScanMaskIntensity(config)
-#     scan_test.run()
