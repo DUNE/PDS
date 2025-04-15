@@ -33,10 +33,10 @@
         "slope_mode": "20",
         "slope_threshold": 109,
         "pedestal_length": 128,
-        "spybuffer_channel": 8,
+        "spybuffer_channel": 0,
         "self_trigger_xcorr": {
-          "correlation_threshold": 1500000,
-          "discrimination_threshold": 22000
+          "correlation_threshold": 99999999,
+          "discrimination_threshold": 9999999
         },
         "enable_compensator": [
           0,
@@ -93,13 +93,7 @@
           1996,
           1996
         ],
-        "bias": [
-          750,
-          750,
-          1150,
-          1150,
-          1150
-        ],
+        "bias": [750,750,1150,1150,1150],
         "trim": [
           0,
           0,

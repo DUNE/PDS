@@ -44,6 +44,7 @@ def cli(details_path):
 
     # Base working directory
     drunc_dir = config["drunc_working_dir"]
+    mode = config["mode"]
 
     # Extract paths and object names relative to drunc working directory
     daphne_details_path = os.path.join(drunc_dir, config["daphne_details"])
@@ -60,7 +61,12 @@ def cli(details_path):
         daphne_json_data = json.load(file)
 
     # Update DAPHNE configuration with values from main details.json
-    bias = [int(x) for x in config["bias"].split(",")]
+    # print(mode)
+    # if mode == "noise":
+    #     bias=[0 for x in range(5)]
+    # else:
+    #     bias = [int(x) for x in config["bias"].split(",")]
+    bias = [int(x) for x in config["bias"].split(",")]  
     attenuators = [int(x) for x in config["attenuators"].split(",")]
 
     if len(bias) != 5 or len(attenuators) != 5:
@@ -76,7 +82,6 @@ def cli(details_path):
         
     with open("daphne_config.json", "w") as f:
         f.write(daphne_json)
-
     details_dir = os.path.dirname(daphne_details_path) or '.'
     
     seed_path = os.path.join(details_dir, 'seed.py')

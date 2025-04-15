@@ -1,4 +1,5 @@
 {
+    "mode": "cosmics",
     "hztrigger": 5000,
     "change_rate": 20.0,
     "wait_time": 180,
@@ -7,7 +8,7 @@
     "session_name": "np02-session",
     "daphne_details": "pds/scripts/daq_acquisition/np02/details.json",
     "daphne_obj": "np02-daphne-running",
-    "mask_values": [1],
+    "mask_values": [8],
     "ssp_conf": {
         "object_name": "np02-ssp-on",
         "channel_mask": "8",
@@ -17,19 +18,19 @@
         "double_pulse_delay_ticks": "3200",
         "pulse1_width_ticks": "2",
         "pulse2_width_ticks": "1",
-        "pulse_bias_percent_270nm": "0",
+        "pulse_bias_percent_270nm": "4000",
         "pulse_bias_percent_367nm": "0"
     },
-    "bias":"700,700,1100,1100,1100",
+    "bias":"750,750,1150,1150,1150",
     "attenuators":"1996,1996,1996,1996,1996",
     "min_bias": 4000,
     "max_bias": 4000,
     "step": 500,
-    "skip_dts": true,
     "skip_proxy": true,
     "web_proxy_cmd": "source ~np04daq/bin/web_proxy.sh -u",
     "dts_align_cmd": "dtsbutler mst MASTER_PC059_0 align apply-delay 0 0 0 --force -m 3",
     "dts_faketrig_cmd_template": "dtsbutler mst MASTER_PC059_0 faketrig-conf 0x7 0 {hztrigger}",
-    "drunc_working_dir": "/nfs/home/marroyav/07AprFDDevTest_1125",
+    "dts_clear_fktrig_cmd": "dtsbutler mst MASTER_PC059_0 faketrig-clear 0",
+    "drunc_working_dir": "/nfs/home/marroyav/fddaq-v5.3.0-rc1-a9",
     "drunc_delay_s": 20
 }

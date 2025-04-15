@@ -43,29 +43,38 @@ class DTSButler:
     def __init__(self, config):
         self.hztrigger = config["hztrigger"]
         workdir = config["drunc_working_dir"]
-        self.skip_dts = config.get("skip_dts", False)
+        self.mode = config.get("mode")
 
         self.dts_align_cmd = f"cd {workdir} && {config['dts_align_cmd']}"
         self.dts_faketrig_cmd_template = f"cd {workdir} && {config['dts_faketrig_cmd_template']}"
+        self.dts_clear_fktrig_cmd = f"cd {workdir} && {config['dts_clear_fktrig_cmd']}"
 
     def run(self):
         """Runs DTS alignment and fake trigger configuration, unless skipped."""
-        if self.skip_dts:
-            print(f"{YELLOW}⚠️ Skipping DTS alignment & fake trigger (skip_dts=True).{RESET}")
+        if self.mode == "cosmic":
+            print(f"{YELLOW}⚠️ Skipping DTS alignment & fake trigger.{RESET}")
+            print(f"{YELLOW}⚠️ Clearing DTS fk trigger cmd, Ad-Hoc disabled.{RESET}")
+            
+            if subprocess.call(self.dts_clear_fktrig_cmd, shell=True) != 0:
+                print(f"{RED}❌ Error: DTS fake trigger clear command failed.{RESET}")
+                sys.exit(1)
+            print(f"{GREEN}📢 DTS fake trigger disabled.{RESET}")
             return
+        else:
+            print(f"{YELLOW}📢 Running DTS alignment...{RESET}")
+            if subprocess.call(self.dts_align_cmd, shell=True) != 0:
+                print(f"{RED}❌ Error: DTS alignment command failed.{RESET}")
+                sys.exit(1)
+            print(f"{GREEN}✅ DTS alignment completed.{RESET}")
 
-        print(f"{YELLOW}📢 Running DTS alignment...{RESET}")
-        if subprocess.call(self.dts_align_cmd, shell=True) != 0:
-            print(f"{RED}❌ Error: DTS alignment command failed.{RESET}")
-            sys.exit(1)
-        print(f"{GREEN}✅ DTS alignment completed.{RESET}")
-
-        dts_faketrig_cmd = self.dts_faketrig_cmd_template.format(hztrigger=self.hztrigger)
-        print(f"{YELLOW}📢 Configuring DTS fake trigger...{RESET}")
-        if subprocess.call(dts_faketrig_cmd, shell=True) != 0:
-            print(f"{RED}❌ Error: DTS fake trigger command failed.{RESET}")
-            sys.exit(1)
-        print(f"{GREEN}✅ DTS fake trigger configured.{RESET}")
+            dts_faketrig_cmd = self.dts_faketrig_cmd_template.format(hztrigger=self.hztrigger)
+            print(f"{YELLOW}📢 Configuring DTS fake trigger...{RESET}")
+            if subprocess.call(dts_faketrig_cmd, shell=True) != 0:
+                print(f"{RED}❌ Error: DTS fake trigger command failed.{RESET}")
+                sys.exit(1)
+            print(f"{GREEN}✅ DTS fake trigger configured.{RESET}")
+    
+        
 
 
 # ------------------------------------------------------------------------------
@@ -159,6 +168,7 @@ def run_set_ssp_conf(config, **kwargs):
     for key, val in kwargs.items():
         if val is not None:
             ssp_defaults[key] = val
+    
 
     # Build final command
     oks_file = f"{config['drunc_working_dir']}/{config['oks_file']}"
@@ -194,17 +204,26 @@ class ScanMaskIntensity:
         self.max_bias = config.get("max_bias", 4000)
         self.step = config.get("step", 500)
         self.drunc_delay_s = config.get("drunc_delay_s", 20)
+        self.mode = config.get("mode")
 
     def run(self):
-        print(f"{YELLOW}📢 Starting SCAN MASK & INTENSITY TEST...{RESET}")
-        for mask in self.mask_values:
-            for bias in range(self.min_bias, self.max_bias + self.step, self.step):
-                run_set_ssp_conf(
+        if self.mode=="noise":
+            print(f"{YELLOW}📢 Noise run LED OFF...{RESET}")
+            run_set_ssp_conf(
                     self.config,
-                    channel_mask=mask,
-                    pulse_bias_percent_270nm=bias
+                    pulse_bias_percent_270nm=0
                 )
-                run_drunc_command(self.config, post_delay_s=self.drunc_delay_s)
+            run_drunc_command(self.config, post_delay_s=self.drunc_delay_s)
+        else:
+            print(f"{YELLOW}📢 Starting SCAN MASK & INTENSITY TEST...{RESET}")
+            for mask in self.mask_values:
+                for bias in range(self.min_bias, self.max_bias + self.step, self.step):
+                    run_set_ssp_conf(
+                        self.config,
+                        channel_mask=mask,
+                        pulse_bias_percent_270nm=bias
+                    )
+                    run_drunc_command(self.config, post_delay_s=self.drunc_delay_s)
 
 
 # ------------------------------------------------------------------------------
@@ -221,11 +240,11 @@ if __name__ == "__main__":
         config = json.load(file)
 
     # 1) DTS Setup (skip if 'skip_dts': true)
-    #dtsbutler = DTSButler(config)
-    #dtsbutler.run()
+    # dtsbutler = DTSButler(config)
+    # dtsbutler.run()
 
     # 2) Web Proxy Setup (skip if 'skip_proxy': true)
-    WebProxy.setup(config)
+    # WebProxy.setup(config)
 
     # 3) Daphne config
     run_daphne_config(config, args.config)
