@@ -2,7 +2,7 @@
   "metadata": {
     "type": "daphne_configuration",
     "version": "1.0",
-    "configuration": "np02_daphne_running"
+    "configuration": "np02_daphne_selftrigger"
   },
   "common_conf": {
     "ov": {
@@ -35,8 +35,8 @@
         "pedestal_length": 128,
         "spybuffer_channel": 8,
         "self_trigger_xcorr": {
-          "correlation_threshold": 1500000,
-          "discrimination_threshold": 22000
+          "correlation_threshold": 99999999,
+          "discrimination_threshold": 10
         },
         "enable_compensator": [
           0,
@@ -87,18 +87,18 @@
           39
         ],
         "attenuators": [
-          1996,
-          1996,
-          1996,
-          1996,
-          1996
+          2100,
+          2100,
+          2100,
+          2100,
+          2100
         ],
         "bias": [
-          750,
-          750,
-          1150,
-          1150,
-          1150
+          700,
+          700,
+          1100,
+          1100,
+          1100
         ],
         "trim": [
           0,
@@ -119,22 +119,22 @@
           0
         ],
         "offsets": [
-          2250,
-          2250,
-          2250,
-          2250,
-          2250,
-          2250,
-          2250,
-          2250,
-          2250,
-          2250,
-          2250,
-          2250,
-          2250,
-          2250,
-          2250,
-          2250
+          2100,
+          2100,
+          2100,
+          2100,
+          2100,
+          2100,
+          2100,
+          2100,
+          2400,
+          2400,
+          2400,
+          2400,
+          2400,
+          2400,
+          2400,
+          2400
         ]
       }
     }

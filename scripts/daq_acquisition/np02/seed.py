@@ -5,10 +5,10 @@ import click
 import copy
 
 CONFIGURATIONS = [
-    "daphne_full_mode",
-    "full_mode_bias_off",
-    "np02-daphne-running",
-    "selftrigger_bias_off"
+    "np02_daphne_full_mode",
+    "np02_daphne_full_mode_bias_off",
+    "np02_daphne_selftrigger",
+    "np02_daphne_selftrigger_bias_off"
 ]
 
 def pretty_compact_json(obj, indent=2):
@@ -126,20 +126,20 @@ def generate_configuration(data, config_name, log=lambda *a, **k: None, deep_log
         threshold = trigger.get("threshold", 0)
         bias = device["channels"].get("bias", [])
 
-        if config_name == "daphne_full_mode":
+        if config_name == "np02_daphne_full_mode":
             threshold = 0
             log("[INFO] Overriding threshold=0 for daphne_full_mode", fg="blue")
-        elif config_name == "full_mode_bias_off":
+        elif config_name == "np02_daphne_full_mode_bias_off":
             threshold = 0
             bias = [0] * 5
-            log("[INFO] Overriding threshold=0 and bias=0 for full_mode_bias_off", fg="blue")
-        elif config_name == "np02-daphne-running":
-            log("[INFO] np02-daphne-running, using threshold and bias from JSON", fg="blue")
-        elif config_name == "selftrigger_bias_off":
+            log("[INFO] Overriding threshold=0 and bias=0 for np02_daphne_full_mode_bias_off", fg="blue")
+        elif config_name == "np02_daphne_selftrigger":
+            log("[INFO] np02_daphne_selftrigger, using threshold and bias from JSON", fg="blue")
+        elif config_name == "np02_daphne_selftrigger_bias_off":
             bias = [0] * 5
             if threshold == 0:
                 raise ValueError(f"Threshold must be non-zero in 'selftrigger_bias_off' for device {device['ip']}")
-            log(f"[INFO] selftrigger_bias_off => forcing bias=0, threshold={threshold}", fg="blue")
+            log(f"[INFO] np02_daphne_selftrigger_bias_off => forcing bias=0, threshold={threshold}", fg="blue")
         else:
             raise ValueError(f"Unsupported configuration type: {config_name}")
 

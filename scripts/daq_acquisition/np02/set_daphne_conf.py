@@ -4,10 +4,10 @@ import json
 import xml.etree.ElementTree as ET
 
 CONFIGURATIONS = [
-    "daphne_full_mode",
-    "full_mode_bias_off",
-    "np02-daphne-running",
-    "selftrigger_bias_off"
+    "np02_daphne_full_mode",
+    "np02_daphne_full_mode_bias_off",
+    "np02_daphne_selftrigger",
+    "np02_daphne_selftrigger_bias_off"
 ]
 
 
@@ -62,11 +62,11 @@ def cli(details_path):
 
     # Update DAPHNE configuration with values from main details.json
     # print(mode)
-    # if mode == "noise":
-    #     bias=[0 for x in range(5)]
-    # else:
-    #     bias = [int(x) for x in config["bias"].split(",")]
-    bias = [int(x) for x in config["bias"].split(",")]  
+    if mode == "noise":
+        bias=[0 for x in range(5)]
+    else:
+        bias = [int(x) for x in config["bias"].split(",")]
+    #bias = [int(x) for x in config["bias"].split(",")]  
     attenuators = [int(x) for x in config["attenuators"].split(",")]
 
     if len(bias) != 5 or len(attenuators) != 5:
@@ -86,7 +86,7 @@ def cli(details_path):
     
     seed_path = os.path.join(details_dir, 'seed.py')
 
-    command = f'python3 {seed_path} --details {daphne_details_path} --verbose'
+    command = f'python3 {seed_path} --details daphne_config.json --verbose'
     print('Running seed command:', command)
     os.system(command)
     for _ in CONFIGURATIONS:
@@ -96,22 +96,22 @@ def cli(details_path):
         print('Running XML update command:', command)
         os.system(command)
 
-    root = ET.parse(xml_path)
-    daphne_conf = root.find(f".//obj[@class='DaphneConf'][@id='{obj_name}']")
+        root = ET.parse(xml_path)
+        daphne_conf = root.find(f".//obj[@class='DaphneConf'][@id='{obj_name}']")
 
-    if daphne_conf is not None:
-        attributes = {}
-        for attr in daphne_conf.findall("attr"):
-            attr_name = attr.get("name")
-            attr_type = attr.get("type")
-            attr_val = attr.get("val")
-            attributes[attr_name] = {"type": attr_type, "value": attr_val}
+        if daphne_conf is not None:
+            attributes = {}
+            for attr in daphne_conf.findall("attr"):
+                attr_name = attr.get("name")
+                attr_type = attr.get("type")
+                attr_val = attr.get("val")
+                attributes[attr_name] = {"type": attr_type, "value": attr_val}
 
-        for key, value in attributes.items():
-            if key == 'json_file':
-                json_file = json.loads(value['value'])
-                for subkey in json_file.keys():
-                    print(f'For key={subkey}, json={json_file[subkey]}')
+            for key, value in attributes.items():
+                if key == 'json_file':
+                    json_file = json.loads(value['value'])
+                    for subkey in json_file.keys():
+                        print(f'For key={subkey}, json={json_file[subkey]}')
 
     print('Updated DAPHNE configuration successfully.')
 

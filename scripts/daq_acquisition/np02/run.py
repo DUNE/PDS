@@ -1,10 +1,9 @@
-#!/usr/bin/env python3
-
 import subprocess
 import sys
 import argparse
 import json
 import time
+import click
 
 # ANSI escape codes for colors
 GREEN = "\033[92m"   # Success
@@ -108,7 +107,7 @@ def generate_drunc_command(config):
         f"drunc-unified-shell ssh-standalone "
         f"{config['oks_session']} {config['session_name']} np02-pds "
         f"boot conf start enable-triggers change-rate --trigger-rate {config['change_rate']} wait {config['wait_time']} "
-        f"disable-triggers drain-dataflow stop-trigger-sources stop terminate"
+        f"disable-triggers drain-dataflow stop-trigger-sources stop scrap terminate"
     )
 
 
@@ -230,25 +229,27 @@ class ScanMaskIntensity:
 # MAIN
 # ------------------------------------------------------------------------------
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run configuration script using JSON input.")
-    parser.add_argument("--config", required=True, help="Path to the configuration JSON file.")
-    args = parser.parse_args()
+@click.command(help="details_path: path to main details file to extract configuration (required)")
+@click.argument('details_path')
+def cli(details_path):
 
     # Load the config from JSON
-    with open(args.config, "r") as file:
+    with open(details_path, "r") as file:
         config = json.load(file)
 
     # 1) DTS Setup (skip if 'skip_dts': true)
-    # dtsbutler = DTSButler(config)
-    # dtsbutler.run()
+    dtsbutler = DTSButler(config)
+    dtsbutler.run()
 
     # 2) Web Proxy Setup (skip if 'skip_proxy': true)
-    # WebProxy.setup(config)
+    WebProxy.setup(config)
 
     # 3) Daphne config
-    run_daphne_config(config, args.config)
+    run_daphne_config(config, details_path)
 
     # 4) The scanning test
     scan_test = ScanMaskIntensity(config)
     scan_test.run()
+
+if __name__ == '__main__':
+    cli()
