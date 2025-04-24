@@ -2,7 +2,7 @@
     "mode": "cosmic",
     "hztrigger": 6000,
     "change_rate": 20.0,
-    "wait_time": 90,
+    "wait_time": 60,
     "oks_file": "np02-configs-operation/segments/np02-pds.data.xml",
     "oks_session": "np02-configs-operation/sessions/np02-session.data.xml",
     "session_name": "np02-session",
