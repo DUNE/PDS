@@ -163,7 +163,7 @@ def generate_configuration(data, config_name, log=lambda *a, **k: None, deep_log
 
         channel_analog_conf = get_channel_analog_conf(channel_ids, common_conf, device)
         configuration = {
-            "slot": device["slot"],
+            "slot": device["slot_id"],
             "bias_ctrl": common_conf["bias_ctrl"],
             "self_trigger_threshold": threshold,
             "full_stream_channels": full_stream_channels,
