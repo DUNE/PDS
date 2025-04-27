@@ -184,7 +184,7 @@ def generate_configuration(data, config_name):
 
     return configurations
 
-def generate_all_configurations(details_path):
+def generate_seeds(details_path):
     try:
         logging.info(f"Reading input JSON: {details_path}")
         with open(details_path, "r") as file:

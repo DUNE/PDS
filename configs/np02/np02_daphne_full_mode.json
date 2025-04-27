@@ -4,7 +4,22 @@
     "bias_ctrl": 4095,
     "self_trigger_threshold": 0,
     "full_stream_channels": [
-
+      0,
+      7,
+      8,
+      15,
+      16,
+      23,
+      24,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39
     ],
     "channel_analog_conf": {
       "ids": [
@@ -96,11 +111,11 @@
         2100
       ],
       "v_biases": [
-        0,
-        0,
-        0,
-        0,
-        0
+        800,
+        800,
+        1200,
+        1200,
+        1200
       ],
       "adcs": {
         "resolution": [

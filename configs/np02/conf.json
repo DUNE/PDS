@@ -6,7 +6,7 @@
     "oks_file": "np02-configs-operation/segments/np02-pds.data.xml",
     "oks_session": "np02-configs-operation/sessions/np02-session.data.xml",
     "session_name": "np02-session",
-    "daphne_details": "pds/scripts/daq_acquisition/np02/details.json",
+    "daphne_details": "pds/configs/np02/details.json",
     "daphne_obj": "np02_daphne_selftrigger",
     "mask_values": [4],
     "ssp_conf": {
@@ -32,6 +32,6 @@
     "dts_align_cmd": "dtsbutler mst MASTER_PC059_0 align apply-delay 0 0 0 --force -m 3",
     "dts_faketrig_cmd_template": "dtsbutler mst MASTER_PC059_0 faketrig-conf 0x7 0 {hztrigger}",
     "dts_clear_fktrig_cmd": "dtsbutler mst MASTER_PC059_0 faketrig-clear 0",
-    "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-NFD_DEV_250410-dev-dev-pds",
+    "drunc_working_dir": "/nfs/home/marroyav/fddaq-v5.3.0-rc1-a9",
     "drunc_delay_s": 20
 }

@@ -26,7 +26,7 @@ def seed_command(
 ):
     """Generate configuration files from details."""
     logging.info(f"🛠 Generating configuration files using {details}!")
-    seed.main(details)
+    seed.generate_seeds(details)
 
 @app.command(name="set")
 def set_command(

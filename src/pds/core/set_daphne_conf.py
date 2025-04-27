@@ -3,6 +3,7 @@ import os
 import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from pds.core.seed import generate_seeds
 
 CONFIGURATIONS = [
     "np02_daphne_full_mode",
@@ -79,12 +80,8 @@ def main(conf_path=None):
 
     # Run seed script to generate configurations
     seed_path = daphne_details_path.parent / 'seed.py'
-    if not seed_path.exists():
-        raise FileNotFoundError(f"Seed script not found at {seed_path}")
-
-    command = f'python3 {seed_path} --details daphne_config.json --verbose'
-    logging.info(f"Running seed command: {command}")
-    os.system(command)
+    generate_seeds(daphne_config_path)
+    logging.info(f"Generating the seeds")
 
     # Update XML file using add_daphne_conf
     for config_name in CONFIGURATIONS:
