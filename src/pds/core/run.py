@@ -38,7 +38,7 @@ class DTSButler:
         self.dts_clear_fktrig_cmd = f"cd {workdir} && {config['dts_clear_fktrig_cmd']}"
 
     def run(self):
-        if self.mode == "cosmic":
+        if self.mode == "cosmics":
             logging.warning("⚠️ Skipping DTS alignment & fake trigger for cosmic run.")
             if subprocess.call(self.dts_clear_fktrig_cmd, shell=True) != 0:
                 logging.error("❌ Error: DTS fake trigger clear command failed.")
