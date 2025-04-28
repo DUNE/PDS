@@ -4,6 +4,7 @@ import sys
 import json
 import time
 import os
+from typing import Any, Optional
 from pathlib import Path
 from pds.core.set_daphne_conf import main as run_daphne_config
 
@@ -79,7 +80,7 @@ def update_temp_details(details_path, temp_details_path, mode):
             }
         elif mode in ("noise", "calibration"):
             device.setdefault("self_trigger", {})["self_trigger_xcorr"] = {
-                "correlation_threshold": 268435455,
+                "correlation_threshold": 99999999,
                 "discrimination_threshold": 10
             }
 
@@ -150,27 +151,53 @@ def run_set_ssp_conf(config, **kwargs):
         sys.exit(1)
 
 class ScanMaskIntensity:
-    def __init__(self, config):
-        self.config = config
-        self.mask_values = config.get("mask_values", [1])
-        self.min_bias = config.get("min_bias", 4000)
-        self.max_bias = config.get("max_bias", 4000)
-        self.step = config.get("step", 500)
-        self.drunc_delay_s = config.get("drunc_delay_s", 20)
-        self.mode = config.get("mode")
+    def __init__(self, cfg: dict[str, Any]) -> None:
+        self.cfg             = cfg
+        self.mask_vals       = cfg.get("mask_values", [1])
+        self.min_bias        = cfg.get("min_bias", 4000)
+        self.max_bias        = cfg.get("max_bias", 4000)
+        self.step            = cfg.get("step", 500)
+        self.drunc_delay_s   = cfg.get("drunc_delay_s", 20)
+        self.mode            = cfg.get("mode")
 
-    def run(self):
+    # ──────────────────────────────────────────────────────────────
+    # REPLACE everything below with this new definition
+    # ──────────────────────────────────────────────────────────────
+    def run(self) -> None:
+        """
+        • calibration → full mask × intensity scan (nested loops)
+        • noise       → ONE run with LED OFF
+        • cosmics/other→ ONE run with default mask/bias
+        """
+        if self.mode == "calibration":
+            logging.info("📢  Calibration scan – iterating masks and intensities…")
+            for mask in self.mask_vals:
+                for bias in range(self.min_bias,
+                                  self.max_bias + self.step,
+                                  self.step):
+                    run_set_ssp_conf(self.cfg,
+                                     channel_mask=mask,
+                                     pulse_bias_percent_270nm=bias)
+                    run_drunc_command(self.cfg,
+                                      post_delay_s=self.drunc_delay_s)
+            return
+
         if self.mode == "noise":
-            logging.info("📢 Noise run LED OFF...")
-            run_set_ssp_conf(self.config, pulse_bias_percent_270nm=0)
-            run_drunc_command(self.config, post_delay_s=self.drunc_delay_s)
-        else:
-            logging.info("📢 Starting SCAN MASK & INTENSITY TEST...")
-            for mask in self.mask_values:
-                for bias in range(self.min_bias, self.max_bias + self.step, self.step):
-                    run_set_ssp_conf(self.config, channel_mask=mask, pulse_bias_percent_270nm=bias)
-                    run_drunc_command(self.config, post_delay_s=self.drunc_delay_s)
+            logging.info("📢  Noise run – single acquisition, LED OFF…")
+            run_set_ssp_conf(self.cfg, pulse_bias_percent_270nm=0)
+            run_drunc_command(self.cfg, post_delay_s=self.drunc_delay_s)
+            return
 
+        # cosmics or anything else
+        logging.info("📢  %s run – single acquisition "
+                     "(mask=%s, bias=%s)…",
+                     self.mode.capitalize(),
+                     self.mask_vals[0],
+                     self.min_bias)
+        run_set_ssp_conf(self.cfg,
+                         channel_mask=self.mask_vals[0],
+                         pulse_bias_percent_270nm=self.min_bias)
+        run_drunc_command(self.cfg, post_delay_s=self.drunc_delay_s)
 # ------------------------------------------------------------------------------
 # MAIN
 # ------------------------------------------------------------------------------
@@ -219,8 +246,8 @@ def main(mode=None, conf_path=None):
 
         run_daphne_config(conf_path=temp_conf_path, mode=mode)
 
-        #scan_test = ScanMaskIntensity(config_for_run)
-        #scan_test.run()
+        scan_test = ScanMaskIntensity(config_for_run)
+        scan_test.run()
 
     finally:
         if dtsbutler is not None:

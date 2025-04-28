@@ -36,8 +36,8 @@
         "pedestal_length": 128,
         "spybuffer_channel": 8,
         "self_trigger_xcorr": {
-          "correlation_threshold": 268435455,
-          "discrimination_threshold": 10
+          "correlation_threshold": 4000,
+          "discrimination_threshold": 5000
         },
         "enable_compensator": [
           0,
