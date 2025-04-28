@@ -1,5 +1,0 @@
-IP	APA	AFE	Config_CH	DAQ_CH	SIPM_type	Run	Bias_conversion_slope	Bias_conversion_intercept	Vbd(V)	Vbd_error(V)
-10.73.137.113	4	0	0	0	FBK	[Vbd_LN2T_corrected]	0.03917	0.48991	27.9911	0.0000
-10.73.137.113	4	0	2	2	FBK	[Vbd_LN2T_corrected]	0.03915	0.50091	27.6811	0.0000
-10.73.137.113	4	0	5	5	FBK	[Vbd_LN2T_corrected]	0.03916	0.49800	27.7811	0.0000
-10.73.137.113	4	0	7	7	FBK	[Vbd_LN2T_corrected]	0.03918	0.48491	27.4911	0.0000

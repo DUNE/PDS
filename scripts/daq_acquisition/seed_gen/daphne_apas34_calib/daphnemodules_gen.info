@@ -1,6 +1,0 @@
-{
-    "build_info": {},
-    "command_line": "./daphne_gen -c daphne_config.json -f seed.json daphne_apas34_calib",
-    "config_file": "daphne_config.json",
-    "daqconf_exe_dir": "/nfs/home/marroyav/pds/scripts/daq_acquisition/seed_gen"
-}

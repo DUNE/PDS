@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pds-runner"
+version = "0.1.0"
+description = "Photon Detection System configuration and run automation for the DAPHNE front-end board."
+authors = [
+    { name="Manuel Arroyave" }
+]
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "typer>=0.9"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+[project.scripts]
+pds-run = "pds.cli:main"
