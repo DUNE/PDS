@@ -43,12 +43,15 @@ def main(mode=None, conf_path=None):
 
     config = original_config.copy()
 
+    temp_details_path = None
+
     if mode is not None:
         config["mode"] = mode
 
     temp_conf_path = None
     if mode is not None:
         temp_conf_path = conf_path.parent / "conf_temp.json"
+        temp_details_path = conf_path.parent / "temp_details.json"
         with open(temp_conf_path, "w") as f:
             json.dump(config, f, indent=2)
         working_conf_path = temp_conf_path
@@ -56,7 +59,6 @@ def main(mode=None, conf_path=None):
         working_conf_path = conf_path
 
     try:
-        # Load working configuration
         with open(working_conf_path, "r") as file:
             config = json.load(file)
 
@@ -128,9 +130,9 @@ def main(mode=None, conf_path=None):
         logging.info("✅ Updated DAPHNE configuration successfully.")
 
     finally:
-        if temp_conf_path and temp_conf_path.exists():
-            logging.info(f"🧹 Cleaning up temporary config file: {temp_conf_path}")
-            os.remove(temp_conf_path)
+        if temp_details_path and temp_details_path.exists():
+            logging.info(f"🧹 Cleaning up temporary details file: {temp_details_path}")
+            os.remove(temp_details_path)
 
 if __name__ == "__main__":
     main()

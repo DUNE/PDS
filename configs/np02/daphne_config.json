@@ -36,8 +36,8 @@
         "pedestal_length": 128,
         "spybuffer_channel": 8,
         "self_trigger_xcorr": {
-          "correlation_threshold": 4000,
-          "discrimination_threshold": 5000
+          "correlation_threshold": 268435455,
+          "discrimination_threshold": 10
         },
         "enable_compensator": [
           0,
@@ -95,11 +95,11 @@
           2100
         ],
         "bias": [
-          800,
-          800,
-          1200,
-          1200,
-          1200
+          0,
+          0,
+          0,
+          0,
+          0
         ],
         "trim": [
           0,
@@ -120,22 +120,22 @@
           0
         ],
         "offsets": [
-          2100,
-          2100,
-          2100,
-          2100,
-          2100,
-          2100,
-          2100,
-          2100,
-          2400,
-          2400,
-          2400,
-          2400,
-          2400,
-          2400,
-          2400,
-          2400
+          2124,
+          2097,
+          2108,
+          2105,
+          2137,
+          2105,
+          2106,
+          2099,
+          2439,
+          2451,
+          2436,
+          2434,
+          2427,
+          2421,
+          2441,
+          2429
         ]
       }
     }

@@ -3,7 +3,6 @@ import subprocess
 import sys
 import json
 import time
-import tempfile
 import os
 from pathlib import Path
 from pds.core.set_daphne_conf import main as run_daphne_config
@@ -39,11 +38,8 @@ class DTSButler:
 
     def run(self):
         if self.mode == "cosmics":
-            logging.warning("⚠️ Skipping DTS alignment & fake trigger for cosmic run.")
-            if subprocess.call(self.dts_clear_fktrig_cmd, shell=True) != 0:
-                logging.error("❌ Error: DTS fake trigger clear command failed.")
-                sys.exit(1)
-            logging.info("📢 DTS fake trigger disabled.")
+            logging.warning("⚠️ Skipping DTS alignment & clearing ad-hoc trigger.")
+            self.clear()
             return
 
         logging.info("📢 Running DTS alignment...")
@@ -59,9 +55,39 @@ class DTSButler:
             sys.exit(1)
         logging.info("✅ DTS fake trigger configured.")
 
+    def clear(self):
+        """Always try to clear DTS fake triggers."""
+        logging.info("📢 Clearing DTS fake trigger at the end of run...")
+        if subprocess.call(self.dts_clear_fktrig_cmd, shell=True) != 0:
+            logging.error("❌ Failed to clear DTS fake trigger.")
+        else:
+            logging.info("✅ DTS fake trigger cleared.")
+
 # ------------------------------------------------------------------------------
 # HELPER FUNCTIONS
 # ------------------------------------------------------------------------------
+
+def update_temp_details(details_path, temp_details_path, mode):
+    with open(details_path, 'r') as f:
+        details = json.load(f)
+
+    for device in details.get("devices", []):
+        if mode == "cosmics":
+            device.setdefault("self_trigger", {})["self_trigger_xcorr"] = {
+                "correlation_threshold": 4000,
+                "discrimination_threshold": 5000
+            }
+        elif mode in ("noise", "calibration"):
+            device.setdefault("self_trigger", {})["self_trigger_xcorr"] = {
+                "correlation_threshold": 268435455,
+                "discrimination_threshold": 10
+            }
+
+    with open(temp_details_path, 'w') as f:
+        json.dump(details, f, indent=2)
+
+    logging.info(f"✅ Generated modified temp details file: {temp_details_path}")
+
 
 def generate_drunc_command(config):
     return (
@@ -149,6 +175,7 @@ class ScanMaskIntensity:
 # MAIN
 # ------------------------------------------------------------------------------
 
+
 def main(mode=None, conf_path=None):
     if conf_path is None:
         logging.error("Configuration path must be provided.")
@@ -163,32 +190,48 @@ def main(mode=None, conf_path=None):
 
     config_for_run = original_config.copy()
 
-    if mode is not None:
-        config_for_run["mode"] = mode
-    else:
-        if "mode" not in config_for_run:
-            raise ValueError("Mode must be provided either via CLI or in the conf.json file.")
-
-    # Create a temporary file for the modified configuration
     temp_conf_path = conf_path.parent / "conf_temp.json"
-    with open(temp_conf_path, "w") as f:
-        json.dump(config_for_run, f, indent=2)
+    temp_details_path = None
+    dtsbutler = None
 
     try:
+        if mode is not None:
+            config_for_run["mode"] = mode
+
+            # Create temp details.json exactly in the same folder as conf.json
+            details_path = conf_path.parent / Path(original_config["daphne_details"]).name
+            temp_details_path = conf_path.parent / "temp_details.json"
+
+            update_temp_details(details_path, temp_details_path, mode)
+            drunc_dir = Path(original_config["drunc_working_dir"]).resolve()
+            relative_temp_details = temp_details_path.resolve().relative_to(drunc_dir)
+            config_for_run["daphne_details"] = str(relative_temp_details)
+        # Create temp conf
+        with open(temp_conf_path, "w") as f:
+            json.dump(config_for_run, f, indent=2)
+
+        logging.info(f"✅ Created temp conf file: {temp_conf_path}")
+
         dtsbutler = DTSButler(config_for_run)
         dtsbutler.run()
 
         WebProxy.setup(config_for_run)
 
-        run_daphne_config(conf_path=temp_conf_path)  # Use modified config!
+        run_daphne_config(conf_path=temp_conf_path)
 
         scan_test = ScanMaskIntensity(config_for_run)
         scan_test.run()
 
     finally:
+        if dtsbutler is not None:
+            dtsbutler.clear()
+
         if temp_conf_path.exists():
             logging.info(f"🧹 Cleaning up temporary config file: {temp_conf_path}")
             os.remove(temp_conf_path)
+        if temp_details_path and temp_details_path.exists():
+            logging.info(f"🧹 Cleaning up temporary details file: {temp_details_path}")
+            os.remove(temp_details_path)
 
 if __name__ == "__main__":
     main()
