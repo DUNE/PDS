@@ -10,39 +10,46 @@ from typing import Any
 
 from .constants import JSON_INDENT
 
-
-def pretty_compact_json(obj: Any, *, indent: int | None = None) -> str:
+def pretty_compact_json(
+    obj: Any,
+    *,
+    multiline: bool = False,
+    indent: int = 2,
+) -> str:
     """
-    Produce deterministic JSON with tight spacing and newlines.
+    Convert *obj* to JSON.
 
-    The result is cached because many modules call this repeatedly
-    with the *same* object instance during one run.
+    Parameters
+    ----------
+    obj        : any serialisable Python object
+    multiline  : True  → formatted with new-lines & indentation
+                 False → single line, minimal whitespace
+    indent     : number of spaces per indent level when multiline=True
     """
-    if indent is None:
-        indent = JSON_INDENT
+    if not multiline:
+        # single-line: remove the blank after ',' and ':'
+        return json.dumps(obj, separators=(",", ":"), ensure_ascii=False)
 
+    # ---------- pretty version (what you had before) ----------
     def _dump(o: Any, level: int) -> str:
         spacing = " " * (level * indent)
-
         if isinstance(o, dict):
-            items = [
+            parts = [
                 f'{spacing}{" " * indent}"{k}": {_dump(v, level + 1)}'
                 for k, v in o.items()
             ]
-            return "{\n" + ",\n".join(items) + f"\n{spacing}}}"
+            return "{\n" + ",\n".join(parts) + f"\n{spacing}}}"
         if isinstance(o, list):
-            items = [_dump(v, level + 1) for v in o]
+            parts = [_dump(v, level + 1) for v in o]
             return (
                 "[\n"
                 + ",\n".join(
-                    f'{" " * ((level + 1) * indent)}{item}' for item in items
+                    f'{" " * ((level + 1) * indent)}{p}' for p in parts
                 )
                 + f"\n{spacing}]"
             )
-        # primitives
-        return json.dumps(o, separators=(",", ":"))
+        return json.dumps(o, ensure_ascii=False)
 
-    # copy-by-value isn’t needed; json.dumps is read-only.
     return _dump(obj, 0)
 
 

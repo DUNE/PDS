@@ -1,265 +1,220 @@
+from __future__ import annotations
+
+import json
 import logging
 import subprocess
 import sys
-import json
 import time
-import os
-from typing import Any, Optional
+from dataclasses import asdict, dataclass
 from pathlib import Path
+from tempfile import TemporaryDirectory
+from typing import Any, Optional
+
 from pds.core.set_daphne_conf import main as run_daphne_config
+from pds.core.utils import pretty_compact_json
+from pds.core.constants import CONFIGURATIONS
 
-# ------------------------------------------------------------------------------
-# CLASSES
-# ------------------------------------------------------------------------------
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Typed container for set_ssp_conf options
+# ──────────────────────────────────────────────────────────────────────────────
+@dataclass(slots=True)
+class SSPConf:
+    object_name: str = "np02-ssp-on"
+    number_channels: int = 12
+    channel_mask: int = 1
+    pulse_mode: str = "single"
+    burst_count: int = 1
+    double_pulse_delay_ticks: int = 0
+    pulse1_width_ticks: int = 5
+    pulse2_width_ticks: int = 0
+    pulse_bias_percent_270nm: int = 4000
+    pulse_bias_percent_367nm: int = 0
+
+    @classmethod
+    def from_config(cls, cfg: dict[str, Any]) -> "SSPConf":
+        inst = cls()
+        for k, v in cfg.get("ssp_conf", {}).items():
+            if hasattr(inst, k):
+                setattr(inst, k, int(v) if isinstance(v, str) and v.isdigit() else v)
+        return inst
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Simple wrappers around external shell tools
+# ──────────────────────────────────────────────────────────────────────────────
 class WebProxy:
     @staticmethod
-    def setup(config):
-        if config.get("skip_proxy", False):
-            logging.warning("⚠️ Skipping Web Proxy setup (skip_proxy=True).")
+    def setup(cfg: dict[str, Any]) -> None:
+        if cfg.get("skip_proxy", False):
+            logging.warning("⚠️  skip_proxy=True – not sourcing web proxy.")
             return
+        cmd = ["bash", "-c", f"cd {cfg['drunc_working_dir']} && {cfg['web_proxy_cmd']}"]
+        logging.info("📢  Sourcing web_proxy …")
+        subprocess.run(cmd, check=True)
+        logging.info("✅  Web proxy sourced.")
 
-        web_proxy_cmd = f"cd {config['drunc_working_dir']} && {config['web_proxy_cmd']}"
-        logging.info("📢 Sourcing web proxy...")
-        result = subprocess.call(f"bash -c '{web_proxy_cmd}'", shell=True)
-        if result != 0:
-            logging.error("❌ Error: Failed to source web_proxy.sh")
-            sys.exit(1)
-        logging.info("✅ Web proxy sourced successfully.")
 
 class DTSButler:
-    def __init__(self, config):
-        self.hztrigger = config["hztrigger"]
-        workdir = config["drunc_working_dir"]
-        self.mode = config.get("mode")
+    def __init__(self, cfg: dict[str, Any]) -> None:
+        self.cfg = cfg
+        wd = cfg["drunc_working_dir"]
+        self.mode = cfg.get("mode")
+        self.align_cmd   = ["bash", "-c", f"cd {wd} && {cfg['dts_align_cmd']}"]
+        self.fake_cmd_tpl = ["bash", "-c", f"cd {wd} && {cfg['dts_faketrig_cmd_template']}"]
+        self.clear_cmd   = ["bash", "-c", f"cd {wd} && {cfg['dts_clear_fktrig_cmd']}"]
 
-        self.dts_align_cmd = f"cd {workdir} && {config['dts_align_cmd']}"
-        self.dts_faketrig_cmd_template = f"cd {workdir} && {config['dts_faketrig_cmd_template']}"
-        self.dts_clear_fktrig_cmd = f"cd {workdir} && {config['dts_clear_fktrig_cmd']}"
-
-    def run(self):
+    def run(self) -> None:
         if self.mode == "cosmics":
-            logging.warning("⚠️ Skipping DTS alignment & clearing ad-hoc trigger.")
+            logging.warning("⚠️  Cosmics run – skipping DTS alignment.")
             self.clear()
             return
+        logging.info("📢  DTS alignment …")
+        subprocess.run(self.align_cmd, check=True)
+        cmd = self.fake_cmd_tpl.copy()
+        cmd[-1] = cmd[-1].format(hztrigger=self.cfg["hztrigger"])
+        subprocess.run(cmd, check=True)
+        logging.info("✅  DTS fake-trigger configured.")
 
-        logging.info("📢 Running DTS alignment...")
-        if subprocess.call(self.dts_align_cmd, shell=True) != 0:
-            logging.error("❌ Error: DTS alignment command failed.")
-            sys.exit(1)
-        logging.info("✅ DTS alignment completed.")
+    def clear(self) -> None:
+        subprocess.run(self.clear_cmd, check=False)
 
-        dts_faketrig_cmd = self.dts_faketrig_cmd_template.format(hztrigger=self.hztrigger)
-        logging.info("📢 Configuring DTS fake trigger...")
-        if subprocess.call(dts_faketrig_cmd, shell=True) != 0:
-            logging.error("❌ Error: DTS fake trigger command failed.")
-            sys.exit(1)
-        logging.info("✅ DTS fake trigger configured.")
 
-    def clear(self):
-        """Always try to clear DTS fake triggers."""
-        logging.info("📢 Clearing DTS fake trigger at the end of run...")
-        if subprocess.call(self.dts_clear_fktrig_cmd, shell=True) != 0:
-            logging.error("❌ Failed to clear DTS fake trigger.")
-        else:
-            logging.info("✅ DTS fake trigger cleared.")
-
-# ------------------------------------------------------------------------------
-# HELPER FUNCTIONS
-# ------------------------------------------------------------------------------
-
-def update_temp_details(details_path, temp_details_path, mode):
-    with open(details_path, 'r') as f:
-        details = json.load(f)
-
-    for device in details.get("devices", []):
+# ──────────────────────────────────────────────────────────────────────────────
+# Helpers
+# ──────────────────────────────────────────────────────────────────────────────
+def update_temp_details(details_in: Path, details_out: Path, mode: str) -> None:
+    data = json.loads(details_in.read_text())
+    for dev in data.get("devices", []):
+        xcorr = dev.setdefault("self_trigger", {}).setdefault("self_trigger_xcorr", {})
         if mode == "cosmics":
-            device.setdefault("self_trigger", {})["self_trigger_xcorr"] = {
-                "correlation_threshold": 4000,
-                "discrimination_threshold": 5000
-            }
+            xcorr.update(correlation_threshold=4000, discrimination_threshold=5000)
         elif mode in ("noise", "calibration"):
-            device.setdefault("self_trigger", {})["self_trigger_xcorr"] = {
-                "correlation_threshold": 99999999,
-                "discrimination_threshold": 10
-            }
-
-    with open(temp_details_path, 'w') as f:
-        json.dump(details, f, indent=2)
-
-    logging.info(f"✅ Generated modified temp details file: {temp_details_path}")
+            xcorr.update(correlation_threshold=268_435_455, discrimination_threshold=10)
+    details_out.write_text(pretty_compact_json(data))
+    logging.info("✅  temp_details.json → %s", details_out)
 
 
-def generate_drunc_command(config):
+def generate_drunc_command(cfg: dict[str, Any]) -> str:
     return (
-        f"drunc-unified-shell ssh-standalone "
-        f"{config['oks_session']} {config['session_name']} np02-pds "
-        f"boot conf start enable-triggers change-rate --trigger-rate {config['change_rate']} wait {config['wait_time']} "
-        f"disable-triggers drain-dataflow stop-trigger-sources stop scrap terminate"
+        "drunc-unified-shell ssh-standalone "
+        f"{cfg['oks_session']} {cfg['session_name']} np02-pds "
+        "boot conf start enable-triggers change-rate --trigger-rate "
+        f"{cfg['change_rate']} wait {cfg['wait_time']} "
+        "disable-triggers drain-dataflow stop-trigger-sources stop scrap terminate"
     )
 
-def run_drunc_command(config, post_delay_s=20):
-    drunc_cmd = generate_drunc_command(config)
-    drunc_working_dir = config["drunc_working_dir"]
 
-    logging.info(f"📢 Running drunc-unified-shell from {drunc_working_dir}...")
-    logging.info(f"Command: {drunc_cmd}")
-
-    if subprocess.call(drunc_cmd, shell=True, cwd=drunc_working_dir) != 0:
-        logging.error("❌ Error: drunc-unified-shell command failed.")
-        sys.exit(1)
-
-    logging.info("✅ drunc-unified-shell completed successfully.")
+def run_drunc_command(cfg: dict[str, Any], *, post_delay_s: int = 20) -> None:
+    subprocess.run(
+        generate_drunc_command(cfg),
+        shell=True,
+        cwd=cfg["drunc_working_dir"],
+        check=True,
+    )
     time.sleep(post_delay_s)
 
-def run_set_ssp_conf(config, **kwargs):
-    ssp_defaults = {
-        "object_name": "np02-ssp-on",
-        "number_channels": 12,
-        "channel_mask": 1,
-        "pulse_mode": "single",
-        "burst_count": 1,
-        "double_pulse_delay_ticks": 0,
-        "pulse1_width_ticks": 5,
-        "pulse2_width_ticks": 0,
-        "pulse_bias_percent_270nm": 4000,
-        "pulse_bias_percent_367nm": 0
-    }
 
-    user_conf = config.get("ssp_conf", {})
-    for key, val in user_conf.items():
-        if key in ssp_defaults:
-            ssp_defaults[key] = int(val) if isinstance(val, str) and val.isdigit() else val
+def run_set_ssp_conf(cfg: dict[str, Any], **overrides: Any) -> None:
+    conf = SSPConf.from_config(cfg)
+    for k, v in overrides.items():
+        if v is not None and hasattr(conf, k):
+            setattr(conf, k, v)
 
-    for key, val in kwargs.items():
-        if val is not None:
-            ssp_defaults[key] = val
+    cmd = ["set_ssp_conf", f"{cfg['drunc_working_dir']}/{cfg['oks_file']}"]
+    for k, v in asdict(conf).items():
+        cmd += [f"--{k.replace('_', '-')}", str(v)]
 
-    oks_file = f"{config['drunc_working_dir']}/{config['oks_file']}"
-    cmd = ["set_ssp_conf", oks_file]
-    for key, val in ssp_defaults.items():
-        option = f"--{key.replace('_', '-')}"
-        cmd.append(option)
-        cmd.append(str(val))
+    subprocess.run(cmd, check=True, text=True)
 
-    logging.info(f"📢 Running set_ssp_conf: {' '.join(cmd)}")
-    try:
-        result = subprocess.run(cmd, check=True, text=True, capture_output=True)
-        logging.info(f"✅ set_ssp_conf executed successfully. Output:\n{result.stdout}")
-    except subprocess.CalledProcessError as e:
-        logging.error(f"❌ Error running set_ssp_conf: {e.stderr}")
-        sys.exit(1)
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Main scan / single-run controller
+# ──────────────────────────────────────────────────────────────────────────────
 class ScanMaskIntensity:
     def __init__(self, cfg: dict[str, Any]) -> None:
-        self.cfg             = cfg
-        self.mask_vals       = cfg.get("mask_values", [1])
-        self.min_bias        = cfg.get("min_bias", 4000)
-        self.max_bias        = cfg.get("max_bias", 4000)
-        self.step            = cfg.get("step", 500)
-        self.drunc_delay_s   = cfg.get("drunc_delay_s", 20)
-        self.mode            = cfg.get("mode")
+        self.cfg       = cfg
+        self.masks     = cfg.get("mask_values", [1])
+        self.min_bias  = cfg.get("min_bias", 4000)
+        self.max_bias  = cfg.get("max_bias", 4000)
+        self.step      = cfg.get("step", 500)
+        self.delay_s   = cfg.get("drunc_delay_s", 20)
+        self.mode      = cfg.get("mode")
 
-    # ──────────────────────────────────────────────────────────────
-    # REPLACE everything below with this new definition
-    # ──────────────────────────────────────────────────────────────
     def run(self) -> None:
-        """
-        • calibration → full mask × intensity scan (nested loops)
-        • noise       → ONE run with LED OFF
-        • cosmics/other→ ONE run with default mask/bias
-        """
         if self.mode == "calibration":
-            logging.info("📢  Calibration scan – iterating masks and intensities…")
-            for mask in self.mask_vals:
-                for bias in range(self.min_bias,
-                                  self.max_bias + self.step,
-                                  self.step):
+            logging.info("📢  Calibration: scanning masks × intensities …")
+            for mask in self.masks:
+                for bias in range(self.min_bias, self.max_bias + self.step, self.step):
                     run_set_ssp_conf(self.cfg,
                                      channel_mask=mask,
                                      pulse_bias_percent_270nm=bias)
-                    run_drunc_command(self.cfg,
-                                      post_delay_s=self.drunc_delay_s)
+                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
             return
 
-        if self.mode == "noise":
-            logging.info("📢  Noise run – single acquisition, LED OFF…")
-            run_set_ssp_conf(self.cfg, 
-                 channel_mask=self.mask_vals[64],
-				pulse_bias_percent_270nm=0)
-            run_drunc_command(self.cfg, post_delay_s=self.drunc_delay_s)
+        # Noise & cosmics: single run, LED OFF
+        if self.mode in ("noise", "cosmics"):
+            logging.info("📢  %s run – single acquisition, LED OFF.", self.mode)
+            run_set_ssp_conf(self.cfg,
+                             channel_mask=self.masks[0],
+                             pulse_bias_percent_270nm=0)
+            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
             return
-		
-		# cosmics (or any other mode not explicitly handled):
-		# single run with LED OFF
-		logging.info("📢  %s run – single acquisition, LED OFF …",
-             self.mode.capitalize())
-		run_set_ssp_conf(self.cfg,
-                 channel_mask=self.mask_vals[64],
-                 pulse_bias_percent_270nm=0)
-		run_drunc_command(self.cfg, post_delay_s=self.drunc_delay_s)
 
-# ------------------------------------------------------------------------------
-# MAIN
-# ------------------------------------------------------------------------------
+        # Fallback for any other mode
+        logging.info("📢  %s run – single acquisition, default LED ON.", self.mode)
+        run_set_ssp_conf(self.cfg,
+                         channel_mask=self.masks[0],
+                         pulse_bias_percent_270nm=self.min_bias)
+        run_drunc_command(self.cfg, post_delay_s=self.delay_s)
 
 
-def main(mode=None, conf_path=None):
+# ──────────────────────────────────────────────────────────────────────────────
+# main()
+# ──────────────────────────────────────────────────────────────────────────────
+def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> None:
     if conf_path is None:
-        logging.error("Configuration path must be provided.")
         raise ValueError("Configuration path is required.")
-
-    conf_path = Path(conf_path)
+    conf_path = Path(conf_path).expanduser()
     if not conf_path.exists():
-        raise FileNotFoundError(f"Configuration file does not exist at {conf_path}")
+        raise FileNotFoundError(conf_path)
 
-    with open(conf_path, "r") as file:
-        original_config = json.load(file)
+    cfg = json.loads(conf_path.read_text())
+    if mode:
+        cfg["mode"] = mode
 
-    config_for_run = original_config.copy()
+    # Use a temp workspace so we never litter the repo tree
+    with TemporaryDirectory(prefix="pds-run-") as tmp:
+        tmp_dir = Path(tmp)
+        temp_conf   = tmp_dir / "conf_temp.json"
+        temp_detail = tmp_dir / "temp_details.json"
 
-    temp_conf_path = conf_path.parent / "conf_temp.json"
-    temp_details_path = None
-    dtsbutler = None
+        # --- prepare details & conf ------------------------------------------------
+        details_json = conf_path.parent / Path(cfg["daphne_details"]).name
+        update_temp_details(details_json, temp_detail, cfg["mode"])
 
-    try:
-        if mode is not None:
-            config_for_run["mode"] = mode
+        drunc_dir = Path(cfg["drunc_working_dir"]).resolve()
+        try:
+            cfg["daphne_details"] = str(temp_detail.relative_to(drunc_dir))
+        except ValueError:
+            cfg["daphne_details"] = str(temp_detail)  # fall back: absolute path
 
-            # Create temp details.json exactly in the same folder as conf.json
-            details_path = conf_path.parent / Path(original_config["daphne_details"]).name
-            temp_details_path = conf_path.parent / "temp_details.json"
+        temp_conf.write_text(json.dumps(cfg, indent=2))
+        logging.info("✅  temp conf → %s", temp_conf)
 
-            update_temp_details(details_path, temp_details_path, mode)
-            drunc_dir = Path(original_config["drunc_working_dir"]).resolve()
-            relative_temp_details = temp_details_path.resolve().relative_to(drunc_dir)
-            config_for_run["daphne_details"] = str(relative_temp_details)
-        # Create temp conf
-        with open(temp_conf_path, "w") as f:
-            json.dump(config_for_run, f, indent=2)
+        # --- run sequence ----------------------------------------------------------
+        dts = DTSButler(cfg)
+        try:
+            dts.run()
+            WebProxy.setup(cfg)
+            run_daphne_config(conf_path=temp_conf, mode=mode)  # external
+            ScanMaskIntensity(cfg).run()
+        finally:
+            dts.clear()  # always attempt to clear fake trigger
 
-        logging.info(f"✅ Created temp conf file: {temp_conf_path}")
 
-        dtsbutler = DTSButler(config_for_run)
-        dtsbutler.run()
-
-        WebProxy.setup(config_for_run)
-
-        run_daphne_config(conf_path=temp_conf_path, mode=mode)
-
-        scan_test = ScanMaskIntensity(config_for_run)
-        scan_test.run()
-
-    finally:
-        if dtsbutler is not None:
-            dtsbutler.clear()
-
-        if temp_conf_path.exists():
-            logging.info(f"🧹 Cleaning up temporary config file: {temp_conf_path}")
-            os.remove(temp_conf_path)
-        if temp_details_path and temp_details_path.exists():
-            logging.info(f"🧹 Cleaning up temporary details file: {temp_details_path}")
-            os.remove(temp_details_path)
-
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__":  # pragma: no cover
+    if len(sys.argv) < 3:
+        print("Usage: python -m pds.core.run <mode> <conf.json>")
+        sys.exit(1)
+    main(sys.argv[1], sys.argv[2])
