@@ -217,10 +217,10 @@ def main(mode=None, conf_path=None):
 
         WebProxy.setup(config_for_run)
 
-        run_daphne_config(conf_path=temp_conf_path)
+        run_daphne_config(conf_path=temp_conf_path, mode=mode)
 
-        scan_test = ScanMaskIntensity(config_for_run)
-        scan_test.run()
+        #scan_test = ScanMaskIntensity(config_for_run)
+        #scan_test.run()
 
     finally:
         if dtsbutler is not None:
