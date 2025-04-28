@@ -184,20 +184,21 @@ class ScanMaskIntensity:
 
         if self.mode == "noise":
             logging.info("📢  Noise run – single acquisition, LED OFF…")
-            run_set_ssp_conf(self.cfg, pulse_bias_percent_270nm=0)
+            run_set_ssp_conf(self.cfg, 
+                 channel_mask=self.mask_vals[64],
+				pulse_bias_percent_270nm=0)
             run_drunc_command(self.cfg, post_delay_s=self.drunc_delay_s)
             return
+		
+		# cosmics (or any other mode not explicitly handled):
+		# single run with LED OFF
+		logging.info("📢  %s run – single acquisition, LED OFF …",
+             self.mode.capitalize())
+		run_set_ssp_conf(self.cfg,
+                 channel_mask=self.mask_vals[64],
+                 pulse_bias_percent_270nm=0)
+		run_drunc_command(self.cfg, post_delay_s=self.drunc_delay_s)
 
-        # cosmics or anything else
-        logging.info("📢  %s run – single acquisition "
-                     "(mask=%s, bias=%s)…",
-                     self.mode.capitalize(),
-                     self.mask_vals[0],
-                     self.min_bias)
-        run_set_ssp_conf(self.cfg,
-                         channel_mask=self.mask_vals[0],
-                         pulse_bias_percent_270nm=self.min_bias)
-        run_drunc_command(self.cfg, post_delay_s=self.drunc_delay_s)
 # ------------------------------------------------------------------------------
 # MAIN
 # ------------------------------------------------------------------------------
