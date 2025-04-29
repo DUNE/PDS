@@ -90,7 +90,7 @@ def update_temp_details(details_in: Path, details_out: Path, mode: str) -> None:
         if mode == "cosmics":
             xcorr.update(correlation_threshold=4000, discrimination_threshold=5000)
         elif mode in ("noise", "calibration"):
-            xcorr.update(correlation_threshold=268_435_455, discrimination_threshold=10)
+            xcorr.update(correlation_threshold=99999999, discrimination_threshold=10)
     details_out.write_text(pretty_compact_json(data))
     logging.info("✅  temp_details.json → %s", details_out)
 
