@@ -146,6 +146,7 @@ class ScanMaskIntensity:
             logging.info("📢  Calibration: scanning masks × intensities …")
             for mask in self.masks:
                 for bias in range(self.min_bias, self.max_bias + self.step, self.step):
+                    logging.info(f"📢mask= {mask} \t pulse bias percent 270nm = {bias}")
                     run_set_ssp_conf(self.cfg,
                                      channel_mask=mask,
                                      pulse_bias_percent_270nm=bias)
