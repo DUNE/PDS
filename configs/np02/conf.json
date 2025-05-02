@@ -1,5 +1,8 @@
 {
     "mode": "cosmics",
+    "min_corr": 300,
+    "max_corr": 30300,
+    "corr_step": 500,
     "hztrigger": 6000,
     "change_rate": 20.0,
     "wait_time": 60,
@@ -22,10 +25,10 @@
         "pulse_bias_percent_367nm": "0"
     },
     "bias":"800,800,1200,1200,1200",
-    "attenuators":"2100,2100,2100,2100,2100",
-    "min_bias": 3800,
-    "max_bias": 4095,
-    "step": 100,
+    "attenuators":"1996,1996,1996,1996,1996",
+    "min_bias": 3700,
+    "max_bias": 4060,
+    "step": 50,
     "skip_proxy": false,
     "skip_dts": false,
     "web_proxy_cmd": "source ~np04daq/bin/web_proxy.sh -u",

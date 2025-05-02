@@ -16,7 +16,7 @@ from pathlib import Path
 import typer
 
 from pds.core import run, run_thr, seed, set_daphne_conf
-
+from pds.core.run_thr import main as thr_main
 # ──────────────────────────────────────────────────────────────────────────────
 # Typer app & mode enum
 # ──────────────────────────────────────────────────────────────────────────────
