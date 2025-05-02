@@ -127,6 +127,18 @@ def run_set_ssp_conf(cfg: dict[str, Any], **overrides: Any) -> None:
 
     subprocess.run(cmd, check=True, text=True)
 
+def _update_correlation_threshold(details_file: Path, value: int) -> None:
+    """
+    Over-write *details_file*, setting
+        devices[*].self_trigger.self_trigger_xcorr.correlation_threshold = value
+    """
+    data = json.loads(details_file.read_text())
+    for dev in data.get("devices", []):
+        xcorr = dev.setdefault("self_trigger", {}).setdefault(
+            "self_trigger_xcorr", {}
+        )
+        xcorr["correlation_threshold"] = value
+    details_file.write_text(pretty_compact_json(data))
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Main scan / single-run controller
@@ -169,7 +181,44 @@ class ScanMaskIntensity:
                          pulse_bias_percent_270nm=self.min_bias)
         run_drunc_command(self.cfg, post_delay_s=self.delay_s)
 
+class ScanXCorrThreshold:
+    """
+    Loop over correlation-threshold values, taking one run per setting.
 
+    Optional keys in *cfg*:
+        min_corr   (default 4000)
+        max_corr   (default 8000)
+        corr_step  (default 500)
+    """
+
+    def __init__(self, cfg: dict[str, Any], *, conf_file: Path, details_file: Path):
+        self.cfg          = cfg
+        self.conf_file    = conf_file     # …/conf_temp.json
+        self.details_file = details_file  # …/temp_details.json
+        self.min_corr     = cfg.get("min_corr", 4000)
+        self.max_corr     = cfg.get("max_corr", 8000)
+        self.step         = cfg.get("corr_step", 500)
+        self.delay_s      = cfg.get("drunc_delay_s", 20)
+
+    def run(self) -> None:
+        logging.info("📢  Threshold scan: %s–%s step %s",
+                     self.min_corr, self.max_corr, self.step)
+
+        for corr in range(self.min_corr,
+                          self.max_corr + self.step,
+                          self.step):
+            logging.info("📢  correlation_threshold = %s", corr)
+
+            # 1) patch temp_details.json
+            _update_correlation_threshold(self.details_file, corr)
+
+            # 2) regenerate seeds & XML for the new threshold
+            run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
+
+            # 3) acquisition
+            run_set_ssp_conf(self.cfg,
+                             channel_mask=self.cfg.get("mask_values", [1])[0])
+            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
 # ──────────────────────────────────────────────────────────────────────────────
 # main()
 # ──────────────────────────────────────────────────────────────────────────────
@@ -208,9 +257,20 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
         try:
             dts.run()
             WebProxy.setup(cfg)
-            run_daphne_config(conf_path=temp_conf, mode=mode)  # external
-            ScanMaskIntensity(cfg).run()
-        finally:
+
+            # ── select the proper scan type ──────────────────────────────
+            if cfg["mode"] in ("thrscan", "threshold"):
+                # new x-corr threshold scan
+                ScanXCorrThreshold(
+                    cfg,
+                    conf_file=temp_conf,
+                    details_file=temp_detail,
+                ).run()
+            else:
+                # existing mask/intensity scan
+                run_daphne_config(conf_path=temp_conf, mode=mode)
+                ScanMaskIntensity(cfg).run()
+		finally:
             dts.clear()  # always attempt to clear fake trigger
 
 
