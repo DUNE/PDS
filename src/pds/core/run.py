@@ -56,29 +56,43 @@ class WebProxy:
 
 
 class DTSButler:
+    """
+    Lightweight wrapper around the external `dtsbutler` helper.
+
+    For modes “cosmics”, “thrscan” (aka “threshold”), we skip the alignment
+    step entirely and only make sure any fake trigger left over from earlier
+    runs is cleared.
+    """
+
     def __init__(self, cfg: dict[str, Any]) -> None:
         self.cfg = cfg
         wd = cfg["drunc_working_dir"]
         self.mode = cfg.get("mode")
-        self.align_cmd   = ["bash", "-c", f"cd {wd} && {cfg['dts_align_cmd']}"]
+
+        self.align_cmd    = ["bash", "-c", f"cd {wd} && {cfg['dts_align_cmd']}"]
         self.fake_cmd_tpl = ["bash", "-c", f"cd {wd} && {cfg['dts_faketrig_cmd_template']}"]
-        self.clear_cmd   = ["bash", "-c", f"cd {wd} && {cfg['dts_clear_fktrig_cmd']}"]
+        self.clear_cmd    = ["bash", "-c", f"cd {wd} && {cfg['dts_clear_fktrig_cmd']}"]
+
+    # ------------------------------------------------------------------ #
 
     def run(self) -> None:
-        if self.mode == "cosmics":
-            logging.warning("⚠️  Cosmics run – skipping DTS alignment.")
+        # Skip alignment + periodic fake-triggers in cosmics *and* threshold scans
+        if self.mode in ("cosmics", "thrscan", "threshold"):
+            logging.warning("⚠️  %s run – skipping DTS alignment.", self.mode)
             self.clear()
             return
+
         logging.info("📢  DTS alignment …")
         subprocess.run(self.align_cmd, check=True)
+
         cmd = self.fake_cmd_tpl.copy()
         cmd[-1] = cmd[-1].format(hztrigger=self.cfg["hztrigger"])
         subprocess.run(cmd, check=True)
         logging.info("✅  DTS fake-trigger configured.")
 
     def clear(self) -> None:
+        """Always safe to call; ignores errors."""
         subprocess.run(self.clear_cmd, check=False)
-
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Helpers
@@ -127,6 +141,18 @@ def run_set_ssp_conf(cfg: dict[str, Any], **overrides: Any) -> None:
 
     subprocess.run(cmd, check=True, text=True)
 
+def _update_correlation_threshold(details_file: Path, value: int) -> None:
+    """
+    Over-write *details_file*, setting
+        devices[*].self_trigger.self_trigger_xcorr.correlation_threshold = value
+    """
+    data = json.loads(details_file.read_text())
+    for dev in data.get("devices", []):
+        xcorr = dev.setdefault("self_trigger", {}).setdefault(
+            "self_trigger_xcorr", {}
+        )
+        xcorr["correlation_threshold"] = value
+    details_file.write_text(pretty_compact_json(data))
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Main scan / single-run controller
@@ -170,6 +196,69 @@ class ScanMaskIntensity:
         run_drunc_command(self.cfg, post_delay_s=self.delay_s)
 
 
+class ScanXCorrThreshold:
+    """
+    Iterate over correlation-threshold (xcorr) values and take one run per value.
+
+    The conf.json can add:
+      min_corr   (default 4000)
+      max_corr   (default 8000)
+      corr_step  (default 500)
+    """
+
+    # ------------------------------------------------------------------ #
+
+    def __init__(
+        self,
+        cfg: dict[str, Any],
+        *,
+        conf_file: Path,
+        details_file: Path,
+    ) -> None:
+        self.cfg          = cfg
+        self.conf_file    = conf_file     # …/conf_temp.json
+        self.details_file = details_file  # …/temp_details.json
+
+        self.min_corr = cfg.get("min_corr", 4000)
+        self.max_corr = cfg.get("max_corr", 8000)
+        self.step     = cfg.get("corr_step", 500)
+        self.delay_s  = cfg.get("drunc_delay_s", 20)
+
+        # Keep an untouched copy so we can re-create the JSON each loop
+        self._baseline = json.loads(details_file.read_text())
+
+    # ------------------------------------------------------------------ #
+
+    def run(self) -> None:
+        logging.info("📢  Threshold scan: %s → %s (step %s)",
+                     self.min_corr, self.max_corr, self.step)
+
+        for corr in range(self.min_corr,
+                          self.max_corr + self.step,
+                          self.step):
+
+            logging.info("📢  correlation_threshold = %s", corr)
+
+            # 1) make sure temp_details.json exists, then patch it
+            if not self.details_file.exists():
+                self.details_file.write_text(pretty_compact_json(self._baseline))
+            _update_correlation_threshold(self.details_file, corr)
+
+            # 2) regenerate seeds + XML for the new threshold
+            run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
+
+            # 3) configure SSP *with LED OFF* (bias = 0) like cosmics
+            run_set_ssp_conf(
+                self.cfg,
+                channel_mask=self.cfg.get("mask_values", [1])[0],
+                pulse_bias_percent_270nm=0,
+            )
+
+            # 4) run drunc acquisition
+            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+
+
+
 # ──────────────────────────────────────────────────────────────────────────────
 # main()
 # ──────────────────────────────────────────────────────────────────────────────
@@ -208,8 +297,19 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
         try:
             dts.run()
             WebProxy.setup(cfg)
-            run_daphne_config(conf_path=temp_conf, mode=mode)  # external
-            ScanMaskIntensity(cfg).run()
+
+            # ── select the proper scan type ──────────────────────────────
+            if cfg["mode"] in ("thrscan", "threshold"):
+                # new x-corr threshold scan
+                ScanXCorrThreshold(
+                    cfg,
+                    conf_file=temp_conf,
+                    details_file=temp_detail,
+                ).run()
+            else:
+                # existing mask/intensity scan
+                run_daphne_config(conf_path=temp_conf, mode=mode)
+                ScanMaskIntensity(cfg).run()
         finally:
             dts.clear()  # always attempt to clear fake trigger
 

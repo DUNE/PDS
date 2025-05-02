@@ -15,8 +15,8 @@ from pathlib import Path
 
 import typer
 
-from pds.core import run, seed, set_daphne_conf
-
+from pds.core import run, run_thr, seed, set_daphne_conf
+from pds.core.run_thr import main as thr_main
 # ──────────────────────────────────────────────────────────────────────────────
 # Typer app & mode enum
 # ──────────────────────────────────────────────────────────────────────────────
@@ -53,6 +53,21 @@ def run_command(
     """Launch a PDS data-acquisition run."""
     logging.info("🚀 Starting a PDS %s run using %s!", mode.value, conf)
     run.main(mode.value, conf)
+
+@app.command("thr-scan")
+def thr_scan(                     # ← name shown in `--help`
+    conf: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Path to conf.json with mode='thrscan'",
+    )
+) -> None:
+    """
+    Iterate over correlation_threshold values defined in *conf* and
+    take one run per setting.
+    """
+    thr_main(conf)
 
 
 @app.command(name="seed")

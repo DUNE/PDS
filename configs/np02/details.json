@@ -34,7 +34,7 @@
         "spybuffer_channel": 8,
         "self_trigger_xcorr": {
             "correlation_threshold": 4000,
-            "discrimination_threshold": 5000
+            "discrimination_threshold": 12000
             },
         "enable_compensator": [0, 7, 8, 15, 16, 23, 24, 31, 32, 33, 34, 35, 36, 37, 38, 39],
         "enable_inverter": [32, 33, 34, 35, 36, 37, 38, 39]
