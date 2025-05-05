@@ -102,7 +102,8 @@ def update_temp_details(details_in: Path, details_out: Path, mode: str) -> None:
     for dev in data.get("devices", []):
         xcorr = dev.setdefault("self_trigger", {}).setdefault("self_trigger_xcorr", {})
         if mode == "cosmics":
-            xcorr.update(correlation_threshold=4000, discrimination_threshold=5000)
+           pass
+           # xcorr.update(correlation_threshold=4000, discrimination_threshold=5000)
         elif mode in ("noise", "calibration"):
             xcorr.update(correlation_threshold=99999999, discrimination_threshold=10)
     details_out.write_text(pretty_compact_json(data))

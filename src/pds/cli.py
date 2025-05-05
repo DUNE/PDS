@@ -99,7 +99,7 @@ def set_command(
 ) -> None:
     """Apply configuration settings to hardware."""
     logging.info("🔧 Setting configuration using %s!", conf)
-    set_daphne_conf.main(conf)
+    set_daphne_conf.main(conf_path=conf)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
