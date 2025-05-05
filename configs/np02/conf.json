@@ -1,8 +1,8 @@
 {
     "mode": "cosmics",
     "min_corr": 300,
-    "max_corr": 30300,
-    "corr_step": 500,
+    "max_corr": 100000,
+    "corr_step": 5000,
     "hztrigger": 6000,
     "change_rate": 20.0,
     "wait_time": 60,
