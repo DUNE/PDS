@@ -77,7 +77,7 @@ class DTSButler:
 
     def run(self) -> None:
         # Skip alignment + periodic fake-triggers in cosmics *and* threshold scans
-        if self.mode in ("cosmics", "thrscan", "threshold"):
+        if self.mode in ("cosmics", "thrscan", "threshold", "attscan"):
             logging.warning("⚠️  %s run – skipping DTS alignment.", self.mode)
             self.clear()
             return
@@ -155,6 +155,18 @@ def _update_correlation_threshold(details_file: Path, value: int) -> None:
         xcorr["correlation_threshold"] = value
     details_file.write_text(pretty_compact_json(data))
 
+
+def _update_attenuators(details_file: Path, values: List[int]) -> None:
+    """
+    Over-write *details_file*, setting
+        devices[*].channels.attenuators = [values]
+    """
+    data = json.loads(details_file.read_text())
+    for dev in data.get("devices", []):
+        att = dev.setdefault("channels", {})
+        att["attenuators"] = values
+    details_file.write_text(pretty_compact_json(data))
+
 # ──────────────────────────────────────────────────────────────────────────────
 # Main scan / single-run controller
 # ──────────────────────────────────────────────────────────────────────────────
@@ -177,7 +189,7 @@ class ScanMaskIntensity:
                     run_set_ssp_conf(self.cfg,
                                      channel_mask=mask,
                                      pulse_bias_percent_270nm=bias)
-                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+                    #run_drunc_command(self.cfg, post_delay_s=self.delay_s)
             return
 
         # Noise & cosmics: single run, LED OFF
@@ -186,7 +198,7 @@ class ScanMaskIntensity:
             run_set_ssp_conf(self.cfg,
                              channel_mask=self.masks[0],
                              pulse_bias_percent_270nm=0)
-            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+            #run_drunc_command(self.cfg, post_delay_s=self.delay_s)
             return
 
         # Fallback for any other mode
@@ -194,7 +206,7 @@ class ScanMaskIntensity:
         run_set_ssp_conf(self.cfg,
                          channel_mask=self.masks[0],
                          pulse_bias_percent_270nm=self.min_bias)
-        run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+        #run_drunc_command(self.cfg, post_delay_s=self.delay_s)
 
 
 class ScanXCorrThreshold:
@@ -252,11 +264,74 @@ class ScanXCorrThreshold:
             run_set_ssp_conf(
                 self.cfg,
                 channel_mask=self.cfg.get("mask_values", [1])[0],
-                pulse_bias_percent_270nm=0,
+                pulse_bias_percent_270nm=0
             )
 
             # 4) run drunc acquisition
-            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+            #run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+
+
+class ScanAttenuators:
+    """
+    Iterate over Attenuators values and take one run per array of values.
+
+    The conf.json can add:
+      min_att   (default 1990)
+      max_att   (default 2010)
+      att_step  (default 10)
+    """
+
+    # ------------------------------------------------------------------ #
+
+    def __init__(
+        self,
+        cfg: dict[str, Any],
+        *,
+        conf_file: Path,
+        details_file: Path,
+    ) -> None:
+        self.cfg          = cfg
+        self.conf_file    = conf_file     # …/conf_temp.json
+        self.details_file = details_file  # …/temp_details.json
+
+        self.min_att = cfg.get("min_att", 1990)
+        self.max_att = cfg.get("max_att", 2010)
+        self.att_step     = cfg.get("att_step", 10)
+        self.delay_s  = cfg.get("drunc_delay_s", 20)
+
+        # Keep an untouched copy so we can re-create the JSON each loop
+        self._baseline = json.loads(details_file.read_text())
+
+    # ------------------------------------------------------------------ #
+
+    def run(self) -> None:
+        logging.info("📢  Attenuators scan: %s → %s (step %s)",
+                     self.min_att, self.max_att, self.att_step)
+
+        for i in range(self.min_att,
+                          self.max_att + self.att_step,
+                          self.att_step):
+
+            logging.info("📢  Attenuators = %s", i)
+
+            # 1) make sure temp_details.json exists, then patch it
+            if not self.details_file.exists():
+                self.details_file.write_text(pretty_compact_json(self._baseline))
+            j = [i for _ in range(5)]
+            _update_attenuators(self.details_file, j)
+
+            # 2) regenerate seeds + XML for the new threshold
+            run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
+
+            # 3) configure SSP *with LED OFF* (bias = 0) like cosmics
+            run_set_ssp_conf(
+                self.cfg,
+                channel_mask=self.cfg.get("mask_values", [1])[0],
+                pulse_bias_percent_270nm=0
+            )
+
+            # 4) run drunc acquisition
+            #run_drunc_command(self.cfg, post_delay_s=self.delay_s)
 
 
 
@@ -300,13 +375,22 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
             WebProxy.setup(cfg)
 
             # ── select the proper scan type ──────────────────────────────
-            if cfg["mode"] in ("thrscan", "threshold"):
+            mode = cfg["mode"]
+            if mode in ("thrscan", "threshold"):
                 # new x-corr threshold scan
                 ScanXCorrThreshold(
                     cfg,
                     conf_file=temp_conf,
                     details_file=temp_detail,
                 ).run()
+            elif mode in ("attscan", "attenuator"):
+                # new attenuator scan (always 5 channels of identical values)
+                ScanAttenuators(
+                    cfg,
+                    conf_file=temp_conf,
+                    details_file=temp_detail,
+                ).run()
+
             else:
                 # existing mask/intensity scan
                 run_daphne_config(conf_path=temp_conf, mode=mode)
