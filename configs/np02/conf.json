@@ -26,6 +26,9 @@
     },
     "bias":"800,800,1200,1200,1200",
     "attenuators":"1996,1996,1996,1996,1996",
+    "min_att": 1990,
+    "max_att": 3000,
+    "att_step": 10,
     "min_bias": 3700,
     "max_bias": 4060,
     "step": 50,
@@ -35,6 +38,6 @@
     "dts_align_cmd": "dtsbutler mst MASTER_PC059_0 align apply-delay 0 0 0 --force -m 3",
     "dts_faketrig_cmd_template": "dtsbutler mst MASTER_PC059_0 faketrig-conf 0x7 0 {hztrigger}",
     "dts_clear_fktrig_cmd": "dtsbutler mst MASTER_PC059_0 faketrig-clear 0",
-    "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-fddaq-v5.3.1-rc1-dev-pds",
+    "drunc_working_dir": "/nfs/home/fraleman/fddaq-v5.3.1-a9-1",
     "drunc_delay_s": 20
 }
