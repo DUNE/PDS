@@ -37,6 +37,6 @@
     "dts_align_cmd": "dtsbutler mst MASTER_PC059_0 align apply-delay 0 0 0 --force -m 3",
     "dts_faketrig_cmd_template": "dtsbutler mst MASTER_PC059_0 faketrig-conf 0x7 0 {hztrigger}",
     "dts_clear_fktrig_cmd": "dtsbutler mst MASTER_PC059_0 faketrig-clear 0",
-    "drunc_working_dir": "/nfs/home/fraleman/fddaq-v5.3.1-a9-1",
+    "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-fddaq-v5.3.1-rc1-dev-pds",
     "drunc_delay_s": 20
 }
