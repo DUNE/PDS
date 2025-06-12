@@ -189,7 +189,7 @@ class ScanMaskIntensity:
                     run_set_ssp_conf(self.cfg,
                                      channel_mask=mask,
                                      pulse_bias_percent_270nm=bias)
-                    #run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
             return
 
         # Noise & cosmics: single run, LED OFF
@@ -198,7 +198,7 @@ class ScanMaskIntensity:
             run_set_ssp_conf(self.cfg,
                              channel_mask=self.masks[0],
                              pulse_bias_percent_270nm=0)
-            #run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
             return
 
         # Fallback for any other mode
@@ -206,7 +206,7 @@ class ScanMaskIntensity:
         run_set_ssp_conf(self.cfg,
                          channel_mask=self.masks[0],
                          pulse_bias_percent_270nm=self.min_bias)
-        #run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+        run_drunc_command(self.cfg, post_delay_s=self.delay_s)
 
 
 class ScanXCorrThreshold:
@@ -268,7 +268,7 @@ class ScanXCorrThreshold:
             )
 
             # 4) run drunc acquisition
-            #run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
 
 
 class ScanAttenuators:
@@ -331,7 +331,7 @@ class ScanAttenuators:
             )
 
             # 4) run drunc acquisition
-            #run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
 
 
 
