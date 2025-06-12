@@ -25,9 +25,8 @@
         "pulse_bias_percent_367nm": "0"
     },
     "bias":"800,800,1200,1200,1200",
-    "attenuators":"1996,1996,1996,1996,1996",
     "min_att": 1990,
-    "max_att": 3000,
+    "max_att": 2190,
     "att_step": 10,
     "min_bias": 3700,
     "max_bias": 4060,
