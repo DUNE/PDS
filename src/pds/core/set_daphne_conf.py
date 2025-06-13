@@ -82,13 +82,13 @@ def main(mode=None, conf_path=None):
         else:
             bias = [int(x) for x in config["bias"].split(",")]
 
-        attenuators = [int(x) for x in config["attenuators"].split(",")]
+        #attenuators = [int(x) for x in config["attenuators"].split(",")]
 
-        if len(bias) != 5 or len(attenuators) != 5:
-            raise ValueError("Bias and attenuator lists must each have exactly 5 values.")
+        #if len(bias) != 5 or len(attenuators) != 5:
+        #    raise ValueError("Bias and attenuator lists must each have exactly 5 values.")
 
         daphne_json_data["devices"][0]["channels"]["bias"] = bias
-        daphne_json_data["devices"][0]["channels"]["attenuators"] = attenuators
+        #daphne_json_data["devices"][0]["channels"]["attenuators"] = attenuators
 
         daphne_json = pretty_compact_json(daphne_json_data)
 
