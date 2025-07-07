@@ -18,7 +18,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any, Dict
 
-from .constants import CHANNELS_PER_AFE, CONFIGURATIONS
+from .constants import CHANNELS_PER_AFE, CONFIGURATIONS, ALWAYS_SELF_TRIGGER_IPS, NEVER_BIAS_IPS
 from .utils import bitmask, pretty_compact_json
 
 
@@ -90,42 +90,35 @@ def populate_afes(
     common_conf: dict[str, Any],
     configuration: dict[str, Any],
 ) -> None:
+    attenuators = device["channels"].get("attenuators", [])
+    biases = device["channels"].get("bias", [])
+
     for afe_id, channels in afe_channels.items():
         if not channels:
             continue
 
         configuration["afes"]["ids"].append(afe_id)
 
-        attenuators = device["channels"].get("attenuators", [])
-        biases = device["channels"].get("bias", [])
-        if afe_id >= len(attenuators) or afe_id >= len(biases):
+        try:
+            configuration["afes"]["attenuators"].append(attenuators[afe_id])
+            configuration["afes"]["v_biases"].append(biases[afe_id])
+        except IndexError:
             raise ValueError(
-                f"AFE {afe_id} has missing attenuators/biases in device {device['ip']}"
+                f"AFE {afe_id} requires attenuator/bias, but device {device['ip']} provides only "
+                f"{len(attenuators)} attenuators and {len(biases)} biases"
             )
 
-        configuration["afes"]["attenuators"].append(attenuators[afe_id])
-        configuration["afes"]["v_biases"].append(biases[afe_id])
-
         configuration["afes"]["adcs"]["resolution"].append(common_conf["resolution"])
-        configuration["afes"]["adcs"]["output_format"].append(
-            common_conf["output_format"]
-        )
+        configuration["afes"]["adcs"]["output_format"].append(common_conf["output_format"])
         configuration["afes"]["adcs"]["SB_first"].append(common_conf["SB_first"])
 
-        configuration["afes"]["pgas"]["lpf_cut_frequency"].append(
-            common_conf["lpf_cut_frequency"]
-        )
-        configuration["afes"]["pgas"]["integrator_disable"].append(
-            common_conf["pga_integrator_disable"]
-        )
+        configuration["afes"]["pgas"]["lpf_cut_frequency"].append(common_conf["lpf_cut_frequency"])
+        configuration["afes"]["pgas"]["integrator_disable"].append(common_conf["pga_integrator_disable"])
         configuration["afes"]["pgas"]["gain"].append(common_conf["pga_gain"])
 
         configuration["afes"]["lnas"]["clamp"].append(common_conf["clamp"])
-        configuration["afes"]["lnas"]["integrator_disable"].append(
-            common_conf["lna_integrator_disable"]
-        )
+        configuration["afes"]["lnas"]["integrator_disable"].append(common_conf["lna_integrator_disable"])
         configuration["afes"]["lnas"]["gain"].append(common_conf["lna_gain"])
-
 
 # -----------------------------------------------------------------------------#
 # Core generation                                                              #
@@ -135,7 +128,7 @@ def populate_afes(
 def generate_configuration(
     data: dict[str, Any], config_name: str
 ) -> dict[str, Any]:
-    """Generate one of the four official NP02 configuration blobs."""
+    """Generate one of the NP02-DAPHNE configuration blobs."""
     data = copy.deepcopy(data)
     data["metadata"]["configuration"] = config_name
 
@@ -146,41 +139,37 @@ def generate_configuration(
         logging.info("Generating %s for device %s", config_name, device["ip"])
         device = copy.deepcopy(device)
 
+        ip = device["ip"]
         channel_ids = get_channel_ids(device)
-        full_stream_channels = (
-            channel_ids if config_name.startswith("np02_daphne_full_mode") else []
-        )
 
+        # Enforce fixed bias for NEVER_BIAS_IPS
+        if ip in NEVER_BIAS_IPS:
+            bias = [0] * 5
+        else:
+            bias = device["channels"].get("bias", [])
+
+        # Enforce fixed threshold and fullstream mode
         trigger = device.get("self_trigger", {})
-        threshold = trigger.get("threshold", 0)
-        bias = device["channels"].get("bias", [])
-
-        if config_name == "np02_daphne_full_mode":
-            threshold = 0
-        elif config_name == "np02_daphne_full_mode_bias_off":
-            threshold = 0
-            bias = [0] * 5
+        if ip in ALWAYS_SELF_TRIGGER_IPS:
+            threshold = 8000
         elif config_name == "np02_daphne_selftrigger":
-            pass  # keep JSON values
-        elif config_name == "np02_daphne_selftrigger_bias_off":
-            bias = [0] * 5
-            if threshold == 0:
-                raise ValueError(
-                    f"Threshold must be non-zero in 'selftrigger_bias_off' "
-                    f"for device {device['ip']}"
-                )
+            threshold = trigger.get("threshold", 0)
+        elif config_name == "np02_daphne_fullstream":
+            threshold = 0
+            device["full_stream_channels"] = channel_ids
         else:
             raise ValueError(f"Unsupported configuration: {config_name}")
 
+        # Apply fixed bias
         device["channels"]["bias"] = bias
 
+        # Compute register values
         xcorr_conf = trigger.get("self_trigger_xcorr", {})
         corr = xcorr_conf.get("correlation_threshold", 0)
         disc = xcorr_conf.get("discrimination_threshold", 0)
         self_trigger_xcorr = ((disc & 0x3FFF) << 28) | (corr & 0x0FFFFFFF)
 
         tp_conf = assemble_tp_conf(trigger)
-
         comp_list = trigger.get("enable_compensator", [])
         inv_list = trigger.get("enable_inverter", [])
         compensator = bitmask(comp_list)
@@ -192,7 +181,7 @@ def generate_configuration(
             "slot": device["slot_id"],
             "bias_ctrl": common_conf["bias_ctrl"],
             "self_trigger_threshold": threshold,
-            "full_stream_channels": full_stream_channels,
+            "full_stream_channels": device.get("full_stream_channels", []),
             "channel_analog_conf": channel_analog_conf,
             "afes": {
                 "ids": [],
@@ -214,10 +203,9 @@ def generate_configuration(
 
         afe_channels = map_channels_to_afes(channel_ids)
         populate_afes(afe_channels, device, common_conf, configuration)
-        configurations[device["ip"]] = configuration
+        configurations[ip] = configuration
 
     return configurations
-
 
 # -----------------------------------------------------------------------------#
 # Public API                                                                   #

@@ -6,10 +6,8 @@ from pathlib import Path
 from pds.core.seed import generate_seeds
 
 CONFIGURATIONS = [
-    "np02_daphne_full_mode",
-    "np02_daphne_full_mode_bias_off",
+    "np02_daphne_fullstream",
     "np02_daphne_selftrigger",
-    "np02_daphne_selftrigger_bias_off"
 ]
 
 def pretty_compact_json(obj, indent=2):

@@ -1,7 +1,8 @@
 {
+    "dry_run":false,
     "mode": "cosmics",
     "min_corr": 300,
-    "max_corr": 100000,
+    "max_corr": 10000,
     "corr_step": 5000,
     "hztrigger": 6000,
     "change_rate": 20.0,
@@ -37,6 +38,6 @@
     "dts_align_cmd": "dtsbutler mst MASTER_PC059_0 align apply-delay 0 0 0 --force -m 3",
     "dts_faketrig_cmd_template": "dtsbutler mst MASTER_PC059_0 faketrig-conf 0x7 0 {hztrigger}",
     "dts_clear_fktrig_cmd": "dtsbutler mst MASTER_PC059_0 faketrig-clear 0",
-    "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-fddaq-v5.3.1-rc1-dev-pds",
+    "drunc_working_dir": "/nfs/home/marroyav/fddaq-v5.3.0-rc1-a9",
     "drunc_delay_s": 20
 }

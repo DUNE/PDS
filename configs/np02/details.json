@@ -2,7 +2,7 @@
     "metadata": {
     "type": "daphne_configuration",
     "version": "1.0",
-    "configuration": "np02_daphne_selftrigger"
+    "configuration": "np02_daphne_fullstream"
     },
     "common_conf": {
     "ov": { "fbk": 4.5, "hpk": 2.5 },
