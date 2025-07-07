@@ -1,5 +1,5 @@
 {
-    "dry_run":false,
+    "dry_run":true,
     "mode": "cosmics",
     "min_corr": 300,
     "max_corr": 10000,
