@@ -27,7 +27,7 @@
         "mode": "self-trigger",
         "self_trigger": {
         "threshold": 8000,
-        "filter_mode": "raw",
+        "filter_mode": "inverted",
         "slope_mode": "20",
         "slope_threshold": 109,
         "pedestal_length": 128,
@@ -55,7 +55,7 @@
         "mode": "self-trigger",
         "self_trigger": {
         "threshold": 8000,
-        "filter_mode": "raw",
+        "filter_mode": "inverted",
         "slope_mode": "20",
         "slope_threshold": 109,
         "pedestal_length": 128,
