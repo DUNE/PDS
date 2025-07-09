@@ -2,7 +2,7 @@
     "metadata": {
     "type": "daphne_configuration",
     "version": "1.0",
-    "configuration": "np02_daphne_selftrigger"
+    "configuration": "np02_daphne_fullstream"
     },
     "common_conf": {
     "ov": { "fbk": 4.5, "hpk": 2.5 },
@@ -20,6 +20,34 @@
     },
     "devices": [
     {
+        "ip": "10.73.137.106",
+        "slot_id": 6,
+        "det_id": 8,
+        "version":1,
+        "mode": "self-trigger",
+        "self_trigger": {
+        "threshold": 8000,
+        "filter_mode": "inverted",
+        "slope_mode": "20",
+        "slope_threshold": 109,
+        "pedestal_length": 128,
+        "spybuffer_channel": 8,
+        "self_trigger_xcorr": {
+            "correlation_threshold": 99999999,
+            "discrimination_threshold": 10
+            },
+        "enable_compensator": [],
+        "enable_inverter": []
+        },
+        "channels": {
+        "indices": [0,1,2,3,4,5,6,7,24,25,26,27,28,29,30,31],
+        "attenuators": [1995, 1995, 1995, 1995, 1995],
+        "bias": [0,0,0,0,0],
+        "trim": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "offsets": [2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250]
+        }
+    },
+    {
         "ip": "10.73.137.107",
         "slot_id": 7,
         "det_id": 9,
@@ -33,10 +61,10 @@
         "pedestal_length": 128,
         "spybuffer_channel": 8,
         "self_trigger_xcorr": {
-            "correlation_threshold": 4000,
-            "discrimination_threshold": 11000
+            "correlation_threshold": 99999999,
+            "discrimination_threshold": 10
             },
-        "enable_compensator": [0, 7, 8, 15, 16, 23, 24, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+        "enable_compensator": [],
         "enable_inverter": [32, 33, 34, 35, 36, 37, 38, 39]
         },
         "channels": {
@@ -44,7 +72,7 @@
         "attenuators": [1995, 1995, 1995, 1995, 1995],
         "bias": [800, 800, 1200, 1200, 1200],
         "trim": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        "offsets": [2124, 2097, 2108, 2105, 2137, 2105, 2106, 2099, 2439, 2451, 2436, 2434, 2427, 2421, 2441, 2429]
+        "offsets": [2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250]
         }
     }
     ]

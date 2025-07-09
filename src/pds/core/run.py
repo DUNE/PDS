@@ -109,8 +109,9 @@ def update_temp_details(details_in: Path, details_out: Path, mode: str) -> None:
     details_out.write_text(pretty_compact_json(data))
     logging.info("✅  temp_details.json → %s", details_out)
 
-
 def generate_drunc_command(cfg: dict[str, Any]) -> str:
+    if cfg.get("dry_run"):
+        return "echo '🧪 [dry-run] Simulating drunc command...'"
     return (
         "drunc-unified-shell ssh-standalone "
         f"{cfg['oks_session']} {cfg['session_name']} np02-pds "
@@ -119,16 +120,13 @@ def generate_drunc_command(cfg: dict[str, Any]) -> str:
         "disable-triggers drain-dataflow stop-trigger-sources stop scrap terminate"
     )
 
-
 def run_drunc_command(cfg: dict[str, Any], *, post_delay_s: int = 20) -> None:
-    subprocess.run(
-        generate_drunc_command(cfg),
-        shell=True,
-        cwd=cfg["drunc_working_dir"],
-        check=True,
-    )
+    cmd = generate_drunc_command(cfg)
+    if cfg.get("dry_run"):
+        logging.info("🧪 Dry run: %s", cmd)
+        return
+    subprocess.run(cmd, shell=True, cwd=cfg["drunc_working_dir"], check=True)
     time.sleep(post_delay_s)
-
 
 def run_set_ssp_conf(cfg: dict[str, Any], **overrides: Any) -> None:
     conf = SSPConf.from_config(cfg)
