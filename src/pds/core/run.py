@@ -322,12 +322,13 @@ class ScanAttenuators:
             run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
 
             # 3) configure SSP *with LED OFF* (bias = 0) like cosmics
+            '''
             run_set_ssp_conf(
                 self.cfg,
                 channel_mask=self.cfg.get("mask_values", [1])[0],
                 pulse_bias_percent_270nm=0
             )
-
+            '''
             # 4) run drunc acquisition
             run_drunc_command(self.cfg, post_delay_s=self.delay_s)
 
