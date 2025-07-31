@@ -56,3 +56,18 @@ def pretty_compact_json(
 def bitmask(channels: list[int], *, width: int = 40) -> int:
     """Convert a list of channel indices to a bitmask (ignoring out-of-range)."""
     return sum(1 << ch for ch in channels if 0 <= ch < width)
+
+    
+def setup_led_range(mode, min_bias, max_bias, step):
+    """
+    min_bias can be a vector when performing a calibration, this allow for
+    a scan with values set by the user, otherwise, it will scan over
+    between min_bias, max_bias given the step
+    """
+    if isinstance(min_bias,list):
+        if mode not in ["calibration", "attscan"]:
+            raise ValueError("min_bias can only be a list when performing \
+            'calibration' run.")
+        return min_bias
+    return list(range(min_bias, max_bias + step, step))
+

@@ -11,7 +11,7 @@ from tempfile import TemporaryDirectory
 from typing import Any, Optional
 
 from pds.core.set_daphne_conf import main as run_daphne_config
-from pds.core.utils import pretty_compact_json
+from pds.core.utils import pretty_compact_json, setup_led_range
 from pds.core.constants import CONFIGURATIONS
 
 
@@ -77,7 +77,7 @@ class DTSButler:
 
     def run(self) -> None:
         # Skip alignment + periodic fake-triggers in cosmics *and* threshold scans
-        if self.mode in ("cosmics", "thrscan", "threshold", "attscan"):
+        if self.mode in ("cosmics", "thrscan", "threshold"):
             logging.warning("⚠️  %s run – skipping DTS alignment.", self.mode)
             self.clear()
             return
@@ -104,7 +104,7 @@ def update_temp_details(details_in: Path, details_out: Path, mode: str) -> None:
         if mode == "cosmics":
            pass
            # xcorr.update(correlation_threshold=4000, discrimination_threshold=5000)
-        elif mode in ("noise", "calibration"):
+        elif mode in ("noise", "calibration", "attscan"):
             xcorr.update(correlation_threshold=99999999, discrimination_threshold=10)
     details_out.write_text(pretty_compact_json(data))
     logging.info("✅  temp_details.json → %s", details_out)
@@ -113,11 +113,11 @@ def generate_drunc_command(cfg: dict[str, Any]) -> str:
     if cfg.get("dry_run"):
         return "echo '🧪 [dry-run] Simulating drunc command...'"
     return (
-        "drunc-unified-shell ssh-standalone "
-        f"{cfg['oks_session']} {cfg['session_name']} np02-pds "
-        "boot conf start enable-triggers change-rate --trigger-rate "
+        "drunc-unified-shell ssh-CERN-kafka.json "
+        f"{cfg['oks_session']} {cfg['session_name']} main-np02-pds "
+        "start-run change-rate --trigger-rate "
         f"{cfg['change_rate']} wait {cfg['wait_time']} "
-        "disable-triggers drain-dataflow stop-trigger-sources stop scrap terminate"
+        "shutdown terminate"
     )
 
 def run_drunc_command(cfg: dict[str, Any], *, post_delay_s: int = 20) -> None:
@@ -125,6 +125,7 @@ def run_drunc_command(cfg: dict[str, Any], *, post_delay_s: int = 20) -> None:
     if cfg.get("dry_run"):
         logging.info("🧪 Dry run: %s", cmd)
         return
+    logging.info(f"{cmd}")
     subprocess.run(cmd, shell=True, cwd=cfg["drunc_working_dir"], check=True)
     time.sleep(post_delay_s)
 
@@ -172,22 +173,34 @@ class ScanMaskIntensity:
     def __init__(self, cfg: dict[str, Any]) -> None:
         self.cfg       = cfg
         self.masks     = cfg.get("mask_values", [1])
+        self.delay_s   = cfg.get("drunc_delay_s", 20)
+        self.mode      = cfg.get("mode")
+
         self.min_bias  = cfg.get("min_bias", 4000)
         self.max_bias  = cfg.get("max_bias", 4000)
         self.step      = cfg.get("step", 500)
-        self.delay_s   = cfg.get("drunc_delay_s", 20)
-        self.mode      = cfg.get("mode")
+        self.ledrange = setup_led_range(self.mode, self.min_bias, self.max_bias, self.step)
+        self.pulse_width_ticks = int(cfg.get("ssp_conf", {}).get("pulse1_width_ticks", "1"))
+
 
     def run(self) -> None:
         if self.mode == "calibration":
             logging.info("📢  Calibration: scanning masks × intensities …")
+            messages=[]
             for mask in self.masks:
-                for bias in range(self.min_bias, self.max_bias + self.step, self.step):
-                    logging.info(f"📢mask= {mask} \t pulse bias percent 270nm = {bias}")
+                for bias in self.ledrange:
+                    ledmessage = f"LED intensity = {bias}, LED width = " \
+                                 f"{self.pulse_width_ticks*4} ns, mask = {mask}"
+                    messages.append(ledmessage)
+                    logging.info(ledmessage)
+
                     run_set_ssp_conf(self.cfg,
                                      channel_mask=mask,
                                      pulse_bias_percent_270nm=bias)
                     run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+            print("Scan finished... parameters done:")
+            for messagerecord in messages:
+                print(messagerecord)
             return
 
         # Noise & cosmics: single run, LED OFF
@@ -205,7 +218,6 @@ class ScanMaskIntensity:
                          channel_mask=self.masks[0],
                          pulse_bias_percent_270nm=self.min_bias)
         run_drunc_command(self.cfg, post_delay_s=self.delay_s)
-
 
 class ScanXCorrThreshold:
     """
@@ -292,10 +304,17 @@ class ScanAttenuators:
         self.conf_file    = conf_file     # …/conf_temp.json
         self.details_file = details_file  # …/temp_details.json
 
+        self.masks     = cfg.get("mask_values", [1])
         self.min_att = cfg.get("min_att", 1990)
         self.max_att = cfg.get("max_att", 2010)
         self.att_step     = cfg.get("att_step", 10)
         self.delay_s  = cfg.get("drunc_delay_s", 20)
+
+        self.min_bias  = cfg.get("min_bias", 4000)
+        self.max_bias  = cfg.get("max_bias", 4000)
+        self.step      = cfg.get("step", 500)
+        self.ledrange = setup_led_range("attscan", self.min_bias, self.max_bias, self.step)
+        self.pulse_width_ticks = int(cfg.get("ssp_conf", {}).get("pulse1_width_ticks", "1"))
 
         # Keep an untouched copy so we can re-create the JSON each loop
         self._baseline = json.loads(details_file.read_text())
@@ -306,11 +325,11 @@ class ScanAttenuators:
         logging.info("📢  Attenuators scan: %s → %s (step %s)",
                      self.min_att, self.max_att, self.att_step)
 
+        messages=[]
         for i in range(self.min_att,
                           self.max_att + self.att_step,
                           self.att_step):
 
-            logging.info("📢  Attenuators = %s", i)
 
             # 1) make sure temp_details.json exists, then patch it
             if not self.details_file.exists():
@@ -321,16 +340,23 @@ class ScanAttenuators:
             # 2) regenerate seeds + XML for the new threshold
             run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
 
-            # 3) configure SSP *with LED OFF* (bias = 0) like cosmics
-            run_set_ssp_conf(
-                self.cfg,
-                channel_mask=self.cfg.get("mask_values", [1])[0],
-                pulse_bias_percent_270nm=0
-            )
-
-            # 4) run drunc acquisition
-            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
-
+            # 3) configure SSP 
+            for mask in self.masks:
+                for bias in self.ledrange:
+                    logging.info("\tAttenuators = %s", i)
+                    ledmessage = f"\tLED intensity = {bias}, LED width = " \
+                                 f"{self.pulse_width_ticks*4} ns, mask = {mask}, " \
+                                 f"att = {i}"
+                    messages.append(ledmessage)
+                    logging.info(ledmessage)
+                    run_set_ssp_conf(self.cfg,
+                                     channel_mask=mask,
+                                     pulse_bias_percent_270nm=bias)
+                    # 4) run drunc acquisition
+                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+        print("Scan finished... parameters done:")
+        for messagerecord in messages:
+            print(messagerecord)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -402,3 +428,4 @@ if __name__ == "__main__":  # pragma: no cover
         print("Usage: python -m pds.core.run <mode> <conf.json>")
         sys.exit(1)
     main(sys.argv[1], sys.argv[2])
+
