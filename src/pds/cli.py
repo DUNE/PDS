@@ -18,6 +18,7 @@ import typer
 from pds.core import run, run_thr, run_att, seed, set_daphne_conf
 from pds.core.run_thr import main as thr_main
 from pds.core.run_att import main as att_main
+from pds.core.run_offset import main as offset_main
 # ──────────────────────────────────────────────────────────────────────────────
 # Typer app & mode enum
 # ──────────────────────────────────────────────────────────────────────────────
@@ -85,6 +86,21 @@ def att_scan(                     # ← name shown in `--help`
     take one run per setting.
     """
     att_main(conf)
+
+@app.command("offset-scan")
+def offset_scan(                     # ← name shown in `--help`
+    conf: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Path to conf.json with mode='offsetscan'",
+    )
+) -> None:
+    """
+    Iterate over offset values defined in *conf* and
+    take one run per setting.
+    """
+    offset_main(conf)
 
 
 @app.command(name="seed")

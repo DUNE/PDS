@@ -65,9 +65,6 @@ def setup_led_range(mode, min_bias, max_bias, step):
     between min_bias, max_bias given the step
     """
     if isinstance(min_bias,list):
-        if mode not in ["calibration", "attscan"]:
-            raise ValueError("min_bias can only be a list when performing \
-            'calibration' run.")
         return min_bias
     return list(range(min_bias, max_bias + step, step))
 
