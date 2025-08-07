@@ -11,7 +11,7 @@ from tempfile import TemporaryDirectory
 from typing import Any, Optional
 
 from pds.core.set_daphne_conf import main as run_daphne_config
-from pds.core.utils import pretty_compact_json, setup_led_range
+from pds.core.utils import pretty_compact_json, setup_led_range, getlogfile
 from pds.core.constants import CONFIGURATIONS
 
 
@@ -105,7 +105,7 @@ def update_temp_details(details_in: Path, details_out: Path, mode: str) -> None:
         if mode == "cosmics":
            pass
            # xcorr.update(correlation_threshold=4000, discrimination_threshold=5000)
-        elif mode in ("noise", "calibration", "attscan", "offsetscan", "trimscan"):
+        elif mode in ("noise", "ledrun", "calibrun", "attscan", "offsetscan", "trimscan"):
             xcorr.update(correlation_threshold=99999999, discrimination_threshold=10)
     details_out.write_text(pretty_compact_json(data))
     logging.info("✅  temp_details.json → %s", details_out)
@@ -198,6 +198,35 @@ def _update_trim(details_file: Path, value: int) -> None:
         att["trim"] = [ value for _ in range(ndevices) ]
     details_file.write_text(pretty_compact_json(data))
 
+def _retrieve_mask_intensities(cfg: dict[str, Any]) -> dict[int, list[int]]:
+    """
+    Read the `dailycalib` field in the json file and returns a dictionary in
+    which the keys are masks and values are list of intensities.
+    """
+    dailycalib = cfg.get("dailycalib", [])
+    if not dailycalib:
+        raise ValueError("No 'dailycalib' field found in the configuration.")
+    if not isinstance(dailycalib, list):
+        raise ValueError("'dailycalib' should be a list of dictionaries.")
+    dictret = {}
+    for groups in dailycalib:
+        mask = groups.get("mask", -1)
+        if mask == -1:
+            continue
+        intensities = groups.get("intensities", [])
+        if isinstance(intensities, int):
+            intensities = [intensities]
+
+        dictret[mask] = intensities
+        
+    return dictret
+        
+
+
+
+
+
+
 # ──────────────────────────────────────────────────────────────────────────────
 # Main scan / single-run controller
 # ──────────────────────────────────────────────────────────────────────────────
@@ -211,12 +240,12 @@ class ScanMaskIntensity:
         self.min_bias  = cfg.get("min_bias", 4000)
         self.max_bias  = cfg.get("max_bias", 4000)
         self.step      = cfg.get("step", 500)
-        self.ledrange = setup_led_range(self.mode, self.min_bias, self.max_bias, self.step)
+        self.ledrange = setup_led_range(self.min_bias, self.max_bias, self.step)
         self.pulse_width_ticks = int(cfg.get("ssp_conf", {}).get("pulse1_width_ticks", "1"))
 
 
     def run(self) -> None:
-        if self.mode == "calibration":
+        if self.mode == "ledrun":
             logging.info("📢  Calibration: scanning masks × intensities …")
             for mask in self.masks:
                 for bias in self.ledrange:
@@ -229,8 +258,29 @@ class ScanMaskIntensity:
                                      pulse_bias_percent_270nm=bias)
                     run_drunc_command(self.cfg, post_delay_s=self.delay_s)
             print("Scan finished... parameters done:")
-            log_file = Path.home() / ".pds" / "logs" / "pds-run.log"
+            log_file = getlogfile()
             nruns = len(self.masks)*len(self.ledrange)
+            if Path(log_file).is_file():
+                subprocess.run(f"cat {log_file} | grep 'LED width =' | tail -n {nruns}", shell=True)
+            return
+        elif self.mode == "calibrun":
+            logging.info("📢  Calibration: mask and intensities defined in 'dailycalib'...")
+            dict_masks_intensities = _retrieve_mask_intensities(self.cfg)
+
+            nruns = 0
+            for mask, ledrange in dict_masks_intensities.items():
+                for bias in ledrange:
+                    ledmessage = f"LED intensity = {bias}, LED width = " \
+                        f"{self.pulse_width_ticks*4} ns, mask = {mask}"
+                    logging.info(ledmessage)
+
+                    run_set_ssp_conf(self.cfg,
+                                     channel_mask=mask,
+                                     pulse_bias_percent_270nm=bias)
+                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+                    nruns+=1
+            print("Calibration finished... parameters done:")
+            log_file = Path.home() / ".pds" / "logs" / "pds-run.log"
             if Path(log_file).is_file():
                 subprocess.run(f"cat {log_file} | grep 'LED width =' | tail -n {nruns}", shell=True)
             return
@@ -316,7 +366,7 @@ class ScanXCorrThreshold:
             run_drunc_command(self.cfg, post_delay_s=self.delay_s)
 
         print("Scan finished... parameters done:")
-        log_file = Path.home() / ".pds" / "logs" / "pds-run.log"
+        log_file = getlogfile()
         nruns = len(xcorrrange)
         if Path(log_file).is_file():
             subprocess.run(f"cat {log_file} | grep 'xcorr = ' | tail -n {nruns}", shell=True)
@@ -353,7 +403,7 @@ class ScanAttenuators:
         self.min_bias  = cfg.get("min_bias", 4000)
         self.max_bias  = cfg.get("max_bias", 4000)
         self.step      = cfg.get("step", 500)
-        self.ledrange = setup_led_range("attscan", self.min_bias, self.max_bias, self.step)
+        self.ledrange = setup_led_range(self.min_bias, self.max_bias, self.step)
         self.pulse_width_ticks = int(cfg.get("ssp_conf", {}).get("pulse1_width_ticks", "1"))
 
         # Keep an untouched copy so we can re-create the JSON each loop
@@ -391,7 +441,7 @@ class ScanAttenuators:
                     # 4) run drunc acquisition
                     run_drunc_command(self.cfg, post_delay_s=self.delay_s)
         print("Scan finished... parameters done:")
-        log_file = Path.home() / ".pds" / "logs" / "pds-run.log"
+        log_file = getlogfile()
         nruns = len(self.masks)*len(self.ledrange)*len(attscanrange)
         if Path(log_file).is_file():
             subprocess.run(f"cat {log_file} | grep 'LED width =' | tail -n {nruns}", shell=True)
@@ -428,7 +478,7 @@ class ScanOffsets:
         self.min_bias  = cfg.get("min_bias", 1)
         self.max_bias  = cfg.get("max_bias", 1)
         self.step      = cfg.get("step", 50)
-        self.ledrange = setup_led_range("offset", self.min_bias, self.max_bias, self.step)
+        self.ledrange = setup_led_range(self.min_bias, self.max_bias, self.step)
         self.pulse_width_ticks = int(cfg.get("ssp_conf", {}).get("pulse1_width_ticks", "1"))
 
         # Keep an untouched copy so we can re-create the JSON each loop
@@ -467,7 +517,7 @@ class ScanOffsets:
                     # 4) run drunc acquisition
                     run_drunc_command(self.cfg, post_delay_s=self.delay_s)
         print("Scan finished... parameters done:")
-        log_file = Path.home() / ".pds" / "logs" / "pds-run.log"
+        log_file = getlogfile()
         nruns = len(self.masks)*len(self.ledrange)*len(offsetscanrange)
         if Path(log_file).is_file():
             subprocess.run(f"cat {log_file} | grep 'LED width =' | tail -n {nruns}", shell=True)
@@ -504,7 +554,7 @@ class ScanTrims:
         self.min_bias  = cfg.get("min_bias", "4000")
         self.max_bias  = cfg.get("max_bias", "4000")
         self.step      = cfg.get("step", 50)
-        self.ledrange = setup_led_range("trim", self.min_bias, self.max_bias, self.step)
+        self.ledrange = setup_led_range(self.min_bias, self.max_bias, self.step)
         self.pulse_width_ticks = int(cfg.get("ssp_conf", {}).get("pulse1_width_ticks", "1"))
 
         # Keep an untouched copy so we can re-create the JSON each loop
@@ -542,7 +592,7 @@ class ScanTrims:
                     # 4) run drunc acquisition
                     run_drunc_command(self.cfg, post_delay_s=self.delay_s)
         print("Scan finished... parameters done:")
-        log_file = Path.home() / ".pds" / "logs" / "pds-run.log"
+        log_file = getlogfile()
         nruns = len(self.masks)*len(self.ledrange)*len(trimscanrange)
         if Path(log_file).is_file():
             subprocess.run(f"cat {log_file} | grep 'LED width =' | tail -n {nruns}", shell=True)

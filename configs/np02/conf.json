@@ -38,6 +38,20 @@
     "min_trim": 1000,
     "max_trim": 1500,
     "trim_step": 500,
+    "dailycalib":[
+        {
+            "mask": 1,
+            "intensities": [ 3100, 3950, 2100, 3500, 2800]
+        },
+        {
+            "mask": 8,
+            "intensities": [1900, 1750, 1600, 2250, 3250]
+        },
+        {
+            "mask": 16,
+            "intensities": [1900, 1700, 1600, 1550]
+        }
+    ],
     "skip_proxy": false,
     "skip_dts": false,
     "web_proxy_cmd": "source ~np04daq/bin/web_proxy.sh -u",

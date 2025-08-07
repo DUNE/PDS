@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 from typing import Any
+from pathlib import Path
 
 from .constants import JSON_INDENT
 
@@ -58,7 +59,7 @@ def bitmask(channels: list[int], *, width: int = 40) -> int:
     return sum(1 << ch for ch in channels if 0 <= ch < width)
 
     
-def setup_led_range(mode, min_bias, max_bias, step):
+def setup_led_range(min_bias, max_bias, step):
     """
     min_bias can be a vector when performing a calibration, this allow for
     a scan with values set by the user, otherwise, it will scan over
@@ -68,3 +69,5 @@ def setup_led_range(mode, min_bias, max_bias, step):
         return min_bias
     return list(range(min_bias, max_bias + step, step))
 
+def getlogfile():
+    return Path.home() / ".pds" / "logs" / "pds-run.log"
