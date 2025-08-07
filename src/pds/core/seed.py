@@ -65,7 +65,7 @@ def get_channel_analog_conf(
         device["channels"].get("trim", [0] * len(channel_ids))[idx]
         if idx < len(device["channels"].get("trim", []))
         else 0
-        for idx in channel_ids
+        for idx in range(len(channel_ids))
     ]
     return {
         "ids": channel_ids,

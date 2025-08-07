@@ -19,6 +19,7 @@ from pds.core import run, run_thr, run_att, seed, set_daphne_conf
 from pds.core.run_thr import main as thr_main
 from pds.core.run_att import main as att_main
 from pds.core.run_offset import main as offset_main
+from pds.core.run_trim import main as trim_main
 # ──────────────────────────────────────────────────────────────────────────────
 # Typer app & mode enum
 # ──────────────────────────────────────────────────────────────────────────────
@@ -102,6 +103,20 @@ def offset_scan(                     # ← name shown in `--help`
     """
     offset_main(conf)
 
+@app.command("trim-scan")
+def trimt_scan(                     # ← name shown in `--help`
+    conf: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Path to conf.json with mode='trimscan'",
+    )
+) -> None:
+    """
+    Iterate over offset values defined in *conf* and
+    take one run per setting.
+    """
+    trim_main(conf)
 
 @app.command(name="seed")
 def seed_command(

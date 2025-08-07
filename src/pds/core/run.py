@@ -105,7 +105,7 @@ def update_temp_details(details_in: Path, details_out: Path, mode: str) -> None:
         if mode == "cosmics":
            pass
            # xcorr.update(correlation_threshold=4000, discrimination_threshold=5000)
-        elif mode in ("noise", "calibration", "attscan", "offsetscan"):
+        elif mode in ("noise", "calibration", "attscan", "offsetscan", "trimscan"):
             xcorr.update(correlation_threshold=99999999, discrimination_threshold=10)
     details_out.write_text(pretty_compact_json(data))
     logging.info("✅  temp_details.json → %s", details_out)
@@ -180,6 +180,22 @@ def _update_offset(details_file: Path, value: int) -> None:
         # Get the number of devices by indices
         ndevices = len(att.get('offsets', list(range(16))))
         att["offsets"] = [ value for _ in range(ndevices) ]
+    details_file.write_text(pretty_compact_json(data))
+
+def _update_trim(details_file: Path, value: int) -> None:
+    """
+    Over-write *details_file*, setting
+        devices[*].channels.trim = [values]
+    """
+    data = json.loads(details_file.read_text())
+    for dev in data.get("devices", []):
+        att = dev.setdefault("channels", {})
+        # Get the number of devices by indices
+        ndevices = len(att.get('trim', list(range(16))))
+        bias_applied = att.get('bias')
+        if all(b==0 for b in bias_applied):
+            continue
+        att["trim"] = [ value for _ in range(ndevices) ]
     details_file.write_text(pretty_compact_json(data))
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -456,6 +472,81 @@ class ScanOffsets:
         if Path(log_file).is_file():
             subprocess.run(f"cat {log_file} | grep 'LED width =' | tail -n {nruns}", shell=True)
 
+class ScanTrims:
+    """
+    Iterate over trim values and take one run per array of values.
+
+    The conf.json can add:
+      min_trim   (default 0)
+      max_trim   (default 1000)
+      trim_step  (default 10)
+    """
+
+    # ------------------------------------------------------------------ #
+
+    def __init__(
+        self,
+        cfg: dict[str, Any],
+        *,
+        conf_file: Path,
+        details_file: Path,
+    ) -> None:
+        self.cfg          = cfg
+        self.conf_file    = conf_file     # …/conf_temp.json
+        self.details_file = details_file  # …/temp_details.json
+
+        self.masks       = cfg.get("mask_values", [1])
+        self.min_trim  = cfg.get("min_trim", 0)
+        self.max_trim  = cfg.get("max_trim", 3000)
+        self.trim_step = cfg.get("trim_step", 20)
+        self.delay_s     = cfg.get("drunc_delay_s", 20)
+
+        self.min_bias  = cfg.get("min_bias", "4000")
+        self.max_bias  = cfg.get("max_bias", "4000")
+        self.step      = cfg.get("step", 50)
+        self.ledrange = setup_led_range("trim", self.min_bias, self.max_bias, self.step)
+        self.pulse_width_ticks = int(cfg.get("ssp_conf", {}).get("pulse1_width_ticks", "1"))
+
+        # Keep an untouched copy so we can re-create the JSON each loop
+        self._baseline = json.loads(details_file.read_text())
+
+    # ------------------------------------------------------------------ #
+
+    def run(self) -> None:
+        logging.info("📢  Offsetscan scan: %s → %s (step %s)",
+                     self.min_trim, self.max_trim, self.trim_step)
+
+        trimscanrange = range(self.min_trim, self.max_trim + self.trim_step, self.trim_step)
+        for trim in trimscanrange:
+
+
+            # 1) make sure temp_details.json exists, then patch it
+            if not self.details_file.exists():
+                self.details_file.write_text(pretty_compact_json(self._baseline))
+            #
+            _update_trim(self.details_file, trim)
+
+            # 2) regenerate seeds + XML for the new threshold
+            run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
+
+            # 3) configure SSP 
+            for mask in self.masks:
+                for bias in self.ledrange:
+                    ledmessage = f"\tLED intensity = {bias}, LED width = " \
+                                 f"{self.pulse_width_ticks*4} ns, mask = {mask}, " \
+                                 f"Trim = {trim}"
+                    logging.info(ledmessage)
+                    run_set_ssp_conf(self.cfg,
+                                     channel_mask=mask,
+                                     pulse_bias_percent_270nm=bias)
+                    # 4) run drunc acquisition
+                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+        print("Scan finished... parameters done:")
+        log_file = Path.home() / ".pds" / "logs" / "pds-run.log"
+        nruns = len(self.masks)*len(self.ledrange)*len(trimscanrange)
+        if Path(log_file).is_file():
+            subprocess.run(f"cat {log_file} | grep 'LED width =' | tail -n {nruns}", shell=True)
+
 
 # ──────────────────────────────────────────────────────────────────────────────
 # main()
@@ -515,6 +606,13 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
             elif mode == "offsetscan":
                 # new offset scan (always same value)
                 ScanOffsets(
+                    cfg,
+                    conf_file=temp_conf,
+                    details_file=temp_detail,
+                ).run()
+            elif mode == "trimscan":
+                # new trim scan (always same value)
+                ScanTrims(
                     cfg,
                     conf_file=temp_conf,
                     details_file=temp_detail,
