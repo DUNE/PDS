@@ -634,7 +634,11 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
         # --- run sequence ----------------------------------------------------------
         dts = DTSButler(cfg)
         try:
-            dts.run()
+            if not cfg["dry_run"]: # Avoid butler when dry run
+                dts.run()
+            else:
+                logging.info("  Skipping Butler run commands...")
+
             WebProxy.setup(cfg)
 
             # ── select the proper scan type ──────────────────────────────
@@ -673,7 +677,10 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
                 run_daphne_config(conf_path=temp_conf, mode=mode)
                 ScanMaskIntensity(cfg).run()
         finally:
-            dts.clear()  # always attempt to clear fake trigger
+            if not cfg["dry_run"]:
+                dts.clear()  # always attempt to clear fake trigger
+            else:
+                logging.info("  Skipping Butler clear commands...")
 
 
 if __name__ == "__main__":  # pragma: no cover
