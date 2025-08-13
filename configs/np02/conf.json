@@ -7,8 +7,8 @@
     "hztrigger": 6260.02,
     "change_rate": 20.0,
     "wait_time": 60,
-    "oks_file": "np02-configs-operation/segments/np02-pds.data.xml",
-    "oks_session": "np02-configs-operation/sessions/np02-session.data.xml",
+    "oks_file": "config-main-np02-pds/segments/np02-pds.data.xml",
+    "oks_session": "config-main-np02-pds/sessions/np02-session.data.xml",
     "session_name": "np02-session",
     "daphne_details": "pds/configs/np02/details.json",
     "daphne_obj": "np02_daphne_selftrigger",
@@ -58,6 +58,6 @@
     "dts_align_cmd": "dtsbutler mst MASTER_PC059_0 align apply-delay 0 0 0 --force -m 3",
     "dts_faketrig_cmd_template": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst GIB_CH faketrig-conf 0x7 0 {hztrigger} --poisson ",
     "dts_clear_fktrig_cmd": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst GIB_CH faketrig-clear 0",
-    "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-fddaq-v5.3.3-dev-pds",
+    "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-NFD_DEV_250809-dev-pds",
     "drunc_delay_s": 20
 }
