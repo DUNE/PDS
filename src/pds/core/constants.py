@@ -9,7 +9,7 @@ CONFIGURATIONS: list[str] = [
     "np02_daphne_fullstream",
 ]
 
-ALWAYS_SELF_TRIGGER_IPS: set[str] = {"10.73.137.107"}
+ALWAYS_SELF_TRIGGER_IPS: set[str] = {"10.73.137.107", "10.73.137.110"}
 NEVER_BIAS_IPS: set[str] = {"10.73.137.106", "10.73.137.110"}
 
 # Default JSON pretty-printer indent
