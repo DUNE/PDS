@@ -106,7 +106,7 @@ def update_temp_details(details_in: Path, details_out: Path, mode: str) -> None:
            pass
            # xcorr.update(correlation_threshold=4000, discrimination_threshold=5000)
         elif mode in ("noise", "ledrun", "calibrun", "attscan", "offsetscan", "trimscan"):
-            xcorr.update(correlation_threshold=99999999, discrimination_threshold=10)
+            xcorr.update(correlation_threshold=134217720, discrimination_threshold=10)
     details_out.write_text(pretty_compact_json(data))
     logging.info("✅  temp_details.json → %s", details_out)
 
@@ -128,7 +128,14 @@ def run_drunc_command(cfg: dict[str, Any], *, post_delay_s: int = 20) -> None:
         return
     logging.info(f"{cmd}")
     subprocess.run(cmd, shell=True, cwd=cfg["drunc_working_dir"], check=True)
-    time.sleep(post_delay_s)
+    print(f"Sleeping for {post_delay_s} seconds. Press Ctrl+C if you need to stop...")
+    try:
+        time.sleep(post_delay_s)
+    except KeyboardInterrupt:
+        print("\nScript interrupted by user.")
+        exit(0)
+
+    print("Continuing execution...")
 
 def run_set_ssp_conf(cfg: dict[str, Any], **overrides: Any) -> None:
     conf = SSPConf.from_config(cfg)

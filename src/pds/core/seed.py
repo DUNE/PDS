@@ -61,12 +61,11 @@ def get_channel_analog_conf(
 ) -> dict[str, Any]:
     gains = [common_conf["offset_gain"]] * len(channel_ids)
     offsets = device["channels"].get("offsets", [])
-    trims = [
-        device["channels"].get("trim", [0] * len(channel_ids))[idx]
-        if idx < len(device["channels"].get("trim", []))
-        else 0
-        for idx in range(len(channel_ids))
-    ]
+    trims = device["channels"].get("trim", [])
+    if not trims:
+        trims = [0]*channel_ids
+    if len(trims) != len(channel_ids) or len(offsets) != len(channel_ids): 
+        raise ValueError(f"The length of trim should be equal to channel_ids")
     return {
         "ids": channel_ids,
         "gains": gains,
