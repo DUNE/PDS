@@ -116,7 +116,7 @@ def generate_drunc_command(cfg: dict[str, Any]) -> str:
     return (
         "drunc-unified-shell ssh-CERN-kafka.json "
         f"{cfg['oks_session']} {cfg['session_name']} main-np02-pds "
-        "start-run change-rate --trigger-rate "
+        f"start-run --run-type {cfg['storage_type']} change-rate --trigger-rate "
         f"{cfg['change_rate']} wait {cfg['wait_time']} "
         "shutdown terminate"
     )
@@ -260,9 +260,22 @@ class ScanMaskIntensity:
                                  f"{self.pulse_width_ticks*4} ns, mask = {mask}"
                     logging.info(ledmessage)
 
-                    run_set_ssp_conf(self.cfg,
-                                     channel_mask=mask,
-                                     pulse_bias_percent_270nm=bias)
+                    overrides = { "channel_mask": mask }
+                    biasAt270nm = int(self.cfg.get("ssp_conf", {}).get("pulse_bias_percent_270nm", "0"))
+                    biasAt367nm = int(self.cfg.get("ssp_conf", {}).get("pulse_bias_percent_367nm", "0"))
+                    biascontrol = "pulse_bias_percent_270nm"
+                    if biasAt270nm == biasAt367nm:
+                        raise ValueError("Only one scan at a time. Set either pulse_bias_percent_270nm or pulse_bias_percent_367nm to 0.")
+                    if biasAt367nm > 0 and biasAt270nm == 0:
+                        biascontrol = "pulse_bias_percent_367nm"
+                    elif biasAt270nm > 0 and biasAt367nm == 0:
+                        biascontrol = "pulse_bias_percent_270nm"
+                    else:
+                        raise ValueError("Only one scan at a time. Set either pulse_bias_percent_270nm or pulse_bias_percent_367nm to 0.")
+
+                    overrides[biascontrol] = bias
+                    run_set_ssp_conf(self.cfg, **overrides)
+
                     run_drunc_command(self.cfg, post_delay_s=self.delay_s)
             print("Scan finished... parameters done:")
             log_file = getlogfile()

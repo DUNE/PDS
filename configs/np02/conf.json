@@ -5,6 +5,7 @@
     "min_corr": 2000,
     "max_corr": 8000,
     "corr_step": 2000,
+    "storage_type": "TEST",
     "change_rate": 20.0,
     "wait_time": 60,
     "oks_file": "config-main-np02-pds/segments/np02-pds.data.xml",
@@ -40,12 +41,16 @@
     "trim_step": 500,
     "dailycalib":[
         {
+            "mask": 1,
+            "intensities": [ 3100, 3950, 2100, 3500, 2800]
+        },
+        {
             "mask": 16,
-            "intensities": [1800]
+            "intensities": [1900, 1700, 1600, 1550]
         },
         {
             "mask": 8,
-            "intensities": [1900, 1750, 1600, 2550, 3250]
+            "intensities": [1900, 1750, 1600, 2250, 3250]
         }
     ],
     "skip_proxy": false,
