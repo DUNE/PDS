@@ -63,7 +63,7 @@ def get_channel_analog_conf(
     offsets = device["channels"].get("offsets", [])
     trims = device["channels"].get("trim", [])
     if not trims:
-        trims = [0]*channel_ids
+        trims = [0]*len(channel_ids)
     if len(trims) != len(channel_ids) or len(offsets) != len(channel_ids): 
         raise ValueError(f"The length of trim should be equal to channel_ids")
     return {
@@ -123,7 +123,6 @@ def populate_afes(
 # Core generation                                                              #
 # -----------------------------------------------------------------------------#
 
-
 def generate_configuration(
     data: dict[str, Any], config_name: str
 ) -> dict[str, Any]:
@@ -135,21 +134,26 @@ def generate_configuration(
     common_conf = data["common_conf"]
 
     for device in data["devices"]:
-        logging.info("Generating %s for device %s", config_name, device["ip"])
+        logging.info("Generating %s for device %s", config_name, device.get("board_id", device.get("ip","?")))
         device = copy.deepcopy(device)
 
-        ip = device["ip"]
+        # --- New required key & controller IP (backward compatible) ---
+        board_id = str(device["board_id"])  # required in the new schema
+        controller_ip = device.get("ip")
+
         channel_ids = get_channel_ids(device)
 
+        # Allow matching either by IP or by board_id for your policy lists
+        id_keys = {controller_ip, board_id}
+
         # Enforce fixed bias for NEVER_BIAS_IPS
-        if ip in NEVER_BIAS_IPS:
+        if any(k in NEVER_BIAS_IPS for k in id_keys):
             bias = [0] * 5
         else:
             bias = device["channels"].get("bias", [])
 
-        # Enforce fixed threshold and fullstream mode
         trigger = device.get("self_trigger", {})
-        if ip in ALWAYS_SELF_TRIGGER_IPS:
+        if any(k in ALWAYS_SELF_TRIGGER_IPS for k in id_keys):
             threshold = 8000
         elif config_name == "np02_daphne_selftrigger":
             threshold = trigger.get("threshold", 0)
@@ -177,7 +181,11 @@ def generate_configuration(
         channel_analog_conf = get_channel_analog_conf(channel_ids, common_conf, device)
 
         configuration = {
-            "slot": device["slot_id"],
+            "detector_id": device["det_id"],
+            "crate_id": device["crate_id"],
+            "slot_id": device["slot_id"],  
+            "ip": controller_ip,
+
             "bias_ctrl": common_conf["bias_ctrl"],
             "self_trigger_threshold": threshold,
             "full_stream_channels": device.get("full_stream_channels", []),
@@ -202,9 +210,13 @@ def generate_configuration(
 
         afe_channels = map_channels_to_afes(channel_ids)
         populate_afes(afe_channels, device, common_conf, configuration)
-        configurations[ip] = configuration
+
+        # --- Key by board_id instead of IP ---
+        configurations[board_id] = configuration
 
     return configurations
+
+
 
 # -----------------------------------------------------------------------------#
 # Public API                                                                   #

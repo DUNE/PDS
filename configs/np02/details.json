@@ -20,9 +20,11 @@
     },
     "devices": [
     {
-        "ip": "10.73.137.106",
-        "slot_id": 6,
+        "board_id":"6",
         "det_id": 8,
+        "crate_id":1,
+        "slot_id": 6,
+        "ip": "10.73.137.106",
         "version":1,
         "mode": "self-trigger",
         "self_trigger": {
@@ -48,9 +50,11 @@
         }
     },
     {
-        "ip": "10.73.137.107",
-        "slot_id": 7,
+        "board_id":"7",
         "det_id": 9,
+        "crate_id":1,
+        "slot_id": 7,
+        "ip": "10.73.137.107",
         "version":1,
         "mode": "self-trigger",
         "self_trigger": {
@@ -76,9 +80,11 @@
         }
     },
     {
-        "ip": "10.73.137.110",
-        "slot_id": 10,
+        "board_id":"10",
         "det_id": 9,
+        "crate_id":2,
+        "slot_id": 10,
+        "ip": "10.73.137.110",
         "version":1,
         "mode": "self-trigger",
         "self_trigger": {
