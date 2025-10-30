@@ -92,7 +92,7 @@
             "correlation_threshold": 2000,
             "discrimination_threshold": 10000
             },
-        "enable_compensator": [],
+        "enable_compensator": [0,2,4,6,7,8,10,12,14,15,16,18,20,22,24,26,28,30,32,34,36,38],
         "enable_inverter": [0,2,4,6,7,8,10,12,14,15,16,18,20,22,24,26,28,30,32,34,36,38]
         },
         "channels": {
