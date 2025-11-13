@@ -226,7 +226,7 @@ def generate_configuration(
 def _worker(base_data: dict[str, Any], cfg: str, out_dir: Path) -> None:
     """Sub-process entry point (pickle-able)."""
     result = generate_configuration(base_data, cfg)
-    (out_dir / f"{cfg}.json").write_text(pretty_compact_json(result))
+    (out_dir / f"{cfg}.json").write_text(pretty_compact_json(result, multiline=True))
     logging.info("Wrote %s.json", cfg)
 
 
