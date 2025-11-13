@@ -11,11 +11,12 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 import logging
 from enum import Enum
-from pathlib import Path
+from typing import Any
 
 import typer
 
 from pds.core import run, run_thr, run_att, seed, set_daphne_conf
+from pds.core.conf_update import update_conf_file
 from pds.core.run_thr import main as thr_main
 from pds.core.run_att import main as att_main
 from pds.core.run_offset import main as offset_main
@@ -150,6 +151,103 @@ def set_command(
     """Apply configuration settings to hardware."""
     logging.info("🔧 Setting configuration using %s!", conf)
     set_daphne_conf.main(conf_path=conf)
+
+
+@app.command(name="conf-update")
+def conf_update_command(
+    conf: Path = typer.Option(
+        ...,
+        "--conf",
+        "-c",
+        exists=True,
+        readable=True,
+        help="Path to the base conf.json file.",
+    ),
+    output: Path | None = typer.Option(
+        None,
+        "--output",
+        "-o",
+        help="Write the updated config to this path (defaults to in-place).",
+    ),
+    drunc_dir: Path | None = typer.Option(
+        None,
+        "--drunc-dir",
+        help="Override drunc_working_dir.",
+    ),
+    daphne_details: str | None = typer.Option(
+        None,
+        "--daphne-details",
+        help="Override daphne_details path.",
+    ),
+    oks_file: str | None = typer.Option(
+        None,
+        "--oks-file",
+        help="Override oks_file path.",
+    ),
+    session_name: str | None = typer.Option(
+        None,
+        "--session-name",
+        help="Override session_name.",
+    ),
+    daphne_obj: str | None = typer.Option(
+        None,
+        "--daphne-obj",
+        help="Override daphne_obj.",
+    ),
+    mode: str | None = typer.Option(
+        None,
+        "--mode",
+        help="Override run mode.",
+    ),
+    set_values: list[str] = typer.Option(
+        [],
+        "--set",
+        "-s",
+        help="Additional overrides (dotted.key=value). Repeat as needed.",
+    ),
+    backup: bool = typer.Option(
+        True,
+        "--backup/--no-backup",
+        help="Keep a conf.json.bak when overwriting the input file.",
+    ),
+) -> None:
+    """Patch conf.json fields without opening an editor."""
+    updates: dict[str, Any] = {}
+    if drunc_dir:
+        updates["drunc_working_dir"] = str(drunc_dir)
+    if daphne_details:
+        updates["daphne_details"] = daphne_details
+    if oks_file:
+        updates["oks_file"] = oks_file
+    if session_name:
+        updates["session_name"] = session_name
+    if daphne_obj:
+        updates["daphne_obj"] = daphne_obj
+    if mode:
+        updates["mode"] = mode
+
+    for assignment in set_values:
+        if "=" not in assignment:
+            raise typer.BadParameter(
+                f"Invalid --set '{assignment}'. Expected format key=value."
+            )
+        key, value = assignment.split("=", 1)
+        updates[key.strip()] = value.strip()
+
+    if not updates:
+        raise typer.BadParameter("Provide at least one override option or --set pair.")
+
+    if output:
+        output.parent.mkdir(parents=True, exist_ok=True)
+
+    updated_path = update_conf_file(
+        conf_path=conf,
+        updates=updates,
+        output_path=output,
+        backup=backup,
+        indent=2,
+    )
+    logging.info("📝 Updated configuration written to %s", updated_path)
 
 
 # ──────────────────────────────────────────────────────────────────────────────

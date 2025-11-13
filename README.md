@@ -28,6 +28,14 @@ pds-run seed --details path/to/details.json
 pds-run set --conf path/to/conf.json
 ```
 
+### Patch a configuration file
+
+```bash
+pds-run conf-update --conf path/to/conf.json --drunc-dir /path/to/workarea --set daphne_details=pds/configs/vst/detail_mezz.json
+```
+
+Use multiple `--set dotted.key=value` pairs to tweak any field without editing JSON manually. Specify `--output new.json` to keep the original file untouched.
+
 ### Install shell autocompletion
 
 ```bash
