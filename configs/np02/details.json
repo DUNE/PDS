@@ -20,9 +20,11 @@
     },
     "devices": [
     {
-        "ip": "10.73.137.106",
-        "slot_id": 6,
+        "board_id":"6",
         "det_id": 8,
+        "crate_id":1,
+        "slot_id": 6,
+        "ip": "10.73.137.106",
         "version":1,
         "mode": "self-trigger",
         "self_trigger": {
@@ -33,24 +35,26 @@
         "pedestal_length": 128,
         "spybuffer_channel": 8,
         "self_trigger_xcorr": {
-            "correlation_threshold": 99999999,
-            "discrimination_threshold": 10
+            "correlation_threshold": 2000,
+            "discrimination_threshold": 15500
             },
         "enable_compensator": [],
         "enable_inverter": []
         },
         "channels": {
         "indices": [0,1,2,3,4,5,6,7,24,25,26,27,28,29,30,31],
-        "attenuators": [1995, 1995, 1995, 1995, 1995],
+        "attenuators": [1995, 1995, 1995, 2150, 1995],
         "bias": [0,0,0,0,0],
         "trim": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        "offsets": [2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250]
+        "offsets": [2100, 2000, 2140, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000]
         }
     },
     {
-        "ip": "10.73.137.107",
-        "slot_id": 7,
+        "board_id":"7",
         "det_id": 9,
+        "crate_id":1,
+        "slot_id": 7,
+        "ip": "10.73.137.107",
         "version":1,
         "mode": "self-trigger",
         "self_trigger": {
@@ -61,18 +65,48 @@
         "pedestal_length": 128,
         "spybuffer_channel": 8,
         "self_trigger_xcorr": {
-            "correlation_threshold": 99999999,
-            "discrimination_threshold": 10
+            "correlation_threshold": 2000,
+            "discrimination_threshold": 15500
             },
         "enable_compensator": [],
         "enable_inverter": [32, 33, 34, 35, 36, 37, 38, 39]
         },
         "channels": {
-        "indices": [0, 7, 8, 15, 16, 23, 24, 31, 32, 33, 34, 35, 36, 37, 38, 39],
-        "attenuators": [1995, 1995, 1995, 1995, 1995],
+        "indices": [0, 5, 7, 8, 13, 15, 16, 21, 23, 24, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+        "attenuators": [2450, 2550, 2700, 2650, 2200],
         "bias": [800, 800, 1200, 1200, 1200],
-        "trim": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        "offsets": [2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250]
+        "trim": [0, 68, 0, 0, 390, 0, 0, 1004, 0, 0, 1003, 0, 876, 1076, 876, 1076, 876, 875, 876, 876],
+        "offsets": [1750, 2250, 1750, 1750, 2250, 1750, 1750, 2250, 1750, 1750, 2250, 1750, 2550, 2550, 2550, 2550, 2550, 2550, 2550, 2550]
+        }
+    },
+    {
+        "board_id":"10",
+        "det_id": 9,
+        "crate_id":2,
+        "slot_id": 10,
+        "ip": "10.73.137.110",
+        "version":1,
+        "mode": "self-trigger",
+        "self_trigger": {
+        "threshold": 8000,
+        "filter_mode": "inverted",
+        "slope_mode": "20",
+        "slope_threshold": 109,
+        "pedestal_length": 128,
+        "spybuffer_channel": 8,
+        "self_trigger_xcorr": {
+            "correlation_threshold": 2000,
+            "discrimination_threshold": 10000
+            },
+        "enable_compensator": [],
+        "enable_inverter": [0,2,4,6,7,8,10,12,14,15,16,18,20,22,24,26,28,30,32,34,36,38]
+        },
+        "channels": {
+        "indices": [0,2,4,6,7,8,10,12,14,15,16,18,20,22,24,26,28,30,32,34,36,38],
+        "attenuators": [1995, 1995, 1995, 1995, 1995],
+        "bias": [0,0,0,0,0],
+        "trim": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "offsets": [2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250, 2250]
         }
     }
     ]

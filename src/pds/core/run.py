@@ -11,8 +11,9 @@ from tempfile import TemporaryDirectory
 from typing import Any, Optional
 
 from pds.core.set_daphne_conf import main as run_daphne_config
-from pds.core.utils import pretty_compact_json
+from pds.core.utils import pretty_compact_json, setup_led_range, getlogfile
 from pds.core.constants import CONFIGURATIONS
+
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -77,7 +78,7 @@ class DTSButler:
 
     def run(self) -> None:
         # Skip alignment + periodic fake-triggers in cosmics *and* threshold scans
-        if self.mode in ("cosmics", "thrscan", "threshold", "attscan"):
+        if self.mode in ("cosmics", "thrscan", "threshold"):
             logging.warning("⚠️  %s run – skipping DTS alignment.", self.mode)
             self.clear()
             return
@@ -104,8 +105,8 @@ def update_temp_details(details_in: Path, details_out: Path, mode: str) -> None:
         if mode == "cosmics":
            pass
            # xcorr.update(correlation_threshold=4000, discrimination_threshold=5000)
-        elif mode in ("noise", "calibration"):
-            xcorr.update(correlation_threshold=99999999, discrimination_threshold=10)
+        elif mode in ("noise", "ledrun", "calibrun", "attscan", "offsetscan", "trimscan"):
+            xcorr.update(correlation_threshold=134217720, discrimination_threshold=10)
     details_out.write_text(pretty_compact_json(data))
     logging.info("✅  temp_details.json → %s", details_out)
 
@@ -113,11 +114,11 @@ def generate_drunc_command(cfg: dict[str, Any]) -> str:
     if cfg.get("dry_run"):
         return "echo '🧪 [dry-run] Simulating drunc command...'"
     return (
-        "drunc-unified-shell ssh-standalone "
-        f"{cfg['oks_session']} {cfg['session_name']} np02-pds "
-        "boot conf start enable-triggers change-rate --trigger-rate "
+        "drunc-unified-shell ssh-CERN-kafka.json "
+        f"{cfg['oks_session']} {cfg['session_name']} main-np02-pds "
+        "start-run change-rate --trigger-rate "
         f"{cfg['change_rate']} wait {cfg['wait_time']} "
-        "disable-triggers drain-dataflow stop-trigger-sources stop scrap terminate"
+        "shutdown terminate"
     )
 
 def run_drunc_command(cfg: dict[str, Any], *, post_delay_s: int = 20) -> None:
@@ -125,8 +126,16 @@ def run_drunc_command(cfg: dict[str, Any], *, post_delay_s: int = 20) -> None:
     if cfg.get("dry_run"):
         logging.info("🧪 Dry run: %s", cmd)
         return
+    logging.info(f"{cmd}")
     subprocess.run(cmd, shell=True, cwd=cfg["drunc_working_dir"], check=True)
-    time.sleep(post_delay_s)
+    print(f"Sleeping for {post_delay_s} seconds. Press Ctrl+C if you need to stop...")
+    try:
+        time.sleep(post_delay_s)
+    except KeyboardInterrupt:
+        print("\nScript interrupted by user.")
+        exit(0)
+
+    print("Continuing execution...")
 
 def run_set_ssp_conf(cfg: dict[str, Any], **overrides: Any) -> None:
     conf = SSPConf.from_config(cfg)
@@ -154,16 +163,76 @@ def _update_correlation_threshold(details_file: Path, value: int) -> None:
     details_file.write_text(pretty_compact_json(data))
 
 
-def _update_attenuators(details_file: Path, values: List[int]) -> None:
+def _update_attenuators(details_file: Path, value: int) -> None:
     """
     Over-write *details_file*, setting
-        devices[*].channels.attenuators = [values]
+        devices[*].channels.attenuators = [value]
     """
     data = json.loads(details_file.read_text())
     for dev in data.get("devices", []):
         att = dev.setdefault("channels", {})
-        att["attenuators"] = values
+        # Get the number of devices by indices
+        ndevices = len(att.get('attenuators', list(range(5))))
+        att["attenuators"] = [ value for _ in range(ndevices) ]
     details_file.write_text(pretty_compact_json(data))
+
+def _update_offset(details_file: Path, value: int) -> None:
+    """
+    Over-write *details_file*, setting
+        devices[*].channels.offsets = [values]
+    """
+    data = json.loads(details_file.read_text())
+    for dev in data.get("devices", []):
+        att = dev.setdefault("channels", {})
+        # Get the number of devices by indices
+        ndevices = len(att.get('offsets', list(range(16))))
+        att["offsets"] = [ value for _ in range(ndevices) ]
+    details_file.write_text(pretty_compact_json(data))
+
+def _update_trim(details_file: Path, value: int) -> None:
+    """
+    Over-write *details_file*, setting
+        devices[*].channels.trim = [values]
+    """
+    data = json.loads(details_file.read_text())
+    for dev in data.get("devices", []):
+        att = dev.setdefault("channels", {})
+        # Get the number of devices by indices
+        ndevices = len(att.get('trim', list(range(16))))
+        bias_applied = att.get('bias')
+        if all(b==0 for b in bias_applied):
+            continue
+        att["trim"] = [ value for _ in range(ndevices) ]
+    details_file.write_text(pretty_compact_json(data))
+
+def _retrieve_mask_intensities(cfg: dict[str, Any]) -> dict[int, list[int]]:
+    """
+    Read the `dailycalib` field in the json file and returns a dictionary in
+    which the keys are masks and values are list of intensities.
+    """
+    dailycalib = cfg.get("dailycalib", [])
+    if not dailycalib:
+        raise ValueError("No 'dailycalib' field found in the configuration.")
+    if not isinstance(dailycalib, list):
+        raise ValueError("'dailycalib' should be a list of dictionaries.")
+    dictret = {}
+    for groups in dailycalib:
+        mask = groups.get("mask", -1)
+        if mask == -1:
+            continue
+        intensities = groups.get("intensities", [])
+        if isinstance(intensities, int):
+            intensities = [intensities]
+
+        dictret[mask] = intensities
+        
+    return dictret
+        
+
+
+
+
+
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Main scan / single-run controller
@@ -172,22 +241,55 @@ class ScanMaskIntensity:
     def __init__(self, cfg: dict[str, Any]) -> None:
         self.cfg       = cfg
         self.masks     = cfg.get("mask_values", [1])
-        self.min_bias  = cfg.get("min_bias", 4000)
-        self.max_bias  = cfg.get("max_bias", 4000)
-        self.step      = cfg.get("step", 500)
         self.delay_s   = cfg.get("drunc_delay_s", 20)
         self.mode      = cfg.get("mode")
 
+        self.min_bias  = cfg.get("min_bias", 4000)
+        self.max_bias  = cfg.get("max_bias", 4000)
+        self.step      = cfg.get("step", 500)
+        self.ledrange = setup_led_range(self.min_bias, self.max_bias, self.step)
+        self.pulse_width_ticks = int(cfg.get("ssp_conf", {}).get("pulse1_width_ticks", "1"))
+
+
     def run(self) -> None:
-        if self.mode == "calibration":
+        if self.mode == "ledrun":
             logging.info("📢  Calibration: scanning masks × intensities …")
             for mask in self.masks:
-                for bias in range(self.min_bias, self.max_bias + self.step, self.step):
-                    logging.info(f"📢mask= {mask} \t pulse bias percent 270nm = {bias}")
+                for bias in self.ledrange:
+                    ledmessage = f"LED intensity = {bias}, LED width = " \
+                                 f"{self.pulse_width_ticks*4} ns, mask = {mask}"
+                    logging.info(ledmessage)
+
                     run_set_ssp_conf(self.cfg,
                                      channel_mask=mask,
                                      pulse_bias_percent_270nm=bias)
                     run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+            print("Scan finished... parameters done:")
+            log_file = getlogfile()
+            nruns = len(self.masks)*len(self.ledrange)
+            if Path(log_file).is_file():
+                subprocess.run(f"cat {log_file} | grep 'LED width =' | tail -n {nruns}", shell=True)
+            return
+        elif self.mode == "calibrun":
+            logging.info("📢  Calibration: mask and intensities defined in 'dailycalib'...")
+            dict_masks_intensities = _retrieve_mask_intensities(self.cfg)
+
+            nruns = 0
+            for mask, ledrange in dict_masks_intensities.items():
+                for bias in ledrange:
+                    ledmessage = f"LED intensity = {bias}, LED width = " \
+                        f"{self.pulse_width_ticks*4} ns, mask = {mask}"
+                    logging.info(ledmessage)
+
+                    run_set_ssp_conf(self.cfg,
+                                     channel_mask=mask,
+                                     pulse_bias_percent_270nm=bias)
+                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+                    nruns+=1
+            print("Calibration finished... parameters done:")
+            log_file = Path.home() / ".pds" / "logs" / "pds-run.log"
+            if Path(log_file).is_file():
+                subprocess.run(f"cat {log_file} | grep 'LED width =' | tail -n {nruns}", shell=True)
             return
 
         # Noise & cosmics: single run, LED OFF
@@ -199,13 +301,15 @@ class ScanMaskIntensity:
             run_drunc_command(self.cfg, post_delay_s=self.delay_s)
             return
 
+        if isinstance(self.min_bias, list):
+            self.min_bias = self.min_bias[0]
+
         # Fallback for any other mode
         logging.info("📢  %s run – single acquisition, default LED ON.", self.mode)
         run_set_ssp_conf(self.cfg,
                          channel_mask=self.masks[0],
                          pulse_bias_percent_270nm=self.min_bias)
         run_drunc_command(self.cfg, post_delay_s=self.delay_s)
-
 
 class ScanXCorrThreshold:
     """
@@ -243,12 +347,12 @@ class ScanXCorrThreshold:
     def run(self) -> None:
         logging.info("📢  Threshold scan: %s → %s (step %s)",
                      self.min_corr, self.max_corr, self.step)
+        
+        xcorrrange = range(self.min_corr, self.max_corr + self.step, self.step)
 
-        for corr in range(self.min_corr,
-                          self.max_corr + self.step,
-                          self.step):
+        for corr in xcorrrange:
 
-            logging.info("📢  correlation_threshold = %s", corr)
+            logging.info(f"📢  xcorr = {corr}")
 
             # 1) make sure temp_details.json exists, then patch it
             if not self.details_file.exists():
@@ -268,6 +372,11 @@ class ScanXCorrThreshold:
             # 4) run drunc acquisition
             run_drunc_command(self.cfg, post_delay_s=self.delay_s)
 
+        print("Scan finished... parameters done:")
+        log_file = getlogfile()
+        nruns = len(xcorrrange)
+        if Path(log_file).is_file():
+            subprocess.run(f"cat {log_file} | grep 'xcorr = ' | tail -n {nruns}", shell=True)
 
 class ScanAttenuators:
     """
@@ -292,10 +401,17 @@ class ScanAttenuators:
         self.conf_file    = conf_file     # …/conf_temp.json
         self.details_file = details_file  # …/temp_details.json
 
-        self.min_att = cfg.get("min_att", 1990)
-        self.max_att = cfg.get("max_att", 2010)
+        self.masks     = cfg.get("mask_values", [1])
+        self.min_att = cfg.get("min_att", 2000)
+        self.max_att = cfg.get("max_att", 2600)
         self.att_step     = cfg.get("att_step", 10)
         self.delay_s  = cfg.get("drunc_delay_s", 20)
+
+        self.min_bias  = cfg.get("min_bias", 4000)
+        self.max_bias  = cfg.get("max_bias", 4000)
+        self.step      = cfg.get("step", 500)
+        self.ledrange = setup_led_range(self.min_bias, self.max_bias, self.step)
+        self.pulse_width_ticks = int(cfg.get("ssp_conf", {}).get("pulse1_width_ticks", "1"))
 
         # Keep an untouched copy so we can re-create the JSON each loop
         self._baseline = json.loads(details_file.read_text())
@@ -306,31 +422,187 @@ class ScanAttenuators:
         logging.info("📢  Attenuators scan: %s → %s (step %s)",
                      self.min_att, self.max_att, self.att_step)
 
-        for i in range(self.min_att,
-                          self.max_att + self.att_step,
-                          self.att_step):
+        attscanrange = range(self.min_att, self.max_att + self.att_step, self.att_step)
+        for att in attscanrange:
 
-            logging.info("📢  Attenuators = %s", i)
 
             # 1) make sure temp_details.json exists, then patch it
             if not self.details_file.exists():
                 self.details_file.write_text(pretty_compact_json(self._baseline))
-            j = [i for _ in range(5)]
-            _update_attenuators(self.details_file, j)
+            _update_attenuators(self.details_file, att)
 
             # 2) regenerate seeds + XML for the new threshold
             run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
 
-            # 3) configure SSP *with LED OFF* (bias = 0) like cosmics
-            run_set_ssp_conf(
-                self.cfg,
-                channel_mask=self.cfg.get("mask_values", [1])[0],
-                pulse_bias_percent_270nm=0
-            )
+            # 3) configure SSP 
+            for mask in self.masks:
+                for bias in self.ledrange:
+                    logging.info("\tAttenuators = %s", att)
+                    ledmessage = f"\tLED intensity = {bias}, LED width = " \
+                                 f"{self.pulse_width_ticks*4} ns, mask = {mask}, " \
+                                 f"att = {att}"
+                    logging.info(ledmessage)
+                    run_set_ssp_conf(self.cfg,
+                                     channel_mask=mask,
+                                     pulse_bias_percent_270nm=bias)
+                    # 4) run drunc acquisition
+                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+        print("Scan finished... parameters done:")
+        log_file = getlogfile()
+        nruns = len(self.masks)*len(self.ledrange)*len(attscanrange)
+        if Path(log_file).is_file():
+            subprocess.run(f"cat {log_file} | grep 'LED width =' | tail -n {nruns}", shell=True)
 
-            # 4) run drunc acquisition
-            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+class ScanOffsets:
+    """
+    Iterate over Offsets values and take one run per array of values.
 
+    The conf.json can add:
+      min_offset   (default 2000)
+      max_offset   (default 2600)
+      offset_step  (default 10)
+    """
+
+    # ------------------------------------------------------------------ #
+
+    def __init__(
+        self,
+        cfg: dict[str, Any],
+        *,
+        conf_file: Path,
+        details_file: Path,
+    ) -> None:
+        self.cfg          = cfg
+        self.conf_file    = conf_file     # …/conf_temp.json
+        self.details_file = details_file  # …/temp_details.json
+
+        self.masks       = cfg.get("mask_values", [1])
+        self.min_offset  = cfg.get("min_offset", 1990)
+        self.max_offset  = cfg.get("max_offset", 2010)
+        self.offset_step = cfg.get("offset_step", 10)
+        self.delay_s     = cfg.get("drunc_delay_s", 20)
+
+        self.min_bias  = cfg.get("min_bias", 1)
+        self.max_bias  = cfg.get("max_bias", 1)
+        self.step      = cfg.get("step", 50)
+        self.ledrange = setup_led_range(self.min_bias, self.max_bias, self.step)
+        self.pulse_width_ticks = int(cfg.get("ssp_conf", {}).get("pulse1_width_ticks", "1"))
+
+        # Keep an untouched copy so we can re-create the JSON each loop
+        self._baseline = json.loads(details_file.read_text())
+
+    # ------------------------------------------------------------------ #
+
+    def run(self) -> None:
+        logging.info("📢  Offsetscan scan: %s → %s (step %s)",
+                     self.min_offset, self.max_offset, self.offset_step)
+
+        offsetscanrange = range(self.min_offset, self.max_offset + self.offset_step, self.offset_step)
+        for offset in offsetscanrange:
+
+
+            # 1) make sure temp_details.json exists, then patch it
+            if not self.details_file.exists():
+                self.details_file.write_text(pretty_compact_json(self._baseline))
+            #
+            _update_offset(self.details_file, offset)
+
+            # 2) regenerate seeds + XML for the new threshold
+            run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
+
+            # 3) configure SSP 
+            for mask in self.masks:
+                for bias in self.ledrange:
+                    logging.info("\tOffset = %s", offset)
+                    ledmessage = f"\tLED intensity = {bias}, LED width = " \
+                                 f"{self.pulse_width_ticks*4} ns, mask = {mask}, " \
+                                 f"Offset = {offset}"
+                    logging.info(ledmessage)
+                    run_set_ssp_conf(self.cfg,
+                                     channel_mask=mask,
+                                     pulse_bias_percent_270nm=bias)
+                    # 4) run drunc acquisition
+                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+        print("Scan finished... parameters done:")
+        log_file = getlogfile()
+        nruns = len(self.masks)*len(self.ledrange)*len(offsetscanrange)
+        if Path(log_file).is_file():
+            subprocess.run(f"cat {log_file} | grep 'LED width =' | tail -n {nruns}", shell=True)
+
+class ScanTrims:
+    """
+    Iterate over trim values and take one run per array of values.
+
+    The conf.json can add:
+      min_trim   (default 0)
+      max_trim   (default 1000)
+      trim_step  (default 10)
+    """
+
+    # ------------------------------------------------------------------ #
+
+    def __init__(
+        self,
+        cfg: dict[str, Any],
+        *,
+        conf_file: Path,
+        details_file: Path,
+    ) -> None:
+        self.cfg          = cfg
+        self.conf_file    = conf_file     # …/conf_temp.json
+        self.details_file = details_file  # …/temp_details.json
+
+        self.masks       = cfg.get("mask_values", [1])
+        self.min_trim  = cfg.get("min_trim", 0)
+        self.max_trim  = cfg.get("max_trim", 3000)
+        self.trim_step = cfg.get("trim_step", 20)
+        self.delay_s     = cfg.get("drunc_delay_s", 20)
+
+        self.min_bias  = cfg.get("min_bias", "4000")
+        self.max_bias  = cfg.get("max_bias", "4000")
+        self.step      = cfg.get("step", 50)
+        self.ledrange = setup_led_range(self.min_bias, self.max_bias, self.step)
+        self.pulse_width_ticks = int(cfg.get("ssp_conf", {}).get("pulse1_width_ticks", "1"))
+
+        # Keep an untouched copy so we can re-create the JSON each loop
+        self._baseline = json.loads(details_file.read_text())
+
+    # ------------------------------------------------------------------ #
+
+    def run(self) -> None:
+        logging.info("📢  Offsetscan scan: %s → %s (step %s)",
+                     self.min_trim, self.max_trim, self.trim_step)
+
+        trimscanrange = range(self.min_trim, self.max_trim + self.trim_step, self.trim_step)
+        for trim in trimscanrange:
+
+
+            # 1) make sure temp_details.json exists, then patch it
+            if not self.details_file.exists():
+                self.details_file.write_text(pretty_compact_json(self._baseline))
+            #
+            _update_trim(self.details_file, trim)
+
+            # 2) regenerate seeds + XML for the new threshold
+            run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
+
+            # 3) configure SSP 
+            for mask in self.masks:
+                for bias in self.ledrange:
+                    ledmessage = f"\tLED intensity = {bias}, LED width = " \
+                                 f"{self.pulse_width_ticks*4} ns, mask = {mask}, " \
+                                 f"Trim = {trim}"
+                    logging.info(ledmessage)
+                    run_set_ssp_conf(self.cfg,
+                                     channel_mask=mask,
+                                     pulse_bias_percent_270nm=bias)
+                    # 4) run drunc acquisition
+                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+        print("Scan finished... parameters done:")
+        log_file = getlogfile()
+        nruns = len(self.masks)*len(self.ledrange)*len(trimscanrange)
+        if Path(log_file).is_file():
+            subprocess.run(f"cat {log_file} | grep 'LED width =' | tail -n {nruns}", shell=True)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -369,7 +641,11 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
         # --- run sequence ----------------------------------------------------------
         dts = DTSButler(cfg)
         try:
-            dts.run()
+            if not cfg["dry_run"]: # Avoid butler when dry run
+                dts.run()
+            else:
+                logging.info("  Skipping Butler run commands...")
+
             WebProxy.setup(cfg)
 
             # ── select the proper scan type ──────────────────────────────
@@ -388,13 +664,30 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
                     conf_file=temp_conf,
                     details_file=temp_detail,
                 ).run()
+            elif mode == "offsetscan":
+                # new offset scan (always same value)
+                ScanOffsets(
+                    cfg,
+                    conf_file=temp_conf,
+                    details_file=temp_detail,
+                ).run()
+            elif mode == "trimscan":
+                # new trim scan (always same value)
+                ScanTrims(
+                    cfg,
+                    conf_file=temp_conf,
+                    details_file=temp_detail,
+                ).run()
 
             else:
                 # existing mask/intensity scan
                 run_daphne_config(conf_path=temp_conf, mode=mode)
                 ScanMaskIntensity(cfg).run()
         finally:
-            dts.clear()  # always attempt to clear fake trigger
+            if not cfg["dry_run"]:
+                dts.clear()  # always attempt to clear fake trigger
+            else:
+                logging.info("  Skipping Butler clear commands...")
 
 
 if __name__ == "__main__":  # pragma: no cover
@@ -402,3 +695,4 @@ if __name__ == "__main__":  # pragma: no cover
         print("Usage: python -m pds.core.run <mode> <conf.json>")
         sys.exit(1)
     main(sys.argv[1], sys.argv[2])
+

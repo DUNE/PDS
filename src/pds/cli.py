@@ -18,13 +18,17 @@ import typer
 from pds.core import run, run_thr, run_att, seed, set_daphne_conf
 from pds.core.run_thr import main as thr_main
 from pds.core.run_att import main as att_main
+from pds.core.run_offset import main as offset_main
+from pds.core.run_trim import main as trim_main
+from pds.core.utils import getlogfile
 # ──────────────────────────────────────────────────────────────────────────────
 # Typer app & mode enum
 # ──────────────────────────────────────────────────────────────────────────────
 class Mode(str, Enum):
     cosmics = "cosmics"
     noise = "noise"
-    calibration = "calibration"
+    ledrun = "ledrun"
+    calibrun = "calibrun"
 
 
 app = typer.Typer(
@@ -40,7 +44,7 @@ def run_command(
         ...,
         "--mode",
         "-m",
-        help="Type of run: cosmics, noise, calibration.",
+        help="Type of run: cosmics, noise, ledrun, calibrun.",
     ),
     conf: Path = typer.Option(
         ...,
@@ -86,6 +90,35 @@ def att_scan(                     # ← name shown in `--help`
     """
     att_main(conf)
 
+@app.command("offset-scan")
+def offset_scan(                     # ← name shown in `--help`
+    conf: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Path to conf.json with mode='offsetscan'",
+    )
+) -> None:
+    """
+    Iterate over offset values defined in *conf* and
+    take one run per setting.
+    """
+    offset_main(conf)
+
+@app.command("trim-scan")
+def trimt_scan(                     # ← name shown in `--help`
+    conf: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Path to conf.json with mode='trimscan'",
+    )
+) -> None:
+    """
+    Iterate over offset values defined in *conf* and
+    take one run per setting.
+    """
+    trim_main(conf)
 
 @app.command(name="seed")
 def seed_command(
@@ -140,11 +173,12 @@ def _setup_logging(verbose: bool) -> None:
     logging.basicConfig(level=level, format=fmt)
 
     # ── file handler ───────────────────────────────────────────────
-    log_dir = Path.home() / ".pds" / "logs"
+    log_file = getlogfile()
+    log_dir = log_file.parent
     log_dir.mkdir(parents=True, exist_ok=True)
 
     file_handler = RotatingFileHandler(
-        log_dir / "pds-run.log", maxBytes=5_000_000, backupCount=3
+        log_file, maxBytes=5_000_000, backupCount=3
     )
     file_handler.setFormatter(logging.Formatter(fmt))
     file_handler.setLevel(level)
@@ -153,7 +187,7 @@ def _setup_logging(verbose: bool) -> None:
     if verbose:
         logging.debug(
             "Verbose mode enabled; logs also written to %s",
-            log_dir / "pds-run.log",
+            log_file,
         )
 
 # ──────────────────────────────────────────────────────────────────────────────
