@@ -20,15 +20,15 @@
     },
     "devices": [
     {
-        "board_id":"61",
-        "det_id": 8,
-        "crate_id":3,
+        "board_id":"60",
+        "det_id": 9,
+        "crate_id":4,
         "slot_id": 1,
-        "ip": "10.73.137.161",
+        "ip": "10.73.137.160",
         "version":1,
         "mode": "self-trigger",
         "self_trigger": {
-        "threshold": 14,
+        "threshold": 8000,
         "filter_mode": "inverted",
         "slope_mode": "20",
         "slope_threshold": 109,
@@ -42,11 +42,11 @@
         "enable_inverter": []
         },
         "channels": {
-        "indices": [0,8,16,24,32],
-        "attenuators": [1995,1995,1995,1995,1995],
-        "bias": [0,0,0,0,0],
-        "trim": [0,0,0,0,0],
-        "offsets": [2275,2275,2275,2275,2275]
+        "indices": [8,9,14,15,16,17,18,19,28,29,30,31],
+        "attenuators": [2999,2080,2226,1778,2999],
+        "bias": [0,0,1115,800,0],
+        "trim": [0,0,0,0,0,0,0,0,0,0,0,0],
+        "offsets": [2275,2275,2275,2275,2275,2275,2275,2275,2275,2275,2275,2275]
         }
     }
     ]
