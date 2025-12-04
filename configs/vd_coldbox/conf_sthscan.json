@@ -1,0 +1,62 @@
+{
+    "dry_run": false,
+    "mode": "sthscan",
+    "hztrigger": 6260.02,
+    "min_corr": 2000,
+    "max_corr": 8000,
+    "corr_step": 2000,
+    "min_self_trigger_threshold": 10,
+    "max_self_trigger_threshold": 40,
+    "self_trigger_threshold_step": 5,
+    "change_rate": 20.0,
+    "wait_time": 60,
+    "oks_file": "config-main-np02-pds/segments/np02-pds.data.xml",
+    "oks_session": "config-main-np02-pds/sessions/np02-session.data.xml",
+    "session_name": "np02-session",
+    "daphne_details": "pds/configs/vd_coldbox/detail_mezz.json",
+    "daphne_obj": "daphne_mezz",
+    "mask_values": [8],
+    "ssp_conf": {
+        "object_name": "np02-ssp-on",
+        "channel_mask": "4",
+        "number_channels": "12",
+        "pulse_mode": "single",
+        "burst_count": "1",
+        "double_pulse_delay_ticks": "4000",
+        "pulse1_width_ticks": "1",
+        "pulse2_width_ticks": "1",
+        "pulse_bias_percent_270nm": "4095",
+        "pulse_bias_percent_367nm": "0"
+    },
+    "bias": "800,800,1200,1200,1200",
+    "min_att": 2200,
+    "max_att": 2000,
+    "att_step": -50,
+    "min_bias": 2550,
+    "max_bias": 2550,
+    "step": 1,
+    "min_offset": 2500,
+    "max_offset": 2650,
+    "offset_step": 50,
+    "min_trim": 3000,
+    "max_trim": 3000,
+    "trim_step": 500,
+    "dailycalib": [
+        {
+            "mask": 16,
+            "intensities": [1800]
+        },
+        {
+            "mask": 8,
+            "intensities": [1900, 1750, 1600, 2550, 3250]
+        }
+    ],
+    "skip_proxy": false,
+    "skip_dts": false,
+    "web_proxy_cmd": "source ~np04daq/bin/web_proxy.sh -u",
+    "dts_align_cmd": "dtsbutler mst MASTER_PC059_0 align apply-delay 0 0 0 --force -m 3",
+    "dts_faketrig_cmd_template": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst GIB_CH faketrig-conf 0x7 0 {hztrigger} --poisson ",
+    "dts_clear_fktrig_cmd": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst GIB_CH faketrig-clear 0",
+    "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-NFD_DEV_250809-dev-pds",
+    "drunc_delay_s": 20
+}

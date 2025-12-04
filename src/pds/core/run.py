@@ -78,7 +78,7 @@ class DTSButler:
 
     def run(self) -> None:
         # Skip alignment + periodic fake-triggers in cosmics *and* threshold scans
-        if self.mode in ("cosmics", "thrscan", "threshold"):
+        if self.mode in ("cosmics", "thrscan", "threshold", "sthscan", "selftrigger"):
             logging.warning("⚠️  %s run – skipping DTS alignment.", self.mode)
             self.clear()
             return
@@ -160,6 +160,18 @@ def _update_correlation_threshold(details_file: Path, value: int) -> None:
             "self_trigger_xcorr", {}
         )
         xcorr["correlation_threshold"] = value
+    details_file.write_text(pretty_compact_json(data))
+
+
+def _update_self_trigger_threshold(details_file: Path, value: int) -> None:
+    """
+    Over-write *details_file*, setting
+        devices[*].self_trigger.threshold = value
+    """
+    data = json.loads(details_file.read_text())
+    for dev in data.get("devices", []):
+        trigger = dev.setdefault("self_trigger", {})
+        trigger["threshold"] = value
     details_file.write_text(pretty_compact_json(data))
 
 
@@ -377,6 +389,87 @@ class ScanXCorrThreshold:
         nruns = len(xcorrrange)
         if Path(log_file).is_file():
             subprocess.run(f"cat {log_file} | grep 'xcorr = ' | tail -n {nruns}", shell=True)
+
+
+class ScanSelfTriggerThreshold:
+    """
+    Iterate over self-trigger threshold values and take one run per value.
+
+    The conf.json can add:
+      min_self_trigger_threshold   (default: value in details.json, or 0)
+      max_self_trigger_threshold   (default: value in details.json, or 0)
+      self_trigger_threshold_step  (default 1)
+    """
+
+    def __init__(
+        self,
+        cfg: dict[str, Any],
+        *,
+        conf_file: Path,
+        details_file: Path,
+    ) -> None:
+        self.cfg          = cfg
+        self.conf_file    = conf_file
+        self.details_file = details_file
+
+        # Keep an untouched copy so we can re-create the JSON each loop
+        self._baseline = json.loads(details_file.read_text())
+        baseline_threshold = self._extract_baseline_threshold(self._baseline)
+
+        self.min_thr = cfg.get("min_self_trigger_threshold", baseline_threshold)
+        self.max_thr = cfg.get("max_self_trigger_threshold", baseline_threshold)
+        self.step    = cfg.get("self_trigger_threshold_step", 1)
+        self.delay_s = cfg.get("drunc_delay_s", 20)
+
+        if self.step == 0:
+            raise ValueError("self_trigger_threshold_step must be non-zero.")
+
+    @staticmethod
+    def _extract_baseline_threshold(baseline: dict[str, Any]) -> int:
+        for dev in baseline.get("devices", []):
+            try:
+                return int(dev.get("self_trigger", {}).get("threshold", 0))
+            except (TypeError, ValueError):
+                continue
+        return 0
+
+    def _range(self) -> range:
+        # Inclusive range, supports positive or negative steps
+        stop = self.max_thr + self.step
+        return range(self.min_thr, stop, self.step)
+
+    def run(self) -> None:
+        logging.info("📢  Self-trigger threshold scan: %s → %s (step %s)",
+                     self.min_thr, self.max_thr, self.step)
+
+        thr_range = self._range()
+
+        for thr in thr_range:
+            logging.info(f"📢  self-trigger threshold = {thr}")
+
+            # 1) make sure temp_details.json exists, then patch it
+            if not self.details_file.exists():
+                self.details_file.write_text(pretty_compact_json(self._baseline))
+            _update_self_trigger_threshold(self.details_file, thr)
+
+            # 2) regenerate seeds + XML for the new threshold
+            run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
+
+            # 3) configure SSP *with LED OFF* (bias = 0) like cosmics
+            run_set_ssp_conf(
+                self.cfg,
+                channel_mask=self.cfg.get("mask_values", [1])[0],
+                pulse_bias_percent_270nm=0
+            )
+
+            # 4) run drunc acquisition
+            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+
+        print("Scan finished... parameters done:")
+        log_file = getlogfile()
+        nruns = len(thr_range)
+        if Path(log_file).is_file():
+            subprocess.run(f"cat {log_file} | grep 'self-trigger threshold =' | tail -n {nruns}", shell=True)
 
 class ScanAttenuators:
     """
@@ -657,6 +750,13 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
                     conf_file=temp_conf,
                     details_file=temp_detail,
                 ).run()
+            elif mode in ("sthscan", "selftrigger"):
+                # self-trigger threshold scan
+                ScanSelfTriggerThreshold(
+                    cfg,
+                    conf_file=temp_conf,
+                    details_file=temp_detail,
+                ).run()
             elif mode in ("attscan", "attenuator"):
                 # new attenuator scan (always 5 channels of identical values)
                 ScanAttenuators(
@@ -695,4 +795,3 @@ if __name__ == "__main__":  # pragma: no cover
         print("Usage: python -m pds.core.run <mode> <conf.json>")
         sys.exit(1)
     main(sys.argv[1], sys.argv[2])
-

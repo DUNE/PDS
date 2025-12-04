@@ -21,6 +21,7 @@ from pds.core.run_thr import main as thr_main
 from pds.core.run_att import main as att_main
 from pds.core.run_offset import main as offset_main
 from pds.core.run_trim import main as trim_main
+from pds.core.run_selftrigger import main as selfthr_main
 from pds.core.utils import getlogfile
 # ──────────────────────────────────────────────────────────────────────────────
 # Typer app & mode enum
@@ -74,6 +75,22 @@ def thr_scan(                     # ← name shown in `--help`
     take one run per setting.
     """
     thr_main(conf)
+
+
+@app.command("selfthr-scan")
+def selfthr_scan(                     # ← name shown in `--help`
+    conf: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Path to conf.json with mode='sthscan'",
+    )
+) -> None:
+    """
+    Iterate over self_trigger_threshold values defined in *conf* and
+    take one run per setting.
+    """
+    selfthr_main(conf)
 
 
 @app.command("att-scan")

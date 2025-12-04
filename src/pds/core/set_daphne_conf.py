@@ -4,6 +4,7 @@ import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from pds.core.seed import generate_seeds
+import shutil
 
 CONFIGURATIONS = [
     "np02_daphne_fullstream",
@@ -101,8 +102,21 @@ def main(mode=None, conf_path=None):
         logging.info(f"📢 Generating seeds from {daphne_config_path}")
         generate_seeds(daphne_config_path)
 
+        # Optionally duplicate the self-trigger seed under a custom name
+        config_names = list(CONFIGURATIONS)
+        custom_obj = config.get("daphne_obj")
+        if custom_obj and custom_obj not in config_names:
+            src = daphne_details_path.parent / "np02_daphne_selftrigger.json"
+            dst = daphne_details_path.parent / f"{custom_obj}.json"
+            if src.exists():
+                shutil.copy(src, dst)
+                logging.info(f"📢 Copied {src.name} -> {dst.name}")
+                config_names.append(custom_obj)
+            else:
+                logging.warning("⚠️  Expected seed %s not found; skipping copy to %s", src, dst)
+
         # Update XML file using add_daphne_conf
-        for config_name in CONFIGURATIONS:
+        for config_name in config_names:
             output_path = daphne_details_path.parent / (config_name + '.json')
             command = f'add_daphne_conf {xml_path} {output_path} -n {config_name}'
             logging.info(f"📢 Running XML update command: {command}")
