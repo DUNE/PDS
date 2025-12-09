@@ -67,6 +67,7 @@ class DTSButler:
 
     def __init__(self, cfg: dict[str, Any]) -> None:
         self.cfg = cfg
+        self.skip = bool(cfg.get("skip_dts"))
         wd = cfg["drunc_working_dir"]
         self.mode = cfg.get("mode")
 
@@ -77,6 +78,10 @@ class DTSButler:
     # ------------------------------------------------------------------ #
 
     def run(self) -> None:
+        if self.skip:
+            logging.info("  Skipping Butler alignment (skip_dts=True)...")
+            return
+
         # Skip alignment + periodic fake-triggers in cosmics *and* threshold scans
         if self.mode in ("cosmics", "thrscan", "threshold", "sthscan", "selftrigger"):
             logging.warning("⚠️  %s run – skipping DTS alignment.", self.mode)
@@ -93,6 +98,9 @@ class DTSButler:
 
     def clear(self) -> None:
         """Always safe to call; ignores errors."""
+        if self.skip:
+            logging.info("  Skipping Butler clear (skip_dts=True)...")
+            return
         subprocess.run(self.clear_cmd, check=False)
 
 # ──────────────────────────────────────────────────────────────────────────────
