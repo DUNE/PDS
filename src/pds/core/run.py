@@ -161,6 +161,14 @@ def run_set_ssp_conf(cfg: dict[str, Any], **overrides: Any) -> None:
 
     subprocess.run(cmd, check=True, text=True)
 
+
+def run_daphne_config_if_needed(cfg: dict[str, Any], *, conf_path: Path, mode: str) -> None:
+    """Skip daphne configuration when requested."""
+    if cfg.get("skip_daphne_conf"):
+        logging.info("  Skipping daphne configuration (skip_daphne_conf=True)...")
+        return
+    run_daphne_config(conf_path=conf_path, mode=mode)
+
 def _update_correlation_threshold(details_file: Path, value: int) -> None:
     """
     Over-write *details_file*, setting
@@ -384,7 +392,9 @@ class ScanXCorrThreshold:
             _update_correlation_threshold(self.details_file, corr)
 
             # 2) regenerate seeds + XML for the new threshold
-            run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
+            run_daphne_config_if_needed(self.cfg,
+                                        conf_path=self.conf_file,
+                                        mode=self.cfg["mode"])
 
             # 3) configure SSP *with LED OFF* (bias = 0) like cosmics
             run_set_ssp_conf(
@@ -465,7 +475,9 @@ class ScanSelfTriggerThreshold:
             _update_self_trigger_threshold(self.details_file, thr)
 
             # 2) regenerate seeds + XML for the new threshold
-            run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
+            run_daphne_config_if_needed(self.cfg,
+                                        conf_path=self.conf_file,
+                                        mode=self.cfg["mode"])
 
             # 3) configure SSP *with LED OFF* (bias = 0) like cosmics
             run_set_ssp_conf(
@@ -537,7 +549,9 @@ class ScanAttenuators:
             _update_attenuators(self.details_file, att)
 
             # 2) regenerate seeds + XML for the new threshold
-            run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
+            run_daphne_config_if_needed(self.cfg,
+                                        conf_path=self.conf_file,
+                                        mode=self.cfg["mode"])
 
             # 3) configure SSP 
             for mask in self.masks:
@@ -613,7 +627,9 @@ class ScanOffsets:
             _update_offset(self.details_file, offset)
 
             # 2) regenerate seeds + XML for the new threshold
-            run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
+            run_daphne_config_if_needed(self.cfg,
+                                        conf_path=self.conf_file,
+                                        mode=self.cfg["mode"])
 
             # 3) configure SSP 
             for mask in self.masks:
@@ -689,7 +705,9 @@ class ScanTrims:
             _update_trim(self.details_file, trim)
 
             # 2) regenerate seeds + XML for the new threshold
-            run_daphne_config(conf_path=self.conf_file, mode=self.cfg["mode"])
+            run_daphne_config_if_needed(self.cfg,
+                                        conf_path=self.conf_file,
+                                        mode=self.cfg["mode"])
 
             # 3) configure SSP 
             for mask in self.masks:
@@ -795,7 +813,9 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
 
             else:
                 # existing mask/intensity scan
-                run_daphne_config(conf_path=temp_conf, mode=mode)
+                run_daphne_config_if_needed(cfg,
+                                            conf_path=temp_conf,
+                                            mode=mode)
                 ScanMaskIntensity(cfg).run()
         finally:
             if cfg.get("skip_dts"):

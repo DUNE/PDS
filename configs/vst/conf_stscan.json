@@ -53,6 +53,7 @@
     ],
     "skip_proxy": true,
     "skip_ssp_conf": true,
+    "skip_daphne_conf": true,
     "skip_dts": true,
     "web_proxy_cmd": "source ~np04daq/bin/web_proxy.sh -u",
     "dts_align_cmd": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst GIB align apply-delay 0x20 0 0 --force -m 3",
