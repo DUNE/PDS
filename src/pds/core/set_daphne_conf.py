@@ -118,7 +118,7 @@ def main(mode=None, conf_path=None):
         # Update XML file using add_daphne_conf
         for config_name in config_names:
             output_path = daphne_details_path.parent / (config_name + '.json')
-            command = f'add_daphne_conf {xml_path} {output_path} -n {config_name}'
+            command = f'add_daphne_conf {xml_path} {output_path} -n {config_name} -t 5000'
             logging.info(f"📢 Running XML update command: {command}")
             os.system(command)
 
