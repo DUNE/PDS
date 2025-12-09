@@ -6,8 +6,8 @@
     "max_corr": 8000,
     "corr_step": 2000,
     "min_self_trigger_threshold": 10,
-    "max_self_trigger_threshold": 40,
-    "self_trigger_threshold_step": 5,
+    "max_self_trigger_threshold": 14,
+    "self_trigger_threshold_step": 1,
     "change_rate": 20.0,
     "wait_time": 60,
     "oks_file": "ehn1-daqconfigs/segments/pds-vst.data.xml",
@@ -53,12 +53,12 @@
     ],
     "skip_proxy": true,
     "skip_ssp_conf": true,
-    "skip_daphne_conf": true,
-    "skip_dts": true,
+    "skip_daphne_conf": false,
+    "skip_dts": false,
     "web_proxy_cmd": "source ~np04daq/bin/web_proxy.sh -u",
     "dts_align_cmd": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst GIB align apply-delay 0x20 0 0 --force -m 3",
     "dts_faketrig_cmd_template": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst GIB faketrig-conf 0x7 0 {hztrigger} --poisson ",
     "dts_clear_fktrig_cmd": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst GIB faketrig-clear 0",
     "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-fddaq-v5.5.0-rc2-dev-pds",
-    "drunc_delay_s": 20
+    "drunc_delay_s": 10
 }
