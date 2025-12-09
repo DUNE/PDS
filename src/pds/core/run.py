@@ -345,12 +345,13 @@ class ScanMaskIntensity:
 
 class ScanXCorrThreshold:
     """
-    Iterate over correlation-threshold (xcorr) values and take one run per value.
+    Iterate over self-trigger threshold values and take one run per value.
 
     The conf.json can add:
-      min_corr   (default 4000)
-      max_corr   (default 8000)
-      corr_step  (default 500)
+      min_self_trigger_threshold   (default: value in details.json, or 0)
+      max_self_trigger_threshold   (default: value in details.json, or 0)
+      self_trigger_threshold_step  (default 1)
+    Legacy keys min_corr/max_corr/corr_step are accepted as fallbacks.
     """
 
     # ------------------------------------------------------------------ #
@@ -366,9 +367,10 @@ class ScanXCorrThreshold:
         self.conf_file    = conf_file     # …/conf_temp.json
         self.details_file = details_file  # …/temp_details.json
 
-        self.min_corr = cfg.get("min_corr", 4000)
-        self.max_corr = cfg.get("max_corr", 8000)
-        self.step     = cfg.get("corr_step", 500)
+        # Accept new threshold keys first, fall back to the older corr keys
+        self.min_thr = cfg.get("min_self_trigger_threshold", cfg.get("min_corr", 0))
+        self.max_thr = cfg.get("max_self_trigger_threshold", cfg.get("max_corr", 0))
+        self.step    = cfg.get("self_trigger_threshold_step", cfg.get("corr_step", 1))
         self.delay_s  = cfg.get("drunc_delay_s", 20)
 
         # Keep an untouched copy so we can re-create the JSON each loop
@@ -378,18 +380,18 @@ class ScanXCorrThreshold:
 
     def run(self) -> None:
         logging.info("📢  Threshold scan: %s → %s (step %s)",
-                     self.min_corr, self.max_corr, self.step)
-        
-        xcorrrange = range(self.min_corr, self.max_corr + self.step, self.step)
+                     self.min_thr, self.max_thr, self.step)
 
-        for corr in xcorrrange:
+        thr_range = range(self.min_thr, self.max_thr + self.step, self.step)
 
-            logging.info(f"📢  xcorr = {corr}")
+        for thr in thr_range:
+
+            logging.info(f"📢  self-trigger threshold = {thr}")
 
             # 1) make sure temp_details.json exists, then patch it
             if not self.details_file.exists():
                 self.details_file.write_text(pretty_compact_json(self._baseline))
-            _update_correlation_threshold(self.details_file, corr)
+            _update_self_trigger_threshold(self.details_file, thr)
 
             # 2) regenerate seeds + XML for the new threshold
             run_daphne_config_if_needed(self.cfg,
@@ -408,9 +410,9 @@ class ScanXCorrThreshold:
 
         print("Scan finished... parameters done:")
         log_file = getlogfile()
-        nruns = len(xcorrrange)
+        nruns = len(thr_range)
         if Path(log_file).is_file():
-            subprocess.run(f"cat {log_file} | grep 'xcorr = ' | tail -n {nruns}", shell=True)
+            subprocess.run(f"cat {log_file} | grep 'self-trigger threshold =' | tail -n {nruns}", shell=True)
 
 
 class ScanSelfTriggerThreshold:
