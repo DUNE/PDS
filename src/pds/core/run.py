@@ -734,7 +734,9 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
         # --- run sequence ----------------------------------------------------------
         dts = DTSButler(cfg)
         try:
-            if not cfg["dry_run"]: # Avoid butler when dry run
+            if cfg.get("skip_dts"):
+                logging.info("  Skipping Butler commands (skip_dts=True)...")
+            elif not cfg["dry_run"]:  # Avoid butler when dry run
                 dts.run()
             else:
                 logging.info("  Skipping Butler run commands...")
@@ -784,7 +786,9 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
                 run_daphne_config(conf_path=temp_conf, mode=mode)
                 ScanMaskIntensity(cfg).run()
         finally:
-            if not cfg["dry_run"]:
+            if cfg.get("skip_dts"):
+                logging.info("  Skipping Butler clear commands (skip_dts=True)...")
+            elif not cfg["dry_run"]:
                 dts.clear()  # always attempt to clear fake trigger
             else:
                 logging.info("  Skipping Butler clear commands...")
