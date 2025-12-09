@@ -202,6 +202,67 @@ def run_ssp_and_drunc(
     run_set_ssp_conf(cfg, channel_mask=mask, pulse_bias_percent_270nm=bias)
     run_drunc_command(cfg, post_delay_s=delay_s)
 
+
+def validate_config(cfg: dict[str, Any]) -> None:
+    """Lightweight validation to fail fast on invalid steps."""
+    if "mode" not in cfg:
+        raise ValueError("Configuration missing required key: mode")
+
+    step_checks = [
+        ("self_trigger_threshold_step", "self-trigger threshold"),
+        ("corr_step", "correlation threshold"),
+        ("att_step", "attenuator"),
+        ("offset_step", "offset"),
+        ("trim_step", "trim"),
+        ("step", "mask/intensity step"),
+    ]
+    for key, label in step_checks:
+        if key in cfg and cfg[key] == 0:
+            raise ValueError(f"{label} step {key} must be non-zero.")
+
+
+def log_plan(cfg: dict[str, Any]) -> None:
+    """Summarize planned actions based on config flags."""
+    logging.info(
+        "📝 Plan: mode=%s | skip_dts=%s skip_daphne_conf=%s skip_ssp_conf=%s "
+        "dry_run=%s plan_only=%s",
+        cfg.get("mode"),
+        cfg.get("skip_dts", False),
+        cfg.get("skip_daphne_conf", False),
+        cfg.get("skip_ssp_conf", False),
+        cfg.get("dry_run", False),
+        cfg.get("plan_only", False),
+    )
+
+    if cfg.get("mode") in ("thrscan", "threshold", "sthscan", "selftrigger"):
+        logging.info(
+            " thresholds: min=%s max=%s step=%s",
+            cfg.get("min_self_trigger_threshold", cfg.get("min_corr")),
+            cfg.get("max_self_trigger_threshold", cfg.get("max_corr")),
+            cfg.get("self_trigger_threshold_step", cfg.get("corr_step")),
+        )
+    if cfg.get("mode") in ("attscan", "attenuator"):
+        logging.info(
+            " attenuators: min=%s max=%s step=%s",
+            cfg.get("min_att"),
+            cfg.get("max_att"),
+            cfg.get("att_step"),
+        )
+    if cfg.get("mode") == "offsetscan":
+        logging.info(
+            " offsets: min=%s max=%s step=%s",
+            cfg.get("min_offset"),
+            cfg.get("max_offset"),
+            cfg.get("offset_step"),
+        )
+    if cfg.get("mode") == "trimscan":
+        logging.info(
+            " trims: min=%s max=%s step=%s",
+            cfg.get("min_trim"),
+            cfg.get("max_trim"),
+            cfg.get("trim_step"),
+        )
+
 def _update_correlation_threshold(details_file: Path, value: int) -> None:
     """
     Over-write *details_file*, setting
@@ -766,6 +827,12 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
     cfg = json.loads(conf_path.read_text())
     if mode:
         cfg["mode"] = mode
+
+    validate_config(cfg)
+    log_plan(cfg)
+    if cfg.get("plan_only"):
+        logging.info("plan_only=True; exiting before execution.")
+        return
 
     # Use a temp workspace so we never litter the repo tree
     with TemporaryDirectory(prefix="pds-run-") as tmp:
