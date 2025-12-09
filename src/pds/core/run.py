@@ -8,7 +8,7 @@ import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, Optional
+from typing import Any, Optional, Callable
 
 from pds.core.set_daphne_conf import main as run_daphne_config
 from pds.core.utils import pretty_compact_json, setup_led_range, getlogfile
@@ -168,6 +168,39 @@ def run_daphne_config_if_needed(cfg: dict[str, Any], *, conf_path: Path, mode: s
         logging.info("  Skipping daphne configuration (skip_daphne_conf=True)...")
         return
     run_daphne_config(conf_path=conf_path, mode=mode)
+
+
+def ensure_details_file(details_file: Path, baseline: dict[str, Any]) -> None:
+    """Make sure the temp details file exists before patching."""
+    if not details_file.exists():
+        details_file.write_text(pretty_compact_json(baseline))
+
+
+def update_details_and_daphne(
+    cfg: dict[str, Any],
+    *,
+    details_file: Path,
+    baseline: dict[str, Any],
+    update_fn: Callable[[Path, int], None],
+    value: int,
+    conf_file: Path,
+) -> None:
+    """Common sequence: ensure details file, apply patch, regenerate daphne config."""
+    ensure_details_file(details_file, baseline)
+    update_fn(details_file, value)
+    run_daphne_config_if_needed(cfg, conf_path=conf_file, mode=cfg["mode"])
+
+
+def run_ssp_and_drunc(
+    cfg: dict[str, Any],
+    *,
+    mask: int,
+    bias: int,
+    delay_s: int,
+) -> None:
+    """Configure SSP and run drunc once."""
+    run_set_ssp_conf(cfg, channel_mask=mask, pulse_bias_percent_270nm=bias)
+    run_drunc_command(cfg, post_delay_s=delay_s)
 
 def _update_correlation_threshold(details_file: Path, value: int) -> None:
     """
@@ -388,25 +421,21 @@ class ScanXCorrThreshold:
 
             logging.info(f"📢  self-trigger threshold = {thr}")
 
-            # 1) make sure temp_details.json exists, then patch it
-            if not self.details_file.exists():
-                self.details_file.write_text(pretty_compact_json(self._baseline))
-            _update_self_trigger_threshold(self.details_file, thr)
-
-            # 2) regenerate seeds + XML for the new threshold
-            run_daphne_config_if_needed(self.cfg,
-                                        conf_path=self.conf_file,
-                                        mode=self.cfg["mode"])
-
-            # 3) configure SSP *with LED OFF* (bias = 0) like cosmics
-            run_set_ssp_conf(
+            update_details_and_daphne(
                 self.cfg,
-                channel_mask=self.cfg.get("mask_values", [1])[0],
-                pulse_bias_percent_270nm=0
+                details_file=self.details_file,
+                baseline=self._baseline,
+                update_fn=_update_self_trigger_threshold,
+                value=thr,
+                conf_file=self.conf_file,
             )
 
-            # 4) run drunc acquisition
-            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+            run_ssp_and_drunc(
+                self.cfg,
+                mask=self.cfg.get("mask_values", [1])[0],
+                bias=0,
+                delay_s=self.delay_s,
+            )
 
         print("Scan finished... parameters done:")
         log_file = getlogfile()
@@ -471,25 +500,21 @@ class ScanSelfTriggerThreshold:
         for thr in thr_range:
             logging.info(f"📢  self-trigger threshold = {thr}")
 
-            # 1) make sure temp_details.json exists, then patch it
-            if not self.details_file.exists():
-                self.details_file.write_text(pretty_compact_json(self._baseline))
-            _update_self_trigger_threshold(self.details_file, thr)
-
-            # 2) regenerate seeds + XML for the new threshold
-            run_daphne_config_if_needed(self.cfg,
-                                        conf_path=self.conf_file,
-                                        mode=self.cfg["mode"])
-
-            # 3) configure SSP *with LED OFF* (bias = 0) like cosmics
-            run_set_ssp_conf(
+            update_details_and_daphne(
                 self.cfg,
-                channel_mask=self.cfg.get("mask_values", [1])[0],
-                pulse_bias_percent_270nm=0
+                details_file=self.details_file,
+                baseline=self._baseline,
+                update_fn=_update_self_trigger_threshold,
+                value=thr,
+                conf_file=self.conf_file,
             )
 
-            # 4) run drunc acquisition
-            run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+            run_ssp_and_drunc(
+                self.cfg,
+                mask=self.cfg.get("mask_values", [1])[0],
+                bias=0,
+                delay_s=self.delay_s,
+            )
 
         print("Scan finished... parameters done:")
         log_file = getlogfile()
@@ -545,15 +570,14 @@ class ScanAttenuators:
         for att in attscanrange:
 
 
-            # 1) make sure temp_details.json exists, then patch it
-            if not self.details_file.exists():
-                self.details_file.write_text(pretty_compact_json(self._baseline))
-            _update_attenuators(self.details_file, att)
-
-            # 2) regenerate seeds + XML for the new threshold
-            run_daphne_config_if_needed(self.cfg,
-                                        conf_path=self.conf_file,
-                                        mode=self.cfg["mode"])
+            update_details_and_daphne(
+                self.cfg,
+                details_file=self.details_file,
+                baseline=self._baseline,
+                update_fn=_update_attenuators,
+                value=att,
+                conf_file=self.conf_file,
+            )
 
             # 3) configure SSP 
             for mask in self.masks:
@@ -563,11 +587,12 @@ class ScanAttenuators:
                                  f"{self.pulse_width_ticks*4} ns, mask = {mask}, " \
                                  f"att = {att}"
                     logging.info(ledmessage)
-                    run_set_ssp_conf(self.cfg,
-                                     channel_mask=mask,
-                                     pulse_bias_percent_270nm=bias)
-                    # 4) run drunc acquisition
-                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+                    run_ssp_and_drunc(
+                        self.cfg,
+                        mask=mask,
+                        bias=bias,
+                        delay_s=self.delay_s,
+                    )
         print("Scan finished... parameters done:")
         log_file = getlogfile()
         nruns = len(self.masks)*len(self.ledrange)*len(attscanrange)
@@ -622,16 +647,14 @@ class ScanOffsets:
         for offset in offsetscanrange:
 
 
-            # 1) make sure temp_details.json exists, then patch it
-            if not self.details_file.exists():
-                self.details_file.write_text(pretty_compact_json(self._baseline))
-            #
-            _update_offset(self.details_file, offset)
-
-            # 2) regenerate seeds + XML for the new threshold
-            run_daphne_config_if_needed(self.cfg,
-                                        conf_path=self.conf_file,
-                                        mode=self.cfg["mode"])
+            update_details_and_daphne(
+                self.cfg,
+                details_file=self.details_file,
+                baseline=self._baseline,
+                update_fn=_update_offset,
+                value=offset,
+                conf_file=self.conf_file,
+            )
 
             # 3) configure SSP 
             for mask in self.masks:
@@ -641,11 +664,12 @@ class ScanOffsets:
                                  f"{self.pulse_width_ticks*4} ns, mask = {mask}, " \
                                  f"Offset = {offset}"
                     logging.info(ledmessage)
-                    run_set_ssp_conf(self.cfg,
-                                     channel_mask=mask,
-                                     pulse_bias_percent_270nm=bias)
-                    # 4) run drunc acquisition
-                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+                    run_ssp_and_drunc(
+                        self.cfg,
+                        mask=mask,
+                        bias=bias,
+                        delay_s=self.delay_s,
+                    )
         print("Scan finished... parameters done:")
         log_file = getlogfile()
         nruns = len(self.masks)*len(self.ledrange)*len(offsetscanrange)
@@ -700,16 +724,14 @@ class ScanTrims:
         for trim in trimscanrange:
 
 
-            # 1) make sure temp_details.json exists, then patch it
-            if not self.details_file.exists():
-                self.details_file.write_text(pretty_compact_json(self._baseline))
-            #
-            _update_trim(self.details_file, trim)
-
-            # 2) regenerate seeds + XML for the new threshold
-            run_daphne_config_if_needed(self.cfg,
-                                        conf_path=self.conf_file,
-                                        mode=self.cfg["mode"])
+            update_details_and_daphne(
+                self.cfg,
+                details_file=self.details_file,
+                baseline=self._baseline,
+                update_fn=_update_trim,
+                value=trim,
+                conf_file=self.conf_file,
+            )
 
             # 3) configure SSP 
             for mask in self.masks:
@@ -718,11 +740,12 @@ class ScanTrims:
                                  f"{self.pulse_width_ticks*4} ns, mask = {mask}, " \
                                  f"Trim = {trim}"
                     logging.info(ledmessage)
-                    run_set_ssp_conf(self.cfg,
-                                     channel_mask=mask,
-                                     pulse_bias_percent_270nm=bias)
-                    # 4) run drunc acquisition
-                    run_drunc_command(self.cfg, post_delay_s=self.delay_s)
+                    run_ssp_and_drunc(
+                        self.cfg,
+                        mask=mask,
+                        bias=bias,
+                        delay_s=self.delay_s,
+                    )
         print("Scan finished... parameters done:")
         log_file = getlogfile()
         nruns = len(self.masks)*len(self.ledrange)*len(trimscanrange)
