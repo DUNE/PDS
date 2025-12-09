@@ -138,6 +138,10 @@ def run_drunc_command(cfg: dict[str, Any], *, post_delay_s: int = 20) -> None:
     print("Continuing execution...")
 
 def run_set_ssp_conf(cfg: dict[str, Any], **overrides: Any) -> None:
+    if cfg.get("skip_ssp_conf"):
+        logging.info("  Skipping set_ssp_conf (skip_ssp_conf=True)...")
+        return
+
     conf = SSPConf.from_config(cfg)
     for k, v in overrides.items():
         if v is not None and hasattr(conf, k):
