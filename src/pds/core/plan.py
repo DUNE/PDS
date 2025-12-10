@@ -31,6 +31,7 @@ def _normalize_config_data(cfg_data: Dict[str, Any]) -> Dict[str, Any]:
                 "oks_file": "oks_file",
                 "oks_session": "oks_session",
                 "session_name": "session_name",
+                "drunc_target": "drunc_target",
             },
         )
 
