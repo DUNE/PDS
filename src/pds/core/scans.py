@@ -14,9 +14,19 @@ _LOG = logging.getLogger(__name__)
 
 
 def _update_self_trigger_threshold(data: dict, value: int) -> None:
-    for dev in data.get("devices", []):
-        trigger = dev.setdefault("self_trigger", {})
-        trigger["threshold"] = value
+    if isinstance(data, dict) and "devices" in data:
+        for dev in data.get("devices", []):
+            trigger = dev.setdefault("self_trigger", {})
+            trigger["threshold"] = value
+    else:
+        # Handle board-id keyed maps (e.g., {"61": {...}})
+        for _, dev in list(data.items()):
+            if isinstance(dev, dict):
+                if "self_trigger_threshold" in dev:
+                    dev["self_trigger_threshold"] = value
+                else:
+                    trigger = dev.setdefault("self_trigger", {})
+                    trigger["threshold"] = value
 
 
 def _update_attenuators(data: dict, value: int) -> None:
