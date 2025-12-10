@@ -72,6 +72,9 @@ class _ScanRunner:
 
     def _run_ssp_and_drunc(self, *, mask: int, bias: int, delay_s: int) -> None:
         cfg_dict = self.cfg.model_dump(mode="python")
+        oks_file = self.cfg.resolved_oks_file()
+        if oks_file:
+            cfg_dict["oks_file"] = oks_file
         if cfg_dict.get("plan_only"):
             _LOG.info("plan_only=True; would set SSP mask=%s bias=%s and run drunc.", mask, bias)
             run_drunc_command(cfg_dict, post_delay_s=delay_s)
