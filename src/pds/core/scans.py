@@ -54,18 +54,20 @@ class _ScanRunner:
         self.details_path = Path(cfg.drunc_working_dir) / cfg.daphne_details
         oks_file = cfg.resolved_oks_file()
         self.xml_path = Path(cfg.drunc_working_dir) / oks_file if oks_file else Path(cfg.drunc_working_dir)
+        self._current_details: dict | None = None
 
     def _apply_daphne(self, mutate: Callable[[dict], None], description: str) -> None:
         if self.cfg.skip_daphne_conf:
             _LOG.info("  Skipping daphne configuration (skip_daphne_conf=True)...")
             return
-        apply_daphne_patch(
+        self._current_details = apply_daphne_patch(
             self.cfg,
             details_path=self.details_path,
             xml_path=self.xml_path,
             tmp_dir=self.tmp_dir,
             mutate=mutate,
             description=description,
+            current_state=self._current_details,
         )
 
     def _run_ssp_and_drunc(self, *, mask: int, bias: int, delay_s: int) -> None:

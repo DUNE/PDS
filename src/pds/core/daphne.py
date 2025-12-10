@@ -40,26 +40,30 @@ def apply_daphne_patch(
     mutate: Callable[[Dict[str, Any]], None],
     description: str,
     timeout_ms: int = 5000,
-) -> None:
-    """Apply a minimal patch to the DAPHNE object."""
+    current_state: Dict[str, Any] | None = None,
+) -> Dict[str, Any]:
+    """Apply a minimal patch to the DAPHNE object and return the new state."""
     obj_name = cfg.daphne_obj
     if not obj_name:
         raise ValueError("daphne_obj must be provided to update the DAPHNE configuration.")
 
-    if not details_path.exists():
-        raise FileNotFoundError(f"Daphne details file does not exist at {details_path}")
+    if current_state is not None:
+        baseline = deepcopy(current_state)
+    else:
+        if not details_path.exists():
+            raise FileNotFoundError(f"Daphne details file does not exist at {details_path}")
+        baseline = json.loads(details_path.read_text())
+
     if not xml_path.exists():
         raise FileNotFoundError(f"XML file does not exist at {xml_path}")
 
-    baseline = json.loads(details_path.read_text())
     desired = deepcopy(baseline)
-
     mutate(desired)
 
     changes = _diff(baseline, desired)
     if not changes:
         _LOG.info("No DAPHNE changes required for %s.", description)
-        return
+        return desired
 
     _LOG.info("Planned DAPHNE changes for %s:", description)
     for key, (old, new) in changes.items():
@@ -67,7 +71,7 @@ def apply_daphne_patch(
 
     if cfg.plan_only:
         _LOG.info("plan_only=True; skipping DAPHNE update.")
-        return
+        return desired
 
     tmp_json = tmp_dir / f"{obj_name}_daphne_patch.json"
     _write_json(tmp_json, desired)
@@ -83,3 +87,5 @@ def apply_daphne_patch(
     ]
     _LOG.info("📢 Running XML update command: %s", " ".join(cmd))
     subprocess.run(cmd, check=True)
+
+    return desired
