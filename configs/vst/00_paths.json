@@ -5,5 +5,5 @@
   "oks_session": "ehn1-daqconfigs/sessions/pds-vst-session.xml",
   "session_name": "np02-session",
   "drunc_target": "pds-vst",
-  "daphne_details": "pds/configs/vst/daphne_mezz.json"
+  "daphne_details": "pds/configs/vst/03_default_config.json"
 }
