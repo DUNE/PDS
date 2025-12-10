@@ -34,6 +34,9 @@ def generate_drunc_command(cfg: Any) -> str:
 
 def run_drunc_command(cfg: Any, *, post_delay_s: int = 20) -> None:
     cmd = generate_drunc_command(cfg)
+    if _cfg_get(cfg, "plan_only"):
+        _LOG.info("plan_only=True; would run drunc command: %s", cmd)
+        return
     if _cfg_get(cfg, "dry_run"):
         _LOG.info("🧪 Dry run: %s", cmd)
         return

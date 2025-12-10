@@ -59,6 +59,10 @@ class _ScanRunner:
 
     def _run_ssp_and_drunc(self, *, mask: int, bias: int, delay_s: int) -> None:
         cfg_dict = self.cfg.model_dump(mode="python")
+        if cfg_dict.get("plan_only"):
+            _LOG.info("plan_only=True; would set SSP mask=%s bias=%s and run drunc.", mask, bias)
+            run_drunc_command(cfg_dict, post_delay_s=delay_s)
+            return
         run_set_ssp_conf(cfg_dict, channel_mask=mask, pulse_bias_percent_270nm=bias)
         run_drunc_command(cfg_dict, post_delay_s=delay_s)
 

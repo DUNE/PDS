@@ -24,9 +24,6 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
     conf_path = Path(conf_path)
     cfg = load_config(conf_path, mode_override=mode)
     run_id = log_plan(cfg)
-    if cfg.plan_only:
-        logging.info("plan_only=True; exiting before execution.")
-        return
 
     with TemporaryDirectory(prefix="pds-run-") as tmp:
         tmp_dir = Path(tmp)
@@ -41,7 +38,9 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
         )
 
         try:
-            if not cfg.skip_dts and not cfg.dry_run:
+            if cfg.plan_only:
+                logging.info("plan_only=True; skipping Butler run commands...")
+            elif not cfg.skip_dts and not cfg.dry_run:
                 dts.run(hztrigger=cfg.__dict__.get("hztrigger"))
             else:
                 logging.info("  Skipping Butler run commands...")
@@ -59,7 +58,9 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
             else:
                 raise ValueError(f"Unsupported mode '{cfg.mode}'")
         finally:
-            if not cfg.skip_dts and not cfg.dry_run:
+            if cfg.plan_only:
+                logging.info("plan_only=True; skipping Butler clear commands...")
+            elif not cfg.skip_dts and not cfg.dry_run:
                 dts.clear()
             else:
                 logging.info("  Skipping Butler clear commands...")
