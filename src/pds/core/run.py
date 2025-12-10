@@ -32,21 +32,10 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
         tmp_dir = Path(tmp)
 
         dts = DTSButler(
-            align_cmd=[
-                "bash",
-                "-c",
-                f"cd {cfg.drunc_working_dir} && {cfg.__dict__.get('dts_align_cmd', '')}",
-            ],
-            fake_cmd_tpl=[
-                "bash",
-                "-c",
-                f"cd {cfg.drunc_working_dir} && {cfg.__dict__.get('dts_faketrig_cmd_template', '')}",
-            ],
-            clear_cmd=[
-                "bash",
-                "-c",
-                f"cd {cfg.drunc_working_dir} && {cfg.__dict__.get('dts_clear_fktrig_cmd', '')}",
-            ],
+            workdir=Path(cfg.drunc_working_dir),
+            align_cmd=str(cfg.__dict__.get("dts_align_cmd", "") or ""),
+            fake_cmd_tpl=str(cfg.__dict__.get("dts_faketrig_cmd_template", "") or ""),
+            clear_cmd=str(cfg.__dict__.get("dts_clear_fktrig_cmd", "") or ""),
             mode=cfg.mode,
             skip=cfg.skip_dts,
         )

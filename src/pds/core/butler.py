@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 import subprocess
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Optional
 
 
@@ -11,10 +12,11 @@ _LOG = logging.getLogger(__name__)
 
 @dataclass
 class DTSButler:
-    align_cmd: list[str]
-    fake_cmd_tpl: list[str]
-    clear_cmd: list[str]
-    mode: str
+    workdir: Path
+    align_cmd: str = ""
+    fake_cmd_tpl: str = ""
+    clear_cmd: str = ""
+    mode: str = ""
     skip: bool = False
 
     def run(self, *, hztrigger: Optional[float] = None) -> None:
@@ -27,17 +29,20 @@ class DTSButler:
             self.clear()
             return
 
-        _LOG.info("📢  DTS alignment …")
-        subprocess.run(self.align_cmd, check=True)
+        if self.align_cmd.strip():
+            _LOG.info("📢  DTS alignment …")
+            subprocess.run(["bash", "-c", f"cd {self.workdir} && {self.align_cmd}"], check=True)
 
-        if hztrigger is not None and self.fake_cmd_tpl:
-            cmd = self.fake_cmd_tpl.copy()
-            cmd[-1] = cmd[-1].format(hztrigger=hztrigger)
-            subprocess.run(cmd, check=True)
+        if hztrigger is not None and self.fake_cmd_tpl.strip():
+            cmd = self.fake_cmd_tpl.format(hztrigger=hztrigger)
+            subprocess.run(["bash", "-c", f"cd {self.workdir} && {cmd}"], check=True)
             _LOG.info("✅  DTS fake-trigger configured.")
 
     def clear(self) -> None:
         if self.skip:
             _LOG.info("  Skipping Butler clear (skip_dts=True)...")
             return
-        subprocess.run(self.clear_cmd, check=False)
+        if not self.clear_cmd.strip():
+            _LOG.info("  Skipping Butler clear (no clear command provided)...")
+            return
+        subprocess.run(["bash", "-c", f"cd {self.workdir} && {self.clear_cmd}"], check=False)
