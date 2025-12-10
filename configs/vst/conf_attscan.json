@@ -22,7 +22,7 @@
         "oks_session": "ehn1-daqconfigs/sessions/pds-vst-session.xml",
         "session_name": "np02-session",
         "daphne_details": "pds/configs/vst/detail_mezz_fe_v2.json",
-        "drunc_target": "main-np02-pds"
+        "drunc_target": "pds-vst"
     },
     "daphne_obj": "daphne_mezz",
     "hztrigger": 6260.02,
