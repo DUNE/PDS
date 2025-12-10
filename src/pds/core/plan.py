@@ -24,8 +24,8 @@ def _normalize_config_data(cfg_data: Dict[str, Any]) -> Dict[str, Any]:
     facility = cfg_data.get("facility")
     if facility:
         base = Path(cfg_data.get("_base_dir", Path.cwd()))
-        paths_path = base / "configs" / facility / "paths.json"
-        commands_path = base / "configs" / facility / "commands.json"
+        paths_path = base / "configs" / facility / "00_paths.json"
+        commands_path = base / "configs" / facility / "01_commands.json"
         if paths_path.exists():
             paths_defaults = json.loads(paths_path.read_text())
             cfg_data.setdefault("paths", {})

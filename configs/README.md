@@ -1,0 +1,26 @@
+# Configuration layout
+
+Each facility has its own folder under `configs/` with:
+- `00_paths.json`: drunc/DAPHNE/DB locations (working dir, db_folder, oks_segment_file, session_name, drunc_target, daphne_details)
+- `01_commands.json`: common commands (web proxy, DTS align/fake/clear)
+- Scan configs (`conf_stscan.json`, `conf_attscan.json`, etc.): only the scan bounds/mask overrides and `facility` + `daphne_obj`. Paths/commands are auto-loaded from the numbered files.
+
+Example run:
+```bash
+pds-run thr-scan configs/vst/conf_stscan.json
+```
+This uses the VST `00_paths.json` and `01_commands.json` automatically.
+
+## Pre-run checklist (plan-only)
+1. Set `"plan_only": true` in the scan config.
+2. Run the command; verify logs:
+   - DAPHNE changes: old → new fields for the target `daphne_obj` (thresholds, attenuators, etc.).
+   - Drunc command: logged in plan_only mode (not executed).
+   - DTS/SSP actions: logged as “would run”.
+3. Confirm the detail file path and `daphne_obj` are correct for the facility.
+
+## How DB updates happen
+1. The scan computes the desired DAPHNE JSON for the targeted `daphne_obj` (only fields relevant to the scan).
+2. A minimal diff is generated (field-level changes). In plan_only mode, this is only logged.
+3. In execute mode, the merged JSON is written to a temp file and applied to the OKS XML via `add_daphne_conf -n <daphne_obj>`, touching only that object.
+4. SSP and drunc commands run unless skipped; in plan_only they are logged but not executed.
