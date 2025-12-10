@@ -20,6 +20,7 @@ class ScanConfig(BaseModel):
     oks_file: str
     oks_session: Optional[str] = None
     session_name: Optional[str] = None
+    drunc_target: str = "main-np02-pds"
     daphne_details: str
     daphne_obj: Optional[str] = None
 

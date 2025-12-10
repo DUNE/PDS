@@ -19,12 +19,13 @@ def generate_drunc_command(cfg: Any) -> str:
     wait_time = _cfg_get(cfg, "wait_time")
     oks_session = _cfg_get(cfg, "oks_session")
     session_name = _cfg_get(cfg, "session_name")
+    drunc_target = _cfg_get(cfg, "drunc_target") or "main-np02-pds"
 
     if _cfg_get(cfg, "dry_run") or change_rate is None or wait_time is None or oks_session is None or session_name is None:
         return "echo '🧪 [dry-run] Simulating drunc command...'"
     return (
         "drunc-unified-shell ssh-CERN-kafka.json "
-        f"{oks_session} {session_name} main-np02-pds "
+        f"{oks_session} {session_name} {drunc_target} "
         "start-run change-rate --trigger-rate "
         f"{change_rate} wait {wait_time} "
         "shutdown terminate"
