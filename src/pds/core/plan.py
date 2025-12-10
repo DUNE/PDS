@@ -19,7 +19,26 @@ def _merge_section(cfg: Dict[str, Any], section: Dict[str, Any], keys: Dict[str,
 
 
 def _normalize_config_data(cfg_data: Dict[str, Any]) -> Dict[str, Any]:
-    """Allow modular conf.json: paths/commands/scan sections."""
+    """Allow modular conf.json: paths/commands/scan sections and facility defaults."""
+    # If a facility is specified, load defaults from configs/{facility}/paths.json and commands.json
+    facility = cfg_data.get("facility")
+    if facility:
+        base = Path(cfg_data.get("_base_dir", Path.cwd()))
+        paths_path = base / "configs" / facility / "paths.json"
+        commands_path = base / "configs" / facility / "commands.json"
+        if paths_path.exists():
+            paths_defaults = json.loads(paths_path.read_text())
+            cfg_data.setdefault("paths", {})
+            paths_section = cfg_data["paths"]
+            for k, v in paths_defaults.items():
+                paths_section.setdefault(k, v)
+        if commands_path.exists():
+            cmd_defaults = json.loads(commands_path.read_text())
+            cfg_data.setdefault("commands", {})
+            cmd_section = cfg_data["commands"]
+            for k, v in cmd_defaults.items():
+                cmd_section.setdefault(k, v)
+
     paths = cfg_data.get("paths") or cfg_data.get("directories")
     if isinstance(paths, dict):
         _merge_section(
@@ -32,6 +51,8 @@ def _normalize_config_data(cfg_data: Dict[str, Any]) -> Dict[str, Any]:
                 "oks_session": "oks_session",
                 "session_name": "session_name",
                 "drunc_target": "drunc_target",
+                "db_folder": "db_folder",
+                "oks_segment_file": "oks_segment_file",
             },
         )
 

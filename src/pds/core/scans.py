@@ -52,7 +52,8 @@ class _ScanRunner:
         self.cfg = cfg
         self.tmp_dir = tmp_dir
         self.details_path = Path(cfg.drunc_working_dir) / cfg.daphne_details
-        self.xml_path = Path(cfg.drunc_working_dir) / cfg.oks_file
+        oks_file = cfg.resolved_oks_file()
+        self.xml_path = Path(cfg.drunc_working_dir) / oks_file if oks_file else Path(cfg.drunc_working_dir)
 
     def _apply_daphne(self, mutate: Callable[[dict], None], description: str) -> None:
         if self.cfg.skip_daphne_conf:

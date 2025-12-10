@@ -16,15 +16,8 @@
         "dts_faketrig_cmd_template": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst GIB faketrig-conf 0x7 0 {hztrigger} --poisson ",
         "dts_clear_fktrig_cmd": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst GIB faketrig-clear 0"
     },
-    "paths": {
-        "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-NFD_DEV_250809-dev-pds",
-        "oks_file": "ehn1-daqconfigs/segments/np02-pds.data.xml",
-        "oks_session": "ehn1-daqconfigs/sessions/pds-vst-session.xml",
-        "session_name": "np02-session",
-        "daphne_details": "pds/configs/vd_coldbox/detail_mezz.json",
-        "drunc_target": "pds-vd_coldbox"
-    },
-    "daphne_obj": "daphne_mezz",
+  "facility": "vd_coldbox",
+  "daphne_obj": "daphne_mezz",
     "hztrigger": 6260.02,
     "change_rate": 20.0,
     "wait_time": 60,

@@ -17,7 +17,9 @@ class ScanConfig(BaseModel):
 
     mode: str
     drunc_working_dir: Path
-    oks_file: str
+    db_folder: Optional[str] = None
+    oks_segment_file: Optional[str] = None
+    oks_file: Optional[str] = None
     oks_session: Optional[str] = None
     session_name: Optional[str] = None
     drunc_target: str = "main-np02-pds"
@@ -75,6 +77,13 @@ class ScanConfig(BaseModel):
         if not v:
             raise ValueError("mode must be set")
         return v
+
+    def resolved_oks_file(self) -> Optional[str]:
+        if self.oks_file:
+            return self.oks_file
+        if self.db_folder and self.oks_segment_file:
+            return f"{self.db_folder}/segments/{self.oks_segment_file}"
+        return None
 
     def thresholds(self) -> Tuple[int, int, int]:
         """Return (min, max, step) for self-trigger thresholds with fallbacks."""
