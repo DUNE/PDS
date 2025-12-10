@@ -45,4 +45,5 @@ def run_set_ssp_conf(cfg: dict[str, Any], **overrides: Any) -> None:
     for k, v in asdict(conf).items():
         cmd += [f"--{k.replace('_', '-')}", str(v)]
 
+    _LOG.info("📢 set_ssp_conf command: %s", " ".join(cmd))
     subprocess.run(cmd, check=True, text=True)

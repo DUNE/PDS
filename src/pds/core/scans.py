@@ -75,6 +75,9 @@ class _ScanRunner:
         oks_file = self.cfg.resolved_oks_file()
         if oks_file:
             cfg_dict["oks_file"] = oks_file
+        else:
+            _LOG.warning("No oks_file resolved; skipping SSP/drunc commands.")
+            return
         if cfg_dict.get("plan_only"):
             _LOG.info("plan_only=True; would set SSP mask=%s bias=%s and run drunc.", mask, bias)
             run_drunc_command(cfg_dict, post_delay_s=delay_s)
