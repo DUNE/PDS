@@ -8,22 +8,36 @@ from typing import Any
 _LOG = logging.getLogger(__name__)
 
 
-def generate_drunc_command(cfg: dict[str, Any]) -> str:
-    if cfg.get("dry_run"):
+def _cfg_get(cfg: Any, key: str) -> Any:
+    if isinstance(cfg, dict):
+        return cfg.get(key)
+    return getattr(cfg, key, None)
+
+
+def generate_drunc_command(cfg: Any) -> str:
+    change_rate = _cfg_get(cfg, "change_rate")
+    wait_time = _cfg_get(cfg, "wait_time")
+    oks_session = _cfg_get(cfg, "oks_session")
+    session_name = _cfg_get(cfg, "session_name")
+
+    if _cfg_get(cfg, "dry_run") or change_rate is None or wait_time is None or oks_session is None or session_name is None:
         return "echo '🧪 [dry-run] Simulating drunc command...'"
     return (
         "drunc-unified-shell ssh-CERN-kafka.json "
-        f"{cfg['oks_session']} {cfg['session_name']} main-np02-pds "
+        f"{oks_session} {session_name} main-np02-pds "
         "start-run change-rate --trigger-rate "
-        f"{cfg['change_rate']} wait {cfg['wait_time']} "
+        f"{change_rate} wait {wait_time} "
         "shutdown terminate"
     )
 
 
-def run_drunc_command(cfg: dict[str, Any], *, post_delay_s: int = 20) -> None:
+def run_drunc_command(cfg: Any, *, post_delay_s: int = 20) -> None:
     cmd = generate_drunc_command(cfg)
-    if cfg.get("dry_run"):
+    if _cfg_get(cfg, "dry_run"):
         _LOG.info("🧪 Dry run: %s", cmd)
+        return
+    if "echo '" in cmd:
+        _LOG.warning("⚠️  Missing drunc parameters (change_rate/wait_time/oks_session/session_name); skipping drunc. Command: %s", cmd)
         return
     _LOG.info("%s", cmd)
     subprocess.run(cmd, shell=True, cwd=cfg["drunc_working_dir"], check=True)
