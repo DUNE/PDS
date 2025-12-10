@@ -1,6 +1,6 @@
 {
     "dry_run": false,
-    "plan_only": false,
+    "plan_only": true,
     "mode": "sthscan",
     "scan": {
         "thresholds": {
@@ -27,8 +27,8 @@
     "daphne_obj": "daphne_mezz",
     "hztrigger": 6260.02,
     "change_rate": 20.0,
-    "wait_time": 60,
-    "drunc_delay_s": 10,
+    "wait_time": 10,
+    "drunc_delay_s": 1,
     "skip_proxy": true,
     "skip_ssp_conf": true,
     "skip_daphne_conf": false,
