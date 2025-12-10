@@ -103,7 +103,8 @@ def load_config(conf_path: Path, *, mode_override: str | None = None) -> ScanCon
     """Load and validate the user configuration file."""
     raw = json.loads(conf_path.read_text())
     # Base dir used to resolve facility defaults (00_paths/01_commands)
-    raw["_base_dir"] = conf_path.parent.parent
+    # conf: .../configs/<facility>/<file>.json -> repo root is parents[2]
+    raw["_base_dir"] = conf_path.resolve().parents[2]
     if mode_override:
         raw["mode"] = mode_override
     cfg_data = _normalize_config_data(raw)
