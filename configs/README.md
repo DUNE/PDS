@@ -3,13 +3,14 @@
 Each facility has its own folder under `configs/` with:
 - `00_paths.json`: drunc/DAPHNE/DB locations (working dir, db_folder, oks_segment_file, session_name, drunc_target, daphne_details)
 - `01_commands.json`: common commands (web proxy, DTS align/fake/clear)
-- Scan configs (`conf_stscan.json`, `conf_attscan.json`, etc.): only the scan bounds/mask overrides and `facility` + `daphne_obj`. Paths/commands are auto-loaded from the numbered files.
+- `03_default_config.json`: base DAPHNE detail/config file used for all scans in that facility
+- Scan configs (`04_stthre.json`, `05_attenuation.json`, `06_led_calib.json`, `07_offset.json`, `08_trim.json`, etc.): only the scan bounds/mask overrides and `facility` + `daphne_obj`. Paths/commands/defaults are auto-loaded from the numbered files.
 
 Example run:
 ```bash
-pds-run thr-scan configs/vst/conf_stscan.json
+pds-run thr-scan configs/vst/04_stthre.json
 ```
-This uses the VST `00_paths.json` and `01_commands.json` automatically.
+This uses the VST `00_paths.json`, `01_commands.json`, and `03_default_config.json` automatically.
 
 ## Pre-run checklist (plan-only)
 1. Set `"plan_only": true` in the scan config.
