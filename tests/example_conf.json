@@ -1,0 +1,1 @@
+{"mode": "cosmics", "drunc_working_dir": "/tmp", "oks_file": "ok.xml", "daphne_details": "details.json", "skip_dts": true, "skip_daphne_conf": true, "skip_ssp_conf": true, "dry_run": true}

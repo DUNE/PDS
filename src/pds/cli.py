@@ -56,8 +56,15 @@ def run_command(
         readable=True,
         help="Path to conf JSON file.",
     ),
+    verbose: bool = typer.Option(
+        False,
+        "--verbose",
+        "-v",
+        help="Enable DEBUG logging.",
+    ),
 ) -> None:
     """Launch a PDS data-acquisition run."""
+    logging.basicConfig(level=logging.DEBUG if verbose else logging.INFO)
     logging.info("🚀 Starting a PDS %s run using %s!", mode.value, conf)
     run.main(mode.value, conf)
 

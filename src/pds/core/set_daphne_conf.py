@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from pds.core.seed import generate_seeds
 import shutil
+import subprocess
 
 CONFIGURATIONS = [
     "np02_daphne_fullstream",
@@ -114,14 +115,23 @@ def main(mode=None, conf_path=None):
             else:
                 logging.warning("⚠️  Expected seed %s not found; skipping copy to %s", src, dst)
         else:
+            logging.warning("⚠️  No daphne_obj provided; updating default configs: %s", CONFIGURATIONS)
             config_names = list(CONFIGURATIONS)
 
         # Update XML file using add_daphne_conf
         for config_name in config_names:
             output_path = daphne_details_path.parent / (config_name + '.json')
-            command = f'add_daphne_conf {xml_path} {output_path} -n {config_name} -t 5000'
-            logging.info(f"📢 Running XML update command: {command}")
-            os.system(command)
+            command = [
+                "add_daphne_conf",
+                str(xml_path),
+                str(output_path),
+                "-n",
+                config_name,
+                "-t",
+                "5000",
+            ]
+            logging.info("📢 Running XML update command: %s", " ".join(command))
+            subprocess.run(command, check=True)
 
             root = ET.parse(xml_path)
             daphne_conf = root.find(f".//obj[@class='DaphneConf'][@id='{config_name}']")
