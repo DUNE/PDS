@@ -12,11 +12,5 @@
     },
     "facility": "vst",
     "daphne_obj": "daphne_mezz",
-    "hztrigger": 6260.02,
-    "change_rate": 20.0,
-    "wait_time": 10,
-    "drunc_delay_s": 1,
-    "skip_ssp_conf": true,
-    "skip_daphne_conf": false,
-    "skip_dts": false
+    "wait_time": 10
 }

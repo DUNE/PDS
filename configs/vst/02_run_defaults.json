@@ -1,0 +1,22 @@
+{
+  "hztrigger": 6260.02,
+  "change_rate": 20.0,
+  "wait_time": 60,
+  "drunc_delay_s": 20,
+  "skip_proxy": true,
+  "skip_ssp_conf": false,
+  "skip_daphne_conf": false,
+  "skip_dts": false,
+  "ssp_conf": {
+    "object_name": "np02-ssp-on",
+    "channel_mask": "4",
+    "number_channels": "12",
+    "pulse_mode": "single",
+    "burst_count": "1",
+    "double_pulse_delay_ticks": "4000",
+    "pulse1_width_ticks": "1",
+    "pulse2_width_ticks": "1",
+    "pulse_bias_percent_270nm": "4095",
+    "pulse_bias_percent_367nm": "0"
+  }
+}

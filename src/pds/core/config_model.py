@@ -4,17 +4,16 @@ import logging
 from pathlib import Path
 from typing import Any, Optional, Tuple
 
-from pydantic import BaseModel, ConfigDict, model_validator, field_validator
+from pydantic import BaseModel, ConfigDict, model_validator, field_validator, Extra
 
 _LOG = logging.getLogger(__name__)
 
 
-class ScanConfig(BaseModel):
+class BaseScanConfig(BaseModel):
     """
     Typed view of the user configuration JSON.
     Unknown keys are preserved via `extra="allow"` so we don't break callers.
     """
-
     mode: str
     drunc_working_dir: Path
     db_folder: Optional[str] = None
@@ -135,3 +134,28 @@ class ScanConfig(BaseModel):
         if not self.mask_values:
             return [1]
         return [int(m) for m in self.mask_values]
+
+
+class ThresholdScanConfig(BaseScanConfig):
+    mode: str = "sthscan"
+
+
+class AttScanConfig(BaseScanConfig):
+    mode: str = "attscan"
+    min_att: int
+    max_att: int
+    att_step: int
+
+
+class OffsetScanConfig(BaseScanConfig):
+    mode: str = "offsetscan"
+    min_offset: int
+    max_offset: int
+    offset_step: int
+
+
+class TrimScanConfig(BaseScanConfig):
+    mode: str = "trimscan"
+    min_trim: int
+    max_trim: int
+    trim_step: int

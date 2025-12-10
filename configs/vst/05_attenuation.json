@@ -8,15 +8,10 @@
             "max": 2000,
             "step": -50
         },
-        "mask_values": [8]
+        "mask_values": [
+            8
+        ]
     },
     "facility": "vst",
-    "daphne_obj": "daphne_mezz",
-  "hztrigger": 6260.02,
-  "change_rate": 20.0,
-  "wait_time": 60,
-  "drunc_delay_s": 20,
-  "skip_ssp_conf": false,
-  "skip_daphne_conf": false,
-  "skip_dts": true
+    "daphne_obj": "daphne_mezz"
 }

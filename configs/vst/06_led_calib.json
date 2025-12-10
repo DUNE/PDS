@@ -1,20 +1,22 @@
 {
-  "dry_run": false,
-  "plan_only": false,
-  "mode": "calibrun",
-  "scan": {
-    "mask_values": [8]
-  },
-  "facility": "vst",
-  "daphne_obj": "daphne_mezz",
-  "hztrigger": 6260.02,
-  "change_rate": 20.0,
-  "wait_time": 60,
-  "drunc_delay_s": 20,
-  "skip_ssp_conf": false,
-  "skip_daphne_conf": false,
-  "skip_dts": false,
-  "dailycalib": [
-    {"mask": 8, "intensities": [1800, 1600, 1400]}
-  ]
+    "dry_run": false,
+    "plan_only": false,
+    "mode": "calibrun",
+    "scan": {
+        "mask_values": [
+            8
+        ]
+    },
+    "facility": "vst",
+    "daphne_obj": "daphne_mezz",
+    "dailycalib": [
+        {
+            "mask": 8,
+            "intensities": [
+                1800,
+                1600,
+                1400
+            ]
+        }
+    ]
 }

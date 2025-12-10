@@ -6,7 +6,13 @@ from pathlib import Path
 from typing import Any, Dict
 from uuid import uuid4
 
-from .config_model import ScanConfig
+from .config_model import (
+    BaseScanConfig,
+    ThresholdScanConfig,
+    AttScanConfig,
+    OffsetScanConfig,
+    TrimScanConfig,
+)
 
 _LOG = logging.getLogger(__name__)
 
@@ -18,26 +24,33 @@ def _merge_section(cfg: Dict[str, Any], section: Dict[str, Any], keys: Dict[str,
             cfg[target] = section[source]
 
 
-def _normalize_config_data(cfg_data: Dict[str, Any]) -> Dict[str, Any]:
+def _load_facility_defaults(base_dir: Path, facility: str, cfg_data: Dict[str, Any]) -> None:
+    paths_path = base_dir / "configs" / facility / "00_paths.json"
+    commands_path = base_dir / "configs" / facility / "01_commands.json"
+    run_defaults_path = base_dir / "configs" / facility / "02_run_defaults.json"
+    if paths_path.exists():
+        paths_defaults = json.loads(paths_path.read_text())
+        cfg_data.setdefault("paths", {})
+        paths_section = cfg_data["paths"]
+        for k, v in paths_defaults.items():
+            paths_section.setdefault(k, v)
+    if commands_path.exists():
+        cmd_defaults = json.loads(commands_path.read_text())
+        cfg_data.setdefault("commands", {})
+        cmd_section = cfg_data["commands"]
+        for k, v in cmd_defaults.items():
+            cmd_section.setdefault(k, v)
+    if run_defaults_path.exists():
+        run_defaults = json.loads(run_defaults_path.read_text())
+        for k, v in run_defaults.items():
+            cfg_data.setdefault(k, v)
+
+
+def _normalize_config_data(cfg_data: Dict[str, Any], base_dir: Path) -> Dict[str, Any]:
     """Allow modular conf.json: paths/commands/scan sections and facility defaults."""
-    # If a facility is specified, load defaults from configs/{facility}/paths.json and commands.json
     facility = cfg_data.get("facility")
     if facility:
-        base = Path(cfg_data.get("_base_dir", Path.cwd()))
-        paths_path = base / "configs" / facility / "00_paths.json"
-        commands_path = base / "configs" / facility / "01_commands.json"
-        if paths_path.exists():
-            paths_defaults = json.loads(paths_path.read_text())
-            cfg_data.setdefault("paths", {})
-            paths_section = cfg_data["paths"]
-            for k, v in paths_defaults.items():
-                paths_section.setdefault(k, v)
-        if commands_path.exists():
-            cmd_defaults = json.loads(commands_path.read_text())
-            cfg_data.setdefault("commands", {})
-            cmd_section = cfg_data["commands"]
-            for k, v in cmd_defaults.items():
-                cmd_section.setdefault(k, v)
+        _load_facility_defaults(base_dir, facility, cfg_data)
 
     paths = cfg_data.get("paths") or cfg_data.get("directories")
     if isinstance(paths, dict):
@@ -99,17 +112,24 @@ def _normalize_config_data(cfg_data: Dict[str, Any]) -> Dict[str, Any]:
     return cfg_data
 
 
-def load_config(conf_path: Path, *, mode_override: str | None = None) -> ScanConfig:
+def load_config(conf_path: Path, *, mode_override: str | None = None) -> BaseScanConfig:
     """Load and validate the user configuration file."""
     raw = json.loads(conf_path.read_text())
-    # Base dir used to resolve facility defaults (00_paths/01_commands)
-    # conf: .../configs/<facility>/<file>.json -> repo root is parents[2]
-    raw["_base_dir"] = conf_path.resolve().parents[2]
+    base_dir = conf_path.resolve().parents[2]
     if mode_override:
         raw["mode"] = mode_override
-    cfg_data = _normalize_config_data(raw)
-    cfg = ScanConfig(**cfg_data)
-    return cfg
+    cfg_data = _normalize_config_data(raw, base_dir)
+
+    mode = cfg_data.get("mode", "")
+    if mode in ("thrscan", "threshold", "sthscan", "selftrigger"):
+        return ThresholdScanConfig(**cfg_data)
+    if mode in ("attscan", "attenuator"):
+        return AttScanConfig(**cfg_data)
+    if mode == "offsetscan":
+        return OffsetScanConfig(**cfg_data)
+    if mode == "trimscan":
+        return TrimScanConfig(**cfg_data)
+    return BaseScanConfig(**cfg_data)
 
 
 def log_plan(cfg: ScanConfig) -> str:
