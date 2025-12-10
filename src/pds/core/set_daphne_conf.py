@@ -102,18 +102,19 @@ def main(mode=None, conf_path=None):
         logging.info(f"📢 Generating seeds from {daphne_config_path}")
         generate_seeds(daphne_config_path)
 
-        # Optionally duplicate the self-trigger seed under a custom name
-        config_names = list(CONFIGURATIONS)
+        # Only update the requested object when provided; otherwise fall back to defaults
         custom_obj = config.get("daphne_obj")
-        if custom_obj and custom_obj not in config_names:
+        if custom_obj:
+            config_names = [custom_obj]
             src = daphne_details_path.parent / "np02_daphne_selftrigger.json"
             dst = daphne_details_path.parent / f"{custom_obj}.json"
             if src.exists():
                 shutil.copy(src, dst)
                 logging.info(f"📢 Copied {src.name} -> {dst.name}")
-                config_names.append(custom_obj)
             else:
                 logging.warning("⚠️  Expected seed %s not found; skipping copy to %s", src, dst)
+        else:
+            config_names = list(CONFIGURATIONS)
 
         # Update XML file using add_daphne_conf
         for config_name in config_names:
