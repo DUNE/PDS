@@ -56,9 +56,16 @@ def _run_single_mode(cfg, conf_path: Path, *, tmp_dir: Path) -> None:
     oks_file = cfg.resolved_oks_file()
     xml_path = Path(cfg.drunc_working_dir) / oks_file if oks_file else Path(cfg.drunc_working_dir)
 
+    def _deep_update(dst, src):
+        for k, v in src.items():
+            if isinstance(v, dict) and isinstance(dst.get(k), dict):
+                _deep_update(dst[k], v)
+            else:
+                dst[k] = v
+
     def _mutate(data):
-        data.clear()
-        data.update(desired)
+        # Merge desired into existing details to preserve required fields (e.g., channel_analog_conf)
+        _deep_update(data, desired)
 
     apply_daphne_patch(
         cfg,
