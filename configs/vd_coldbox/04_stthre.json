@@ -13,5 +13,6 @@
         ]
     },
     "facility": "vd_coldbox",
-    "daphne_obj": "daphne_mezz"
+    "daphne_obj": "daphne_mezz",
+    "skip_ssp_conf": true
 }
