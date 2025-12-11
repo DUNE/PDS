@@ -1,7 +1,7 @@
 {
-  "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-NFD_DEV_250809-dev-pds",
+  "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-fddaq-v5.5.0-rc2-dev-pds",
   "db_folder": "ehn1-daqconfigs",
-  "oks_segment_file": "np02-pds.data.xml",
+  "oks_segment_file": "pds-vst.data.xml",
   "oks_session": "ehn1-daqconfigs/sessions/pds-vst-session.xml",
   "session_name": "np02-session",
   "drunc_target": "pds-vd_coldbox",
