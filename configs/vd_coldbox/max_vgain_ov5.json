@@ -1,5 +1,6 @@
 {
   "facility": "vd_coldbox",
+  "daphne_obj": "daphne_mezz",
   "60": {
     "detector_id": 9,
     "crate_id": 4,

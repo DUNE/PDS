@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import logging
 import sys
 from pathlib import Path
@@ -9,8 +10,69 @@ from typing import Optional
 from .butler import DTSButler
 from .plan import load_config, log_plan
 from .scans import AttenuatorScan, OffsetScan, SelfTriggerScan, TrimScan
+from .daphne import apply_daphne_patch
+from .drunc import run_drunc_command
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+
+
+def _run_single_mode(cfg, conf_path: Path, *, tmp_dir: Path) -> None:
+    """Apply the DAPHNE config once, then run drunc."""
+    raw_conf = json.loads(conf_path.read_text())
+    if not getattr(cfg, "daphne_obj", None):
+        obj = raw_conf.get("daphne_obj")
+        if obj:
+            cfg.daphne_obj = obj  # type: ignore[attr-defined]
+        else:
+            raise ValueError("daphne_obj must be set in the config for run modes.")
+
+    # Build desired DAPHNE payload from the config (drop non-DAPHNE keys).
+    desired = {
+        k: v
+        for k, v in raw_conf.items()
+        if k
+        not in (
+            "facility",
+            "paths",
+            "commands",
+            "daphne_obj",
+            "mode",
+            "dry_run",
+            "plan_only",
+            "skip_dts",
+            "skip_daphne_conf",
+            "skip_ssp_conf",
+            "mask_values",
+            "drunc_delay_s",
+            "scan",
+        )
+    }
+    # If keys are board-ids, keep only those.
+    board_only = {k: v for k, v in desired.items() if isinstance(k, str) and k.isdigit()}
+    if board_only:
+        desired = board_only
+
+    details_path = Path(cfg.drunc_working_dir) / cfg.daphne_details
+    oks_file = cfg.resolved_oks_file()
+    xml_path = Path(cfg.drunc_working_dir) / oks_file if oks_file else Path(cfg.drunc_working_dir)
+
+    def _mutate(data):
+        data.clear()
+        data.update(desired)
+
+    apply_daphne_patch(
+        cfg,
+        details_path=details_path,
+        xml_path=xml_path,
+        tmp_dir=tmp_dir,
+        mutate=_mutate,
+        description=cfg.mode,
+    )
+
+    cfg_dict = cfg.model_dump(mode="python")
+    if oks_file:
+        cfg_dict["oks_file"] = oks_file
+    run_drunc_command(cfg_dict, post_delay_s=cfg.drunc_delay_s)
 
 
 def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> None:
@@ -54,7 +116,7 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
             elif cfg.mode == "trimscan":
                 TrimScan(cfg, tmp_dir=tmp_dir).run()
             elif cfg.mode == "cosmics":
-                logging.info("Cosmics mode not implemented in refactor; skipping actions for test/dry-run.")
+                _run_single_mode(cfg, conf_path, tmp_dir=tmp_dir)
             else:
                 raise ValueError(f"Unsupported mode '{cfg.mode}'")
         finally:
