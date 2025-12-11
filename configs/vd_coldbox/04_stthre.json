@@ -4,9 +4,9 @@
     "mode": "sthscan",
     "scan": {
         "thresholds": {
-            "min": 10,
-            "max": 40,
-            "step": 5
+            "min": 30,
+            "max": 8030,
+            "step": 1000
         },
         "mask_values": [
             8
