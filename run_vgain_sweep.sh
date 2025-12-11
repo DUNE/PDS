@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Usage: ./run_vgain_sweep.sh [--plan-only] [--mode run] [--run-mode cosmics] [--log-dir DIR]
-# Runs pds-run once per config in configs/vst/*vgain*.json
+# Runs pds-run once per config in configs/vd_coldbox/*vgain*.json
 
 PLAN_ONLY=""
 MODE="run"
@@ -21,7 +21,7 @@ done
 
 mkdir -p "$LOG_DIR"
 
-for cfg in configs/vst/*vgain*.json; do
+for cfg in configs/vd_coldbox/*vgain*.json; do
   [ -f "$cfg" ] || continue
   base=$(basename "$cfg")
   log="$LOG_DIR/${base%.json}.log"
