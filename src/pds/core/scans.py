@@ -5,7 +5,7 @@ import logging
 from pathlib import Path
 from typing import Callable
 
-from .config_model import ScanConfig
+from .config_model import BaseScanConfig
 from .daphne import apply_daphne_patch
 from .drunc import run_drunc_command
 from .ssp import run_set_ssp_conf
@@ -48,7 +48,7 @@ def _update_trim(data: dict, value: int) -> None:
 
 
 class _ScanRunner:
-    def __init__(self, cfg: ScanConfig, *, tmp_dir: Path) -> None:
+    def __init__(self, cfg: BaseScanConfig, *, tmp_dir: Path) -> None:
         self.cfg = cfg
         self.tmp_dir = tmp_dir
         self.details_path = Path(cfg.drunc_working_dir) / cfg.daphne_details
