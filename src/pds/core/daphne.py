@@ -7,7 +7,7 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Any, Callable, Dict, Tuple
 
-from .config_model import ScanConfig
+from .config_model import BaseScanConfig
 
 _LOG = logging.getLogger(__name__)
 
@@ -32,7 +32,7 @@ def _write_json(path: Path, data: Dict[str, Any]) -> None:
 
 
 def apply_daphne_patch(
-    cfg: ScanConfig,
+    cfg: BaseScanConfig,
     *,
     details_path: Path,
     xml_path: Path,
