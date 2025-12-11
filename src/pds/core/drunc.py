@@ -28,9 +28,12 @@ def generate_drunc_command(cfg: Any) -> str:
 
     # Resolve OKS session path to an absolute path so drunc-unified-shell can find it reliably.
     try:
+        base_dir = Path(drunc_workdir) if drunc_workdir else None
         oks_session_path = Path(oks_session)
-        if not oks_session_path.is_absolute() and drunc_workdir:
-            oks_session_path = Path(drunc_workdir) / oks_session_path
+        if base_dir and not oks_session_path.is_absolute():
+            oks_session_path = (base_dir / oks_session_path).resolve()
+        else:
+            oks_session_path = oks_session_path.resolve()
         oks_session_str = str(oks_session_path)
     except Exception:
         oks_session_str = str(oks_session)
