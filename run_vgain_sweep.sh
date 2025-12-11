@@ -26,14 +26,13 @@ for cfg in configs/vst/*vgain*.json; do
   base=$(basename "$cfg")
   log="$LOG_DIR/${base%.json}.log"
   echo "Running $cfg -> $log"
-  cmd=(pds-run "$MODE")
+  cmd=(pds-run "$MODE" --conf "$cfg")
   if [[ "$MODE" == "run" ]]; then
     cmd+=(--mode "$RUN_MODE")
   fi
   if [[ -n "$PLAN_ONLY" ]]; then
     cmd+=("$PLAN_ONLY")
   fi
-  cmd+=("$cfg")
   "${cmd[@]}" | tee "$log"
 done
 
