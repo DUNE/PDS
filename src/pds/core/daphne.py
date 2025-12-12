@@ -73,8 +73,13 @@ def apply_daphne_patch(
         _LOG.info("plan_only=True; skipping DAPHNE update.")
         return desired
 
+    # Keep only board entries (numeric keys) to satisfy add_daphne_conf expectations.
+    cleaned = {k: v for k, v in desired.items() if isinstance(k, str) and k.isdigit()}
+    if not cleaned:
+        raise ValueError("No board entries found after cleaning DAPHNE patch data.")
+
     tmp_json = tmp_dir / f"{obj_name}_daphne_patch.json"
-    _write_json(tmp_json, desired)
+    _write_json(tmp_json, cleaned)
 
     cmd = [
         "add_daphne_conf",
