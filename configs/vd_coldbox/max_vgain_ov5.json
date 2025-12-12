@@ -7,7 +7,7 @@
     "slot_id": 1,
     "ip": "10.73.137.160",
     "bias_ctrl": 4095,
-    "self_trigger_threshold": 8001,
+    "self_trigger_threshold": 1000,
     "full_stream_channels": [],
     "channel_analog_conf": {
       "ids": [
