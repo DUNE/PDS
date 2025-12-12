@@ -8,9 +8,7 @@
     "ip": "10.73.137.160",
     "bias_ctrl": 4095,
     "self_trigger_threshold": 8001,
-    "full_stream_channels": [
-
-    ],
+    "full_stream_channels": [],
     "channel_analog_conf": {
       "ids": [
         0,
@@ -277,5 +275,27 @@
     "tp_conf": 17881857,
     "compensator": 0,
     "inverter": 0
+  },
+  "metadata": {
+    "type": "daphne_configuration",
+    "version": "1.0",
+    "configuration": "np02_daphne_self_trigger"
+  },
+  "common_conf": {
+    "ov": {
+      "fbk": 4.5,
+      "hpk": 2.5
+    },
+    "offset_gain": 1,
+    "bias_ctrl": 4095,
+    "resolution": 0,
+    "output_format": 1,
+    "SB_first": 1,
+    "lpf_cut_frequency": 4,
+    "pga_integrator_disable": 1,
+    "pga_gain": 0,
+    "clamp": 0,
+    "lna_integrator_disable": 1,
+    "lna_gain": 2
   }
 }
