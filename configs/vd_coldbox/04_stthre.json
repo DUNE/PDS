@@ -14,5 +14,6 @@
     },
     "facility": "vd_coldbox",
     "daphne_obj": "daphne_mezz",
+    "daphne_details": "pds/configs/vd_coldbox/max_vgain_45_pde.json",
     "skip_ssp_conf": true
 }
