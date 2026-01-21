@@ -42,7 +42,7 @@
     "dailycalib":[
         {
             "mask": 1,
-            "intensities": [ 3100, 3950, 2100, 3500, 2800]
+            "intensities": [3100, 3950, 2100, 3500, 2800]
         },
         {
             "mask": 16,
@@ -50,7 +50,7 @@
         },
         {
             "mask": 8,
-            "intensities": [1900, 1750, 1600, 2250, 3250]
+            "intensities": [1900, 1600, 2250, 3250]
         }
     ],
     "skip_proxy": false,
