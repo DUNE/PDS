@@ -56,9 +56,9 @@
     "skip_proxy": false,
     "skip_dts": false,
     "web_proxy_cmd": "source ~np04daq/bin/web_proxy.sh -u",
-    "dts_align_cmd": "dtsbutler mst MASTER_PC059_0 align apply-delay 0 0 0 --force -m 3",
-    "dts_faketrig_cmd_template": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst GIB_CH faketrig-conf 0x7 0 {hztrigger} --poisson ",
-    "dts_clear_fktrig_cmd": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst GIB_CH faketrig-clear 0",
-    "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-NFD_DEV_250809-dev-pds",
+    "dts_align_cmd": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst MIB align apply-delay 0 0 0 --force -m 3",
+    "dts_faketrig_cmd_template": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst MIB faketrig-conf 0x7 0 {hztrigger} --poisson ",
+    "dts_clear_fktrig_cmd": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst MIB faketrig-clear 0",
+    "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-fddaq-v5.4.3-dev",
     "drunc_delay_s": 20
 }
