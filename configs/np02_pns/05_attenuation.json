@@ -1,0 +1,17 @@
+{
+    "dry_run": false,
+    "plan_only": false,
+    "mode": "attscan",
+    "scan": {
+        "attenuators": {
+            "min": 2200,
+            "max": 2000,
+            "step": -50
+        },
+        "mask_values": [
+            8
+        ]
+    },
+    "facility": "np02_pns",
+    "daphne_obj": "np02_daphne_fullstream"
+}

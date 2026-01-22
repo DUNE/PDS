@@ -1,0 +1,17 @@
+{
+    "dry_run": false,
+    "plan_only": false,
+    "mode": "trimscan",
+    "scan": {
+        "trims": {
+            "min": 3000,
+            "max": 3000,
+            "step": 500
+        },
+        "mask_values": [
+            8
+        ]
+    },
+    "facility": "vst",
+    "daphne_obj": "daphne_mezz"
+}

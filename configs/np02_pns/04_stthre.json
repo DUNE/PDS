@@ -1,0 +1,19 @@
+{
+    "dry_run": false,
+    "plan_only": false,
+    "mode": "sthscan",
+    "scan": {
+        "thresholds": {
+            "min": 30,
+            "max": 8030,
+            "step": 1000
+        },
+        "mask_values": [
+            8
+        ]
+    },
+    "facility": "np02_pns",
+    "daphne_obj": "np02_daphne_fullstream",
+    "daphne_details": "03_default_config.json",
+    "skip_ssp_conf": false
+}
