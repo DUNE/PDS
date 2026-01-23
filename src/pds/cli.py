@@ -63,7 +63,6 @@ def run_command(
     ),
 ) -> None:
     """Launch a PDS data-acquisition run."""
-    logging.basicConfig(level=logging.DEBUG if verbose else logging.INFO)
     logging.info("🚀 Starting a PDS %s run using %s!", mode.value, conf)
     run.main(mode.value, conf)
 
@@ -81,21 +80,6 @@ def thr_scan(                     # ← name shown in `--help`
     take one run per setting.
     """
     thr_main(conf)
-
-@app.command("calibrun")
-def calibrun(                     # ← name shown in `--help`
-    conf: Path = typer.Argument(
-        ...,
-        exists=True,
-        readable=True,
-        help="Path to conf.json with mode='calibrun'",
-    )
-) -> None:
-    """
-    Configuration optimized for daily calibration runs. 
-    The mask and led intensities are set according to the 'dailycalib' field in *conf*.
-    """
-    calib_main(conf)
 
 
 @app.command("selfthr-scan")
@@ -158,6 +142,21 @@ def trimt_scan(                     # ← name shown in `--help`
     take one run per setting.
     """
     trim_main(conf)
+
+@app.command("calibrun")
+def calibrun(                     # ← name shown in `--help`
+    conf: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Path to conf.json with mode='calibrun'",
+    )
+) -> None:
+    """
+    Configuration optimized for daily calibration runs. 
+    The mask and led intensities are set according to the 'dailycalib' field in *conf*.
+    """
+    calib_main(conf)
 
 @app.command(name="seed")
 def seed_command(
@@ -299,8 +298,6 @@ def _setup_logging(verbose: bool) -> None:
     * A rotating log-file is written to ~/.pds/logs/pds-run.log
       ( ~5 MB per file, 3 backups ).
     """
-    if logging.getLogger().handlers:
-        return  # already configured (Typer calls main() twice)
 
     level = logging.DEBUG if verbose else logging.INFO
     fmt   = "%(asctime)s [%(levelname)s] %(message)s"
