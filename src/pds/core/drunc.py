@@ -23,8 +23,6 @@ def generate_drunc_command(cfg: Any) -> str:
     drunc_workdir = _cfg_get(cfg, "drunc_working_dir")
     run_type = _cfg_get(cfg, "run_type") or "TEST"
 
-    if _cfg_get(cfg, "dry_run") or change_rate is None or wait_time is None or oks_session is None or session_name is None:
-        return "echo '🧪 [dry-run] Simulating drunc command...'"
 
     # Resolve OKS session path to an absolute path so drunc-unified-shell can find it reliably.
     try:
@@ -37,6 +35,17 @@ def generate_drunc_command(cfg: Any) -> str:
         oks_session_str = str(oks_session_path)
     except Exception:
         oks_session_str = str(oks_session)
+
+    if _cfg_get(cfg, "dry_run") or change_rate is None or wait_time is None or oks_session is None or session_name is None:
+        return (
+            "echo '🧪 [dry-run] Simulating drunc command...'"
+            "\ndrunc that will be executed:\n"
+            "drunc-unified-shell ssh-CERN-kafka.json "
+            f"{oks_session_str} {session_name} {drunc_target} "
+            f"start-run --run-type {run_type} change-rate --trigger-rate "
+            f"{change_rate} wait {wait_time} "
+            "shutdown terminate"
+            )
 
     return (
         "drunc-unified-shell ssh-CERN-kafka.json "

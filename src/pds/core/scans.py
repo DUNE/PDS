@@ -172,7 +172,8 @@ class TrimScan(_ScanRunner):
 
 class CalibRun(_ScanRunner):
     def run(self) -> None:
-        masks_and_intensities: list[dict] = self.cfg.__dict__.get("dailycalib", [])
+        print(self.cfg)
+        masks_and_intensities: list[dict] = getattr(self.cfg, "dailycalib", [])
 
         if not isinstance(masks_and_intensities, list):
             _LOG.error("'dailycalib' field is not a list.")
@@ -183,7 +184,6 @@ class CalibRun(_ScanRunner):
             return
 
         _LOG.info("📢  Calibration: mask and intensities defined in 'dailycalib'...")
-
 
         nruns = 0
         for mask_configuration in masks_and_intensities:
@@ -198,10 +198,6 @@ class CalibRun(_ScanRunner):
                 )
                 nruns += 1
 
-            log_file = getlogfile()
-            print("Testing...\n\n")
-            print(log_file.as_posix())
-            print(_LOG.name)
-            print("\n\n")
-            if Path(log_file).is_file():
-                subprocess.run(f"cat {log_file} | grep 'LED intensity =' | tail -n {nruns}", shell=True)
+        log_file = getlogfile()
+        if Path(log_file).is_file():
+            subprocess.run(f"cat {log_file} | grep 'LED intensity =' | tail -n {nruns}", shell=True)
