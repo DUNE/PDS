@@ -19,6 +19,7 @@ from pds.core import run, run_thr, run_att, seed, set_daphne_conf
 from pds.core.conf_update import update_conf_file
 from pds.core.run_thr import main as thr_main
 from pds.core.run_att import main as att_main
+from pds.core.run_calib import main as calib_main
 from pds.core.run_offset import main as offset_main
 from pds.core.run_trim import main as trim_main
 from pds.core.run_selftrigger import main as selfthr_main
@@ -30,8 +31,6 @@ class Mode(str, Enum):
     cosmics = "cosmics"
     noise = "noise"
     ledrun = "ledrun"
-    calibrun = "calibrun"
-
 
 app = typer.Typer(
     help="PDS Runner: Manage configurations and automation for the Photon Detection System (PDS)."
@@ -46,7 +45,7 @@ def run_command(
         ...,
         "--mode",
         "-m",
-        help="Type of run: cosmics, noise, ledrun, calibrun.",
+        help="Type of run: cosmics, noise, ledrun",
     ),
     conf: Path = typer.Option(
         ...,
@@ -82,6 +81,21 @@ def thr_scan(                     # ← name shown in `--help`
     take one run per setting.
     """
     thr_main(conf)
+
+@app.command("calibrun")
+def calibrun(                     # ← name shown in `--help`
+    conf: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Path to conf.json with mode='calibrun'",
+    )
+) -> None:
+    """
+    Configuration optimized for daily calibration runs. 
+    The mask and led intensities are set according to the 'dailycalib' field in *conf*.
+    """
+    calib_main(conf)
 
 
 @app.command("selfthr-scan")

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import subprocess
 from pathlib import Path
 from typing import Callable
 
@@ -9,6 +10,7 @@ from .config_model import BaseScanConfig
 from .daphne import apply_daphne_patch
 from .drunc import run_drunc_command
 from .ssp import run_set_ssp_conf
+from pds.core.utils import getlogfile
 
 _LOG = logging.getLogger(__name__)
 
@@ -167,3 +169,39 @@ class TrimScan(_ScanRunner):
                         bias=bias,
                         delay_s=self.cfg.drunc_delay_s,
                     )
+
+class CalibRun(_ScanRunner):
+    def run(self) -> None:
+        masks_and_intensities: list[dict] = self.cfg.__dict__.get("dailycalib", [])
+
+        if not isinstance(masks_and_intensities, list):
+            _LOG.error("'dailycalib' field is not a list.")
+            return
+
+        if not masks_and_intensities:
+            _LOG.error("No 'dailycalib' field defined in config.")
+            return
+
+        _LOG.info("📢  Calibration: mask and intensities defined in 'dailycalib'...")
+
+
+        nruns = 0
+        for mask_configuration in masks_and_intensities:
+            mask = mask_configuration.get("mask", self.cfg.masks()[0])
+            pulse = mask_configuration.get("intensities", [0])
+            for bias in pulse:
+                _LOG.info("   LED intensity = %s, mask = %s", bias, mask)
+                self._run_ssp_and_drunc(
+                    mask=mask,
+                    bias=bias,
+                    delay_s=self.cfg.drunc_delay_s,
+                )
+                nruns += 1
+
+            log_file = getlogfile()
+            print("Testing...\n\n")
+            print(log_file.as_posix())
+            print(_LOG.name)
+            print("\n\n")
+            if Path(log_file).is_file():
+                subprocess.run(f"cat {log_file} | grep 'LED intensity =' | tail -n {nruns}", shell=True)
