@@ -20,8 +20,10 @@ class DTSButler:
     skip: bool = False
 
     def run(self, *, hztrigger: Optional[float] = None) -> None:
+        align_command = ["bash", "-c", f"cd {self.workdir} && {self.align_cmd}"]
         if self.skip:
             _LOG.info("  Skipping Butler alignment (skip_dts=True)...")
+            _LOG.info(f"  Aligment command: {' '.join(align_command)}")
             return
 
         if self.mode in ("cosmics", "thrscan", "threshold", "sthscan", "selftrigger"):
@@ -31,7 +33,8 @@ class DTSButler:
 
         if self.align_cmd.strip():
             _LOG.info("📢  DTS alignment …")
-            subprocess.run(["bash", "-c", f"cd {self.workdir} && {self.align_cmd}"], check=True)
+            subprocess.run(align_command, check=True)
+
 
         if hztrigger is not None and self.fake_cmd_tpl.strip():
             cmd = self.fake_cmd_tpl.format(hztrigger=hztrigger)

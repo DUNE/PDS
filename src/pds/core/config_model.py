@@ -30,6 +30,13 @@ class BaseScanConfig(BaseModel):
     skip_dts: bool = False
     skip_daphne_conf: bool = False
     skip_ssp_conf: bool = False
+    
+    # commands
+    web_proxy_cmd: str = ""
+    dts_align_cmd: str = ""
+    dts_faketrig_cmd_template: str = ""
+    dts_clear_fktrig_cmd: str = ""
+    hztrigger: float | None = None
 
     # thresholds (new)
     min_self_trigger_threshold: Optional[int] = None

@@ -94,14 +94,18 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
     cfg = load_config(conf_path, mode_override=mode)
     run_id = log_plan(cfg)
 
+    # ensures that dts is not run when dry run is set
+    if cfg.dry_run:
+        cfg.skip_dts = True
+
     with TemporaryDirectory(prefix="pds-run-") as tmp:
         tmp_dir = Path(tmp)
 
         dts = DTSButler(
             workdir=Path(cfg.drunc_working_dir),
-            align_cmd=str(cfg.__dict__.get("dts_align_cmd", "") or ""),
-            fake_cmd_tpl=str(cfg.__dict__.get("dts_faketrig_cmd_template", "") or ""),
-            clear_cmd=str(cfg.__dict__.get("dts_clear_fktrig_cmd", "") or ""),
+            align_cmd=cfg.dts_align_cmd,
+            fake_cmd_tpl=cfg.dts_faketrig_cmd_template,
+            clear_cmd=cfg.dts_clear_fktrig_cmd,
             mode=cfg.mode,
             skip=cfg.skip_dts,
         )
@@ -109,10 +113,8 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
         try:
             if cfg.plan_only:
                 logging.info("plan_only=True; skipping Butler run commands...")
-            elif not cfg.skip_dts and not cfg.dry_run:
-                dts.run(hztrigger=cfg.__dict__.get("hztrigger"))
             else:
-                logging.info("  Skipping Butler run commands...")
+                dts.run(hztrigger=cfg.hztrigger)
 
             if cfg.mode in ("thrscan", "threshold", "sthscan", "selftrigger"):
                 SelfTriggerScan(cfg, tmp_dir=tmp_dir).run()
@@ -128,6 +130,9 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
                 _run_single_mode(cfg, conf_path, tmp_dir=tmp_dir)
             else:
                 raise ValueError(f"Unsupported mode '{cfg.mode}'")
+        except Exception as e:
+            print(e)
+            raise Exception("Something went wrong... check print before")
         finally:
             if cfg.plan_only:
                 logging.info("plan_only=True; skipping Butler clear commands...")
