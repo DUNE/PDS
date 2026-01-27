@@ -230,7 +230,7 @@ def _worker(base_data: dict[str, Any], cfg: str, out_dir: Path) -> None:
     logging.info("Wrote %s.json", cfg)
 
 
-def generate_seeds(details_path: str | Path) -> None:
+def generate_seeds(details_path: str | Path, out_dir: str) -> None:
     """
     Generate all four configuration files
     (`np02_daphne_*`) **in parallel** for speed.
@@ -240,7 +240,13 @@ def generate_seeds(details_path: str | Path) -> None:
         with open(details_path, "r", encoding="utf-8") as fh:
             base_data = json.load(fh)
 
-        out_dir = Path(details_path).parent
+        # No out_dir was given
+        if not out_dir:
+            out_dir = Path(details_path).parent
+        else:
+            out_dir = Path(out_dir)
+            if not out_dir.is_dir():
+                raise Exception(f"The path {out_dir.as_posix()} is not a directory")
 
         with ProcessPoolExecutor() as ex:
             futs = {

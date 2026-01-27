@@ -62,8 +62,9 @@ def apply_daphne_patch(
 
     changes = _diff(baseline, desired)
     if not changes:
-        _LOG.info("No DAPHNE changes required for %s.", description)
-        return desired
+        _LOG.info("No DAPHNE changes required for %s. Writting it any wait because I don't know the state of the xml", description)
+        # Removed the return for now...
+        # return desired
 
     _LOG.info("Planned DAPHNE changes for %s:", description)
     for key, (old, new) in changes.items():
@@ -76,8 +77,23 @@ def apply_daphne_patch(
     # Keep only board entries (numeric keys) to satisfy add_daphne_conf expectations.
     cleaned = {k: v for k, v in desired.items() if isinstance(k, str) and k.isdigit()}
     if not cleaned:
-        raise ValueError("No board entries found after cleaning DAPHNE patch data.")
+        # Trying to generate a seed... 
+        tmp_json_seed = tmp_dir / f"{obj_name}_daphne_patch_seed.json"
+        _write_json(tmp_json_seed, desired )
+        cmd = [
+            "pds-run",
+            "seed",
+            "-d",
+            str(tmp_json_seed),
+            "-o",
+            str(tmp_json_seed.parent)
+            ]
+        _LOG.info("📢 Running pds-run seed update command: %s", " ".join(cmd))
+        subprocess.run(cmd, check=True)
 
+        with open(Path(tmp_json_seed.parent/"np02_daphne_selftrigger.json"), 'r') as file:
+            cleaned = json.load(file)
+            
     tmp_json = tmp_dir / f"{obj_name}_daphne_patch.json"
     _write_json(tmp_json, cleaned)
 

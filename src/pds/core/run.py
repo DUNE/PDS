@@ -13,7 +13,8 @@ from .scans import AttenuatorScan, OffsetScan, SelfTriggerScan, TrimScan, CalibR
 from .daphne import apply_daphne_patch
 from .drunc import run_drunc_command
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+# basicConfig should only be called (to be checked...)
+# logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
 
 def _run_single_mode(cfg, conf_path: Path, *, tmp_dir: Path) -> None:

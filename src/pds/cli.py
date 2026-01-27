@@ -11,7 +11,7 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 import logging
 from enum import Enum
-from typing import Any
+from typing import Any, Annotated
 
 import typer
 
@@ -167,11 +167,16 @@ def seed_command(
         exists=True,
         readable=True,
         help="Path to details JSON file.",
-    )
+    ),
+    outdir: Annotated[str, typer.Option(
+        "--outdir",
+        "-o",
+        help="Output directory for output.",
+    )] = ""
 ) -> None:
     """Generate configuration files from details."""
     logging.info("🛠  Generating configuration files using %s!", details)
-    seed.generate_seeds(details)
+    seed.generate_seeds(details,outdir)
 
 
 @app.command(name="set")
