@@ -1,6 +1,6 @@
 {
   "web_proxy_cmd": "source ~np04daq/bin/web_proxy.sh -u",
-  "dts_align_cmd": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst MIB align apply-delay 0x20 0 0 --force -m 3",
+  "dts_align_cmd": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst MIB align apply-delay 0 0 0 --force -m 3",
   "dts_faketrig_cmd_template": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst MIB faketrig-conf 0x7 0 {hztrigger} --poisson ",
   "dts_clear_fktrig_cmd": "dtsbutler -c /nfs/sw/dunedaq/timing/connections.xml mst MIB faketrig-clear 0"
 }
