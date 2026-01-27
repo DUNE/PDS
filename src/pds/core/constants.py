@@ -17,3 +17,6 @@ JSON_INDENT: int = 2
 
 # Channels per AFE on NP02 boards
 CHANNELS_PER_AFE: int = 8
+
+# XCROSS value to avoid self-trigger
+XCORR_INHIBIT = 134217720

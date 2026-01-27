@@ -12,14 +12,17 @@ from .drunc import run_drunc_command
 from .ssp import run_set_ssp_conf
 from pds.core.utils import getlogfile
 
+from .constants import XCORR_INHIBIT
+
 _LOG = logging.getLogger(__name__)
 
 
-def _update_self_trigger_threshold(data: dict, value: int) -> None:
+def _update_self_trigger_threshold(data: dict, value: int, threshold_key: str = "threshold") -> None:
     if isinstance(data, dict) and "devices" in data:
         for dev in data.get("devices", []):
             trigger = dev.setdefault("self_trigger", {})
-            trigger["threshold"] = value
+            trigger_xcorr = trigger.setdefault("self_trigger_xcorr", {})
+            trigger_xcorr[threshold_key] = value
     else:
         # Handle board-id keyed maps (e.g., {"61": {...}})
         for _, dev in list(data.items()):
@@ -28,8 +31,7 @@ def _update_self_trigger_threshold(data: dict, value: int) -> None:
                     dev["self_trigger_threshold"] = value
                 else:
                     trigger = dev.setdefault("self_trigger", {})
-                    trigger["threshold"] = value
-
+                    trigger[threshold_key] = value
 
 def _update_attenuators(data: dict, value: int) -> None:
     for dev in data.get("devices", []):
@@ -172,9 +174,9 @@ class TrimScan(_ScanRunner):
 
 class CalibRun(_ScanRunner):
     def run(self) -> None:
-        print(self.cfg)
         masks_and_intensities: list[dict] = getattr(self.cfg, "dailycalib", [])
 
+        self._apply_daphne(lambda data, t=XCORR_INHIBIT: _update_self_trigger_threshold(data, t, "correlation_threshold"), "self-trigger")
         if not isinstance(masks_and_intensities, list):
             _LOG.error("'dailycalib' field is not a list.")
             return
