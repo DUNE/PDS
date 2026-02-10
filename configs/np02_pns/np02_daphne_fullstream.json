@@ -154,7 +154,7 @@
         ]
       }
     },
-    "self_trigger_xcorr": 4160749570000,
+    "self_trigger_xcorr": 4160749577750,
     "tp_conf": 17881857,
     "compensator": 0,
     "inverter": 0
@@ -351,10 +351,10 @@
         ]
       }
     },
-    "self_trigger_xcorr": 4160749570000,
+    "self_trigger_xcorr": 4160749577750,
     "tp_conf": 17881857,
     "compensator": 0,
-    "inverter": 0
+    "inverter": 1095216660480
   },
   "10": {
     "detector_id": 9,
@@ -559,6 +559,6 @@
     "self_trigger_xcorr": 4160749570000,
     "tp_conf": 17881857,
     "compensator": 0,
-    "inverter": 0
+    "inverter": 368651392453
   }
 }
