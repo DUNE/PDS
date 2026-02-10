@@ -35,7 +35,7 @@
         "pedestal_length": 128,
         "spybuffer_channel": 8,
         "self_trigger_xcorr": {
-          "correlation_threshold": 2000,
+          "correlation_threshold": 9750,
           "discrimination_threshold": 15500
         },
         "enable_compensator": [],
@@ -65,11 +65,11 @@
         "pedestal_length": 128,
         "spybuffer_channel": 8,
         "self_trigger_xcorr": {
-          "correlation_threshold": 2000,
+          "correlation_threshold": 9750,
           "discrimination_threshold": 15500
         },
         "enable_compensator": [],
-        "enable_inverter": []
+        "enable_inverter": [32, 33, 34, 35, 36, 37, 38, 39]
       },
       "channels": {
         "indices": [0, 5, 7, 8, 13, 15, 16, 21, 23, 24, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39],
@@ -99,7 +99,7 @@
           "discrimination_threshold": 15500
         },
         "enable_compensator": [],
-        "enable_inverter": []
+        "enable_inverter": [0,2,6,7,8,10,12,14,15,16,18,20,22,24,26,28,30,31,32,34,36,38]
       },
       "channels": {
         "indices": [0,2,6,7,8,10,12,14,15,16,18,20,22,24,26,28,30,31,32,34,36,38],
