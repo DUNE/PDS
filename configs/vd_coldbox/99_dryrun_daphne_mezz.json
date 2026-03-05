@@ -1,0 +1,20 @@
+{
+  "dry_run": true,
+  "plan_only": true,
+  "mode": "sthscan",
+  "scan": {
+    "thresholds": {
+      "min": 30,
+      "max": 8030,
+      "step": 1000
+    },
+    "mask_values": [
+      8
+    ]
+  },
+  "facility": "vd_coldbox",
+  "daphne_obj": "daphne_mezz",
+  "daphne_details": "pds/configs/vd_coldbox/daphne_mezz.json",
+  "skip_ssp_conf": true,
+  "skip_dts": true
+}

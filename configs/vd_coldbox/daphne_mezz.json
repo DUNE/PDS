@@ -1,11 +1,11 @@
 {
-  "60": {
+  "61": {
     "detector_id": 8,
-    "crate_id": 4,
+    "crate_id": 3,
     "slot_id": 1,
-    "ip": "10.73.137.160",
-    "bias_ctrl": 4095,
-    "self_trigger_threshold": 20,
+    "ip": "10.73.137.161",
+    "bias_ctrl": 0,
+    "self_trigger_threshold": 10,
     "full_stream_channels": [
 
     ],
@@ -188,17 +188,17 @@
         4
       ],
       "attenuators": [
-        2999,
-        2080,
-        2226,
-        1778,
-        2999
+        2300,
+        2300,
+        2300,
+        2300,
+        2300
       ],
       "v_biases": [
         0,
         0,
-        1115,
-        800,
+        0,
+        0,
         0
       ],
       "adcs": {
