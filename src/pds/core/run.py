@@ -9,7 +9,7 @@ from typing import Optional
 
 from .butler import DTSButler
 from .plan import load_config, log_plan
-from .scans import AttenuatorScan, OffsetScan, SelfTriggerScan, TrimScan
+from .scans import AttenuatorScan, LedIntensityScan, OffsetScan, SelfTriggerScan, TrimScan
 from .daphne import apply_daphne_patch
 from .drunc import run_drunc_command
 
@@ -122,6 +122,8 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
                 OffsetScan(cfg, tmp_dir=tmp_dir).run()
             elif cfg.mode == "trimscan":
                 TrimScan(cfg, tmp_dir=tmp_dir).run()
+            elif cfg.mode in ("calibrun", "ledrun", "ledintscan", "ledscan"):
+                LedIntensityScan(cfg, tmp_dir=tmp_dir).run()
             elif cfg.mode == "cosmics":
                 _run_single_mode(cfg, conf_path, tmp_dir=tmp_dir)
             else:

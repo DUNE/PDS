@@ -12,9 +12,18 @@ from .config_model import (
     AttScanConfig,
     OffsetScanConfig,
     TrimScanConfig,
+    LedIntensityScanConfig,
+    ScanConfig,
 )
 
 _LOG = logging.getLogger(__name__)
+
+
+def _infer_facility_from_path(conf_path: Path) -> str | None:
+    resolved = conf_path.resolve()
+    if resolved.parent.parent.name == "configs":
+        return resolved.parent.name
+    return None
 
 
 def _merge_section(cfg: Dict[str, Any], section: Dict[str, Any], keys: Dict[str, str]) -> None:
@@ -104,6 +113,17 @@ def _normalize_config_data(cfg_data: Dict[str, Any], base_dir: Path) -> Dict[str
         )
         trims = scan.get("trims", {})
         _merge_section(cfg_data, trims, {"min_trim": "min", "max_trim": "max", "trim_step": "step"})
+        led_intensities = scan.get("led_intensities", {})
+        _merge_section(
+            cfg_data,
+            led_intensities,
+            {
+                "min_led_intensity": "min",
+                "max_led_intensity": "max",
+                "led_intensity_step": "step",
+                "led_intensity_values": "values",
+            },
+        )
         if "mask_values" in scan and "mask_values" not in cfg_data:
             cfg_data["mask_values"] = scan["mask_values"]
         if "dailycalib" in scan and "dailycalib" not in cfg_data:
@@ -115,6 +135,10 @@ def _normalize_config_data(cfg_data: Dict[str, Any], base_dir: Path) -> Dict[str
 def load_config(conf_path: Path, *, mode_override: str | None = None) -> BaseScanConfig:
     """Load and validate the user configuration file."""
     raw = json.loads(conf_path.read_text())
+    if "facility" not in raw:
+        inferred_facility = _infer_facility_from_path(conf_path)
+        if inferred_facility:
+            raw["facility"] = inferred_facility
     base_dir = conf_path.resolve().parents[2]
     if mode_override:
         raw["mode"] = mode_override
@@ -129,6 +153,8 @@ def load_config(conf_path: Path, *, mode_override: str | None = None) -> BaseSca
         return OffsetScanConfig(**cfg_data)
     if mode == "trimscan":
         return TrimScanConfig(**cfg_data)
+    if mode in ("calibrun", "ledrun", "ledintscan", "ledscan"):
+        return LedIntensityScanConfig(**cfg_data)
     return BaseScanConfig(**cfg_data)
 
 
@@ -154,4 +180,6 @@ def log_plan(cfg: ScanConfig) -> str:
         _LOG.info(" offsets: min=%s max=%s step=%s", *cfg.offset_range())
     if cfg.mode == "trimscan":
         _LOG.info(" trims: min=%s max=%s step=%s", *cfg.trim_range())
+    if cfg.mode in ("calibrun", "ledrun", "ledintscan", "ledscan"):
+        _LOG.info(" LED intensity matrix: %s", cfg.dailycalib_entries())
     return run_id

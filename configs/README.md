@@ -6,6 +6,19 @@ Each facility has its own folder under `configs/` with:
 - `03_default_config.json`: base DAPHNE detail/config file used for all scans in that facility
 - Scan configs (`04_stthre.json`, `05_attenuation.json`, `06_led_calib.json`, `07_offset.json`, `08_trim.json`, etc.): only the scan bounds/mask overrides and `facility` + `daphne_obj`. Paths/commands/defaults are auto-loaded from the numbered files.
 
+For LED calibration scans, `02_run_defaults.json` provides the base `ssp_conf`. A compact config can define:
+- `scan.mask_values`: channel-mask list
+- `scan.led_intensities`: `{ "min": ..., "max": ..., "step": ... }` or `{ "values": [...] }`
+
+You can also run directly from `02_run_defaults.json` with CLI overrides:
+```bash
+pds-run led-intensity-scan configs/vd_coldbox/02_run_defaults.json \
+  --mask-values 1,2,4,8 \
+  --min-led-intensity 3000 \
+  --max-led-intensity 4095 \
+  --led-intensity-step 500
+```
+
 Example run:
 ```bash
 pds-run thr-scan configs/vst/04_stthre.json

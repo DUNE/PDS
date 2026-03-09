@@ -11,6 +11,7 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 import logging
 from enum import Enum
+from tempfile import NamedTemporaryFile
 from typing import Any
 
 import typer
@@ -19,6 +20,7 @@ from pds.core import run, run_thr, run_att, seed, set_daphne_conf
 from pds.core.conf_update import update_conf_file
 from pds.core.run_thr import main as thr_main
 from pds.core.run_att import main as att_main
+from pds.core.run_led import main as led_main
 from pds.core.run_offset import main as offset_main
 from pds.core.run_trim import main as trim_main
 from pds.core.run_selftrigger import main as selfthr_main
@@ -36,6 +38,18 @@ class Mode(str, Enum):
 app = typer.Typer(
     help="PDS Runner: Manage configurations and automation for the Photon Detection System (PDS)."
 )
+
+
+def _parse_int_csv(value: str | None, *, option_name: str) -> list[int] | None:
+    if value is None:
+        return None
+    items = [part.strip() for part in value.split(",") if part.strip()]
+    if not items:
+        raise typer.BadParameter(f"{option_name} cannot be empty.")
+    try:
+        return [int(item, 0) for item in items]
+    except ValueError as exc:
+        raise typer.BadParameter(f"{option_name} must be a comma-separated list of integers.") from exc
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Sub-commands
@@ -114,6 +128,94 @@ def att_scan(                     # ← name shown in `--help`
     take one run per setting.
     """
     att_main(conf)
+
+@app.command("led-calib-scan")
+@app.command("led-intensity-scan")
+def led_intensity_scan(
+    conf: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Path to conf.json with mode='calibrun'",
+    ),
+    mask_values: str | None = typer.Option(
+        None,
+        "--mask-values",
+        help="Comma-separated channel masks (for example: 1,2,4,8).",
+    ),
+    min_led_intensity: int | None = typer.Option(
+        None,
+        "--min-led-intensity",
+        help="Lower LED intensity bound.",
+    ),
+    max_led_intensity: int | None = typer.Option(
+        None,
+        "--max-led-intensity",
+        help="Upper LED intensity bound.",
+    ),
+    led_intensity_step: int | None = typer.Option(
+        None,
+        "--led-intensity-step",
+        help="LED intensity scan step.",
+    ),
+    led_intensity_values: str | None = typer.Option(
+        None,
+        "--led-intensity-values",
+        help="Comma-separated explicit LED intensities.",
+    ),
+) -> None:
+    """
+    Iterate over LED intensities and channel masks defined in *conf* and
+    take one run per setting.
+    """
+    updates: dict[str, Any] = {}
+
+    parsed_masks = _parse_int_csv(mask_values, option_name="--mask-values")
+    if parsed_masks is not None:
+        updates["scan.mask_values"] = parsed_masks
+
+    parsed_led_values = _parse_int_csv(
+        led_intensity_values,
+        option_name="--led-intensity-values",
+    )
+    if parsed_led_values is not None:
+        if any(value is not None for value in (min_led_intensity, max_led_intensity, led_intensity_step)):
+            raise typer.BadParameter(
+                "Use either --led-intensity-values or the min/max/step options, not both."
+            )
+        updates["scan.led_intensities.values"] = parsed_led_values
+    else:
+        if min_led_intensity is not None:
+            updates["scan.led_intensities.min"] = min_led_intensity
+        if max_led_intensity is not None:
+            updates["scan.led_intensities.max"] = max_led_intensity
+        if led_intensity_step is not None:
+            updates["scan.led_intensities.step"] = led_intensity_step
+
+    if not updates:
+        led_main(conf)
+        return
+
+    with NamedTemporaryFile(
+        mode="w",
+        suffix=".json",
+        dir=conf.parent,
+        prefix=f".{conf.stem}.led-intensity.",
+        delete=False,
+    ) as tmp:
+        tmp_path = Path(tmp.name)
+
+    try:
+        update_conf_file(
+            conf_path=conf,
+            updates=updates,
+            output_path=tmp_path,
+            backup=False,
+            indent=2,
+        )
+        led_main(tmp_path)
+    finally:
+        tmp_path.unlink(missing_ok=True)
 
 @app.command("offset-scan")
 def offset_scan(                     # ← name shown in `--help`

@@ -1,0 +1,19 @@
+{
+  "dry_run": false,
+  "plan_only": false,
+  "mode": "calibrun",
+  "facility": "vd_coldbox",
+  "scan": {
+    "mask_values": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "led_intensities": {
+      "min": 3000,
+      "max": 4095,
+      "step": 500
+    }
+  }
+}
