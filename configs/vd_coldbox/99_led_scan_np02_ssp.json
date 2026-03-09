@@ -8,7 +8,7 @@
   "skip_daphne_conf": false,
   "skip_dts": false,
   "ssp_conf": {
-    "object_name": "np02-ssp-on",
+    "object_name": "np02-ssp",
     "channel_mask": "4",
     "number_channels": "12",
     "pulse_mode": "single",
@@ -18,5 +18,6 @@
     "pulse2_width_ticks": "1",
     "pulse_bias_percent_270nm": "4095",
     "pulse_bias_percent_367nm": "0"
-  }
+  },
+  "run_type": "CALIBRATION"
 }
