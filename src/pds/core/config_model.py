@@ -9,6 +9,24 @@ from pydantic import BaseModel, ConfigDict, model_validator, field_validator, Ex
 _LOG = logging.getLogger(__name__)
 
 
+def _inclusive_range_values(start: int, stop: int, step: int) -> list[int]:
+    if step == 0:
+        raise ValueError("scan step must be non-zero.")
+    if step > 0:
+        if start > stop:
+            return []
+        values = list(range(start, stop + 1, step))
+        if values[-1] != stop:
+            values.append(stop)
+        return values
+    if start < stop:
+        return []
+    values = list(range(start, stop - 1, step))
+    if values[-1] != stop:
+        values.append(stop)
+    return values
+
+
 class BaseScanConfig(BaseModel):
     """
     Typed view of the user configuration JSON.
@@ -55,6 +73,18 @@ class BaseScanConfig(BaseModel):
     min_trim: Optional[int] = None
     max_trim: Optional[int] = None
     trim_step: Optional[int] = None
+
+    # LED intensity scan
+    min_led_intensity: Optional[int] = None
+    max_led_intensity: Optional[int] = None
+    led_intensity_step: Optional[int] = None
+    led_intensity_values: Optional[list[int]] = None
+
+    # LED intensity scan (legacy names)
+    min_bias: Optional[int] = None
+    max_bias: Optional[int] = None
+    bias_step: Optional[int] = None
+    step: Optional[int] = None
 
     # misc
     mask_values: Optional[list[int]] = None
@@ -130,10 +160,54 @@ class BaseScanConfig(BaseModel):
             raise ValueError("trim_step must be non-zero.")
         return min_trim, max_trim, step
 
+    def led_intensities(self) -> list[int]:
+        if self.led_intensity_values:
+            return [int(v) for v in self.led_intensity_values]
+
+        min_intensity = self.min_led_intensity
+        max_intensity = self.max_led_intensity
+        step = self.led_intensity_step
+
+        if min_intensity is None:
+            min_intensity = self.min_bias
+        if max_intensity is None:
+            max_intensity = self.max_bias
+        if step is None:
+            step = self.bias_step
+        if step is None:
+            step = self.step
+
+        min_intensity = 0 if min_intensity is None else int(min_intensity)
+        max_intensity = min_intensity if max_intensity is None else int(max_intensity)
+        step = 1 if step is None else int(step)
+        return _inclusive_range_values(min_intensity, max_intensity, step)
+
     def masks(self) -> list[int]:
         if not self.mask_values:
+            ssp_conf = getattr(self, "ssp_conf", None)
+            if isinstance(ssp_conf, dict) and "channel_mask" in ssp_conf:
+                return [int(ssp_conf["channel_mask"])]
             return [1]
         return [int(m) for m in self.mask_values]
+
+    def dailycalib_entries(self) -> list[dict[str, Any]]:
+        configured = getattr(self, "dailycalib", None)
+        if configured:
+            entries: list[dict[str, Any]] = []
+            default_mask = self.masks()[0]
+            for pulse in configured:
+                entries.append(
+                    {
+                        "mask": int(pulse.get("mask", default_mask)),
+                        "intensities": [int(v) for v in pulse.get("intensities", [0])],
+                    }
+                )
+            return entries
+
+        intensities = self.led_intensities()
+        if not intensities:
+            intensities = [0]
+        return [{"mask": mask, "intensities": intensities} for mask in self.masks()]
 
 
 class ThresholdScanConfig(BaseScanConfig):
@@ -159,3 +233,10 @@ class TrimScanConfig(BaseScanConfig):
     min_trim: int
     max_trim: int
     trim_step: int
+
+
+class LedIntensityScanConfig(BaseScanConfig):
+    mode: str = "calibrun"
+
+
+ScanConfig = BaseScanConfig

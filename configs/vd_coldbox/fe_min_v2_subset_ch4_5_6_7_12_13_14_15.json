@@ -1,0 +1,109 @@
+{
+  "mode": "cosmics",
+  "facility": "vd_coldbox",
+  "daphne_obj": "daphne_mezz",
+  "plan_only": true,
+  "dry_run": true,
+  "skip_dts": true,
+  "61": {
+    "bias_ctrl": 1300,
+    "channel_analog_conf": {
+      "ids": [
+        4,
+        5,
+        6,
+        7,
+        12,
+        13,
+        14,
+        15
+      ],
+      "gains": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "offsets": [
+        2000,
+        2000,
+        2000,
+        2000,
+        2000,
+        2000,
+        2000,
+        2000
+      ],
+      "trims": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "afes": {
+      "ids": [
+        0,
+        1
+      ],
+      "attenuators": [
+        1600,
+        1600
+      ],
+      "v_biases": [
+        1195,
+        916
+      ],
+      "adcs": {
+        "resolution": [
+          0,
+          0
+        ],
+        "output_format": [
+          1,
+          1
+        ],
+        "SB_first": [
+          0,
+          0
+        ]
+      },
+      "pgas": {
+        "lpf_cut_frequency": [
+          4,
+          4
+        ],
+        "integrator_disable": [
+          1,
+          1
+        ],
+        "gain": [
+          0,
+          0
+        ]
+      },
+      "lnas": {
+        "clamp": [
+          0,
+          0
+        ],
+        "integrator_disable": [
+          1,
+          1
+        ],
+        "gain": [
+          2,
+          2
+        ]
+      }
+    }
+  }
+}
