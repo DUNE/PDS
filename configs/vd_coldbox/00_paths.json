@@ -2,7 +2,7 @@
   "drunc_working_dir": "/nfs/sw/dunedaq/dunedaq-fddaq-v5.5.0-dev-pds",
   "db_folder": "ehn1-daqconfigs",
   "oks_segment_file": "pds-vdcb.data.xml",
-  "oks_session": "ehn1-daqconfigs/sessions/pds-vdcb-session.xml",
+  "oks_session": "ehn1-daqconfigs/sessions/pds-vdcb-session.data.xml",
   "session_name": "np02-session",
   "drunc_target": "pds-vdcb-pds",
   "daphne_details": "pds/configs/vd_coldbox/daphne_mezz.json"
