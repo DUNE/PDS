@@ -111,23 +111,62 @@ def update_temp_details(details_in: Path, details_out: Path, mode: str) -> None:
     logging.info("✅  temp_details.json → %s", details_out)
 
 def generate_drunc_command(cfg: dict[str, Any]) -> str:
-    if cfg.get("dry_run"):
-        return "echo '🧪 [dry-run] Simulating drunc command...'"
-    return (
+    drunc_command = (
         "drunc-unified-shell ssh-CERN-kafka.json "
         f"{cfg['oks_session']} {cfg['session_name']} main-np02-pds "
         f"start-run --run-type {cfg['storage_type']} change-rate --trigger-rate "
         f"{cfg['change_rate']} wait {cfg['wait_time']} "
         "shutdown terminate"
+        )
+    if cfg.get("dry_run"):
+
+        return (
+        "echo '🧪 [dry-run] Simulating drunc command...:'\n" + drunc_command
+        )
+    return (
+        drunc_command
+    )
+
+def generate_drunc_boot(cfg: dict[str, Any]) -> str:
+    drunc_command = (
+        "drunc-unified-shell ssh-CERN-kafka.json "
+        f"{cfg['oks_session']} {cfg['session_name']} main-np02-pds "
+        "boot conf scrap "
+        "shutdown terminate"
+        )
+    if cfg.get("dry_run"):
+        return (
+        "echo '🧪 [dry-run] Simulating drunc command for boot...:'\n" + drunc_command
+        )
+    return (
+        drunc_command
     )
 
 def run_drunc_command(cfg: dict[str, Any], *, post_delay_s: int = 20) -> None:
+    cmd_boot = generate_drunc_boot(cfg)
     cmd = generate_drunc_command(cfg)
     if cfg.get("dry_run"):
         logging.info("🧪 Dry run: %s", cmd)
         return
     logging.info(f"{cmd}")
+
+    verify_boot = cfg.get('verify_boot', False)
+    
+    output = ""
+    if verify_boot:
+        logging.info("Executing a drunc command with boot only to check if there is an error")
+        result = subprocess.run(cmd_boot, shell=True, cwd=cfg["drunc_working_dir"], capture_output=True, text=True)
+        output = result.stdout
+        if "ERROR" in output:
+            # Executing again so user has a nice display of what is happening
+            logging.info("Boot fail, doing it again so user can follow")
+            subprocess.run(cmd_boot, shell=True, cwd=cfg["drunc_working_dir"]) 
+            logging.error("There was an error while booting... stopping (If there was no error now, just try again)")
+            exit(1)
+        logging.info("Done")
+
     subprocess.run(cmd, shell=True, cwd=cfg["drunc_working_dir"], check=True)
+    
     print(f"Sleeping for {post_delay_s} seconds. Press Ctrl+C if you need to stop...")
     try:
         time.sleep(post_delay_s)
@@ -143,10 +182,21 @@ def run_set_ssp_conf(cfg: dict[str, Any], **overrides: Any) -> None:
         if v is not None and hasattr(conf, k):
             setattr(conf, k, v)
 
+    if conf.pulse_bias_percent_270nm == 0 or conf.pulse_bias_percent_367nm == 0:
+        logging.warning(
+            f"\n\t\t\t\tpulse_bias_percent_270nm: {conf.pulse_bias_percent_270nm}"
+            f"\n\t\t\t\tpulse_bias_percent_367nm: {conf.pulse_bias_percent_367nm}"
+            f"\n\t\t\t\tIf pulse_bias_percent is set to zero, the previous configuration is used"
+        )
+        time.sleep(2)
+
     cmd = ["set_ssp_conf", f"{cfg['drunc_working_dir']}/{cfg['oks_file']}"]
     for k, v in asdict(conf).items():
         cmd += [f"--{k.replace('_', '-')}", str(v)]
 
+    if cfg['dry_run']:
+        logging.info("🧪 Dry run, skipping SSP: %s", ' '.join(cmd))
+        return
     subprocess.run(cmd, check=True, text=True)
 
 def _update_correlation_threshold(details_file: Path, value: int) -> None:
@@ -261,17 +311,17 @@ class ScanMaskIntensity:
                     logging.info(ledmessage)
 
                     overrides = { "channel_mask": mask }
-                    biasAt270nm = int(self.cfg.get("ssp_conf", {}).get("pulse_bias_percent_270nm", "0"))
-                    biasAt367nm = int(self.cfg.get("ssp_conf", {}).get("pulse_bias_percent_367nm", "0"))
+                    biasAt270nm = int(self.cfg.get("ssp_conf", {}).get("pulse_bias_percent_270nm", "1"))
+                    biasAt367nm = int(self.cfg.get("ssp_conf", {}).get("pulse_bias_percent_367nm", "1"))
                     biascontrol = "pulse_bias_percent_270nm"
-                    if biasAt270nm == biasAt367nm:
+                    if biasAt270nm > 1 and biasAt367nm > 1:
                         raise ValueError("Only one scan at a time. Set either pulse_bias_percent_270nm or pulse_bias_percent_367nm to 0.")
-                    if biasAt367nm > 0 and biasAt270nm == 0:
+                    elif biasAt367nm > 1:
                         biascontrol = "pulse_bias_percent_367nm"
-                    elif biasAt270nm > 0 and biasAt367nm == 0:
+                    elif biasAt270nm > 1:
                         biascontrol = "pulse_bias_percent_270nm"
                     else:
-                        raise ValueError("Only one scan at a time. Set either pulse_bias_percent_270nm or pulse_bias_percent_367nm to 0.")
+                        raise ValueError("Set one default number (pulse_bias_percent_270nm or pulse_bias_percent_367nm) higher than 1 and the other one to 1.")
 
                     overrides[biascontrol] = bias
                     run_set_ssp_conf(self.cfg, **overrides)
@@ -310,7 +360,8 @@ class ScanMaskIntensity:
             logging.info("📢  %s run – single acquisition, LED OFF.", self.mode)
             run_set_ssp_conf(self.cfg,
                              channel_mask=self.masks[0],
-                             pulse_bias_percent_270nm=0)
+                             pulse_bias_percent_270nm=1,
+                             pulse_bias_percent_367nm=1)
             run_drunc_command(self.cfg, post_delay_s=self.delay_s)
             return
 
@@ -379,7 +430,8 @@ class ScanXCorrThreshold:
             run_set_ssp_conf(
                 self.cfg,
                 channel_mask=self.cfg.get("mask_values", [1])[0],
-                pulse_bias_percent_270nm=0
+                pulse_bias_percent_270nm=1,
+                pulse_bias_percent_367nm=1
             )
 
             # 4) run drunc acquisition
