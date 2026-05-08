@@ -1,0 +1,24 @@
+{
+  "mode": "attscan",
+  "facility": "vd_coldbox",
+  "daphne_obj": "daphne_mezz",
+  "daphne_details": "pds/configs/vd_coldbox/99_apply_fe_min_v2_subset.json",
+  "plan_only": true,
+  "dry_run": true,
+  "skip_dts": true,
+  "scan": {
+    "selectors": {
+      "board_ids": ["61"],
+      "afe_ids": [0, 1, 2, 3, 4]
+    },
+    "attenuators": {
+      "min": 500,
+      "max": 3000,
+      "step": 250
+    },
+    "mask_values": [4],
+    "led_intensities": {
+      "values": [4095]
+    }
+  }
+}

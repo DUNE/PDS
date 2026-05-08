@@ -13,6 +13,7 @@ from .config_model import (
     OffsetScanConfig,
     TrimScanConfig,
     LedIntensityScanConfig,
+    AfeBiasScanConfig,
     ScanConfig,
 )
 
@@ -124,6 +125,30 @@ def _normalize_config_data(cfg_data: Dict[str, Any], base_dir: Path) -> Dict[str
                 "led_intensity_values": "values",
             },
         )
+        afe_bias = scan.get("afe_bias", {})
+        _merge_section(
+            cfg_data,
+            afe_bias,
+            {
+                "min_afe_bias": "min",
+                "max_afe_bias": "max",
+                "afe_bias_step": "step",
+                "afe_bias_values": "values",
+                "afe_bias_ids": "ids",
+                "fixed_afe_biases": "fixed",
+                "bias_ctrl": "bias_ctrl",
+            },
+        )
+        selectors = scan.get("selectors", {})
+        _merge_section(
+            cfg_data,
+            selectors,
+            {
+                "board_ids": "board_ids",
+                "afe_ids": "afe_ids",
+                "channel_ids": "channel_ids",
+            },
+        )
         if "mask_values" in scan and "mask_values" not in cfg_data:
             cfg_data["mask_values"] = scan["mask_values"]
         if "dailycalib" in scan and "dailycalib" not in cfg_data:
@@ -155,6 +180,8 @@ def load_config(conf_path: Path, *, mode_override: str | None = None) -> BaseSca
         return TrimScanConfig(**cfg_data)
     if mode in ("calibrun", "ledrun", "ledintscan", "ledscan"):
         return LedIntensityScanConfig(**cfg_data)
+    if mode in ("afebiasscan", "afe-bias", "biasscan"):
+        return AfeBiasScanConfig(**cfg_data)
     return BaseScanConfig(**cfg_data)
 
 
@@ -181,5 +208,8 @@ def log_plan(cfg: ScanConfig) -> str:
     if cfg.mode == "trimscan":
         _LOG.info(" trims: min=%s max=%s step=%s", *cfg.trim_range())
     if cfg.mode in ("calibrun", "ledrun", "ledintscan", "ledscan"):
+        _LOG.info(" LED intensity matrix: %s", cfg.dailycalib_entries())
+    if cfg.mode in ("afebiasscan", "afe-bias", "biasscan"):
+        _LOG.info(" AFE biases: %s", cfg.afe_biases())
         _LOG.info(" LED intensity matrix: %s", cfg.dailycalib_entries())
     return run_id

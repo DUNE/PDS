@@ -9,7 +9,7 @@ from typing import Any, Optional
 _LOG = logging.getLogger(__name__)
 
 
-@dataclass(slots=True)
+@dataclass
 class SSPConf:
     object_name: str = "np02-ssp-on"
     number_channels: int = 12

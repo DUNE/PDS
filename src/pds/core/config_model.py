@@ -86,6 +86,20 @@ class BaseScanConfig(BaseModel):
     bias_step: Optional[int] = None
     step: Optional[int] = None
 
+    # AFE SiPM bias scan
+    min_afe_bias: Optional[int] = None
+    max_afe_bias: Optional[int] = None
+    afe_bias_step: Optional[int] = None
+    afe_bias_values: Optional[list[int]] = None
+    afe_bias_ids: Optional[list[int]] = None
+    fixed_afe_biases: Optional[dict[int, int]] = None
+
+    # Optional selectors for board-keyed DAPHNE configs.
+    board_ids: Optional[list[str]] = None
+    afe_ids: Optional[list[int]] = None
+    channel_ids: Optional[list[int]] = None
+    bias_ctrl: Optional[int] = None
+
     # misc
     mask_values: Optional[list[int]] = None
     drunc_delay_s: int = 20
@@ -182,6 +196,15 @@ class BaseScanConfig(BaseModel):
         step = 1 if step is None else int(step)
         return _inclusive_range_values(min_intensity, max_intensity, step)
 
+    def afe_biases(self) -> list[int]:
+        if self.afe_bias_values:
+            return [int(v) for v in self.afe_bias_values]
+
+        min_bias = 0 if self.min_afe_bias is None else int(self.min_afe_bias)
+        max_bias = min_bias if self.max_afe_bias is None else int(self.max_afe_bias)
+        step = 1 if self.afe_bias_step is None else int(self.afe_bias_step)
+        return _inclusive_range_values(min_bias, max_bias, step)
+
     def masks(self) -> list[int]:
         if not self.mask_values:
             ssp_conf = getattr(self, "ssp_conf", None)
@@ -237,6 +260,10 @@ class TrimScanConfig(BaseScanConfig):
 
 class LedIntensityScanConfig(BaseScanConfig):
     mode: str = "calibrun"
+
+
+class AfeBiasScanConfig(BaseScanConfig):
+    mode: str = "afebiasscan"
 
 
 ScanConfig = BaseScanConfig

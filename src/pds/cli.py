@@ -24,6 +24,7 @@ from pds.core.run_led import main as led_main
 from pds.core.run_offset import main as offset_main
 from pds.core.run_trim import main as trim_main
 from pds.core.run_selftrigger import main as selfthr_main
+from pds.core.run_afe_bias import main as afe_bias_main
 from pds.core.utils import getlogfile
 # ──────────────────────────────────────────────────────────────────────────────
 # Typer app & mode enum
@@ -246,6 +247,22 @@ def trimt_scan(                     # ← name shown in `--help`
     take one run per setting.
     """
     trim_main(conf)
+
+
+@app.command("afe-bias-scan")
+def afe_bias_scan(
+    conf: Path = typer.Argument(
+        ...,
+        exists=True,
+        readable=True,
+        help="Path to conf.json with mode='afebiasscan'",
+    )
+) -> None:
+    """
+    Iterate over AFE v_bias values defined in *conf* and
+    take one run per setting.
+    """
+    afe_bias_main(conf)
 
 @app.command(name="seed")
 def seed_command(

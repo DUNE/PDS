@@ -83,3 +83,14 @@ def test_run_defaults_infers_facility_from_path():
     cfg = load_config(Path("configs/vd_coldbox/02_run_defaults.json"), mode_override="calibrun")
     assert cfg.drunc_working_dir == Path("/nfs/sw/dunedaq/dunedaq-fddaq-v5.5.0-dev-pds")
     assert cfg.masks() == [4]
+
+
+def test_afe_bias_scan_config_from_vd_coldbox_sample():
+    cfg = load_config(Path("configs/vd_coldbox/10_afe_bias_led_scan_np02_ssp.json"))
+    assert cfg.mode == "afebiasscan"
+    assert cfg.board_ids == ["61"]
+    assert cfg.afe_bias_ids == [0]
+    assert cfg.fixed_afe_biases == {1: 0, 2: 0, 3: 0, 4: 0}
+    assert cfg.bias_ctrl == 1300
+    assert cfg.afe_biases() == [1143, 1169, 1195]
+    assert cfg.dailycalib_entries() == [{"mask": 4, "intensities": [4095]}]
