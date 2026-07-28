@@ -17,6 +17,6 @@
     "pulse1_width_ticks": "1",
     "pulse2_width_ticks": "1",
     "pulse_bias_percent_270nm": "4095",
-    "pulse_bias_percent_367nm": "0"
+    "pulse_bias_percent_367nm": "1"
   }
 }
