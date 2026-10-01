@@ -15,6 +15,9 @@ dependencies = [
     "typer>=0.9"
 ]
 
+[project.optional-dependencies]
+runtime = ["pyzmq>=25", "protobuf>=6.30"]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
