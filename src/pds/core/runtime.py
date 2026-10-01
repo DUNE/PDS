@@ -74,7 +74,7 @@ class RuntimeControl:
             seen.add((variable, target))
         with self.lock:
             self._check()
-            if self.bridge.read32(0x88000020) & timing != timing:
+            if self.bridge.read32(0x94000020) & timing != timing:
                 raise ValueError("Timing selection includes disabled channels")
             self._pause(affected)
             try:
@@ -88,7 +88,7 @@ class RuntimeControl:
                 self._write_mask(PAUSE, PAUSED, desired_pause)
                 return {'afe': afe, 'settings': settings, 'calibration_mask': desired,
                     'pause_mask': desired_pause, 'ready_unix_ns': time.time_ns(),
-                    'command_id': self.bridge.read32(0x88000028) & 0xFF}
+                    'command_id': self.bridge.read32(0x94000028) & 0xFF}
             except BaseException:
                 # Do not restore parameters or switch back to self-trigger.
                 try:

@@ -4,8 +4,8 @@ from pds.core.runtime import RuntimeControl, MASK, APPLIED, CAPABILITY, PAUSE, P
 
 class FakeBridge:
     def __init__(self):
-        self.registers = {CAPABILITY: 0x43414C32, 0x88000034: 2, 0x88000020: 0xFFFFFFFF,
-            0x88000028: 9, MASK: 0x10000, APPLIED: 0x10000, PAUSE: 0x80000000, PAUSED: 0x80000000}
+        self.registers = {CAPABILITY: 0x43414C32, 0x88000034: 2, 0x94000020: 0xFFFFFFFF,
+            0x94000028: 9, MASK: 0x10000, APPLIED: 0x10000, PAUSE: 0x80000000, PAUSED: 0x80000000}
         self.values, self.writes = {}, []
         self.blocked, self.failed = False, False
 
