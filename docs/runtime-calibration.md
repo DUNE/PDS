@@ -10,8 +10,17 @@ The new firmware controls select timing-only channels and pause capture admissio
 without resetting filters or queued records. The hardware drain status covers
 local capture, serialization and packet-store output; it is not a Hermes/DAQ
 transmission fence. This path requires CAL2 gateware, the new server bridge RPC,
-board xcorr selector 2, and working timing lock/command routing. No board was
-flashed or calibrated while developing this feature.
+board xcorr selector 2, and working timing lock/command routing.
+Channel enables are at `0x94000020/24`; the timing-command selector is at
+`0x94000028`. The corresponding frontend addresses are bitslip controls.
+Readout transport must be enabled for local drain to complete. After FPGA/clock
+programming, verify the Ethernet PHY reset and lock before starting a scan.
+
+DAPHNE15 with firmware `93e0579` and server `9e1be59` passed live mask,
+pause/drain, disconnect persistence and explicit-mode checks on 2026-10-01.
+An empty-settings transaction was exercised; analog DAC changes were not tested.
+The capture contained all 220 expected software-tagged waveforms. Actual timing
+acceptance remains unqualified because the optical endpoint stayed in FSM 6.
 
 Install `.[runtime]` in the SC environment. Add the server build's
 `srcs/protobuf` directory to `PYTHONPATH` so its generated v2 Python schemas can
