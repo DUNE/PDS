@@ -7,7 +7,7 @@ stores no scan, previous settings or automatic return policy. The DAQ runs once
 through the entire scan; no configuration file is rewritten between points.
 
 The first plan is `configs/calibration/vgain-afe0.json`: firmware AFE 0, vgain
-500..2500 inclusive in steps of 100, GIB timing commands at a requested 6000 Hz,
+500..2500 inclusive in steps of 100, GIB command 7 at a requested 6000 Hz,
 DAQ triggers at 0.5 Hz, and 2-second readout windows. Only channels already
 enabled in AFE 0 are selected. Vgain changes the shared AFE gain DAC; offset
 changes the selected channel DACs. Settings transactions pause all eight channels
@@ -16,8 +16,9 @@ of the affected AFE briefly; other AFEs retain their acquisition state.
 The older `thr-scan`, `att-scan`, `offset-scan`, `trim-scan` and `run --mode calibrun`
 workflows are deprecated because they restart/reconfigure the DAQ between points.
 They remain available for existing setups with a deprecation warning. The runtime
-coordinator currently supports vgain and offset; threshold, trim and optical-source
-scans need explicit plans and hardware support before migrating.
+coordinator supports DAC matrices and independent optical settings callbacks; see the
+[SiPM matrix recipe](sipm-matrices.md). Threshold scans still require explicit
+hardware support before migrating.
 
 ## Prepare once
 
@@ -40,8 +41,8 @@ waits up to 60 seconds. An open `.hdf5.writing` file is never read. Configure fi
 rotation once; avoid making a separate DAQ run for each point.
 
 Check `source_ids` against the running DAQ configuration. The example uses 800
-for DAPHNE15's first stream. Reserve GIB generator 1 and command 9 through the
-SC/CCM control system. Command 9 must also be the board's timing-command selector.
+for DAPHNE15's first stream. Reserve GIB generator 1 and command 7 through the
+SC/CCM control system. Command 7 must also be the board's timing-command selector.
 The helper rejects an active reserved generator or an active matching command.
 
 ```sh

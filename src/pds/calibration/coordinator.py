@@ -9,14 +9,19 @@ from .plan import compile_plan
 
 
 class Coordinator:
-    """SC/CCM owns the full transaction; the board server stores no scan state."""
-    def __init__(self, runtime, timing, acquisition, journal, sleep=time.sleep):
+    """PDS owns the scan transaction; the board server stores no scan state."""
+    def __init__(self, runtime, timing, acquisition, journal, sleep=time.sleep, apply_optical=None):
         self.runtime, self.timing, self.acquisition = runtime, timing, acquisition
         self.journal, self.sleep = journal, sleep
+        self.apply_optical = apply_optical
         self.started = False
 
     def run(self, plan):
         compile_plan(plan)
+        if 'illumination' in plan and self.apply_optical is None:
+            raise ValueError('Optical matrices require a PDS settings callback')
+        if self.apply_optical is not None and 'illumination' not in plan:
+            raise ValueError('Optical settings callback requires an explicit plan')
         locks = Path.home() / '.pds' / 'locks'
         locks.mkdir(parents=True, exist_ok=True)
         key = hashlib.sha256(plan['board_endpoint'].encode()).hexdigest()
@@ -39,7 +44,7 @@ class Coordinator:
             raise RuntimeError('Aligned endpoint clock and valid timestamps are required')
         self.runtime._check()
         if bridge.read32(MASK) & affected or bridge.read32(PAUSE) & affected:
-            raise RuntimeError('AFE already has calibration/pause state; SC/CCM must reconcile it explicitly')
+            raise RuntimeError('AFE already has calibration/pause state; PDS must reconcile it explicitly')
         if plan['channels'] == 'enabled':
             enabled = bridge.read32(0x94000020)
             plan['channels'] = [ch for ch in range(8 * afe, 8 * afe + 8) if enabled & (1 << ch)]
@@ -58,6 +63,13 @@ class Coordinator:
             for step in steps:
                 self.journal.record('step_requested', **step)
                 touched = True
+                light_ready = None
+                if self.apply_optical is not None:
+                    self.runtime.pause_afe(afe)
+                    light_ready = self.apply_optical(copy.deepcopy(step['illumination']))
+                    if not isinstance(light_ready, dict) or light_ready.get('verified') is not True or light_ready.get('settings') != step['illumination']:
+                        raise RuntimeError('Optical settings acknowledgement mismatch')
+                    self.journal.record('illumination_ready', step_id=step['step_id'], ready=light_ready)
                 ready = self.runtime.configure_afe(afe, step['settings'], timing_channels=plan['channels'],
                     paused_channels=[], settle_ms=plan['settle_ms'])
                 self.journal.record('step_ready', step_id=step['step_id'], ready=ready)
@@ -66,7 +78,11 @@ class Coordinator:
                 self.journal.record('timing_started', step_id=step['step_id'], timing=started)
                 metadata = dict(scan_id=plan['scan_id'], board_endpoint=plan['board_endpoint'], afe=afe,
                     channels=plan['channels'], step_id=step['step_id'], settings=step['settings'],
-                    window_s=plan['window_s'], capture_tail_ms=plan['capture_tail_ms'])
+                    window_s=plan['window_s'], capture_tail_ms=plan['capture_tail_ms'],
+                    coordinates=step['coordinates'], illumination=light_ready,
+                    timing_domain=plan['timing'].get('domain', 'daphne'), command_id=plan['timing']['command_id'],
+                    optical_timing=plan.get('illumination', {}).get('timing'), context=plan.get('context', {}),
+                    waveforms_per_channel=plan.get('waveforms_per_channel', 10000 if 'axes' in plan else None))
                 receipt = self.acquisition.collect(metadata, started)
                 stopped = self.timing.stop()
                 self.journal.record('timing_stopped', step_id=step['step_id'], timing=stopped)
@@ -78,6 +94,9 @@ class Coordinator:
                 delta = {ch: {name: after[ch][name] - before[ch][name] for name in before[ch]} for ch in before}
                 if any(c['busy'] or c['full'] or c['records'] != stopped['sent'] for c in delta.values()):
                     raise RuntimeError('Board capture loss or unexpected triggers during the step')
+                target = metadata['waveforms_per_channel']
+                if target is not None and any(receipt.get('received_counts', {}).get(str(ch)) != target for ch in plan['channels']):
+                    raise RuntimeError('DAQ receipt does not contain the requested waveforms per channel')
                 if receipt.get('verified') is not True:
                     raise RuntimeError('DAQ window is not verified')
                 self.journal.record('step_complete', step_id=step['step_id'], receipt=receipt, counters=delta)
@@ -86,7 +105,6 @@ class Coordinator:
             if final['mode'] == 'physics':
                 self.runtime.configure_afe(afe, final['settings'], timing_channels=[], paused_channels=[],
                     settle_ms=final['settle_ms'])
-            # Paused final state retains the last values and timing selection.
             self.journal.record('scan_complete', final=final)
         except BaseException as error:
             cleanup = {}

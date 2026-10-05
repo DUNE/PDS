@@ -63,11 +63,11 @@ class RuntimeControl:
         seen = set()
         for setting in settings:
             variable, target, value = setting['variable'], setting['target'], setting['value']
-            if variable not in ('bias', 'attenuation', 'vgain', 'trim', 'offset'):
+            if variable not in ('bias', 'sipm_bias', 'attenuation', 'vgain', 'trim', 'offset'):
                 raise ValueError("Unsupported runtime variable")
             if type(target) is not int or (target // 8 if variable in ('trim', 'offset') else target) != afe:
                 raise ValueError("Setting is outside the selected AFE")
-            key = ('attenuation' if variable == 'vgain' else variable, target)
+            key = ({'vgain': 'attenuation', 'sipm_bias': 'bias'}.get(variable, variable), target)
             if type(value) is not int or not 0 <= value <= 4095 or key in seen:
                 raise ValueError("Invalid or duplicate DAC setting")
             if variable in ('trim', 'offset') and not isinstance(setting.get('gain'), bool):
@@ -148,7 +148,7 @@ class DaphneBridge:
             response = self._call(high.MT2_WRITE_AFE_VGAIN_REQ,
                 low.cmd_writeAFEVGAIN(afeBlock=PL_TO_BOARD[target], vgainValue=value), low.cmd_writeAFEVGAIN_response)
             return response.vgainValue
-        if variable == 'bias':
+        if variable in ('bias', 'sipm_bias'):
             response = self._call(high.MT2_WRITE_AFE_BIAS_SET_REQ,
                 low.cmd_writeAFEBiasSet(afeBlock=PL_TO_BOARD[target], biasValue=value), low.cmd_writeAFEBiasSet_response)
             return response.biasValue

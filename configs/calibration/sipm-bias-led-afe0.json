@@ -1,0 +1,64 @@
+{
+  "scan_id": "daphne15-sipm-bias-led-afe0",
+  "board_endpoint": "tcp://np04-daphne-015.cern.ch:40001",
+  "afe": 0,
+  "channels": "enabled",
+  "settle_ms": 100,
+  "capture_tail_ms": 20,
+  "window_s": 0.25,
+  "daq_trigger_hz": 0.5,
+  "acquisition_timeout_s": 60,
+  "source_ids": [
+    800
+  ],
+  "timing": {
+    "master": "GIB",
+    "connections": "/nfs/sw/dunedaq/timing/connections.xml",
+    "generator": 1,
+    "command_id": 7,
+    "rate_hz": 60000,
+    "domain": "daphne"
+  },
+  "final": {
+    "mode": "paused"
+  },
+  "waveforms_per_channel": 10000,
+  "axes": [
+    {
+      "variable": "led_bias_270nm",
+      "values": [
+        0,
+        1000,
+        2000,
+        3000
+      ]
+    },
+    {
+      "variable": "sipm_bias",
+      "values": [
+        800,
+        900,
+        1000
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "variable": "vgain",
+      "target": 0,
+      "value": 1500
+    }
+  ],
+  "illumination": {
+    "settings": {
+      "led_bias_270nm": 0,
+      "led_bias_367nm": 0,
+      "led_width_ticks": 1,
+      "led_channel_mask": 4
+    },
+    "timing": {
+      "domain": "ssp",
+      "command_id": 7
+    }
+  }
+}

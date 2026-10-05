@@ -27,7 +27,7 @@ def plan():
 class Bridge:
     def __init__(self):
         self.registers = {CAPABILITY: 0x43414C32, 0x88000034: 2, 0x94000020: 0x109,
-            0x94000028: 9, MASK: 0x10000, APPLIED: 0x10000, PAUSE: 0x80000000, PAUSED: 0x80000000}
+            0x94000028: 7, MASK: 0x10000, APPLIED: 0x10000, PAUSE: 0x80000000, PAUSED: 0x80000000}
         self.settings, self.writes, self.records = [], [], 0
         self.loss = False
         self.status = dict(clock_source='endpoint', clocks_locked=True, endpoint_state=8,

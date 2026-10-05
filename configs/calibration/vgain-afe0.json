@@ -39,7 +39,7 @@
     "master": "GIB",
     "connections": "/nfs/sw/dunedaq/timing/connections.xml",
     "generator": 1,
-    "command_id": 9,
+    "command_id": 7,
     "rate_hz": 6000
   },
   "final": {

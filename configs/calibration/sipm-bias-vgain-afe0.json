@@ -1,0 +1,86 @@
+{
+  "scan_id": "daphne15-sipm-bias-vgain-afe0",
+  "board_endpoint": "tcp://np04-daphne-015.cern.ch:40001",
+  "afe": 0,
+  "channels": "enabled",
+  "settle_ms": 100,
+  "capture_tail_ms": 20,
+  "window_s": 0.25,
+  "daq_trigger_hz": 0.5,
+  "acquisition_timeout_s": 60,
+  "source_ids": [
+    800
+  ],
+  "timing": {
+    "master": "GIB",
+    "connections": "/nfs/sw/dunedaq/timing/connections.xml",
+    "generator": 1,
+    "command_id": 7,
+    "rate_hz": 60000,
+    "domain": "daphne"
+  },
+  "final": {
+    "mode": "paused"
+  },
+  "waveforms_per_channel": 10000,
+  "axes": [
+    {
+      "variable": "sipm_bias",
+      "values": [
+        800,
+        900,
+        1000
+      ]
+    },
+    {
+      "variable": "vgain",
+      "values": [
+        500,
+        550,
+        600,
+        650,
+        700,
+        750,
+        800,
+        850,
+        900,
+        950,
+        1000,
+        1050,
+        1100,
+        1150,
+        1200,
+        1250,
+        1300,
+        1350,
+        1400,
+        1450,
+        1500,
+        1550,
+        1600,
+        1650,
+        1700,
+        1750,
+        1800,
+        1850,
+        1900,
+        1950,
+        2000,
+        2050,
+        2100,
+        2150,
+        2200,
+        2250,
+        2300,
+        2350,
+        2400,
+        2450,
+        2500,
+        2550,
+        2600,
+        2650,
+        2700
+      ]
+    }
+  ]
+}

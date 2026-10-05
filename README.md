@@ -60,3 +60,6 @@ For local HDF5-to-binary conversion without a DAQ environment, build the
 [standalone C++ reader](tools/hdf5_unpack/README.md).
 
 Measured timing-command rates and counters: [GIB → DAPHNE15, 2026-10-05](docs/measurements/timing-rate-20261005/README.md).
+
+For multidimensional SiPM scans with 10,000 waveforms per channel, see the
+[matrix recipe](docs/sipm-matrices.md).

@@ -36,6 +36,9 @@ class BridgeTests(unittest.TestCase):
         self.assertTrue(captured[2][1].offsetGain)
         self.assertEqual(captured[3][0], high.MT2_WRITE_AFE_VGAIN_REQ)
         self.assertEqual(captured[3][1].afeBlock, 4)
+        self.assertEqual(bridge.write_setting({'variable': 'sipm_bias', 'target': 1, 'value': 123}), 123)
+        self.assertEqual(captured[-1][0], high.MT2_WRITE_AFE_BIAS_SET_REQ)
+        self.assertEqual(captured[-1][1].afeBlock, 4)
 
 
 if __name__ == '__main__':

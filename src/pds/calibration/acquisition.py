@@ -38,6 +38,17 @@ def audit_payload(payload, channels, window, period_ticks):
     return bytes(frames), {ch: len(ticks) for ch, ticks in timestamps.items()}
 
 
+def select_events(frames, channels, count):
+    reference = sorted(struct.unpack_from('<Q', frames, off + 8)[0]
+        for off in range(0, len(frames), 512) if frames[off + 23] == channels[0])
+    if len(reference) < count:
+        raise RuntimeError('DAQ window too short for the requested waveforms per channel; increase window_s before the scan')
+    selected = set(reference[:count])
+    output = b''.join(frames[off:off + 512] for off in range(0, len(frames), 512)
+        if struct.unpack_from('<Q', frames, off + 8)[0] in selected)
+    return output, (reference[0], reference[count - 1])
+
+
 class HDF5Acquisition:
     """The DAQ remains running; files must rotate within the acquisition timeout."""
     def __init__(self, input_dir, output_dir, source_ids, timeout_s, sleep=time.sleep):
@@ -92,6 +103,9 @@ class HDF5Acquisition:
             round(metadata['capture_tail_ms'] * started['clock_hz'] / 1000))
         earliest = started['ready_tick'] + guard
         expected_width = round(metadata['window_s'] * started['clock_hz'])
+        target = metadata.get('waveforms_per_channel')
+        if target is not None and expected_width // started['period_ticks'] < target:
+            raise RuntimeError('DAQ window too short for the requested waveforms per channel; increase window_s before the scan')
         deadline = time.monotonic() + self.timeout_s
         while time.monotonic() < deadline:
             for path in sorted(self.input_dir.glob('*.hdf5')):
@@ -127,6 +141,11 @@ class HDF5Acquisition:
                         raise RuntimeError('DAQ reported a fragment error')
                     payload = b''.join(f.get_data_bytes() for f in fragments)
                     frames, counts = audit_payload(payload, metadata['channels'], (begin, end), started['period_ticks'])
+                    source_counts = dict(counts)
+                    selected_ticks = None
+                    if target is not None:
+                        frames, selected_ticks = select_events(frames, metadata['channels'], target)
+                        counts = {str(ch): target for ch in metadata['channels']}
                     dataset = self.output_dir / ('step-{:03d}.bin'.format(metadata['step_id']))
                     with open(dataset, 'xb') as output:
                         output.write(frames)
@@ -135,11 +154,13 @@ class HDF5Acquisition:
                         os.fsync(output.fileno())
                     receipt = dict(metadata, schema='pds.calibration.step.v1', file=str(path), record_id=str(record),
                         window_begin=begin, window_end=end, received_counts=counts,
+                        source_window_counts=source_counts, selected_timestamp_range=selected_ticks,
                         actual_rate_hz=started['actual_rate_hz'], dataset=str(dataset),
                         sha256=hashlib.sha256(frames).hexdigest(), frame_bytes=512,
                         clock_hz=started['clock_hz'], frame_version=4, adc_offset_bytes=64,
                         adc_bits=14, samples_per_frame=256, timing_tag=2,
-                        expected_per_channel=(end - begin) / started['period_ticks'], verified=True)
+                        expected_per_channel=target if target is not None else (end - begin) / started['period_ticks'],
+                        expected_source_window_per_channel=(end - begin) / started['period_ticks'], verified=True)
                     with open(dataset.with_suffix('.json'), 'x') as output:
                         json.dump(receipt, output, indent=2)
                     self.used.add(key)
