@@ -40,3 +40,7 @@ pds-run --install-completion
 pip install pytest
 pytest
 ```
+
+## Runtime calibration
+
+[Timing calibration scans](docs/calibration-scans.md) keep the DAQ running while SC/CCM scans selected channels.

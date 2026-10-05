@@ -19,8 +19,8 @@ programming, verify the Ethernet PHY reset and lock before starting a scan.
 DAPHNE15 with firmware `93e0579` and server `9e1be59` passed live mask,
 pause/drain, disconnect persistence and explicit-mode checks on 2026-10-01.
 An empty-settings transaction was exercised; analog DAC changes were not tested.
-The capture contained all 220 expected software-tagged waveforms. Actual timing
-acceptance remains unqualified because the optical endpoint stayed in FSM 6.
+The capture contained all 220 expected software-tagged waveforms. On 2026-10-05 GIB commands produced the expected DAPHNE15 record increments.
+The endpoint remained in FSM 6; synchronized timestamps remain unqualified.
 
 Install `.[runtime]` in the SC environment. Add the server build's
 `srcs/protobuf` directory to `PYTHONPATH` so its generated v2 Python schemas can
@@ -62,7 +62,7 @@ bridge adapter translates DAC targets to the server's physical board numbering.
 Bias and attenuation affect the whole AFE; trim and offset affect one channel
 and require an explicit `gain` boolean. Board-global and arbitrary AFE-register
 scans need their own SC/CCM scope arbitration. This first helper supports the
-four DAC variables above. Settings responses report programmed/cached DAC codes,
+DAC variables above, including `vgain` via its existing RPC. Settings responses report programmed/cached DAC codes,
 not independent analog measurements.
 
 To resume self-trigger with **new** operating values, explicitly request them:
@@ -93,3 +93,5 @@ Verification without hardware:
 ```sh
 PYTHONPATH=src python3 -m unittest discover -s tests -p test_runtime.py -v
 ```
+
+For a window-aware vgain or offset scan, see [calibration-scans.md](calibration-scans.md).

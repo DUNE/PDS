@@ -1,0 +1,48 @@
+{
+  "scan_id": "daphne15-vgain-afe0",
+  "board_endpoint": "tcp://np04-daphne-015.cern.ch:40001",
+  "afe": 0,
+  "channels": "enabled",
+  "variable": "vgain",
+  "values": [
+    500,
+    600,
+    700,
+    800,
+    900,
+    1000,
+    1100,
+    1200,
+    1300,
+    1400,
+    1500,
+    1600,
+    1700,
+    1800,
+    1900,
+    2000,
+    2100,
+    2200,
+    2300,
+    2400,
+    2500
+  ],
+  "settle_ms": 100,
+  "capture_tail_ms": 20,
+  "window_s": 2,
+  "daq_trigger_hz": 0.5,
+  "acquisition_timeout_s": 60,
+  "source_ids": [
+    800
+  ],
+  "timing": {
+    "master": "GIB",
+    "connections": "/nfs/sw/dunedaq/timing/connections.xml",
+    "generator": 1,
+    "command_id": 9,
+    "rate_hz": 6000
+  },
+  "final": {
+    "mode": "paused"
+  }
+}

@@ -24,3 +24,4 @@ where = ["src"]
 
 [project.scripts]
 pds-run = "pds.cli:main"
+pds-calibrate = "pds.calibration.cli:main"

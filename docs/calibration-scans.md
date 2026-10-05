@@ -1,0 +1,113 @@
+# Timing calibration scans
+
+SC/CCM runs the coordinator. The DAPHNE server forwards hardware access and
+stores no scan, previous settings or automatic return policy. The DAQ runs once
+through the entire scan; no configuration file is rewritten between points.
+
+The first plan is `configs/calibration/vgain-afe0.json`: firmware AFE 0, vgain
+500..2500 inclusive in steps of 100, GIB timing commands at a requested 6000 Hz,
+DAQ triggers at 0.5 Hz, and 2-second readout windows. Only channels already
+enabled in AFE 0 are selected. Vgain changes the shared AFE gain DAC; offset
+changes the selected channel DACs. Settings transactions pause all eight channels
+of the affected AFE briefly; other AFEs retain their acquisition state.
+
+## Prepare once
+
+Use the DAQ environment with `timing`, `hdf5libs` and `daqdataformats`, install
+`.[runtime]`, and add the server's generated Python schemas to `PYTHONPATH`.
+The server must include the read-only timing-register extension. CAL2 gateware
+and board selector 2 are required. Align the endpoint and select the endpoint
+clock through SC/CCM before scanning. The helper checks both conditions and does
+not configure clocks, enable channels, reset counters or align hardware.
+
+Start the DAQ at **0.5 Hz** with **2-second readout windows**, sufficient raw-data
+buffer retention, and working transport. Use an output directory for this run.
+Arrange frequent file rotation: the collector reads closed `.hdf5` files and
+waits up to 60 seconds. An open `.hdf5.writing` file is never read. Configure file
+rotation once; avoid making a separate DAQ run for each point.
+
+Check `source_ids` against the running DAQ configuration. The example uses 800
+for DAPHNE15's first stream. Reserve GIB generator 1 and command 9 through the
+SC/CCM control system. Command 9 must also be the board's timing-command selector.
+The helper rejects an active reserved generator or an active matching command.
+
+```sh
+pds-calibrate plan configs/calibration/vgain-afe0.json
+pds-calibrate run configs/calibration/vgain-afe0.json \
+  --input-dir /path/to/current-run \
+  --output-dir /path/to/new-calibration-data \
+  --journal /path/to/new-calibration.jsonl
+```
+
+The plan command needs no hardware libraries. Equivalently, use
+`PYTHONPATH=src python3 -m pds.calibration.cli ...` from a checkout.
+
+## Each point
+
+1. Pause and locally drain the AFE, program the explicit DAC codes, and settle.
+2. Select the enabled calibration channels for timing commands.
+3. Start the periodic timing source; record its actual rate, period and counters.
+4. Wait for a complete 2-second DAQ window whose beginning is after the timing
+   source started and the capture guard elapsed. Boundary windows are discarded.
+5. Export selected timing-tagged v4 frames and validate their timestamps,
+   coverage, continuity, channel agreement and fragment status.
+6. Stop timing commands, allow the capture tail, pause/drain the AFE, and check
+   board capture counters against the master's accepted command count.
+7. Append a durable `step_complete` receipt before advancing.
+
+At 6000 Hz nominal, a 2-second window contains about **12000 waveforms per
+channel**. The current 62.5 MHz timing generator quantises the requested rate to
+62500000/(256*41), about **5954.65 Hz**. Receipts use the actual period, not the
+nominal count. DAQ 0.5 Hz is separate from this timing-command rate; a random
+DAQ trigger source has a mean interval of two seconds, not a fixed cadence.
+Waiting for a complete stable window and file closure can take longer than two
+seconds per point. Commands outside the selected DAQ window are not part of
+that point's exported dataset.
+
+Each point produces `step-NNN.bin` containing complete 512-byte DAPHNE frames
+and `step-NNN.json` with settings, channel counts, DAQ record/window references
+and SHA256. The JSONL journal also records hardware acknowledgements, timing and
+capture counters, failures and final state. Only `step_complete` entries identify
+accepted points; files left by an interrupted or failed point are not accepted.
+
+## Final state and interruptions
+
+The supplied plan explicitly ends **paused**, retaining the last vgain code and
+calibration selection. SC/CCM can instead supply a final physics configuration:
+
+```json
+"final": {
+  "mode": "physics",
+  "settings": [{"variable": "vgain", "target": 0, "value": 1300}],
+  "settle_ms": 100
+}
+```
+
+1300 is an illustrative final code, not a saved previous value. For offset scans,
+set `variable` to `offset`, select the desired channels, supply `gain: true` or
+`false`, and specify the requested offset values and final configuration.
+
+On an ordinary error or interrupt, the coordinator stops timing commands and
+attempts to leave the affected AFE paused. It never restores analog settings or
+returns to physics after failure. A separate timing worker stops on caller EOF
+and has a bounded timeout. Killing that worker or losing its host can leave the
+hardware generator running; restart reconciliation/watchdog ownership remains
+with SC/CCM. An AFE with existing calibration/pause state is rejected until SC/CCM
+explicitly reconciles it. Existing journals and dataset directories are never
+overwritten, and an ambiguous step is never automatically replayed.
+
+Local locks reserve the board and timing master for the scan on one control
+host. They do not provide a distributed lease or stop another control system
+from writing the same hardware. Run through one authoritative SC/CCM owner;
+coordinated multi-board bursts and distributed recovery are later extensions.
+
+DAPHNE15's GIB command route was verified on 2026-10-05, but the endpoint remained
+in state 6 and its clock was local. These helpers deliberately refuse synchronized
+calibration acquisition in that state. No analog scan has been qualified yet.
+
+## Tests
+
+```sh
+PYTHONPATH=src python3 -m unittest discover -s tests -p test_calibration.py -v
+PYTHONPATH=src:/path/to/server/python python3 -m unittest discover -s tests -p 'test_runtime*.py' -v
+```
