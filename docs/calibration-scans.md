@@ -20,6 +20,11 @@ and board selector 2 are required. Align the endpoint and select the endpoint
 clock through SC/CCM before scanning. The helper checks both conditions and does
 not configure clocks, enable channels, reset counters or align hardware.
 
+On the current CERN image, stopping `daphne.service` stops the runtime and reloads
+the same gateware on restart, resetting FPGA settings and counters. Treat a server
+update as a configuration boundary; SC/CCM must explicitly apply the desired
+operating state afterward. No server update is part of a scan step.
+
 Start the DAQ at **0.5 Hz** with **2-second readout windows**, sufficient raw-data
 buffer retention, and working transport. Use an output directory for this run.
 Arrange frequent file rotation: the collector reads closed `.hdf5` files and
