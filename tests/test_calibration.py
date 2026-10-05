@@ -256,6 +256,9 @@ class CalibrationTests(unittest.TestCase):
             self.assertEqual(receipt['record_id'], '1')
             self.assertEqual(Path(receipt['dataset']).read_bytes(), payload)
             self.assertTrue(receipt['verified'])
+            self.assertEqual(receipt['schema'], 'pds.calibration.step.v1')
+            self.assertEqual((receipt['frame_version'], receipt['adc_offset_bytes'],
+                receipt['adc_bits'], receipt['samples_per_frame'], receipt['timing_tag']), (4, 64, 14, 256, 2))
             self.assertTrue(Path(receipt['dataset']).with_suffix('.json').exists())
             self.assertIn((str(base / 'daq.hdf5'), '0'), acquisition.used)
 

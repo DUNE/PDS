@@ -133,10 +133,12 @@ class HDF5Acquisition:
                         output.flush()
                         import os
                         os.fsync(output.fileno())
-                    receipt = dict(metadata, file=str(path), record_id=str(record),
+                    receipt = dict(metadata, schema='pds.calibration.step.v1', file=str(path), record_id=str(record),
                         window_begin=begin, window_end=end, received_counts=counts,
                         actual_rate_hz=started['actual_rate_hz'], dataset=str(dataset),
                         sha256=hashlib.sha256(frames).hexdigest(), frame_bytes=512,
+                        clock_hz=started['clock_hz'], frame_version=4, adc_offset_bytes=64,
+                        adc_bits=14, samples_per_frame=256, timing_tag=2,
                         expected_per_channel=(end - begin) / started['period_ticks'], verified=True)
                     with open(dataset.with_suffix('.json'), 'x') as output:
                         json.dump(receipt, output, indent=2)
