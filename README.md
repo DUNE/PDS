@@ -58,3 +58,5 @@ Waffles consumes these arrays and their calibration labels. See
 
 For local HDF5-to-binary conversion without a DAQ environment, build the
 [standalone C++ reader](tools/hdf5_unpack/README.md).
+
+Measured timing-command rates and counters: [GIB → DAPHNE15, 2026-10-05](docs/measurements/timing-rate-20261005/README.md).
