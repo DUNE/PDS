@@ -197,7 +197,7 @@ class CalibrationTests(unittest.TestCase):
 
     def test_waveform_audit_rejects_gaps_duplicates_and_wrong_tags(self):
         begin, end, period = 1000000, 126000000, 10496
-        def frame(ch, tick, tag=1):
+        def frame(ch, tick, tag=2):
             return struct.pack('<3Q', (63 << 52) | ((ch // 8) << 26), tick,
                 (ch << 56) | (4 << 52) | (tag << 46)) + bytes(488)
         ticks = list(range(begin + 100, end, period))
@@ -206,6 +206,7 @@ class CalibrationTests(unittest.TestCase):
         self.assertEqual(len(selected), len(payload))
         self.assertEqual(counts, {'0': len(ticks), '3': len(ticks)})
         for invalid in [payload[:5120] + payload[6144:], payload + payload[:512],
+                frame(0, ticks[0], 1) + payload[512:],
                 frame(0, ticks[0], 3) + payload[512:], payload[:-1]]:
             with self.assertRaises(RuntimeError):
                 audit_payload(invalid, [0, 3], (begin, end), period)
@@ -229,7 +230,7 @@ class CalibrationTests(unittest.TestCase):
         started = dict(ready_tick=1000000, period_ticks=period, clock_hz=clock, actual_rate_hz=rate(clock, 0, 41)[0])
         begin = 3000000
         end = begin + 2 * clock
-        frame = lambda tick: struct.pack('<3Q', 63 << 52, tick, (4 << 52) | (1 << 46)) + bytes(488)
+        frame = lambda tick: struct.pack('<3Q', 63 << 52, tick, (4 << 52) | (2 << 46)) + bytes(488)
         payload = b''.join(frame(tick) for tick in range(begin + 100, end, period))
         def fragment(window, data):
             header = types.SimpleNamespace(fragment_type=1, element_id=types.SimpleNamespace(id=800),

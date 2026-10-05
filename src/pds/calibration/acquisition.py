@@ -19,7 +19,7 @@ def audit_payload(payload, channels, window, period_ticks):
             continue
         if (header >> 52 & 15) != 4 or (daq >> 52 & 4095) != 63 or (daq >> 26 & 255) != channel // 8:
             raise RuntimeError('Unexpected waveform format or stream ID')
-        if (header >> 46 & 3) != 1 or (header >> 51 & 1):
+        if (header >> 46 & 3) != 2 or (header >> 51 & 1):
             raise RuntimeError('Selected channel contains non-timing or continuation data')
         timestamps[str(channel)].append(tick)
         frames.extend(payload[offset:offset + 512])
