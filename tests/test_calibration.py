@@ -67,7 +67,7 @@ class Timing:
 
     def start(self):
         self.running = True
-        return dict(ready_tick=1000000, period_ticks=10496, clock_hz=62500000, actual_rate_hz=rate(62500000, 0, 41)[0])
+        return dict(ready_tick=1000000, period_ticks=10752, clock_hz=62500000, actual_rate_hz=rate(62500000, 0, 41)[0])
 
     def stop(self):
         if not self.running:
@@ -226,7 +226,7 @@ class CalibrationTests(unittest.TestCase):
         self.assertIsNone(source.stop())
 
     def test_hdf5_collector_discards_boundary_windows_and_exports_one_clean_point(self):
-        period, clock = 10496, 62500000
+        period, clock = 10752, 62500000
         started = dict(ready_tick=1000000, period_ticks=period, clock_hz=clock, actual_rate_hz=rate(clock, 0, 41)[0])
         begin = 3000000
         end = begin + 2 * clock

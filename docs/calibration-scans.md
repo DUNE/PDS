@@ -68,14 +68,16 @@ The plan command needs no hardware libraries. Equivalently, use
    board capture counters against the master's accepted command count.
 7. Append a durable `step_complete` receipt before advancing.
 
-At 6000 Hz nominal, a 2-second window contains about **12000 waveforms per
-channel**. The current 62.5 MHz timing generator quantises the requested rate to
-62500000/(256*41), about **5954.65 Hz**. Receipts use the actual period, not the
-nominal count. DAQ 0.5 Hz is separate from this timing-command rate; a random
-DAQ trigger source has a mean interval of two seconds, not a fixed cadence.
-Waiting for a complete stable window and file closure can take longer than two
-seconds per point. Commands outside the selected DAQ window are not part of
-that point's exported dataset.
+A requested 6000 Hz produced **5812.872 Hz** on the tested GIB firmware:
+its divisor-0 period is `256 * (prescale + 1)`, with prescale 41, not `256 * 41`.
+A 2-second window therefore contains about **11626 waveforms per channel**.
+The [rate measurement](measurements/timing-rate-20261005/README.md) records the
+other tested settings; the highest demonstrated actual rate is 122070.313 Hz.
+The helper now reports the corrected divisor-0 period and refuses unqualified
+divisors. DAQ 0.5 Hz is separate from the timing-command rate; a random DAQ trigger
+source has a mean interval of two seconds, not a fixed cadence. Waiting for a
+complete stable window and file closure adds latency. Commands outside the
+selected DAQ window are excluded from the exported dataset.
 
 Each point produces `step-NNN.bin` containing complete 512-byte DAPHNE frames
 and `step-NNN.json` with settings, channel counts, DAQ record/window references

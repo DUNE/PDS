@@ -16,8 +16,10 @@ PREFIX = b'PDS_TIMING '
 
 
 def rate(clock_hz, divisor, prescale):
-    period = 256 * prescale * (1 << divisor)
-    if not period:
+    if divisor != 0:
+        raise RuntimeError("Timing divisor is not qualified; use the measured divisor-0 range")
+    period = 256 * (prescale + 1)
+    if prescale == 0:
         raise RuntimeError('Invalid timing prescale')
     return clock_hz / period, period
 
