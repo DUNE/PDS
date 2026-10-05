@@ -59,7 +59,7 @@ def run_command(
     logging.info("🚀 Starting a PDS %s run using %s!", mode.value, conf)
     run.main(mode.value, conf)
 
-@app.command("thr-scan")
+@app.command("thr-scan", help="Deprecated run-per-point threshold scan; see pds-calibrate.")
 def thr_scan(                     # ← name shown in `--help`
     conf: Path = typer.Argument(
         ...,
@@ -75,7 +75,7 @@ def thr_scan(                     # ← name shown in `--help`
     thr_main(conf)
 
 
-@app.command("att-scan")
+@app.command("att-scan", help="Deprecated run-per-point attenuation scan; use pds-calibrate.")
 def att_scan(                     # ← name shown in `--help`
     conf: Path = typer.Argument(
         ...,
@@ -90,7 +90,7 @@ def att_scan(                     # ← name shown in `--help`
     """
     att_main(conf)
 
-@app.command("offset-scan")
+@app.command("offset-scan", help="Deprecated run-per-point offset scan; use pds-calibrate.")
 def offset_scan(                     # ← name shown in `--help`
     conf: Path = typer.Argument(
         ...,
@@ -105,7 +105,7 @@ def offset_scan(                     # ← name shown in `--help`
     """
     offset_main(conf)
 
-@app.command("trim-scan")
+@app.command("trim-scan", help="Deprecated run-per-point trim scan; see pds-calibrate.")
 def trimt_scan(                     # ← name shown in `--help`
     conf: Path = typer.Argument(
         ...,

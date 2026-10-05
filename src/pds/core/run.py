@@ -619,6 +619,9 @@ def main(mode: Optional[str] = None, conf_path: str | Path | None = None) -> Non
     if mode:
         cfg["mode"] = mode
 
+    if cfg["mode"] in ("calibrun", "thrscan", "threshold", "attscan", "attenuator", "offsetscan", "trimscan"):
+        logging.warning("Run-per-point calibration is deprecated; use pds-calibrate with an already running DAQ. See docs/calibration-scans.md.")
+
     # Use a temp workspace so we never litter the repo tree
     with TemporaryDirectory(prefix="pds-run-") as tmp:
         tmp_dir = Path(tmp)

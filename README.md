@@ -2,6 +2,14 @@
 
 Photon Detection System configuration and automation for the DAPHNE front-end board.
 
+The canonical calibration workflow is **one continuous DAQ run with SC/CCM-owned
+runtime scans**, on branch `marroyav/calibration`. Use `pds-calibrate` and the
+[calibration recipe](docs/calibration-scans.md) to select channels, change settings,
+and label complete stable DAQ windows. The server remains a hardware bridge.
+
+The older run-per-point calibration commands are deprecated. Ordinary run startup,
+configuration generation and hardware configuration remain available.
+
 ## Installation
 
 ```bash
@@ -41,6 +49,9 @@ pip install pytest
 pytest
 ```
 
-## Runtime calibration
+## Calibration data
 
-[Timing calibration scans](docs/calibration-scans.md) keep the DAQ running while SC/CCM scans selected channels.
+Keep packed raw waveforms and step metadata as the source dataset. Use the compiled
+`rawdatautils.unpack.daphneeth` decoder to obtain `uint16` ADC arrays for analysis;
+Waffles consumes these arrays and their calibration labels. See
+[unpacking](docs/calibration-scans.md#unpacking).

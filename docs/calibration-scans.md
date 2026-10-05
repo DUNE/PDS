@@ -1,5 +1,7 @@
 # Timing calibration scans
 
+This is the canonical calibration technique on `marroyav/calibration`.
+
 SC/CCM runs the coordinator. The DAPHNE server forwards hardware access and
 stores no scan, previous settings or automatic return policy. The DAQ runs once
 through the entire scan; no configuration file is rewritten between points.
@@ -10,6 +12,12 @@ DAQ triggers at 0.5 Hz, and 2-second readout windows. Only channels already
 enabled in AFE 0 are selected. Vgain changes the shared AFE gain DAC; offset
 changes the selected channel DACs. Settings transactions pause all eight channels
 of the affected AFE briefly; other AFEs retain their acquisition state.
+
+The older `thr-scan`, `att-scan`, `offset-scan`, `trim-scan` and `run --mode calibrun`
+workflows are deprecated because they restart/reconfigure the DAQ between points.
+They remain available for existing setups with a deprecation warning. The runtime
+coordinator currently supports vgain and offset; threshold, trim and optical-source
+scans need explicit plans and hardware support before migrating.
 
 ## Prepare once
 
@@ -74,6 +82,37 @@ and `step-NNN.json` with settings, channel counts, DAQ record/window references
 and SHA256. The JSONL journal also records hardware acknowledgements, timing and
 capture counters, failures and final state. Only `step_complete` entries identify
 accepted points; files left by an interrupted or failed point are not accepted.
+
+## Unpacking
+
+HDF5 contains packed detector frames, not a generic array of 14-bit integers.
+Our v4 frame has a 64-byte header (DAQ header, DAPHNE header and five peak
+descriptors) followed by 448 packed ADC bytes: 256 unsigned 14-bit samples.
+Timing calibration uses tag 2. Unpacked ADC values fit in `uint16`, without
+rescaling, sign conversion or dropping the original frame metadata.
+
+Decoding belongs in `rawdatautils.unpack.daphneeth`, using the matching
+`fddetdataformats` frame definition. PDS owns scan orchestration and labels;
+Waffles owns analysis. Do not implement a second bit decoder in either package.
+The existing `rawdatautils` C++ binding already produces NumPy `uint16` arrays.
+Unpack accepted steps in batches, and retain timestamps/channels alongside ADCs.
+Keep the original packed data and the `step_complete` receipt for provenance.
+
+Before using a decoder, verify `fddetdataformats.DAPHNEEthFrame.sizeof() == 512`
+and check its results against a known v4 frame. Rebuild `rawdatautils` against
+the same `fddetdataformats`; checking the Python frame library alone does not
+guarantee that the unpacker's compiled ABI matches. The older CERN work area
+currently exposes 968-byte frames and cannot decode these datasets correctly.
+
+The CERN area `/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930`
+provides the matching 512-byte frame and unpacker. Source its `env.sh` from that
+directory. The step sidecar identifies schema `pds.calibration.step.v1`, frame
+version/size, ADC offset/width/count, timing tag and clock frequency explicitly.
+
+Benchmark the compatible C++ unpacker separately from HDF5 reading and dataset
+selection before adding SIMD. Any AVX2 implementation belongs in `rawdatautils`,
+with runtime CPU selection, a scalar fallback and bit-for-bit comparison against
+the frame accessors. Waffles should use the shared implementation.
 
 ## Final state and interruptions
 
