@@ -109,6 +109,11 @@ provides the matching 512-byte frame and unpacker. Source its `env.sh` from that
 directory. The step sidecar identifies schema `pds.calibration.step.v1`, frame
 version/size, ADC offset/width/count, timing tag and clock frequency explicitly.
 
+Run `python3 tools/benchmark_unpacker.py` in that environment. It checks the
+compiled decoder against known frame-accessor values before decoding a batch,
+then reports decoder-only throughput. It also rejects a mismatched frame library
+or unpacker before using the large pointer/count batch API.
+
 Benchmark the compatible C++ unpacker separately from HDF5 reading and dataset
 selection before adding SIMD. Any AVX2 implementation belongs in `rawdatautils`,
 with runtime CPU selection, a scalar fallback and bit-for-bit comparison against
