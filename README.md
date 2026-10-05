@@ -55,3 +55,6 @@ Keep packed raw waveforms and step metadata as the source dataset. Use the compi
 `rawdatautils.unpack.daphneeth` decoder to obtain `uint16` ADC arrays for analysis;
 Waffles consumes these arrays and their calibration labels. See
 [unpacking](docs/calibration-scans.md#unpacking).
+
+For local HDF5-to-binary conversion without a DAQ environment, build the
+[standalone C++ reader](tools/hdf5_unpack/README.md).
