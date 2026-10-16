@@ -1,0 +1,103 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=22mm]{geometry}
+\usepackage{booktabs,tabularx,longtable,enumitem,xcolor,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue!50!black}
+\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}
+\setlist{nosep,leftmargin=*}
+\newcommand{\entry}[1]{\textcolor{blue!60!black}{\textit{[#1]}}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\title{DAPHNE--SSP scan report\\\large Editable operator template}
+\author{\entry{Operator and institute}}
+\date{\entry{Date, time range, and time zone}}
+\begin{document}\maketitle
+\textbf{Instructions.} Replace bracketed fields with observations and artifact paths. Delete instructions before circulation. Mark a check as failed or not tested when evidence is absent. The reference run 45371 belongs to a separate completed scan; do not reuse its numbers as a new measurement.
+
+\section{Purpose and result}
+\entry{One paragraph: what was scanned, which channels were acquired, whether it completed, and the principal finding. Distinguish an electronics/control exercise from a detector gain measurement.}
+
+\begin{tabularx}{\linewidth}{@{}lX@{}}\toprule
+Identity & Recorded value \\\midrule
+Board / location & \entry{Asset ID; rack; installation or cabling changes} \\
+Operator / control host & \entry{Authorized operating account and host} \\
+DAQ run / scan tag & \entry{Actual DAQ run number; unique scan ID} \\
+Campaign directory & \entry{Absolute persistent path} \\
+Gateware profile / identity & \entry{Active profile; live build ID; source commit} \\
+Software / environment & \entry{Server; PDS; decoder; DAQ release; local changes} \\
+Evidence manifest & \entry{Path to SHA-256 manifest and source/dirty-state record} \\\bottomrule
+\end{tabularx}
+
+\section{Physical and logical configuration}
+\entry{List management MAC/IP and actual data MAC/IP values separately from registered reservations. State any address mismatch and the DAQ configuration used.}
+
+\begin{tabularx}{\linewidth}{@{}lX@{}}\toprule
+Setting & Recorded value \\\midrule
+Links / senders / channels & \entry{Physical links; wire stream IDs; DAQ source IDs; selected channels} \\
+AFE mapping & \entry{Firmware AFE to physical board AFE mapping} \\
+DAPHNE endpoint / master & \entry{Address; master name; partition if relevant; state; locks; timestamp validity} \\
+SSP endpoint / master & \entry{Control address; timing address; master; state; readiness} \\
+Source configuration & \entry{For each master: generator, command ID, requested and measured rate, period, clock} \\
+DAQ window / trigger rate & \entry{Readout window in seconds and DAQ request rate in Hz} \\
+Optical/timing relationship & \entry{Optically coupled? Shared master? How verified?} \\\bottomrule
+\end{tabularx}
+
+\section{Scan settings and method}
+\begin{tabularx}{\linewidth}{@{}lX@{}}\toprule
+Control & Recorded value and native units \\\midrule
+Offset / VGAIN & \entry{DAC offset; VGAIN points; common to all AFEs or sequential?} \\
+Detector bias & \entry{DAPHNE detector-bias setting; separate from SSP LED bias} \\
+SSP LED selection & \entry{Controller channel count; mask; enabled channels} \\
+SSP LED bias & \entry{270 nm and 367 nm native codes} \\
+SSP pulse settings & \entry{Single/double mode; widths in ticks; delay in ticks; burst count} \\
+Per-point selection & \entry{Window duration; target count if used; settling; guard/tail} \\
+Final-state request & \entry{Paused or explicitly configured operating state} \\\bottomrule
+\end{tabularx}
+
+\entry{Describe the per-point sequence: pause/drain, DAC writes, SSP configuration/readback, timing starts, acquisition, counter snapshots, stops, and cleanup. Include exact launcher command and script/configuration hashes.}
+
+\section{Results and acceptance}
+\textbf{Denominators.} Selected analysis windows contain \entry{waveforms per channel per point and total samples}. Hardware counters cover \entry{time interval and accepted master commands per channel}. These are different observation intervals; report both.
+
+\begin{center}\small
+\begin{tabular}{@{}rrrrr@{}}\toprule
+Point / code & Frames/channel & Pedestal range & Within-frame RMS & Rail clipping \\
+ & & ADC counts & ADC counts & zero / full scale \\\midrule
+\entry{point} & \entry{count} & \entry{min--max} & \entry{min--max} & \entry{fractions} \\
+\entry{point} & \entry{count} & \entry{min--max} & \entry{min--max} & \entry{fractions} \\
+\entry{point} & \entry{count} & \entry{min--max} & \entry{min--max} & \entry{fractions} \\
+\bottomrule\end{tabular}
+\end{center}
+
+\entry{Attach pedestal/RMS versus scan coordinate and representative waveform figures. Define pedestal, total RMS, within-frame RMS, and waveform-mean drift. State any rejection, baseline subtraction, or filtering.}
+
+\begin{longtable}{@{}p{0.51\linewidth}p{0.43\linewidth}@{}}\toprule
+Check & Pass/fail/not tested, and evidence \\\midrule\endhead
+Expected gateware identity and runtime health & \entry{Observed identity and status log} \\
+Endpoint clock lock and timestamp readiness & \entry{Before/after snapshots for both devices} \\
+Every selected source/channel present & \entry{Source IDs, channel counts, receipt paths} \\
+Common DAPHNE event timestamps; no gaps/duplicates & \entry{Windows and audit result} \\
+Fragment status / format / stream mapping & \entry{Status bits and decoder checks} \\
+Hardware records versus accepted master commands & \entry{Per-channel increments and master denominator} \\
+Busy/full drops and rejected commands & \entry{Counts and observation interval} \\
+SSP bias/duration readbacks & \entry{Requested versus read-back values} \\
+SSP command counter response & \entry{Counter delta; SSP master; no cross-domain inference} \\
+Input hashes and official decoder cross-check & \entry{Manifest and decoder revision} \\
+ADC rail clipping and anomalous channels & \entry{Fractions; affected channels/points} \\
+\bottomrule\end{longtable}
+
+\section{Final state, limitations, and next action}
+\entry{Record whether DAQ stop-run succeeded, whether applications are in error, DAPHNE pause mask, stopped timing sources, SSP LED-disable readback, and final endpoint readiness. Include cleanup failures explicitly.}
+
+\entry{State what was not established: optical output, detector response, physical gain, shared-master synchronization, reboot persistence, or other configuration limits. Describe the next test, owner, and required setup.}
+
+\section{Artifacts and review}
+\begin{itemize}
+\item Raw HDF5 files, record IDs, windows, and hashes: \entry{paths/manifest}.
+\item Selected waveform binaries and receipts: \entry{paths/hashes}.
+\item Plan, runner, acquisition adapter, SSP driver and routine: \entry{versions/hashes/dirty state}.
+\item Numeric analysis, plots, and decoder provenance: \entry{paths/hashes}.
+\item Failed/interrupted attempts retained separately: \entry{IDs and disposition}.
+\item Reviewer / date / status: \entry{not reviewed, reviewed, or approved; name the authority if approved}.
+\end{itemize}
+\end{document}

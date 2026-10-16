@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="ASCII"?>
+
+<!-- oks-data version 2.2 -->
+
+
+<!DOCTYPE oks-data [
+  <!ELEMENT oks-data (info, (include)?, (comments)?, (obj)+)>
+  <!ELEMENT info EMPTY>
+  <!ATTLIST info
+      name CDATA #IMPLIED
+      type CDATA #IMPLIED
+      num-of-items CDATA #REQUIRED
+      oks-format CDATA #FIXED "data"
+      oks-version CDATA #REQUIRED
+      created-by CDATA #IMPLIED
+      created-on CDATA #IMPLIED
+      creation-time CDATA #IMPLIED
+      last-modified-by CDATA #IMPLIED
+      last-modified-on CDATA #IMPLIED
+      last-modification-time CDATA #IMPLIED
+  >
+  <!ELEMENT include (file)*>
+  <!ELEMENT file EMPTY>
+  <!ATTLIST file
+      path CDATA #REQUIRED
+  >
+  <!ELEMENT comments (comment)*>
+  <!ELEMENT comment EMPTY>
+  <!ATTLIST comment
+      creation-time CDATA #REQUIRED
+      created-by CDATA #REQUIRED
+      created-on CDATA #REQUIRED
+      author CDATA #REQUIRED
+      text CDATA #REQUIRED
+  >
+  <!ELEMENT obj (attr | rel)*>
+  <!ATTLIST obj
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+  <!ELEMENT attr (data)*>
+  <!ATTLIST attr
+      name CDATA #REQUIRED
+      type (bool|s8|u8|s16|u16|s32|u32|s64|u64|float|double|date|time|string|uid|enum|class|-) "-"
+      val CDATA ""
+  >
+  <!ELEMENT data EMPTY>
+  <!ATTLIST data
+      val CDATA #REQUIRED
+  >
+  <!ELEMENT rel (ref)*>
+  <!ATTLIST rel
+      name CDATA #REQUIRED
+      class CDATA ""
+      id CDATA ""
+  >
+  <!ELEMENT ref EMPTY>
+  <!ATTLIST ref
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+]>
+
+<oks-data>
+ <info name="" type="" num-of-items="12" oks-format="data" oks-version="862f2957270" created-by="glehmann" created-on="np04-srv-024.cern.ch" creation-time="20241013T161605" last-modified-by="np04daq" last-modified-on="np04-srv-024.cern.ch" last-modification-time="20251202T111545" />
+ <include>
+  <file path="schema/confmodel/dunedaq.schema.xml" />
+  <file path="schema/appmodel/application.schema.xml" />
+  <file path="schema/appmodel/fdmodules.schema.xml" />
+  <file path="defaults/wiecconfs.data.xml" />
+ </include>
+ <obj class="DetectorStream" id="np04-pdsm2-004-s00-sid804">
+  <attr name="source_id" type="u32" val="804" />
+  <rel name="geo_id" class="GeoId" id="np04-pdsm2-004-s00" />
+ </obj>
+ <obj class="DetectorStream" id="np04-pdsm2-004-s00-sid805">
+  <attr name="source_id" type="u32" val="805" />
+  <rel name="geo_id" class="GeoId" id="np04-pdsm2-004-s01" />
+ </obj>
+ <obj class="DetectorStream" id="np04-pdsm2-004-unused-link1-sid806">
+  <attr name="source_id" type="u32" val="806" />
+  <rel name="geo_id" class="GeoId" id="np04-pdsm2-004-unused-link1-s02" />
+ </obj>
+ <obj class="DetectorStream" id="np04-pdsm2-004-unused-link1-sid807">
+  <attr name="source_id" type="u32" val="807" />
+  <rel name="geo_id" class="GeoId" id="np04-pdsm2-004-unused-link1-s03" />
+ </obj>
+ <obj class="GeoId" id="np04-pdsm2-004-s00">
+  <attr name="detector_id" type="u32" val="8" />
+  <attr name="crate_id" type="u32" val="4" />
+  <attr name="slot_id" type="u32" val="2" />
+ </obj>
+ <obj class="GeoId" id="np04-pdsm2-004-s01">
+  <attr name="detector_id" type="u32" val="8" />
+  <attr name="crate_id" type="u32" val="4" />
+  <attr name="slot_id" type="u32" val="2" />
+  <attr name="stream_id" type="u32" val="1" />
+ </obj>
+ <obj class="GeoId" id="np04-pdsm2-004-unused-link1-s02">
+  <attr name="detector_id" type="u32" val="8" />
+  <attr name="crate_id" type="u32" val="4" />
+  <attr name="slot_id" type="u32" val="2" />
+  <attr name="stream_id" type="u32" val="2" />
+ </obj>
+ <obj class="GeoId" id="np04-pdsm2-004-unused-link1-s03">
+  <attr name="detector_id" type="u32" val="8" />
+  <attr name="crate_id" type="u32" val="4" />
+  <attr name="slot_id" type="u32" val="2" />
+  <attr name="stream_id" type="u32" val="3" />
+ </obj>
+ <obj class="HermesDataSender" id="hds-daphne-m2-004">
+  <attr name="port" type="u32" val="17476" />
+  <attr name="control_host" type="string" val="np04-daphne-m2-004" />
+  <rel name="streams">
+   <ref class="DetectorStream" id="np04-pdsm2-004-s00-sid804" />
+  <ref class="DetectorStream" id="np04-pdsm2-004-s00-sid805" /></rel>
+  <rel name="uses" class="NetworkInterface" id="nw-np04-daphne-m2-004-d0" />
+ </obj>
+ <obj class="HermesDataSender" id="hds-daphne-m2-004-link1">
+  <attr name="link_id" type="u32" val="1" />
+  <attr name="port" type="u32" val="17476" />
+  <attr name="control_host" type="string" val="np04-daphne-m2-004" />
+  <rel name="streams">
+   <ref class="DetectorStream" id="np04-pdsm2-004-unused-link1-sid806" />
+   <ref class="DetectorStream" id="np04-pdsm2-004-unused-link1-sid807" />
+  </rel>
+  <rel name="uses" class="NetworkInterface" id="nw-np04-daphne-m2-004-d1" />
+ </obj>
+ <obj class="NetworkInterface" id="nw-np04-daphne-m2-004-d0">
+  <attr name="mac_address" type="string" val="DE:AD:BE:EF:CA:FE" />
+  <attr name="ip_address" type="string">
+   <data val="192.168.0.100" />
+  </attr>
+  <attr name="network_name" type="enum" val="Data" />
+ </obj>
+ <obj class="NetworkInterface" id="nw-np04-daphne-m2-004-d1">
+  <attr name="mac_address" type="string" val="DE:AD:BE:EF:CA:FF" />
+  <attr name="ip_address" type="string">
+   <data val="192.168.0.101" />
+  </attr>
+  <attr name="network_name" type="enum" val="Data" />
+ </obj>
+</oks-data>

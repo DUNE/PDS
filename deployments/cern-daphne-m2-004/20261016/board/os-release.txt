@@ -1,0 +1,7 @@
+ID=petalinux
+NAME="PetaLinux"
+VERSION="2026.1+release-S06060014 (scarthgap)"
+VERSION_ID=2026.1-release-s06060014
+VERSION_CODENAME="scarthgap"
+PRETTY_NAME="PetaLinux 2026.1+release-S06060014 (scarthgap)"
+CPE_NAME="cpe:/o:openembedded:petalinux:2026.1+release-S06060014"

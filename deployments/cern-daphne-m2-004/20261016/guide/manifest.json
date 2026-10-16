@@ -1,0 +1,43 @@
+{
+  "document": "DAPHNE-M2-004 CERN deployment report and DAPHNE-SSP operator guide",
+  "revision": 1,
+  "date": "2026-10-16",
+  "status": "Operator reference; independent review pending",
+  "source_evidence": "run45371 joint-gain-r4; executed source hashes verified against campaign evidence",
+  "build_tool": "Tectonic 0.17.0",
+  "verification": [
+    "Guide and report template compiled to PDF",
+    "Main guide compiled without TeX warnings after layout correction",
+    "PDF pages rendered for visual layout review",
+    "All archived Python support sources parse",
+    "Archived executed source SHA-256 values match campaign manifest",
+    "All five gains and 32-channel results checked against analysis JSON"
+  ],
+  "raw_data_included": false,
+  "files": {
+    "README.txt": "99e5ba20e0cf9b6d11ce193a75ccaf7cff674698bdf46916b3ce27c3db6408b6",
+    "daphne-m2-004-guide.pdf": "6d32b53674c0807d3f4de8964e805d5908d3f71775e05d7de9cbe201ffd2b866",
+    "daphne-m2-004-guide.tex": "a097bc10bb761e13a035cb15b051e49b126e973cf81ae53f9dc30de1836413ef",
+    "evidence/analysis.json": "ecdddaee1a0b739828a6ee5457334b8fc6af2e6f1a8ff8209d5b2f90334842c5",
+    "evidence/channel-statistics.csv": "c1d78e57e52787dadc84b66b3f4e643bec12f3b463349896e8a3d304c9e4c999",
+    "evidence/daq-stop-45371.log": "4a8dc4c502fe4ba4be91e0a8e7ecaacd986dfae88c04d31b33736e2506f6f2d6",
+    "evidence/deployment-initial-result.json": "27632e00995dffd9480481ee8cfe0060484fc93ab880773d676f9e17c5a52ee5",
+    "evidence/dns-20261016.log": "e1aa6ce83c080c78a3d4b23ec5c8cc6529cbf6377bf122b72b969f07ac0c275b",
+    "evidence/evidence.json": "4d0549cea022ca69f6d0e93ce5f7db897f3b23e2910d9618c8d6379530b52874",
+    "evidence/joint-gain-r4.json": "62053dbc356f7f038449e1292d1511f4f77c678296f4bd4aa776803dbdc394ff",
+    "evidence/joint-gain-r4.jsonl": "b8a719a9b7c08bbe8b9ac22171785fe87e6a979c1373e559eeafdc54d421a1ff",
+    "evidence/plot-provenance.json": "f4857dab90838026f430e070f39e926f7ccddafef0058fe88d3f307eb6a71aad",
+    "evidence/result.txt": "509794f01b8402cb2ad7df0b6ab74c6dcc39c84fb68b0fbb740889d56af1a3be",
+    "figures/pedestal-rms.pdf": "35605f3a502be5416db4db4398978c1dd4083d3486955e9bb5a76f38aac2095e",
+    "figures/pedestal-rms.png": "4af9ce1af03bc511bcb1290b03c6ecf153cfd09a2af9b251f3900e7ff364bd32",
+    "report-template.pdf": "d2e33fe64b26bfb47439ee4ededaec8712d3cb6176cfdbd5896d521e985febec",
+    "report-template.tex": "1d4abc4d969bbdfa1d99ea8324b1bebcfec5b27b887290ba1ab06ab6031ec5d8",
+    "support/acquisition_wire_ids.py": "43f31239c5fee7d44dd90299ab40b37ac0827aa64b7aec64a3f2e49ab18c4355",
+    "support/decode-joint-gain-r4.py": "6c9f8599c6a65437015683355f93238a7b85aedee4d0c55da1d31a8f88725622",
+    "support/plans/offset2250-afe0-r3.json": "0531f423ccd2df8f47fd68cbebcaa0f492eff1b67c66410b0e8cc38788799e2c",
+    "support/run-joint-gain-r4.py": "db7eb53c32229acb092b0fd65ccb4fbc16dc5e46e95f3f2aade30bed2910b808",
+    "support/runtime-env.sh": "3830a6da0a074a9d0e80731e505c4ab0138d919967905e1605c4e620962604f5",
+    "support/ssp_led_control.py": "de10be0124e1c7089f1aea21b08a038b3ffc035fe28c20c043f7428511c1c68d",
+    "support/ssp_routine.py": "6a6d60fa5b11d54cf75ef67b051ecc88d23bbafb33e2a426b1c1fe4da3f067e5"
+  }
+}

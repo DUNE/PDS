@@ -1,0 +1,78 @@
+{
+  "calibration": {
+    "oks_load": "passed",
+    "module_generation": "passed",
+    "applications": {
+      "df-s03-d1": [
+        {
+          "id": "df-s03-d1-trb",
+          "class": "TRBModule"
+        },
+        {
+          "id": "df-s03-d1-dw-0",
+          "class": "DataWriterModule"
+        }
+      ],
+      "dfo-01": [
+        {
+          "id": "DFO-dfo-01",
+          "class": "DFOModule"
+        }
+      ],
+      "daphne-m2-004-app": [
+        {
+          "id": "controller-8.4.2",
+          "class": "DaphneV3ControllerModule"
+        },
+        {
+          "id": "daphne-hermes-ctrl-8.4.2",
+          "class": "HermesModule"
+        }
+      ],
+      "mlt": [
+        {
+          "id": "random-tc-generator",
+          "class": "RandomTCMakerModule"
+        },
+        {
+          "id": "data-reader-mlt",
+          "class": "DataSubscriberModule"
+        },
+        {
+          "id": "def-tc-handler-2",
+          "class": "TriggerDataHandlerModule"
+        },
+        {
+          "id": "def-mlt-conf",
+          "class": "MLTModule"
+        }
+      ],
+      "runp02srv001eth1": [
+        {
+          "id": "datareader-runp02srv001eth1-0",
+          "class": "DPDKReaderModule"
+        },
+        {
+          "id": "DLH-804",
+          "class": "FDDataHandlerModule"
+        },
+        {
+          "id": "DLH-805",
+          "class": "FDDataHandlerModule"
+        },
+        {
+          "id": "DLH-806",
+          "class": "FDDataHandlerModule"
+        },
+        {
+          "id": "DLH-807",
+          "class": "FDDataHandlerModule"
+        },
+        {
+          "id": "fragmentaggregator-runp02srv001eth1",
+          "class": "FragmentAggregatorModule"
+        }
+      ]
+    }
+  }
+}

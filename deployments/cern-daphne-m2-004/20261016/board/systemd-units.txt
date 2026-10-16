@@ -1,0 +1,156 @@
+# /usr/lib/systemd/system/daphne-runtime.target
+[Unit]
+Description=DAPHNE gateware and userspace runtime
+Requires=daphne-gateware-prepare.service firmware.service daphne-gateware-verify.service
+Requires=clockchip.service endpoint.service hermes.service daphne.service
+After=daphne-gateware-prepare.service firmware.service daphne-gateware-verify.service
+After=clockchip.service endpoint.service hermes.service daphne.service
+AllowIsolate=yes
+
+[Install]
+WantedBy=multi-user.target
+
+# /usr/lib/systemd/system/firmware.service
+[Unit]
+Description=Program DAPHNE firmware app
+After=local-fs.target dfx-mgr.service dfx-mgrd.service daphne-gateware-prepare.service
+Wants=dfx-mgr.service
+Requires=daphne-gateware-prepare.service
+Before=daphne-gateware-verify.service clockchip.service endpoint.service hermes.service daphne.service
+PartOf=daphne-runtime.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/default/firmware
+EnvironmentFile=-/etc/daphne-board.env
+EnvironmentFile=/run/daphne-gateware/active.env
+Environment=ACCEL_CONFIG_PATH=/lib/firmware/xilinx
+ExecStart=/usr/local/bin/daphne-fw.sh
+ExecStop=/usr/local/bin/daphne-fw-stop.sh
+TimeoutStartSec=20
+TimeoutStopSec=20
+RemainAfterExit=yes
+
+[Install]
+WantedBy=daphne-runtime.target
+
+# /usr/lib/systemd/system/daphne-gateware-verify.service
+[Unit]
+Description=Verify DAPHNE gateware identity and ABI
+After=firmware.service daphne-gateware-prepare.service
+Requires=firmware.service daphne-gateware-prepare.service
+Before=clockchip.service endpoint.service hermes.service daphne.service
+PartOf=firmware.service daphne-runtime.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/daphne-gateware verify
+RemainAfterExit=yes
+
+# /usr/lib/systemd/system/clockchip.service
+[Unit]
+Description=Validate DAPHNE timing clock path
+After=daphne-gateware-verify.service firmware.service
+Requires=daphne-gateware-verify.service firmware.service
+PartOf=firmware.service daphne-runtime.target
+Before=endpoint.service hermes.service daphne.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/default/firmware
+EnvironmentFile=-/etc/daphne-board.env
+EnvironmentFile=/run/daphne-gateware/active.env
+ExecStart=/usr/local/bin/daphne-clockchip.sh
+TimeoutStartSec=300
+RemainAfterExit=yes
+
+[Install]
+WantedBy=daphne-runtime.target
+
+# /usr/lib/systemd/system/endpoint.service
+[Unit]
+Description=Configure DAPHNE endpoint timing path
+After=clockchip.service firmware.service
+Requires=clockchip.service firmware.service
+PartOf=firmware.service daphne-runtime.target
+Before=hermes.service daphne.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/default/firmware
+EnvironmentFile=-/etc/daphne-board.env
+EnvironmentFile=/run/daphne-gateware/active.env
+ExecStart=/usr/local/bin/daphne-endpoint-init.py
+RemainAfterExit=yes
+
+[Install]
+WantedBy=daphne-runtime.target
+
+# /usr/lib/systemd/system/hermes.service
+[Unit]
+Description=Hermes IPBus UDP server (DAPHNE mode)
+After=endpoint.service daphne-gateware-verify.service firmware.service
+Requires=endpoint.service daphne-gateware-verify.service firmware.service
+PartOf=firmware.service daphne-runtime.target
+
+[Service]
+Type=simple
+WorkingDirectory=/
+ExecStartPre=/bin/echo "Starting Hermes IPBus UDP server (daphne mode)"
+ExecStart=/bin/sh -c '/usr/bin/hermes_udp_srv -d daphne -c true \
+  2>/var/log/hermes_udp_srv.err >/var/log/hermes_udp_srv.log'
+Restart=on-failure
+RestartSec=1
+TimeoutStopSec=5s
+
+[Install]
+WantedBy=daphne-runtime.target
+
+# /etc/systemd/system/hermes.service.d/80-vst-reply-count.conf
+[Service]
+ExecStart=
+ExecStart=/bin/sh -c '/usr/bin/hermes_udp_srv -d daphne -c 1 2>/var/log/hermes_udp_srv.err >/var/log/hermes_udp_srv.log'
+
+# /usr/lib/systemd/system/daphne.service
+[Unit]
+Description=DAPHNE Slow Controller
+After=hermes.service endpoint.service daphne-gateware-verify.service firmware.service
+Requires=hermes.service endpoint.service daphne-gateware-verify.service firmware.service
+PartOf=firmware.service daphne-runtime.target
+
+[Service]
+Type=simple
+Environment=LD_LIBRARY_PATH=/usr/lib/daphne-server
+Environment=DAPHNE_BIND_ENDPOINT=tcp://*:40001
+EnvironmentFile=/etc/default/firmware
+EnvironmentFile=-/etc/daphne-board.env
+EnvironmentFile=/run/daphne-gateware/active.env
+ExecStart=/bin/sh -c 'exec /usr/bin/daphneServer --bind "${DAPHNE_BIND_ENDPOINT}" --gateware-mode "${GATEWARE_MODE}" --expected-gateware-build-id "${IDENTITY_BUILD_ID}"'
+ExecStopPost=/usr/sbin/daphne-gateware quiesce
+Restart=on-failure
+RestartPreventExitStatus=78
+RestartSec=1
+TimeoutStopSec=5s
+
+[Install]
+WantedBy=daphne-runtime.target
+
+# /etc/systemd/system/daphne.service.d/85-vst-frame-monitor.conf
+[Service]
+ExecStart=
+ExecStart=/bin/sh -c 'exec /opt/daphne-server/cal2-vst-frame-monitor-20261008/bin/daphneServer --bind "${DAPHNE_BIND_ENDPOINT}" --gateware-mode "${GATEWARE_MODE}" --expected-gateware-build-id "${IDENTITY_BUILD_ID}"'
+
+# /etc/systemd/system/daphne-management-optical.service
+[Unit]
+Description=DAPHNE004 management optical 1000BASE-X configuration
+Requires=sys-subsystem-net-devices-end0.device
+After=systemd-networkd.service sys-subsystem-net-devices-end0.device
+Before=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/daphne-management-optical.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

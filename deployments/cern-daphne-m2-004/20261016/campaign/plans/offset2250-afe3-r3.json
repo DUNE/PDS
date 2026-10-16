@@ -1,0 +1,104 @@
+{
+  "scan_id": "m2-004-offset2250-afe3-r3",
+  "board_endpoint": "tcp://np04-daphne-m2-004.cern.ch:40001",
+  "afe": 3,
+  "channels": "enabled",
+  "variable": "vgain",
+  "values": [
+    500,
+    1500,
+    2500
+  ],
+  "settle_ms": 100,
+  "capture_tail_ms": 20,
+  "window_s": 2,
+  "daq_trigger_hz": 0.5,
+  "acquisition_timeout_s": 60,
+  "source_ids": [
+    807
+  ],
+  "timing": {
+    "master": "GIB",
+    "connections": "/nfs/sw/dunedaq/timing/connections.xml",
+    "generator": 1,
+    "command_id": 7,
+    "rate_hz": 6000
+  },
+  "final": {
+    "mode": "paused"
+  },
+  "settings": [
+    {
+      "variable": "offset",
+      "target": 24,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 25,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 26,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 27,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 28,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 29,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 30,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 31,
+      "value": 2250,
+      "gain": false
+    }
+  ],
+  "context": {
+    "offset": 2250,
+    "board_afe": 2,
+    "firmware_afe": 3,
+    "scope": "All32 firmware channels across two links; sequential AFE gain scans.",
+    "wire_stream_id": 65,
+    "ssp_scope": "SSP register-control routine only; no optical coupling to DAPHNE004",
+    "attempt": "complete-r3"
+  },
+  "illumination": {
+    "settings": {
+      "led_bias_270nm": 4095,
+      "led_bias_367nm": 0,
+      "led_width_ticks": 8,
+      "led_second_width_ticks": 1,
+      "led_double_pulse_delay_ticks": 4000,
+      "led_channel_mask": 7,
+      "led_burst_count": 1
+    },
+    "timing": {
+      "domain": "ssp-boreas-tlu-np04",
+      "command_id": 7
+    }
+  }
+}

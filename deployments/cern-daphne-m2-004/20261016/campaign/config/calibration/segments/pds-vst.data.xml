@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="ASCII"?>
+
+<!-- oks-data version 2.2 -->
+
+
+<!DOCTYPE oks-data [
+  <!ELEMENT oks-data (info, (include)?, (comments)?, (obj)+)>
+  <!ELEMENT info EMPTY>
+  <!ATTLIST info
+      name CDATA #IMPLIED
+      type CDATA #IMPLIED
+      num-of-items CDATA #REQUIRED
+      oks-format CDATA #FIXED "data"
+      oks-version CDATA #REQUIRED
+      created-by CDATA #IMPLIED
+      created-on CDATA #IMPLIED
+      creation-time CDATA #IMPLIED
+      last-modified-by CDATA #IMPLIED
+      last-modified-on CDATA #IMPLIED
+      last-modification-time CDATA #IMPLIED
+  >
+  <!ELEMENT include (file)*>
+  <!ELEMENT file EMPTY>
+  <!ATTLIST file
+      path CDATA #REQUIRED
+  >
+  <!ELEMENT comments (comment)*>
+  <!ELEMENT comment EMPTY>
+  <!ATTLIST comment
+      creation-time CDATA #REQUIRED
+      created-by CDATA #REQUIRED
+      created-on CDATA #REQUIRED
+      author CDATA #REQUIRED
+      text CDATA #REQUIRED
+  >
+  <!ELEMENT obj (attr | rel)*>
+  <!ATTLIST obj
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+  <!ELEMENT attr (data)*>
+  <!ATTLIST attr
+      name CDATA #REQUIRED
+      type (bool|s8|u8|s16|u16|s32|u32|s64|u64|float|double|date|time|string|uid|enum|class|-) "-"
+      val CDATA ""
+  >
+  <!ELEMENT data EMPTY>
+  <!ATTLIST data
+      val CDATA #REQUIRED
+  >
+  <!ELEMENT rel (ref)*>
+  <!ATTLIST rel
+      name CDATA #REQUIRED
+      class CDATA ""
+      id CDATA ""
+  >
+  <!ELEMENT ref EMPTY>
+  <!ATTLIST ref
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+]>
+
+<oks-data>
+ <info name="" type="" num-of-items="63" oks-format="data" oks-version="862f2957270" created-by="gjc" created-on="thinkpad" creation-time="20231207T105615" last-modified-by="np04daq" last-modified-on="np04-srv-024.cern.ch" last-modification-time="20251212T095702" />
+ <include>
+  <file path="schema/appmodel/PDS.schema.xml" />
+  <file path="schema/appmodel/wiec.schema.xml" />
+  <file path="schema/appmodel/fdmodules.schema.xml" />
+  <file path="defaults/connections.data.xml" />
+  <file path="defaults/moduleconfs.data.xml" />
+  <file path="defaults/ccm.data.xml" />
+  <file path="hw/hosts.data.xml" />
+  <file path="hw/rohw.data.xml" />
+  <file path="hw/pds-vst-connections.data.xml" />
+ </include>
+ <obj class="DaphneApplication" id="daphne-m2-004-app">
+  <attr name="application_name" type="string" val="daq_application" />
+  <attr name="commandline_parameters" type="string">
+   <data val="" />
+  </attr>
+  <rel name="runs_on" class="VirtualHost" id="vh-np04-srv-013" />
+  <rel name="exposes_service">
+   <ref class="Service" id="daphne-m2-004-app_control" />
+  </rel>
+  <rel name="opmon_conf" class="OpMonConf" id="slow-all-monitoring" />
+  <rel name="configuration" class="DaphneConf" id="daphne_mezz" />
+  <rel name="detector_connections">
+   <ref class="NetworkDetectorToDaqConnection" id="daphne-m2-004-connection" />
+  </rel>
+  <rel name="hermes_module_conf" class="HermesModuleConf" id="def-hermes-conf" />
+ </obj>
+ <obj class="DaphneConf" id="daphne_mezz">
+  <attr name="timeout_ms" type="u16" val="30000" />
+  <attr name="time_reset" type="bool" val="0" />
+  <rel name="default_v2_settings" class="DaphneV2BoardConf" id="daphne-v2-default-board" />
+  <rel name="boards">
+   <ref class="DaphneMapEntry" id="daphne_mezz-daphne-m2-004-conf" />
+  </rel>
+  <rel name="default_v3_settings" class="DaphneV2BoardConf" id="daphne-v2-default-board" />
+ </obj>
+ <obj class="DaphneMapEntry" id="daphne_mezz-daphne-m2-004-conf">
+  <attr name="key" type="string" val="8.4.2" />
+  <rel name="conf" class="DaphneV2BoardConf" id="daphne_mezz-daphne-m2-004-conf" />
+ </obj>
+ <obj class="DaphneV2ADC" id="daphne-v2-default-adc">
+  <attr name="low_resolution" type="bool" val="0" />
+  <attr name="output_offset_binary" type="bool" val="1" />
+  <attr name="MSB_first" type="bool" val="0" />
+ </obj>
+ <obj class="DaphneV2ADC" id="daphne_mezz-daphne-m2-004-adc-0">
+  <attr name="low_resolution" type="bool" val="0" />
+  <attr name="output_offset_binary" type="bool" val="1" />
+  <attr name="MSB_first" type="bool" val="0" />
+ </obj>
+ <obj class="DaphneV2ADC" id="daphne_mezz-daphne-m2-004-adc-1">
+  <attr name="low_resolution" type="bool" val="0" />
+  <attr name="output_offset_binary" type="bool" val="1" />
+  <attr name="MSB_first" type="bool" val="0" />
+ </obj>
+ <obj class="DaphneV2ADC" id="daphne_mezz-daphne-m2-004-adc-2">
+  <attr name="low_resolution" type="bool" val="0" />
+  <attr name="output_offset_binary" type="bool" val="1" />
+  <attr name="MSB_first" type="bool" val="0" />
+ </obj>
+ <obj class="DaphneV2ADC" id="daphne_mezz-daphne-m2-004-adc-3">
+  <attr name="low_resolution" type="bool" val="0" />
+  <attr name="output_offset_binary" type="bool" val="1" />
+  <attr name="MSB_first" type="bool" val="0" />
+ </obj>
+ <obj class="DaphneV2ADC" id="daphne_mezz-daphne-m2-004-adc-4">
+  <attr name="low_resolution" type="bool" val="0" />
+  <attr name="output_offset_binary" type="bool" val="1" />
+  <attr name="MSB_first" type="bool" val="0" />
+ </obj>
+ <obj class="DaphneV2AFE" id="daphne-v2-default-afe">
+  <attr name="afe_id" type="u8" val="100" />
+  <attr name="attenuator" type="u16" val="2666" />
+  <rel name="adc" class="DaphneV2ADC" id="daphne-v2-default-adc" />
+  <rel name="pga" class="DaphneV2PGA" id="daphne-v2-default-pga" />
+  <rel name="lna" class="DaphneV2LNA" id="daphne-v2-default-lna" />
+ <attr name="v_bias" type="u16" val="0" /></obj>
+ <obj class="DaphneV2AFE" id="daphne_mezz-daphne-m2-004-afe-0">
+  <attr name="afe_id" type="u8" val="0" />
+  <attr name="attenuator" type="u16" val="2100" />
+  <rel name="adc" class="DaphneV2ADC" id="daphne_mezz-daphne-m2-004-adc-0" />
+  <rel name="pga" class="DaphneV2PGA" id="daphne_mezz-daphne-m2-004-pga-0" />
+  <rel name="lna" class="DaphneV2LNA" id="daphne_mezz-daphne-m2-004-lna-0" />
+ <attr name="v_bias" type="u16" val="0" /></obj>
+ <obj class="DaphneV2AFE" id="daphne_mezz-daphne-m2-004-afe-1">
+  <attr name="afe_id" type="u8" val="1" />
+  <attr name="attenuator" type="u16" val="2100" />
+  <rel name="adc" class="DaphneV2ADC" id="daphne_mezz-daphne-m2-004-adc-1" />
+  <rel name="pga" class="DaphneV2PGA" id="daphne_mezz-daphne-m2-004-pga-1" />
+  <rel name="lna" class="DaphneV2LNA" id="daphne_mezz-daphne-m2-004-lna-1" />
+ <attr name="v_bias" type="u16" val="0" /></obj>
+ <obj class="DaphneV2AFE" id="daphne_mezz-daphne-m2-004-afe-2">
+  <attr name="afe_id" type="u8" val="2" />
+  <attr name="attenuator" type="u16" val="2200" />
+  <attr name="v_bias" type="u16" val="0" />
+  <rel name="adc" class="DaphneV2ADC" id="daphne_mezz-daphne-m2-004-adc-2" />
+  <rel name="pga" class="DaphneV2PGA" id="daphne_mezz-daphne-m2-004-pga-2" />
+  <rel name="lna" class="DaphneV2LNA" id="daphne_mezz-daphne-m2-004-lna-2" />
+ </obj>
+ <obj class="DaphneV2AFE" id="daphne_mezz-daphne-m2-004-afe-3">
+  <attr name="afe_id" type="u8" val="3" />
+  <attr name="attenuator" type="u16" val="2000" />
+  <attr name="v_bias" type="u16" val="0" />
+  <rel name="adc" class="DaphneV2ADC" id="daphne_mezz-daphne-m2-004-adc-3" />
+  <rel name="pga" class="DaphneV2PGA" id="daphne_mezz-daphne-m2-004-pga-3" />
+  <rel name="lna" class="DaphneV2LNA" id="daphne_mezz-daphne-m2-004-lna-3" />
+ </obj>
+ <obj class="DaphneV2AFE" id="daphne_mezz-daphne-m2-004-afe-4">
+  <attr name="afe_id" type="u8" val="4" />
+  <attr name="attenuator" type="u16" val="2000" />
+  <rel name="adc" class="DaphneV2ADC" id="daphne_mezz-daphne-m2-004-adc-4" />
+  <rel name="pga" class="DaphneV2PGA" id="daphne_mezz-daphne-m2-004-pga-4" />
+  <rel name="lna" class="DaphneV2LNA" id="daphne_mezz-daphne-m2-004-lna-4" />
+ <attr name="v_bias" type="u16" val="0" /></obj>
+ <obj class="DaphneV2BoardConf" id="daphne-v2-default-board">
+  <rel name="default_channel" class="DaphneV2Channel" id="daphne-v2-default-channel" />
+  <rel name="default_afe" class="DaphneV2AFE" id="daphne-v2-default-afe" />
+ <attr name="bias_ctrl" type="u16" val="0" /></obj>
+ <obj class="DaphneV2BoardConf" id="daphne_mezz-daphne-m2-004-conf">
+  <attr name="bias_ctrl" type="u16" val="0" />
+  <attr name="self_trigger_threshold" type="u64" val="16" />
+  <attr name="self_trigger_xcorr" type="u64" val="0" />
+  <attr name="tp_conf" type="u32" val="17881857" />
+  <attr name="address" type="string" val="10.73.137.113" />
+  <attr name="slot_id" type="u16" val="2" />
+  <attr name="crate_id" type="u16" val="4" />
+  <attr name="detector_id" type="u16" val="8" />
+  <rel name="active_channels">
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-0" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-1" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-2" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-3" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-4" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-5" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-6" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-7" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-8" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-9" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-10" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-11" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-12" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-13" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-14" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-15" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-16" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-17" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-18" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-19" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-20" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-21" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-22" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-23" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-24" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-25" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-26" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-27" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-28" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-29" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-30" />
+   <ref class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-31" />
+  </rel>
+  <rel name="active_afes">
+   <ref class="DaphneV2AFE" id="daphne_mezz-daphne-m2-004-afe-0" />
+   <ref class="DaphneV2AFE" id="daphne_mezz-daphne-m2-004-afe-1" />
+   <ref class="DaphneV2AFE" id="daphne_mezz-daphne-m2-004-afe-2" />
+   <ref class="DaphneV2AFE" id="daphne_mezz-daphne-m2-004-afe-3" />
+   <ref class="DaphneV2AFE" id="daphne_mezz-daphne-m2-004-afe-4" />
+  </rel>
+  <rel name="default_channel" class="DaphneV2Channel" id="daphne-v2-default-channel" />
+  <rel name="default_afe" class="DaphneV2AFE" id="daphne-v2-default-afe" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne-v2-default-channel">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="100" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-0">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="0" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-1">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="1" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-10">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="1635" />
+  <attr name="channel_id" type="u8" val="10" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-11">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="1635" />
+  <attr name="channel_id" type="u8" val="11" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-12">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="1635" />
+  <attr name="channel_id" type="u8" val="12" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-13">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="1635" />
+  <attr name="channel_id" type="u8" val="13" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-14">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="1635" />
+  <attr name="channel_id" type="u8" val="14" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-15">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="1635" />
+  <attr name="channel_id" type="u8" val="15" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-16">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="16" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-17">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="17" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-18">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="18" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-19">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="19" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-2">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="2" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-20">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="20" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-21">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="21" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-22">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="22" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-23">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="23" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-24">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="24" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-25">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="25" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-26">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="26" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-27">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="27" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-28">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="28" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-29">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="29" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-3">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="3" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-30">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="30" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-31">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="31" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-4">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="4" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-5">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="5" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-6">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="6" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-7">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="2250" />
+  <attr name="channel_id" type="u8" val="7" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-8">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="1635" />
+  <attr name="channel_id" type="u8" val="8" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2Channel" id="daphne_mezz-daphne-m2-004-channel-9">
+  <attr name="gain" type="u8" val="1" />
+  <attr name="offset" type="u16" val="1635" />
+  <attr name="channel_id" type="u8" val="9" />
+  <attr name="stream_id" type="s8" val="-1" />
+ </obj>
+ <obj class="DaphneV2LNA" id="daphne-v2-default-lna">
+  <attr name="integrator_disable" type="bool" val="1" />
+  <attr name="gain" type="u8" val="2" />
+ </obj>
+ <obj class="DaphneV2LNA" id="daphne_mezz-daphne-m2-004-lna-0">
+  <attr name="integrator_disable" type="bool" val="1" />
+  <attr name="gain" type="u8" val="2" />
+ </obj>
+ <obj class="DaphneV2LNA" id="daphne_mezz-daphne-m2-004-lna-1">
+  <attr name="integrator_disable" type="bool" val="1" />
+  <attr name="gain" type="u8" val="2" />
+ </obj>
+ <obj class="DaphneV2LNA" id="daphne_mezz-daphne-m2-004-lna-2">
+  <attr name="integrator_disable" type="bool" val="1" />
+  <attr name="gain" type="u8" val="2" />
+ </obj>
+ <obj class="DaphneV2LNA" id="daphne_mezz-daphne-m2-004-lna-3">
+  <attr name="integrator_disable" type="bool" val="1" />
+  <attr name="gain" type="u8" val="2" />
+ </obj>
+ <obj class="DaphneV2LNA" id="daphne_mezz-daphne-m2-004-lna-4">
+  <attr name="integrator_disable" type="bool" val="1" />
+  <attr name="gain" type="u8" val="2" />
+ </obj>
+ <obj class="DaphneV2PGA" id="daphne-v2-default-pga">
+  <attr name="lpf_cut_frequency" type="u8" val="4" />
+  <attr name="integrator_disable" type="bool" val="1" />
+  <attr name="gain" type="bool" val="0" />
+ </obj>
+ <obj class="DaphneV2PGA" id="daphne_mezz-daphne-m2-004-pga-0">
+  <attr name="lpf_cut_frequency" type="u8" val="4" />
+  <attr name="integrator_disable" type="bool" val="1" />
+  <attr name="gain" type="bool" val="0" />
+ </obj>
+ <obj class="DaphneV2PGA" id="daphne_mezz-daphne-m2-004-pga-1">
+  <attr name="lpf_cut_frequency" type="u8" val="4" />
+  <attr name="integrator_disable" type="bool" val="1" />
+  <attr name="gain" type="bool" val="0" />
+ </obj>
+ <obj class="DaphneV2PGA" id="daphne_mezz-daphne-m2-004-pga-2">
+  <attr name="lpf_cut_frequency" type="u8" val="4" />
+  <attr name="integrator_disable" type="bool" val="1" />
+  <attr name="gain" type="bool" val="0" />
+ </obj>
+ <obj class="DaphneV2PGA" id="daphne_mezz-daphne-m2-004-pga-3">
+  <attr name="lpf_cut_frequency" type="u8" val="4" />
+  <attr name="integrator_disable" type="bool" val="1" />
+  <attr name="gain" type="bool" val="0" />
+ </obj>
+ <obj class="DaphneV2PGA" id="daphne_mezz-daphne-m2-004-pga-4">
+  <attr name="lpf_cut_frequency" type="u8" val="4" />
+  <attr name="integrator_disable" type="bool" val="1" />
+  <attr name="gain" type="bool" val="0" />
+ </obj>
+ <obj class="Service" id="daphne-m2-004-app_control">
+  <attr name="protocol" type="string" val="rest" />
+  <attr name="port" type="u16" val="0" />
+ </obj>
+</oks-data>

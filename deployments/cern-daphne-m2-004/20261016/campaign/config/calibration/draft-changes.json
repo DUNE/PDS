@@ -1,0 +1,218 @@
+[
+  {
+    "object": "DaphneMapEntry@daphne_mezz-daphne-m2-004-conf",
+    "field": "key",
+    "before": "8.4.1",
+    "after": "8.4.2"
+  },
+  {
+    "object": "DaphneV2BoardConf@daphne_mezz-daphne-m2-004-conf",
+    "field": "address",
+    "before": "10.73.137.16",
+    "after": "10.73.137.113"
+  },
+  {
+    "object": "DaphneV2BoardConf@daphne_mezz-daphne-m2-004-conf",
+    "field": "detector_id",
+    "before": "8",
+    "after": "8"
+  },
+  {
+    "object": "DaphneV2BoardConf@daphne_mezz-daphne-m2-004-conf",
+    "field": "crate_id",
+    "before": "4",
+    "after": "4"
+  },
+  {
+    "object": "DaphneV2BoardConf@daphne_mezz-daphne-m2-004-conf",
+    "field": "slot_id",
+    "before": "1",
+    "after": "2"
+  },
+  {
+    "object": "DetectorStream@np04-pdsm2-004-s00-sid804",
+    "field": "source_id",
+    "before": "800",
+    "after": "804"
+  },
+  {
+    "object": "DetectorStream@np04-pdsm2-004-s00-sid805",
+    "field": "source_id",
+    "before": "801",
+    "after": "805"
+  },
+  {
+    "object": "DetectorStream@np04-pdsm2-004-unused-link1-sid806",
+    "field": "source_id",
+    "before": "802",
+    "after": "806"
+  },
+  {
+    "object": "DetectorStream@np04-pdsm2-004-unused-link1-sid807",
+    "field": "source_id",
+    "before": "803",
+    "after": "807"
+  },
+  {
+    "object": "GeoId@np04-pdsm2-004-s00",
+    "field": "detector_id",
+    "before": "8",
+    "after": "8"
+  },
+  {
+    "object": "GeoId@np04-pdsm2-004-s00",
+    "field": "crate_id",
+    "before": "4",
+    "after": "4"
+  },
+  {
+    "object": "GeoId@np04-pdsm2-004-s00",
+    "field": "slot_id",
+    "before": "1",
+    "after": "2"
+  },
+  {
+    "object": "GeoId@np04-pdsm2-004-s01",
+    "field": "detector_id",
+    "before": "8",
+    "after": "8"
+  },
+  {
+    "object": "GeoId@np04-pdsm2-004-s01",
+    "field": "crate_id",
+    "before": "4",
+    "after": "4"
+  },
+  {
+    "object": "GeoId@np04-pdsm2-004-s01",
+    "field": "slot_id",
+    "before": "1",
+    "after": "2"
+  },
+  {
+    "object": "GeoId@np04-pdsm2-004-unused-link1-s02",
+    "field": "detector_id",
+    "before": "8",
+    "after": "8"
+  },
+  {
+    "object": "GeoId@np04-pdsm2-004-unused-link1-s02",
+    "field": "crate_id",
+    "before": "4",
+    "after": "4"
+  },
+  {
+    "object": "GeoId@np04-pdsm2-004-unused-link1-s02",
+    "field": "slot_id",
+    "before": "1",
+    "after": "2"
+  },
+  {
+    "object": "GeoId@np04-pdsm2-004-unused-link1-s03",
+    "field": "detector_id",
+    "before": "8",
+    "after": "8"
+  },
+  {
+    "object": "GeoId@np04-pdsm2-004-unused-link1-s03",
+    "field": "crate_id",
+    "before": "4",
+    "after": "4"
+  },
+  {
+    "object": "GeoId@np04-pdsm2-004-unused-link1-s03",
+    "field": "slot_id",
+    "before": "1",
+    "after": "2"
+  },
+  {
+    "object": "SourceIDConf@pds-test-tp-source",
+    "field": "sid",
+    "before": "900",
+    "after": "904"
+  },
+  {
+    "object": "NetworkInterface@nw-np04-daphne-m2-004-d0",
+    "field": "mac_address",
+    "before": "DE:AD:BE:EF:CA:FE",
+    "after": "00:80:55:DE:02:25"
+  },
+  {
+    "object": "Session@pds-m2-004",
+    "field": "log_path",
+    "before": "/log",
+    "after": "/nfs/home/np04daq/vst/daphne-m2-004-offset2250-all32-20261016/logs/calibration"
+  },
+  {
+    "object": "ReadoutApplication@runp02srv001eth1",
+    "field": "tp_generation_enabled",
+    "before": "0",
+    "after": "0"
+  },
+  {
+    "object": "ReadoutApplication@runp02srv001eth1",
+    "field": "ta_generation_enabled",
+    "before": "0",
+    "after": "0"
+  },
+  {
+    "object": "RandomTCMakerConf@random-tc-generator",
+    "field": "trigger_rate_hz",
+    "before": "0.5",
+    "after": "0.5"
+  },
+  {
+    "object": "TCReadoutMap@tc-map-random",
+    "field": "time_before",
+    "before": "125000000",
+    "after": "125000000"
+  },
+  {
+    "object": "TCReadoutMap@tc-map-random",
+    "field": "time_after",
+    "before": "0",
+    "after": "0"
+  },
+  {
+    "object": "SubdetectorReadoutWindowMap@pds-with-TPC-cathode",
+    "field": "time_before",
+    "before": "125000000",
+    "after": "125000000"
+  },
+  {
+    "object": "SubdetectorReadoutWindowMap@pds-with-TPC-cathode",
+    "field": "time_after",
+    "before": "0",
+    "after": "0"
+  },
+  {
+    "object": "SubdetectorReadoutWindowMap@pds-with-TPC-membrane",
+    "field": "time_before",
+    "before": "125000000",
+    "after": "125000000"
+  },
+  {
+    "object": "SubdetectorReadoutWindowMap@pds-with-TPC-membrane",
+    "field": "time_after",
+    "before": "0",
+    "after": "0"
+  },
+  {
+    "object": "TRBConf@trb-01",
+    "field": "max_sequence_length_ticks",
+    "before": "125000000",
+    "after": "125000000"
+  },
+  {
+    "object": "DataStoreConf@tr-data1",
+    "field": "directory_path",
+    "before": "/nfs/home/np04daq/vst/daphne-m2-004-cal2-20261008/data/raw-first-run",
+    "after": "/nfs/home/np04daq/vst/daphne-m2-004-offset2250-all32-20261016/data/calibration/raw"
+  },
+  {
+    "object": "DataStoreConf@default_tp_store_conf",
+    "field": "directory_path",
+    "before": "/data3",
+    "after": "/nfs/home/np04daq/vst/daphne-m2-004-offset2250-all32-20261016/data/calibration/primitives"
+  }
+]

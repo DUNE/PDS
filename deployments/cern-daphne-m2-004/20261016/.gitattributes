@@ -1,0 +1,9 @@
+# This is a byte-preserved recovery snapshot: do not normalize line endings.
+** -text
+# Captured code, patches and evidence retain their original whitespace/hashes.
+campaign/** -whitespace
+environment/** -whitespace
+guide/evidence/** -whitespace
+guide/support/** -whitespace
+protobuf/** -whitespace
+board/** -whitespace

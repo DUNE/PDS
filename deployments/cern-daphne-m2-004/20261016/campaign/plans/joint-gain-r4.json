@@ -1,0 +1,85 @@
+{
+  "scan_id": "m2-004-joint-gain-offset2250-r4",
+  "run_number": 45371,
+  "gains": [
+    500,
+    1000,
+    1500,
+    2000,
+    2500
+  ],
+  "afes": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "channels": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+  ],
+  "offset": 2250,
+  "source_ids": [
+    804,
+    805,
+    806,
+    807
+  ],
+  "window_s": 2,
+  "clock_hz": 62500000,
+  "daq_trigger_hz": 0.5,
+  "timing": {
+    "master": "GIB",
+    "connections": "/nfs/sw/dunedaq/timing/connections.xml",
+    "generator": 1,
+    "command_id": 7,
+    "rate_hz": 6000
+  },
+  "illumination": {
+    "settings": {
+      "led_bias_270nm": 4095,
+      "led_bias_367nm": 0,
+      "led_width_ticks": 8,
+      "led_second_width_ticks": 1,
+      "led_double_pulse_delay_ticks": 4000,
+      "led_channel_mask": 7,
+      "led_burst_count": 1
+    },
+    "timing": {
+      "domain": "ssp-boreas-tlu-np04",
+      "command_id": 7
+    }
+  },
+  "board_endpoint": "tcp://np04-daphne-m2-004.cern.ch:40001",
+  "scope": "SSP commands and register readback on BOREAS; DAPHNE acquisition on GIB; no optical coupling"
+}

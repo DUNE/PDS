@@ -1,0 +1,278 @@
+{
+  "/etc/daphne-board-config.json": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 559,
+    "sha256": "f77da345d3fc2c331ba5eca10b7b1108e68980213c16376061719be65daecc08"
+  },
+  "/etc/daphne-board.env": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 23,
+    "sha256": "fa9e47f783e0cdb6702c78755795d5f689274c0bdb7c0dcbf513c56af13c7623"
+  },
+  "/etc/daphne-gateware/default-profile": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 22,
+    "sha256": "6000513a2bf7a2cb8337b7407212ab800b0bdf000e052eb28e7df729b5e1157c"
+  },
+  "/etc/daphne-gateware/profiles/full-stream.conf": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 343,
+    "sha256": "fb06fc86f9e6693df6f7b7624b68fd097c07fab58ab3f60712dab34430a92ff0"
+  },
+  "/etc/daphne-gateware/profiles/self-trigger-1024.conf": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 353,
+    "sha256": "88c58accbd4283a7309af4206f9a06453295a163a6d53cd346e1b4d0ab98d20c"
+  },
+  "/etc/daphne-gateware/profiles/self-trigger-256-cal2.conf": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 207,
+    "sha256": "3c72fc2d006e2bd56d302ade826d4022365ec1c21a73385f747485690c53a8ef"
+  },
+  "/etc/daphne-gateware/profiles/self-trigger.conf": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 348,
+    "sha256": "12808c3798dabbad14e87407ba500b3053abe0003a1ec0158b19d256b6454441"
+  },
+  "/etc/systemd/network/10-daphne-fixture.network": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 174,
+    "sha256": "3a9193e0d2b54c15fbc1db39ded5dd9c5ab9c09741f9456a58e74c554c7719ef"
+  },
+  "/etc/systemd/system/daphne-management-optical.service": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 355,
+    "sha256": "630594e3a394fd742fc7cafb71bf2dc6e27e089374821f9a25ea649da6c414a2"
+  },
+  "/etc/systemd/system/daphne.service.d/85-vst-frame-monitor.conf": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 237,
+    "sha256": "bbf0c06a4afb6b00d218947eb72e2f85c2bd38a130ee9544c418869506e28726"
+  },
+  "/etc/systemd/system/hermes.service.d/80-vst-reply-count.conf": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 142,
+    "sha256": "ffa75205beb2edd3461613ecfe691902d8b23c0d078d47de55dd84c3da714461"
+  },
+  "/lib/firmware/xilinx/daphne_fullstream_ol_b24e416/BUILD-METADATA.txt": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 460,
+    "sha256": "a1a9db76069618582329e4fe1705a4fbd8c6a3dc66526d8c9c14dbd47e6ecb92"
+  },
+  "/lib/firmware/xilinx/daphne_fullstream_ol_b24e416/SHA256SUMS": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 361,
+    "sha256": "1e365c9d6edbe07c4facb9446672d01bb16bd3871cfd20ac0267d1f57c7b596c"
+  },
+  "/lib/firmware/xilinx/daphne_fullstream_ol_b24e416/daphne_fullstream_ol_b24e416.bin": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 7797692,
+    "sha256": "e6314d925f4263a2a93e348d1bf13e856f785cb315da1b526d3238281f2934a7"
+  },
+  "/lib/firmware/xilinx/daphne_fullstream_ol_b24e416/daphne_fullstream_ol_b24e416.dtbo": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 9847,
+    "sha256": "15f80faaf87294f48690a4f04412a76ed918694cba59fc7364503b9670a41f8c"
+  },
+  "/lib/firmware/xilinx/daphne_fullstream_ol_b24e416/shell.json": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 48,
+    "sha256": "c4a262e0dc8fdb6271ea495c609bd585f085f525b59c913041eae1ca94f790a9"
+  },
+  "/lib/firmware/xilinx/daphne_selftrigger_ol_3f17f1b/BUILD-METADATA.txt": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 465,
+    "sha256": "3210df1eec6ce4d3ae55ef34cf35eb31db1d7877245418ecb603541c0f0efd9f"
+  },
+  "/lib/firmware/xilinx/daphne_selftrigger_ol_3f17f1b/SHA256SUMS": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 363,
+    "sha256": "6b364ab729ffa64c268a0adc41d0d87155524e451c44bb7212f08d8d09332fdc"
+  },
+  "/lib/firmware/xilinx/daphne_selftrigger_ol_3f17f1b/daphne_selftrigger_ol_3f17f1b.bin": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 7797692,
+    "sha256": "c64291ab0a513f2a8eb39c298bfdf45098dc0d9c75aca211cd189a8628a7a08e"
+  },
+  "/lib/firmware/xilinx/daphne_selftrigger_ol_3f17f1b/daphne_selftrigger_ol_3f17f1b.dtbo": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 9661,
+    "sha256": "e872aedaf0bcb1f7e6145c1de5fda007e4942d4081b5c48c9e286935b6a83138"
+  },
+  "/lib/firmware/xilinx/daphne_selftrigger_ol_3f17f1b/shell.json": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 48,
+    "sha256": "c4a262e0dc8fdb6271ea495c609bd585f085f525b59c913041eae1ca94f790a9"
+  },
+  "/lib/firmware/xilinx/daphne_selftrigger_ol_93e0579/daphne_selftrigger_ol_93e0579.bin": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 7797692,
+    "sha256": "3e91c1dfa956776b18f6dc90d58179d5552b70ae99639fd36b64809fed68ab8a"
+  },
+  "/lib/firmware/xilinx/daphne_selftrigger_ol_93e0579/daphne_selftrigger_ol_93e0579.dtbo": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 9661,
+    "sha256": "828e42e8e467d0208b895fa63e3274a5bfc3446c0668c5984d00301087273e21"
+  },
+  "/lib/firmware/xilinx/daphne_selftrigger_ol_93e0579/shell.json": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 48,
+    "sha256": "c4a262e0dc8fdb6271ea495c609bd585f085f525b59c913041eae1ca94f790a9"
+  },
+  "/opt/daphne-server/cal2-vst-frame-monitor-20261008/bin/daphneServer": {
+    "mode": "0o755",
+    "symlink": null,
+    "bytes": 2558712,
+    "sha256": "6b786fa74f6c73e8f23af957bd5f55746b9a5774bc7913c0a37eef439505f82c"
+  },
+  "/usr/bin/daphneServer": {
+    "mode": "0o755",
+    "symlink": null,
+    "bytes": 1922904,
+    "sha256": "b9a39a5f4d381329e25cd7b98ea00c86b12ed550d7957dd6e071a534e64c56d7"
+  },
+  "/usr/bin/hermes_udp_srv": {
+    "mode": "0o755",
+    "symlink": null,
+    "bytes": 68416,
+    "sha256": "aad491f7b9bf21165ae3f190fa0db16f58ae0e5e801a4499e95429f0d4eb2f3b"
+  },
+  "/usr/bin/xlnx-firmware-load": {
+    "mode": "0o755",
+    "symlink": null,
+    "bytes": 3452,
+    "sha256": "b03c6aa8caa4d69dc7eb1f0c69d5b8fbf98f0503441b06dd5efdad5004b55c8d"
+  },
+  "/usr/lib/daphne-server/libprotobuf.so": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 3581568,
+    "sha256": "1881db9bd82e9c58419e18e60a66fc3e9b38a556e20f4cad97f17f8ad7e00529"
+  },
+  "/usr/lib/daphne-server/libprotobuf.so.30.1.0": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 3581576,
+    "sha256": "019498b7a3604cdf226e9ca5dc7c85cc49bfafbb5349ed67cb598c2103ab469e"
+  },
+  "/usr/lib/daphne-server/libutf8_validity.so": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 67512,
+    "sha256": "2ac99f2c8fa81fa40b58fd056f6f93f8b8e7ae2f5a366a5985c84c8461f05881"
+  },
+  "/usr/lib/daphne-server/libutf8_validity.so.30.1.0": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 67520,
+    "sha256": "4e3f7d59a730979292156c9966789bdc7707925a2ea939f82f339017c37dc84a"
+  },
+  "/usr/lib/daphne-server/libzmq.so": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 724448,
+    "sha256": "05f15df2ffc62c0cc71b373a8e66cc3096a6a08f2be5d291a3b89db754b1a903"
+  },
+  "/usr/lib/daphne-server/libzmq.so.5": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 724448,
+    "sha256": "102e91f13d3bf24a23a25f8fe045eb2fd7546354338538966b598206b5ae9dd3"
+  },
+  "/usr/lib/daphne-server/libzmq.so.5.2.4": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 724456,
+    "sha256": "47bbbf02c3cc1fe143a6b2651cd52318184d35cc271335a5fb839416c1c1b3cd"
+  },
+  "/usr/lib/systemd/system/clockchip.service": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 540,
+    "sha256": "ed6507e3e3d96eb17956e8e92ff5d1bc62db4f44c522c5e34523be3470bb134b"
+  },
+  "/usr/lib/systemd/system/daphne-boot-ok.service": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 330,
+    "sha256": "707f57e47326f397a30719b5aadc05141fc40ac3c08028db077e0af0efbdaa1b"
+  },
+  "/usr/lib/systemd/system/daphne-gateware-prepare.service": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 242,
+    "sha256": "fc568ef958fe7913ed9fdc5def6b8cb63f7ba16041caf0f5204460719eb28968"
+  },
+  "/usr/lib/systemd/system/daphne-gateware-verify.service": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 377,
+    "sha256": "687d917d6d72bf6f2c83ddbc53b9ea55de3cbf37c711404b5023b9617c224902"
+  },
+  "/usr/lib/systemd/system/daphne-runtime.target": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 432,
+    "sha256": "1ddf7524861b224148d25fd7413429a84dc790a4a9f010a85568cb6f4d488e36"
+  },
+  "/usr/lib/systemd/system/daphne.service": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 846,
+    "sha256": "82bc6b0f764778ff7c1b8dace829d793c2f55231464f0069dd0d2b1e7f949356"
+  },
+  "/usr/lib/systemd/system/endpoint.service": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 485,
+    "sha256": "8a0480cb161caca9a9abb1cdb31e04f0b13e6529a6ba8b87373e7f98bf38037b"
+  },
+  "/usr/lib/systemd/system/firmware.service": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 708,
+    "sha256": "5431d2ea1bb0a181197ab785eecb23fe428df1090ef0f530c65b74b0732be387"
+  },
+  "/usr/lib/systemd/system/hermes.service": {
+    "mode": "0o644",
+    "symlink": null,
+    "bytes": 582,
+    "sha256": "e44e85133463eee13158e819c9eccb74dc4ac7ae481378967391135a87c89788"
+  },
+  "/usr/local/sbin/daphne-management-optical.sh": {
+    "mode": "0o755",
+    "symlink": null,
+    "bytes": 540,
+    "sha256": "6769fbb680be35330b49664657bc60c29168d246f944c752ed1c67aa8261b37b"
+  },
+  "/usr/sbin/daphne-gateware": {
+    "mode": "0o755",
+    "symlink": null,
+    "bytes": 22852,
+    "sha256": "b5c37e041ffff535e5fb33b5e462075aeb2a9f27331b207d9fadde386eb67ae2"
+  }
+}

@@ -1,0 +1,32 @@
+diff --git a/README.md b/README.md
+index ae7f9f2..f84ebf2 100644
+--- a/README.md
++++ b/README.md
+@@ -7,6 +7,13 @@ runtime scans**, on branch `marroyav/calibration`. Use `pds-calibrate` and the
+ [calibration recipe](docs/calibration-scans.md) to select channels, change settings,
+ and label complete stable DAQ windows. The server remains a hardware bridge.
+ 
++For a first CERN setup, follow the
++[beginner guide to DAPHNE15 calibration](docs/cern-daphne15-beginners-guide.md).
++It covers login, the DAQ build, repository downloads, both terminal environments,
++configuration, board readiness, acquisition, and troubleshooting.
++The guide also explains the shared `np04daq` tmux session and its
++[VST launcher](tools/vst-tmux.sh).
++
+ The older run-per-point calibration commands are deprecated. Ordinary run startup,
+ configuration generation and hardware configuration remain available.
+ 
+diff --git a/docs/calibration-scans.md b/docs/calibration-scans.md
+index 5915fd9..6e16357 100644
+--- a/docs/calibration-scans.md
++++ b/docs/calibration-scans.md
+@@ -2,6 +2,9 @@
+ 
+ This is the canonical calibration technique on `marroyav/calibration`.
+ 
++For commands to copy into a CERN terminal, start with the
++[DAPHNE15 beginner guide](cern-daphne15-beginners-guide.md).
++
+ SC/CCM runs the coordinator. The DAPHNE server forwards hardware access and
+ stores no scan, previous settings or automatic return policy. The DAQ runs once
+ through the entire scan; no configuration file is rewritten between points.

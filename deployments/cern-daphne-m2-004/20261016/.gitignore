@@ -1,0 +1,4 @@
+# Preserve the reviewed handoff PDFs, plots, and small evidence logs here.
+!**/*.pdf
+!**/*.png
+!**/*.log

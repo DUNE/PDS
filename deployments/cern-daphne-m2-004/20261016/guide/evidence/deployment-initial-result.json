@@ -1,0 +1,278 @@
+{
+  "recorded_utc": "2026-10-16T13:49:29.889027+00:00",
+  "board": "DAPHNE-M2-004 replacing DAPHNE-15",
+  "host": "np04-onl-004",
+  "management_ipv4": "10.73.137.113",
+  "firmware": {
+    "active_profile": "self-trigger-256-cal2",
+    "build": "0x093e0579",
+    "source_commit": "93e05798ac1680b254760146974e95891863d2eb",
+    "bin_sha256": "3e91c1dfa956776b18f6dc90d58179d5552b70ae99639fd36b64809fed68ab8a",
+    "dtbo_sha256": "828e42e8e467d0208b895fa63e3274a5bfc3446c0668c5984d00301087273e21",
+    "selectable_profiles": [
+      "self-trigger-256-cal2",
+      "self-trigger-1024",
+      "full-stream"
+    ]
+  },
+  "timing": {
+    "endpoint": "0x16",
+    "clock_source": "endpoint",
+    "locked": true,
+    "state": 8,
+    "timestamp_valid": true,
+    "alignment_workaround": "After standard GIB apply_endpoint_delay/resync, send endpoint 0x16 register 0x70 command 3 to restore ddone. Pinned endpoint clears ddone on command 4, unlike upstream v7.8.",
+    "packet": [
+      22,
+      0,
+      171,
+      240,
+      129,
+      259
+    ],
+    "command": "GIB.master.transmit_async_packet(packet, -1)",
+    "skips_used": false
+  },
+  "network_qualification": {
+    "management": "Optical Base-X/AN configured live and persisted via oneshot; no reboot verification.",
+    "data": "Both physical links ready; acquisition verified on link0/source804 only.",
+    "firmware_limit": "Fixed data source IPs 192.168.0.100/101, MACs DE:AD:BE:EF:CA:FE/FF. CERN DNS assignments remain reserved. Private DAQ filters adapted to actual firmware constants. Legacy UDP counters are intentionally zero in fixed-record sender; reset_n address-table field is unused."
+  },
+  "calibration": {
+    "run": 45368,
+    "state": "scan_complete",
+    "final": {
+      "mode": "paused"
+    },
+    "steps": [
+      {
+        "vgain": 500,
+        "received_per_channel": {
+          "0": 11626,
+          "1": 11626,
+          "2": 11626,
+          "3": 11626,
+          "4": 11626,
+          "5": 11626,
+          "6": 11626,
+          "7": 11626
+        },
+        "verified": true,
+        "counters": {
+          "0": {
+            "records": 124335,
+            "busy": 0,
+            "full": 0
+          },
+          "1": {
+            "records": 124335,
+            "busy": 0,
+            "full": 0
+          },
+          "2": {
+            "records": 124335,
+            "busy": 0,
+            "full": 0
+          },
+          "3": {
+            "records": 124335,
+            "busy": 0,
+            "full": 0
+          },
+          "4": {
+            "records": 124335,
+            "busy": 0,
+            "full": 0
+          },
+          "5": {
+            "records": 124335,
+            "busy": 0,
+            "full": 0
+          },
+          "6": {
+            "records": 124335,
+            "busy": 0,
+            "full": 0
+          },
+          "7": {
+            "records": 124335,
+            "busy": 0,
+            "full": 0
+          }
+        },
+        "dataset": "/nfs/home/np04daq/vst/daphne-m2-004-20261016/data/calibration/afe0-smoke-20261016-r3/step-000.bin",
+        "bytes": 47620096,
+        "sha256": "e2785521c50add578fc787a7f37b5a9c06f7d3a0f809ad75e9ac2997af3eec39",
+        "hdf5": "/nfs/home/np04daq/vst/daphne-m2-004-20261016/data/calibration/raw/np02vd_raw_run045368_0027_df-s03-d1_dw_0_20261016T134807.hdf5",
+        "record_id": "(28, 0)"
+      },
+      {
+        "vgain": 1500,
+        "received_per_channel": {
+          "0": 11625,
+          "1": 11625,
+          "2": 11625,
+          "3": 11625,
+          "4": 11625,
+          "5": 11625,
+          "6": 11625,
+          "7": 11625
+        },
+        "verified": true,
+        "counters": {
+          "0": {
+            "records": 77130,
+            "busy": 0,
+            "full": 0
+          },
+          "1": {
+            "records": 77130,
+            "busy": 0,
+            "full": 0
+          },
+          "2": {
+            "records": 77130,
+            "busy": 0,
+            "full": 0
+          },
+          "3": {
+            "records": 77130,
+            "busy": 0,
+            "full": 0
+          },
+          "4": {
+            "records": 77130,
+            "busy": 0,
+            "full": 0
+          },
+          "5": {
+            "records": 77130,
+            "busy": 0,
+            "full": 0
+          },
+          "6": {
+            "records": 77130,
+            "busy": 0,
+            "full": 0
+          },
+          "7": {
+            "records": 77130,
+            "busy": 0,
+            "full": 0
+          }
+        },
+        "dataset": "/nfs/home/np04daq/vst/daphne-m2-004-20261016/data/calibration/afe0-smoke-20261016-r3/step-001.bin",
+        "bytes": 47616000,
+        "sha256": "f47e45858f2ec69b94c4604cc8cddc9855774b0ef89ac045006f6932dff9caaf",
+        "hdf5": "/nfs/home/np04daq/vst/daphne-m2-004-20261016/data/calibration/raw/np02vd_raw_run045368_0037_df-s03-d1_dw_0_20261016T134822.hdf5",
+        "record_id": "(38, 0)"
+      },
+      {
+        "vgain": 2500,
+        "received_per_channel": {
+          "0": 11626,
+          "1": 11626,
+          "2": 11626,
+          "3": 11626,
+          "4": 11626,
+          "5": 11626,
+          "6": 11626,
+          "7": 11626
+        },
+        "verified": true,
+        "counters": {
+          "0": {
+            "records": 70943,
+            "busy": 0,
+            "full": 0
+          },
+          "1": {
+            "records": 70943,
+            "busy": 0,
+            "full": 0
+          },
+          "2": {
+            "records": 70943,
+            "busy": 0,
+            "full": 0
+          },
+          "3": {
+            "records": 70943,
+            "busy": 0,
+            "full": 0
+          },
+          "4": {
+            "records": 70943,
+            "busy": 0,
+            "full": 0
+          },
+          "5": {
+            "records": 70943,
+            "busy": 0,
+            "full": 0
+          },
+          "6": {
+            "records": 70943,
+            "busy": 0,
+            "full": 0
+          },
+          "7": {
+            "records": 70943,
+            "busy": 0,
+            "full": 0
+          }
+        },
+        "dataset": "/nfs/home/np04daq/vst/daphne-m2-004-20261016/data/calibration/afe0-smoke-20261016-r3/step-002.bin",
+        "bytes": 47620096,
+        "sha256": "bc9f6da6aaafc99b18db5cd401230c1436762f7e32df24bc70ce0ddaf8335c9c",
+        "hdf5": "/nfs/home/np04daq/vst/daphne-m2-004-20261016/data/calibration/raw/np02vd_raw_run045368_0040_df-s03-d1_dw_0_20261016T134838.hdf5",
+        "record_id": "(41, 0)"
+      }
+    ],
+    "board": {
+      "timing": {
+        "clock_source": "endpoint",
+        "clocks_locked": true,
+        "endpoint_state": 8,
+        "timestamp_valid": true,
+        "endpoint_address": 22
+      },
+      "calibration_mask": 255,
+      "pause_mask": 255
+    },
+    "timing_generator_idle": {
+      "event": "inspected",
+      "clock_hz": 62500000,
+      "snapshot": {
+        "timestamp": 112009908472558249,
+        "accepted": 384564,
+        "rejected": 0
+      }
+    },
+    "raw_directory": "/nfs/home/np04daq/vst/daphne-m2-004-20261016/data/calibration/raw",
+    "dataset_directory": "/nfs/home/np04daq/vst/daphne-m2-004-20261016/data/calibration/afe0-smoke-20261016-r3",
+    "journal": "/nfs/home/np04daq/vst/daphne-m2-004-20261016/logs/afe0-smoke-20261016-r3.jsonl",
+    "qualification": "AFE0 electronics/calibration transport test with global bias code 0 and no positive AFE bias requests; not optical detector-gain qualification. Only link0/source804 acquired; both physical links reported ready."
+  },
+  "final_state": {
+    "daq": "Run 45368 stopped successfully; applications left configured in tmux pds-vst-m2-004-20261016 on np04-srv-017 as np04daq.",
+    "board": "AFE0 paused, CAL2 mask0xff pause0xff, vgain2500; timing locked valid, generator idle.",
+    "rebooted": false
+  },
+  "limits": [
+    "Electronics calibration/transport test, not detector optical gain qualification.",
+    "Only 256 profile exercised live this session.",
+    "Known DPDK shutdown destructor crash reproduced on first campaign shutdown (exit134); all first-run children terminated. Successful run45368 stop was clean; its apps remain configured."
+  ],
+  "evidence_paths": {
+    "remote_campaign": "np04-srv-017:/nfs/home/np04daq/vst/daphne-m2-004-20261016",
+    "local_campaign": "/home/arroyave/work/daphne-m2-004-deployment-20261016"
+  },
+  "acceptance_criteria": [
+    "Endpoint address0x16 ready state8, valid timestamp, locked endpoint clock.",
+    "Both 10G paths eth_rdy/udp_rdy/src_rdy=1.",
+    "Each vgain point has a complete two-second aligned per-channel timing waveform window, format4,512-byte frames,256 ADC samples.",
+    "Capture counters per enabled channel equal timing commands sent, busy/full delta0, master rejected0.",
+    "Dataset SHA256 matches receipt."
+  ]
+}

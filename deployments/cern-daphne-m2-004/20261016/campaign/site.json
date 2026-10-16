@@ -1,0 +1,107 @@
+{
+  "device": "NP04-DAPHNE-M2-004",
+  "label": "DAPHNE-004",
+  "control_host": "np04-daphne-m2-004.cern.ch",
+  "control_ipv4": "10.73.137.113",
+  "control_mac": "00:0A:35:24:05:30",
+  "control_port": 40001,
+  "timing_endpoint": 22,
+  "timing_endpoint_hex": "0x16",
+  "geometry": {
+    "detector": 8,
+    "crate": 4,
+    "slot": 2
+  },
+  "session": "pds-m2-004",
+  "operator_host": "np04-srv-017",
+  "account": "np04daq",
+  "data_subnet": "10.73.139.0/24",
+  "ip_service": "0887-RV4-IP14",
+  "data_links": [
+    {
+      "link": 0,
+      "mac": "00:80:55:DE:02:25",
+      "hostname": "np04-daphne-m2-004-d0.cern.ch",
+      "ipv4": "10.73.139.156",
+      "request_id": "CR219789418",
+      "request_status": "DNS assignment verified 2026-10-16"
+    },
+    {
+      "link": 1,
+      "mac": "00:80:55:DE:02:26",
+      "hostname": "np04-daphne-m2-004-d1.cern.ch",
+      "ipv4": "10.73.139.159",
+      "request_id": "CR219789573",
+      "request_status": "DNS assignment verified 2026-10-16"
+    },
+    {
+      "link": 2,
+      "mac": "00:80:55:DE:02:27",
+      "hostname": "np04-daphne-m2-004-d2.cern.ch",
+      "ipv4": "10.73.139.160",
+      "request_id": "CR219789584",
+      "request_status": "DNS assignment verified 2026-10-16"
+    },
+    {
+      "link": 3,
+      "mac": "00:80:55:DE:02:28",
+      "hostname": "np04-daphne-m2-004-d3.cern.ch",
+      "ipv4": "10.73.139.154",
+      "request_id": "CR219789598",
+      "request_status": "DNS assignment verified 2026-10-16"
+    }
+  ],
+  "draft_topology": {
+    "physical_links_declared": 2,
+    "sources_per_link": 2,
+    "active_link": "both",
+    "active_streams": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "source_ids_by_stream": {
+      "0": 804,
+      "1": 805,
+      "2": 806,
+      "3": 807
+    },
+    "tp_source_id": 904,
+    "reason": "All32 supported firmware channels across two physical links; per-AFE sequential scans."
+  },
+  "firmware": {
+    "required_magic": "0x44415048",
+    "required_abi": "0x00020000",
+    "required_calibration_capability": "0x43414c32",
+    "required_frame_version": 4,
+    "required_frame_bytes": 512,
+    "observed_build": "0x093e0579",
+    "verified": true,
+    "observed_mgt_count": 2,
+    "observed_sources_per_link": 2,
+    "data_address_limit": "Pinned 93e0579 fixed-record sender uses constant source IP 192.168.0.100/101 and MAC DE:AD:BE:EF:CA:FE/FF. CERN data reservations retained separately; private DAQ filters use actual firmware constants."
+  },
+  "review": {
+    "analog_settings_confirmed": true,
+    "timing_generator_reserved": true,
+    "timing_reservation_note": "Preflight free; exclusive lease reacquired by scan, not held between checks",
+    "offset_scan_note": "All board channel offsets2250. Firmware channels0..31 correspond to board AFE0,4,3,2; physical AFE1 is absent from this firmware."
+  },
+  "state": "READY",
+  "environment": {
+    "daq": "/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930",
+    "pds_checkout": "/nfs/home/np04daq/calib/control/PDS",
+    "pds_venv": "/nfs/home/np04daq/calib/control/venv",
+    "protobuf": "/nfs/home/np04daq/calib/control/python"
+  },
+  "inherited_placement": {
+    "frontend_wrapper": "np04-srv-013",
+    "readout": "np02-srv-001",
+    "readout_ipv4": "10.73.139.121",
+    "writer": "np04-srv-003"
+  },
+  "known_environment_limitations": [
+    "DAPHNE-15 test found an unresolved DPDK IfaceWrapper shutdown crash; this draft does not qualify that cleanup path."
+  ]
+}

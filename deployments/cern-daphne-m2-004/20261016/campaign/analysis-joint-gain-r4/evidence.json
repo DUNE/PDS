@@ -1,0 +1,75 @@
+{
+  "run": 45371,
+  "host": "np04-srv-017",
+  "command": "source runtime-env.sh; $PDS_VENV/bin/python -u run-joint-gain-r4.py; $PDS_VENV/bin/python -u decode-joint-gain-r4.py",
+  "hardware": "DAPHNE-M2-004; management 10.73.137.113; timing address 0x16; CAL2 build 0x093e0579",
+  "firmware_provenance_record": "/nfs/home/np04daq/vst/daphne-m2-004-20261016",
+  "offset_dac": 2250,
+  "gains": [
+    500,
+    1000,
+    1500,
+    2000,
+    2500
+  ],
+  "channels": 32,
+  "physical_links": 2,
+  "wire_stream_ids": [
+    0,
+    1,
+    64,
+    65
+  ],
+  "acceptance": {
+    "all_5_points_completed": true,
+    "all_32_channels_same_event_timestamps": true,
+    "no_missing_or_duplicate_waveforms_in_selected_windows": true,
+    "all_channel_hardware_records_equal_accepted_master_commands": true,
+    "no_busy_or_full_drops": true,
+    "no_rejected_GIB_commands": true,
+    "all_SSP_settings_read_back": true,
+    "SSP_counter_increases_each_point": true,
+    "official_decoder_crosscheck_all_channels_each_gain": true,
+    "DAPHNE_endpoint_final_state": {
+      "clock_source": "endpoint",
+      "clocks_locked": true,
+      "endpoint_state": 8,
+      "timestamp_valid": true,
+      "endpoint_address": 22
+    },
+    "final_pause_mask": 4294967295,
+    "SSP_LED_registers_disabled": true
+  },
+  "limitations": [
+    "SSP and DAPHNE use different timing masters; no optical coupling or shared timing qualification.",
+    "Analog values acknowledged by server; ADC data independently decoded; detector response and physical gain are unqualified.",
+    "Optical management persistence is configured but not reboot tested.",
+    "Pinned firmware uses fixed data IP/MAC addresses instead of CERN data registrations."
+  ],
+  "input_output_sha256": {
+    "run-joint-gain-r4.py": "db7eb53c32229acb092b0fd65ccb4fbc16dc5e46e95f3f2aade30bed2910b808",
+    "decode-joint-gain-r4.py": "6c9f8599c6a65437015683355f93238a7b85aedee4d0c55da1d31a8f88725622",
+    "acquisition_wire_ids.py": "43f31239c5fee7d44dd90299ab40b37ac0827aa64b7aec64a3f2e49ab18c4355",
+    "ssp_routine.py": "6a6d60fa5b11d54cf75ef67b051ecc88d23bbafb33e2a426b1c1fe4da3f067e5",
+    "ssp_led_control.py": "de10be0124e1c7089f1aea21b08a038b3ffc035fe28c20c043f7428511c1c68d",
+    "plans/joint-gain-r4.json": "62053dbc356f7f038449e1292d1511f4f77c678296f4bd4aa776803dbdc394ff",
+    "logs/joint-gain-r4.jsonl": "b8a719a9b7c08bbe8b9ac22171785fe87e6a979c1373e559eeafdc54d421a1ff",
+    "analysis-joint-gain-r4/analysis.json": "ecdddaee1a0b739828a6ee5457334b8fc6af2e6f1a8ff8209d5b2f90334842c5",
+    "analysis-joint-gain-r4/channel-statistics.csv": "c1d78e57e52787dadc84b66b3f4e643bec12f3b463349896e8a3d304c9e4c999",
+    "/nfs/home/np04daq/vst/daphne-m2-004-offset2250-all32-20261016/data/calibration/raw/np02vd_raw_run045371_0114_df-s03-d1_dw_0_20261016T142835.hdf5": "93ea55094305a41534359e4cfa3ef5d476971cc64de9d65243253007dbc90e37",
+    "/nfs/home/np04daq/vst/daphne-m2-004-offset2250-all32-20261016/data/calibration/raw/np02vd_raw_run045371_0117_df-s03-d1_dw_0_20261016T142849.hdf5": "e62b9eae5843c0faad25ab71cde732a5c9d20826aeafcb2c07d5acfcfe8ea1d3",
+    "/nfs/home/np04daq/vst/daphne-m2-004-offset2250-all32-20261016/data/calibration/raw/np02vd_raw_run045371_0123_df-s03-d1_dw_0_20261016T142903.hdf5": "63451c76e9b5701680b5996187d1c7b92aeb53bc0ed64e1f2a8afd1726c2b943",
+    "/nfs/home/np04daq/vst/daphne-m2-004-offset2250-all32-20261016/data/calibration/raw/np02vd_raw_run045371_0130_df-s03-d1_dw_0_20261016T142920.hdf5": "fa5e4e91c3f3f9a96f1422d77af9c6aaafec34fc5b30503b3796663c2599c17a",
+    "/nfs/home/np04daq/vst/daphne-m2-004-offset2250-all32-20261016/data/calibration/raw/np02vd_raw_run045371_0136_df-s03-d1_dw_0_20261016T142934.hdf5": "0443f85dbe56a0dce163bc6370cbaa8b8d1fe569eb5b35d620ff430569f1ddfa"
+  },
+  "source_revisions": {
+    "/nfs/home/np04daq/calib/control/PDS": {
+      "commit": "82fa12eeefef2d480fc23e869ad2c9c2bc54017b",
+      "status": " M README.md\n M docs/calibration-scans.md\n?? docs/cern-daphne15-beginners-guide.md\n?? docs/cern-vst-commands.txt\n?? tools/daphne15-status.py\n?? tools/vst-tmux.sh\n"
+    },
+    "/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930/sourcecode/fddetdataformats": {
+      "commit": "75451f42c049bf51132493075d61a1c884592425",
+      "status": ""
+    }
+  }
+}

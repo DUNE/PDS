@@ -1,0 +1,243 @@
+{
+  "confirmed": true,
+  "origin": "DAPHNE-15 reference values; review for M2-004 before conf",
+  "objects": {
+    "DaphneV2AFE@daphne-v2-default-afe": {
+      "afe_id": "100",
+      "attenuator": "2666"
+    },
+    "DaphneV2AFE@daphne_mezz-daphne-m2-004-afe-0": {
+      "afe_id": "0",
+      "attenuator": "2100"
+    },
+    "DaphneV2AFE@daphne_mezz-daphne-m2-004-afe-1": {
+      "afe_id": "1",
+      "attenuator": "2100"
+    },
+    "DaphneV2AFE@daphne_mezz-daphne-m2-004-afe-2": {
+      "afe_id": "2",
+      "attenuator": "2200",
+      "v_bias": "1176"
+    },
+    "DaphneV2AFE@daphne_mezz-daphne-m2-004-afe-3": {
+      "afe_id": "3",
+      "attenuator": "2000",
+      "v_bias": "814"
+    },
+    "DaphneV2AFE@daphne_mezz-daphne-m2-004-afe-4": {
+      "afe_id": "4",
+      "attenuator": "2000"
+    },
+    "DaphneV2BoardConf@daphne-v2-default-board": {},
+    "DaphneV2BoardConf@daphne_mezz-daphne-m2-004-conf": {
+      "bias_ctrl": "4095",
+      "self_trigger_threshold": "16",
+      "self_trigger_xcorr": "0",
+      "tp_conf": "17881857",
+      "address": "10.73.137.113",
+      "slot_id": "2",
+      "crate_id": "4",
+      "detector_id": "8"
+    },
+    "DaphneV2Channel@daphne-v2-default-channel": {
+      "gain": "1",
+      "offset": "2200",
+      "channel_id": "100",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-0": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "0",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-1": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "1",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-10": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "10",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-11": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "11",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-12": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "12",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-13": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "13",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-14": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "14",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-15": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "15",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-16": {
+      "gain": "1",
+      "offset": "1500",
+      "channel_id": "16",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-17": {
+      "gain": "1",
+      "offset": "1500",
+      "channel_id": "17",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-18": {
+      "gain": "1",
+      "offset": "1500",
+      "channel_id": "18",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-19": {
+      "gain": "1",
+      "offset": "1500",
+      "channel_id": "19",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-2": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "2",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-20": {
+      "gain": "1",
+      "offset": "1500",
+      "channel_id": "20",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-21": {
+      "gain": "1",
+      "offset": "1500",
+      "channel_id": "21",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-22": {
+      "gain": "1",
+      "offset": "1500",
+      "channel_id": "22",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-23": {
+      "gain": "1",
+      "offset": "1500",
+      "channel_id": "23",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-24": {
+      "gain": "1",
+      "offset": "1735",
+      "channel_id": "24",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-25": {
+      "gain": "1",
+      "offset": "1735",
+      "channel_id": "25",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-26": {
+      "gain": "1",
+      "offset": "1735",
+      "channel_id": "26",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-27": {
+      "gain": "1",
+      "offset": "1735",
+      "channel_id": "27",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-28": {
+      "gain": "1",
+      "offset": "1735",
+      "channel_id": "28",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-29": {
+      "gain": "1",
+      "offset": "1735",
+      "channel_id": "29",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-3": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "3",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-30": {
+      "gain": "1",
+      "offset": "1735",
+      "channel_id": "30",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-31": {
+      "gain": "1",
+      "offset": "1735",
+      "channel_id": "31",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-4": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "4",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-5": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "5",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-6": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "6",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-7": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "7",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-8": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "8",
+      "stream_id": "-1"
+    },
+    "DaphneV2Channel@daphne_mezz-daphne-m2-004-channel-9": {
+      "gain": "1",
+      "offset": "1635",
+      "channel_id": "9",
+      "stream_id": "-1"
+    }
+  },
+  "scope": "Electronics vgain smoke: global bias DAC code 0; all AFE bias requests 0. No positive detector-bias target requested; not SiPM gain or breakdown-voltage qualification.",
+  "reviewed_by": "Codex under user calibration-run authorization"
+}

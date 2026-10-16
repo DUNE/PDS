@@ -1,0 +1,86 @@
+{
+  "scan_id": "m2-004-offset2250-afe0",
+  "board_endpoint": "tcp://np04-daphne-m2-004.cern.ch:40001",
+  "afe": 0,
+  "channels": "enabled",
+  "variable": "vgain",
+  "values": [
+    500,
+    1500,
+    2500
+  ],
+  "settle_ms": 100,
+  "capture_tail_ms": 20,
+  "window_s": 2,
+  "daq_trigger_hz": 0.5,
+  "acquisition_timeout_s": 60,
+  "source_ids": [
+    804
+  ],
+  "timing": {
+    "master": "GIB",
+    "connections": "/nfs/sw/dunedaq/timing/connections.xml",
+    "generator": 1,
+    "command_id": 7,
+    "rate_hz": 6000
+  },
+  "final": {
+    "mode": "paused"
+  },
+  "settings": [
+    {
+      "variable": "offset",
+      "target": 0,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 1,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 2,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 3,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 4,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 5,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 6,
+      "value": 2250,
+      "gain": false
+    },
+    {
+      "variable": "offset",
+      "target": 7,
+      "value": 2250,
+      "gain": false
+    }
+  ],
+  "context": {
+    "offset": 2250,
+    "board_afe": 0,
+    "firmware_afe": 0,
+    "scope": "All32 firmware channels across two links; sequential AFE gain scans."
+  }
+}

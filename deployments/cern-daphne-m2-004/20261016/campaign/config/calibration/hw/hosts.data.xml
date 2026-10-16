@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="ASCII"?>
+
+<!-- oks-data version 2.2 -->
+
+
+<!DOCTYPE oks-data [
+  <!ELEMENT oks-data (info, (include)?, (comments)?, (obj)+)>
+  <!ELEMENT info EMPTY>
+  <!ATTLIST info
+      name CDATA #IMPLIED
+      type CDATA #IMPLIED
+      num-of-items CDATA #REQUIRED
+      oks-format CDATA #FIXED "data"
+      oks-version CDATA #REQUIRED
+      created-by CDATA #IMPLIED
+      created-on CDATA #IMPLIED
+      creation-time CDATA #IMPLIED
+      last-modified-by CDATA #IMPLIED
+      last-modified-on CDATA #IMPLIED
+      last-modification-time CDATA #IMPLIED
+  >
+  <!ELEMENT include (file)*>
+  <!ELEMENT file EMPTY>
+  <!ATTLIST file
+      path CDATA #REQUIRED
+  >
+  <!ELEMENT comments (comment)*>
+  <!ELEMENT comment EMPTY>
+  <!ATTLIST comment
+      creation-time CDATA #REQUIRED
+      created-by CDATA #REQUIRED
+      created-on CDATA #REQUIRED
+      author CDATA #REQUIRED
+      text CDATA #REQUIRED
+  >
+  <!ELEMENT obj (attr | rel)*>
+  <!ATTLIST obj
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+  <!ELEMENT attr (data)*>
+  <!ATTLIST attr
+      name CDATA #REQUIRED
+      type (bool|s8|u8|s16|u16|s32|u32|s64|u64|float|double|date|time|string|uid|enum|class|-) "-"
+      val CDATA ""
+  >
+  <!ELEMENT data EMPTY>
+  <!ATTLIST data
+      val CDATA #REQUIRED
+  >
+  <!ELEMENT rel (ref)*>
+  <!ATTLIST rel
+      name CDATA #REQUIRED
+      class CDATA ""
+      id CDATA ""
+  >
+  <!ELEMENT ref EMPTY>
+  <!ATTLIST ref
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+]>
+
+<oks-data>
+ <info name="" type="" num-of-items="28" oks-format="data" oks-version="862f2957270" created-by="gjc" created-on="thinkpad" creation-time="20230320T153246" last-modified-by="sbhuller" last-modified-on="np04-srv-017.cern.ch" last-modification-time="20250220T104226" />
+ <include>
+  <file path="schema/confmodel/dunedaq.schema.xml" />
+ </include>
+ <obj class="PhysicalHost" id="np02-srv-001">
+  <rel name="contains">
+   <ref class="ProcessingResource" id="AMD-EPYC-7313-3.70GHz-0" />
+   <ref class="ProcessingResource" id="AMD-EPYC-7313-3.70GHz-1" />
+  </rel>
+ </obj>
+ <obj class="PhysicalHost" id="np04-srv-001">
+  <rel name="contains">
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-1" />
+  </rel>
+ </obj>
+ <obj class="PhysicalHost" id="np04-srv-002">
+  <rel name="contains">
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-1" />
+  </rel>
+ </obj>
+ <obj class="PhysicalHost" id="np04-srv-003">
+  <rel name="contains">
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-1" />
+  </rel>
+ </obj>
+ <obj class="PhysicalHost" id="np04-srv-004">
+  <rel name="contains">
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-1" />
+  </rel>
+ </obj>
+ <obj class="PhysicalHost" id="np04-srv-005">
+  <rel name="contains">
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-1" />
+  </rel>
+ </obj>
+ <obj class="PhysicalHost" id="np04-srv-011">
+  <rel name="contains">
+   <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-1" />
+  </rel>
+ </obj>
+ <obj class="PhysicalHost" id="np04-srv-013">
+  <rel name="contains">
+   <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-1" />
+  </rel>
+ </obj>
+ <obj class="PhysicalHost" id="np04-srv-018">
+  <rel name="contains">
+   <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-1" />
+  </rel>
+ </obj>
+ <obj class="PhysicalHost" id="np04-srv-024">
+  <rel name="contains">
+   <ref class="ProcessingResource" id="Xeon-Silver-4110-2.10GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-Silver-4110-2.10GHz-1" />
+  </rel>
+ </obj>
+ <obj class="ProcessingResource" id="AMD-EPYC-7313-3.70GHz-0">
+  <attr name="cpu_cores" type="u16">
+   <data val="0" />
+   <data val="1" />
+   <data val="2" />
+   <data val="3" />
+   <data val="4" />
+   <data val="5" />
+   <data val="6" />
+   <data val="7" />
+   <data val="8" />
+   <data val="9" />
+   <data val="10" />
+   <data val="11" />
+   <data val="12" />
+   <data val="13" />
+   <data val="14" />
+   <data val="15" />
+   <data val="32" />
+   <data val="33" />
+   <data val="34" />
+   <data val="35" />
+   <data val="36" />
+   <data val="37" />
+   <data val="38" />
+   <data val="39" />
+   <data val="40" />
+   <data val="41" />
+   <data val="42" />
+   <data val="43" />
+   <data val="44" />
+   <data val="45" />
+   <data val="46" />
+   <data val="47" />
+  </attr>
+ </obj>
+ <obj class="ProcessingResource" id="AMD-EPYC-7313-3.70GHz-1">
+  <attr name="numa_id" type="u8" val="1" />
+  <attr name="cpu_cores" type="u16">
+   <data val="16" />
+   <data val="17" />
+   <data val="18" />
+   <data val="19" />
+   <data val="20" />
+   <data val="21" />
+   <data val="22" />
+   <data val="23" />
+   <data val="24" />
+   <data val="25" />
+   <data val="26" />
+   <data val="27" />
+   <data val="28" />
+   <data val="29" />
+   <data val="30" />
+   <data val="31" />
+   <data val="48" />
+   <data val="49" />
+   <data val="50" />
+   <data val="51" />
+   <data val="52" />
+   <data val="53" />
+   <data val="54" />
+   <data val="55" />
+   <data val="56" />
+   <data val="57" />
+   <data val="58" />
+   <data val="59" />
+   <data val="60" />
+   <data val="61" />
+   <data val="62" />
+   <data val="63" />
+  </attr>
+ </obj>
+ <obj class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-0">
+  <attr name="cpu_cores" type="u16">
+   <data val="0" />
+   <data val="2" />
+   <data val="4" />
+   <data val="6" />
+   <data val="8" />
+   <data val="10" />
+   <data val="12" />
+   <data val="14" />
+   <data val="16" />
+   <data val="18" />
+   <data val="20" />
+   <data val="22" />
+   <data val="24" />
+   <data val="26" />
+   <data val="28" />
+   <data val="30" />
+  </attr>
+ </obj>
+ <obj class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-1">
+  <attr name="numa_id" type="u8" val="1" />
+  <attr name="cpu_cores" type="u16">
+   <data val="1" />
+   <data val="3" />
+   <data val="5" />
+   <data val="7" />
+   <data val="9" />
+   <data val="11" />
+   <data val="13" />
+   <data val="15" />
+   <data val="17" />
+   <data val="19" />
+   <data val="21" />
+   <data val="23" />
+   <data val="25" />
+   <data val="27" />
+   <data val="29" />
+   <data val="31" />
+  </attr>
+ </obj>
+ <obj class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-0">
+  <attr name="cpu_cores" type="u16">
+   <data val="0" />
+   <data val="1" />
+   <data val="2" />
+   <data val="3" />
+   <data val="4" />
+   <data val="5" />
+   <data val="6" />
+   <data val="7" />
+   <data val="8" />
+   <data val="9" />
+   <data val="20" />
+   <data val="21" />
+   <data val="22" />
+   <data val="23" />
+   <data val="24" />
+   <data val="25" />
+   <data val="26" />
+   <data val="27" />
+   <data val="28" />
+   <data val="29" />
+  </attr>
+ </obj>
+ <obj class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-1">
+  <attr name="numa_id" type="u8" val="1" />
+  <attr name="cpu_cores" type="u16">
+   <data val="10" />
+   <data val="11" />
+   <data val="12" />
+   <data val="13" />
+   <data val="14" />
+   <data val="15" />
+   <data val="16" />
+   <data val="17" />
+   <data val="18" />
+   <data val="19" />
+   <data val="30" />
+   <data val="31" />
+   <data val="32" />
+   <data val="33" />
+   <data val="34" />
+   <data val="35" />
+   <data val="36" />
+   <data val="37" />
+   <data val="38" />
+   <data val="39" />
+  </attr>
+ </obj>
+ <obj class="ProcessingResource" id="Xeon-Silver-4110-2.10GHz-0">
+  <attr name="cpu_cores" type="u16">
+   <data val="0" />
+   <data val="1" />
+   <data val="2" />
+   <data val="3" />
+   <data val="4" />
+   <data val="5" />
+   <data val="6" />
+   <data val="7" />
+   <data val="16" />
+   <data val="17" />
+   <data val="18" />
+   <data val="19" />
+   <data val="20" />
+   <data val="21" />
+   <data val="22" />
+   <data val="23" />
+  </attr>
+ </obj>
+ <obj class="ProcessingResource" id="Xeon-Silver-4110-2.10GHz-1">
+  <attr name="numa_id" type="u8" val="1" />
+  <attr name="cpu_cores" type="u16">
+   <data val="8" />
+   <data val="9" />
+   <data val="10" />
+   <data val="11" />
+   <data val="12" />
+   <data val="13" />
+   <data val="14" />
+   <data val="15" />
+   <data val="24" />
+   <data val="25" />
+   <data val="26" />
+   <data val="27" />
+   <data val="28" />
+   <data val="29" />
+   <data val="30" />
+   <data val="31" />
+  </attr>
+ </obj>
+ <obj class="VirtualHost" id="vh-np02-srv-001">
+  <rel name="uses">
+   <ref class="ProcessingResource" id="AMD-EPYC-7313-3.70GHz-0" />
+   <ref class="ProcessingResource" id="AMD-EPYC-7313-3.70GHz-1" />
+  </rel>
+  <rel name="runs_on" class="PhysicalHost" id="np02-srv-001" />
+ </obj>
+ <obj class="VirtualHost" id="vh-np04-srv-001">
+  <rel name="uses">
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-1" />
+  </rel>
+  <rel name="runs_on" class="PhysicalHost" id="np04-srv-001" />
+ </obj>
+ <obj class="VirtualHost" id="vh-np04-srv-002">
+  <rel name="uses">
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-1" />
+  </rel>
+  <rel name="runs_on" class="PhysicalHost" id="np04-srv-002" />
+ </obj>
+ <obj class="VirtualHost" id="vh-np04-srv-003">
+  <rel name="uses">
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-1" />
+  </rel>
+  <rel name="runs_on" class="PhysicalHost" id="np04-srv-003" />
+ </obj>
+ <obj class="VirtualHost" id="vh-np04-srv-004">
+  <rel name="uses">
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-1" />
+  </rel>
+  <rel name="runs_on" class="PhysicalHost" id="np04-srv-004" />
+ </obj>
+ <obj class="VirtualHost" id="vh-np04-srv-005">
+  <rel name="uses">
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2630-v4-2.20GHz-1" />
+  </rel>
+  <rel name="runs_on" class="PhysicalHost" id="np04-srv-005" />
+ </obj>
+ <obj class="VirtualHost" id="vh-np04-srv-011">
+  <rel name="uses">
+   <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-1" />
+  </rel>
+  <rel name="runs_on" class="PhysicalHost" id="np04-srv-011" />
+ </obj>
+ <obj class="VirtualHost" id="vh-np04-srv-013">
+  <rel name="uses">
+   <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-1" />
+  </rel>
+  <rel name="runs_on" class="PhysicalHost" id="np04-srv-013" />
+ </obj>
+ <obj class="VirtualHost" id="vh-np04-srv-018">
+  <rel name="uses">
+   <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-1" />
+  </rel>
+  <rel name="runs_on" class="PhysicalHost" id="np04-srv-018" />
+ </obj>
+ <obj class="VirtualHost" id="vh-np04-srv-024">
+  <rel name="uses">
+   <ref class="ProcessingResource" id="Xeon-Silver-4110-2.10GHz-0" />
+   <ref class="ProcessingResource" id="Xeon-Silver-4110-2.10GHz-1" />
+  </rel>
+  <rel name="runs_on" class="PhysicalHost" id="np04-srv-024" />
+ </obj>
+</oks-data>

@@ -1,0 +1,7 @@
+{
+  "source": "/nfs/home/np04daq/calib/control/PDS/src/pds/calibration/acquisition.py",
+  "source_sha256": "ddb07d18573267d6f794dbbe4dd951c40ca7b88844e84cf5f2f97390d33b7015",
+  "old": "(daq >> 26 & 255) != channel // 8",
+  "new": "(daq >> 26 & 255) != (64 * (channel // 16) + (channel % 16) // 8)",
+  "reason": "Pinned Hermes tx_mux_out.vhd header concatenates IFACE(2 bits) & src(6 bits), giving wire stream IDs0,1,64,65 for32channels; enforce exact mapping."
+}

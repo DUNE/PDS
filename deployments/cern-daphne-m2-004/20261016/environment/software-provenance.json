@@ -1,0 +1,51 @@
+{
+  "host": "np04-srv-017",
+  "workarea": "/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930",
+  "repositories": {
+    "/nfs/home/np04daq/calib/control/PDS": {
+      "head": "82fa12eeefef2d480fc23e869ad2c9c2bc54017b",
+      "remote": "https://github.com/DUNE/PDS.git",
+      "status": " M README.md\n M docs/calibration-scans.md\n?? docs/cern-daphne15-beginners-guide.md\n?? docs/cern-vst-commands.txt\n?? tools/daphne15-status.py\n?? tools/vst-tmux.sh\n"
+    },
+    "/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930/sourcecode/appmodel": {
+      "head": "3a2c8138a6e9a5828159f4de43e97148633689a5",
+      "remote": "https://github.com/DUNE-DAQ/appmodel.git",
+      "status": ""
+    },
+    "/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930/sourcecode/dpdklibs": {
+      "head": "0711edec6b40f52a19f522f0a321128dd7836b4e",
+      "remote": "https://github.com/DUNE-DAQ/dpdklibs.git",
+      "status": ""
+    },
+    "/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930/sourcecode/rawdatautils": {
+      "head": "ab30656d57dda8daa198de3db1e44b35135a706f",
+      "remote": "https://github.com/DUNE-DAQ/rawdatautils.git",
+      "status": ""
+    },
+    "/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930/sourcecode/fdreadoutmodules": {
+      "head": "398b621c7c448308cc82187045a43cf7a4d9546d",
+      "remote": "https://github.com/DUNE-DAQ/fdreadoutmodules.git",
+      "status": ""
+    },
+    "/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930/sourcecode/hermesmodules": {
+      "head": "d7de1de6627dff097f282d4753508b588dad10a9",
+      "remote": "https://github.com/DUNE-DAQ/hermesmodules.git",
+      "status": ""
+    },
+    "/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930/sourcecode/fddetdataformats": {
+      "head": "75451f42c049bf51132493075d61a1c884592425",
+      "remote": "https://github.com/DUNE-DAQ/fddetdataformats.git",
+      "status": ""
+    },
+    "/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930/sourcecode/fdreadoutlibs": {
+      "head": "1bf594581feca8c23f3b11184ce63c709f4a9c6f",
+      "remote": "https://github.com/DUNE-DAQ/fdreadoutlibs.git",
+      "status": ""
+    },
+    "/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930/sourcecode/daphnemodules": {
+      "head": "c6c6ef82e9de5b9bf1379e07f3bbdb9885ea7537",
+      "remote": "https://github.com/DUNE-DAQ/daphnemodules.git",
+      "status": ""
+    }
+  }
+}

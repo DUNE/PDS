@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="ASCII"?>
+
+<!-- oks-data version 2.2 -->
+
+
+<!DOCTYPE oks-data [
+  <!ELEMENT oks-data (info, (include)?, (comments)?, (obj)+)>
+  <!ELEMENT info EMPTY>
+  <!ATTLIST info
+      name CDATA #IMPLIED
+      type CDATA #IMPLIED
+      num-of-items CDATA #REQUIRED
+      oks-format CDATA #FIXED "data"
+      oks-version CDATA #REQUIRED
+      created-by CDATA #IMPLIED
+      created-on CDATA #IMPLIED
+      creation-time CDATA #IMPLIED
+      last-modified-by CDATA #IMPLIED
+      last-modified-on CDATA #IMPLIED
+      last-modification-time CDATA #IMPLIED
+  >
+  <!ELEMENT include (file)*>
+  <!ELEMENT file EMPTY>
+  <!ATTLIST file
+      path CDATA #REQUIRED
+  >
+  <!ELEMENT comments (comment)*>
+  <!ELEMENT comment EMPTY>
+  <!ATTLIST comment
+      creation-time CDATA #REQUIRED
+      created-by CDATA #REQUIRED
+      created-on CDATA #REQUIRED
+      author CDATA #REQUIRED
+      text CDATA #REQUIRED
+  >
+  <!ELEMENT obj (attr | rel)*>
+  <!ATTLIST obj
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+  <!ELEMENT attr (data)*>
+  <!ATTLIST attr
+      name CDATA #REQUIRED
+      type (bool|s8|u8|s16|u16|s32|u32|s64|u64|float|double|date|time|string|uid|enum|class|-) "-"
+      val CDATA ""
+  >
+  <!ELEMENT data EMPTY>
+  <!ATTLIST data
+      val CDATA #REQUIRED
+  >
+  <!ELEMENT rel (ref)*>
+  <!ATTLIST rel
+      name CDATA #REQUIRED
+      class CDATA ""
+      id CDATA ""
+  >
+  <!ELEMENT ref EMPTY>
+  <!ATTLIST ref
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+]>
+
+<oks-data>
+ <info name="" type="" num-of-items="14" oks-format="data" oks-version="862f2957270" created-by="asztuc" created-on="np04-srv-019.cern.ch" creation-time="20231212T171111" last-modified-by="np04daq" last-modified-on="np04-srv-024.cern.ch" last-modification-time="20251128T142724" />
+ <include>
+  <file path="schema/confmodel/dunedaq.schema.xml" />
+  <file path="schema/appmodel/application.schema.xml" />
+  <file path="schema/appmodel/trigger.schema.xml" />
+  <file path="defaults/connections.data.xml" />
+  <file path="defaults/moduleconfs.data.xml" />
+  <file path="defaults/ccm.data.xml" />
+  <file path="hw/hosts.data.xml" />
+ </include>
+ <obj class="DataHandlerConf" id="def-tc-handler">
+  <attr name="template_for" type="class" val="TriggerDataHandlerModule" />
+  <attr name="input_data_type" type="string" val="TriggerCandidate" />
+  <attr name="generate_timesync" type="bool" val="0" />
+  <attr name="post_processing_delay_ticks" type="u64" val="312500" />
+  <attr name="post_processing_delay_min_wait" type="u64" val="1" />
+  <attr name="post_processing_delay_max_wait" type="u64" val="0" />
+  <rel name="request_handler" class="RequestHandler" id="def-tc-request-handler" />
+  <rel name="latency_buffer" class="LatencyBuffer" id="tc-latency-buf" />
+  <rel name="data_processor" class="TCDataProcessor" id="tc-processor" />
+ </obj>
+ <obj class="MLTApplication" id="mlt">
+  <attr name="tx_generation_disabled" type="bool" val="0" />
+  <attr name="application_name" type="string" val="daq_application" />
+  <rel name="runs_on" class="VirtualHost" id="vh-np04-srv-018" />
+  <rel name="exposes_service">
+   <ref class="Service" id="triggerCandidates" />
+   <ref class="Service" id="triggerInhibits" />
+   <ref class="Service" id="dataRequests" />
+   <ref class="Service" id="mlt_control" />
+  </rel>
+  <rel name="opmon_conf" class="OpMonConf" id="slow-all-monitoring" />
+  <rel name="source_id" class="SourceIDConf" id="tc-srcid-1" />
+  <rel name="queue_rules">
+   <ref class="QueueConnectionRule" id="tc-queue-rule" />
+   <ref class="QueueConnectionRule" id="td-queue-rule" />
+  </rel>
+  <rel name="network_rules">
+   <ref class="NetworkConnectionRule" id="tc-net-rule" />
+   <ref class="NetworkConnectionRule" id="ti-net-rule" />
+   <ref class="NetworkConnectionRule" id="td-dfo-net-rule" />
+   <ref class="NetworkConnectionRule" id="data-req-trig-net-rule" />
+   <ref class="NetworkConnectionRule" id="ts-net-rule" />
+  </rel>
+  <rel name="data_subscriber" class="DataReaderConf" id="tc-subscriber-1" />
+  <rel name="trigger_inputs_handler" class="DataHandlerConf" id="def-tc-handler" />
+  <rel name="mlt_conf" class="MLTConf" id="def-mlt-conf" />
+  <rel name="standalone_candidate_maker_confs">
+   <ref class="RandomTCMakerConf" id="random-tc-generator" />
+  </rel>
+ </obj>
+ <obj class="RCApplication" id="trg-controller">
+  <attr name="application_name" type="string" val="drunc-controller" />
+  <rel name="runs_on" class="VirtualHost" id="vh-np04-srv-024" />
+  <rel name="exposes_service">
+   <ref class="Service" id="trg-controller_control" />
+  </rel>
+  <rel name="opmon_conf" class="OpMonConf" id="slow-all-monitoring" />
+  <rel name="fsm" class="FSMconfiguration" id="FSMconfiguration_noAction" />
+  <rel name="broadcaster" class="RCBroadcaster" id="broadcaster-root" />
+ </obj>
+ <obj class="RandomTCMakerConf" id="random-tc-generator">
+  <attr name="timestamp_method" type="enum" val="kTimeSync" />
+  <attr name="latency_monitoring" type="bool" val="1" />
+  <attr name="template_for" type="class" val="RandomTCMakerModule" />
+  <attr name="trigger_rate_hz" type="float" val="0.5" />
+  <attr name="time_distribution" type="enum" val="kPoisson" />
+  <rel name="tc_readout" class="TCReadoutMap" id="tc-map-random" />
+ </obj>
+ <obj class="RequestHandler" id="def-tc-request-handler">
+  <attr name="handler_threads" type="u16" val="1" />
+  <attr name="request_timeout" type="u32" val="50" />
+  <attr name="pop_limit_pct" type="float" val="0.85" />
+  <attr name="pop_size_pct" type="float" val="0.1" />
+  <attr name="warn_on_timeout" type="bool" val="0" />
+  <attr name="warn_on_empty_buffer" type="bool" val="1" />
+ </obj>
+ <obj class="Segment" id="trg-segment">
+  <rel name="applications">
+   <ref class="MLTApplication" id="mlt" />
+  </rel>
+  <rel name="controller" class="RCApplication" id="trg-controller" />
+ </obj>
+ <obj class="Service" id="mlt_control">
+  <attr name="protocol" type="string" val="rest" />
+  <attr name="port" type="u16" val="0" />
+ </obj>
+ <obj class="Service" id="trg-controller_control">
+  <attr name="protocol" type="string" val="grpc" />
+  <attr name="port" type="u16" val="0" />
+ </obj>
+ <obj class="SourceIDConf" id="tc-srcid-1">
+  <attr name="sid" type="u32" val="2" />
+  <attr name="subsystem" type="enum" val="Trigger" />
+ </obj>
+ <obj class="TCDataProcessor" id="tc-processor">
+  <attr name="queue_sizes" type="u32" val="10000" />
+  <attr name="thread_names_prefix" type="string" val="mlt_" />
+  <attr name="latency_monitoring" type="bool" val="1" />
+  <attr name="merge_overlapping_tcs" type="bool" val="0" />
+  <attr name="ignore_overlapping_tcs" type="bool" val="0" />
+  <attr name="td_out_of_timeout" type="bool" val="1" />
+  <attr name="buffer_timeout" type="u32" val="0" />
+  <attr name="td_readout_limit" type="u32" val="1" />
+  <rel name="tc_readout_map">
+   <ref class="TCReadoutMap" id="tc-map-adcsw" />
+   <ref class="TCReadoutMap" id="tc-map-hsi" />
+   <ref class="TCReadoutMap" id="tc-map-prescale" />
+   <ref class="TCReadoutMap" id="tc-map-random" />
+  </rel>
+ </obj>
+ <obj class="TCReadoutMap" id="tc-map-adcsw">
+  <attr name="tc_type_name" type="string" val="kADCSimpleWindow" />
+  <attr name="time_before" type="u32" val="156250" />
+  <attr name="time_after" type="u32" val="156250" />
+ </obj>
+ <obj class="TCReadoutMap" id="tc-map-hsi">
+  <attr name="tc_type_name" type="string" val="kTiming" />
+  <attr name="time_before" type="u32" val="3000" />
+  <attr name="time_after" type="u32" val="1001" />
+ </obj>
+ <obj class="TCReadoutMap" id="tc-map-prescale">
+  <attr name="tc_type_name" type="string" val="kPrescale" />
+  <attr name="time_before" type="u32" val="62500" />
+  <attr name="time_after" type="u32" val="62500" />
+ </obj>
+ <obj class="TCReadoutMap" id="tc-map-random">
+  <attr name="tc_type_name" type="string" val="kRandom" />
+  <attr name="time_before" type="u32" val="125000000" />
+  <attr name="time_after" type="u32" val="0" />
+ </obj>
+</oks-data>

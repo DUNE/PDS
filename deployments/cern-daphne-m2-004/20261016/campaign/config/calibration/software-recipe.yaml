@@ -1,0 +1,48 @@
+{
+  "recipe_name": "reused_srv017_pds_trigger_environment",
+  "daq_release": "fddaq-v5.6.2-a9-1",
+  "workarea": "/nfs/home/marroyav/workareas/daq/daphne/pds-trigger-dev-20260930",
+  "repos": [
+    {
+      "name": "appmodel",
+      "commit": "3a2c8138a6e9a5828159f4de43e97148633689a5",
+      "worktree_changes": []
+    },
+    {
+      "name": "daphnemodules",
+      "commit": "c6c6ef82e9de5b9bf1379e07f3bbdb9885ea7537",
+      "worktree_changes": []
+    },
+    {
+      "name": "hermesmodules",
+      "commit": "d7de1de6627dff097f282d4753508b588dad10a9",
+      "worktree_changes": []
+    },
+    {
+      "name": "fdreadoutlibs",
+      "commit": "1bf594581feca8c23f3b11184ce63c709f4a9c6f",
+      "worktree_changes": []
+    },
+    {
+      "name": "fddetdataformats",
+      "commit": "75451f42c049bf51132493075d61a1c884592425",
+      "worktree_changes": []
+    },
+    {
+      "name": "dpdklibs",
+      "commit": "0711edec6b40f52a19f522f0a321128dd7836b4e",
+      "worktree_changes": []
+    },
+    {
+      "name": "fdreadoutmodules",
+      "commit": "398b621c7c448308cc82187045a43cf7a4d9546d",
+      "worktree_changes": []
+    },
+    {
+      "name": "rawdatautils",
+      "commit": "ab30656d57dda8daa198de3db1e44b35135a706f",
+      "worktree_changes": []
+    }
+  ],
+  "note": "Source evidence from the existing built workarea. No new build or M2 hardware qualification was performed."
+}

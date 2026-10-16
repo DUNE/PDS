@@ -1,0 +1,6 @@
+annotated-doc==0.0.5
+-e git+https://github.com/DUNE/PDS.git@82fa12eeefef2d480fc23e869ad2c9c2bc54017b#egg=pds_runner
+pip==25.0.1
+pyzmq==27.2.0
+shellingham==1.5.4
+typer==0.27.3
