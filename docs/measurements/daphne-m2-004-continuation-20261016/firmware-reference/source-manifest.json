@@ -1,0 +1,10 @@
+{
+  "commit": "93e05798ac1680b254760146974e95891863d2eb",
+  "files": {
+    "rtl/isolated/subsystems/trigger/stc3_frame_source.vhd": "3e48accecabf72138b1d20a8a56587018bc41fd85d9dbd0811d5f91eccae0b02",
+    "rtl/isolated/subsystems/control/selftrigger_register_bank.vhd": "7417f784c6d36d7a5e6de576c413a4c5b97a410ffb8e47c6db20005bb762510b",
+    "rtl/isolated/subsystems/trigger/channel_calibration_policy.vhd": "4b8a36a522a57fa47e936cdd9037c54e3ff3d928b87c62db10ba47bce606cc90",
+    "rtl/isolated/subsystems/trigger/readout_trigger_policy.vhd": "4e596b0dbba95ee7aa595597f5949934da859b4e376ff8dbf0e3b5beae166414",
+    "rtl/isolated/subsystems/trigger/afe_grouped_selftrigger_island.vhd": "08b8d337f67d0a148ad432428f2512df685b5da915bf8d79d1afad42f95f3639"
+  }
+}

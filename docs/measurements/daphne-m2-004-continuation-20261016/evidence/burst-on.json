@@ -1,0 +1,1248 @@
+{
+  "mode": "burst",
+  "continuation": 1,
+  "channels": [
+    0,
+    1,
+    8,
+    9,
+    16,
+    17,
+    24,
+    25
+  ],
+  "mask": "0x3030303",
+  "requested_duration_s": 0.5,
+  "script_sha256": "b9ca8d1cd1b290e26b1cfa4f6a9cf8a4c6faac6c0f908974859c9e5c9be787bc",
+  "before_timing": {
+    "control": "0x4",
+    "clock_status": "0x3",
+    "endpoint": "0x16",
+    "status": "0x18"
+  },
+  "initial_registers": {
+    "0x88000034": "0x2",
+    "0x94000020": "0x3030303",
+    "0x94000024": "0x0",
+    "0x94000028": "0x7",
+    "0x9400002c": "0x36c0",
+    "0x94000030": "0x0",
+    "0x94000034": "0x1",
+    "0x9400003c": "0x0",
+    "0x94000044": "0x0",
+    "0xa0010f00": "0x0",
+    "0xa0010f0c": "0xffffffff"
+  },
+  "initial_channel_registers": {
+    "0": {
+      "threshold": 1,
+      "continuation": "0x200002"
+    },
+    "1": {
+      "threshold": 1,
+      "continuation": "0x200002"
+    },
+    "2": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "3": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "4": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "5": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "6": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "7": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "8": {
+      "threshold": 1,
+      "continuation": "0x200002"
+    },
+    "9": {
+      "threshold": 1,
+      "continuation": "0x200002"
+    },
+    "10": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "11": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "12": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "13": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "14": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "15": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "16": {
+      "threshold": 1,
+      "continuation": "0x200002"
+    },
+    "17": {
+      "threshold": 1,
+      "continuation": "0x200002"
+    },
+    "18": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "19": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "20": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "21": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "22": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "23": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "24": {
+      "threshold": 1,
+      "continuation": "0x200002"
+    },
+    "25": {
+      "threshold": 1,
+      "continuation": "0x200002"
+    },
+    "26": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "27": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "28": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "29": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "30": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "31": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    }
+  },
+  "configured": {
+    "enabled": "0x3030303",
+    "source_selector": 2,
+    "calibration_mask": 0,
+    "correlation_threshold": 1,
+    "continuation_config": "0x80200002",
+    "activity_threshold_adc": 2,
+    "quiet_samples": 32,
+    "signal_delay_overlap": 0
+  },
+  "before_counters": {
+    "0": {
+      "records": 20557227,
+      "busy": 41988,
+      "full": 42408685,
+      "triggers": 77043143,
+      "packets": 20557227,
+      "continuations": 31,
+      "continuation_drops": 1801,
+      "covered_triggers": 14045364,
+      "descriptor_overflows": 86336
+    },
+    "1": {
+      "records": 24779747,
+      "busy": 47439,
+      "full": 45603941,
+      "triggers": 85015170,
+      "packets": 24779747,
+      "continuations": 31,
+      "continuation_drops": 2187,
+      "covered_triggers": 14594556,
+      "descriptor_overflows": 89403
+    },
+    "2": {
+      "records": 22604163,
+      "busy": 3906,
+      "full": 47896235,
+      "triggers": 85236630,
+      "packets": 22604163,
+      "continuations": 31,
+      "continuation_drops": 2344,
+      "covered_triggers": 14742992,
+      "descriptor_overflows": 5158
+    },
+    "3": {
+      "records": 21268074,
+      "busy": 15066,
+      "full": 39006257,
+      "triggers": 74159501,
+      "packets": 21268074,
+      "continuations": 31,
+      "continuation_drops": 152052,
+      "covered_triggers": 14030488,
+      "descriptor_overflows": 3922
+    },
+    "4": {
+      "records": 20908611,
+      "busy": 3292,
+      "full": 43483654,
+      "triggers": 78492601,
+      "packets": 20908611,
+      "continuations": 31,
+      "continuation_drops": 2063,
+      "covered_triggers": 14107430,
+      "descriptor_overflows": 5115
+    },
+    "5": {
+      "records": 22221630,
+      "busy": 631,
+      "full": 42270901,
+      "triggers": 78501001,
+      "packets": 22221630,
+      "continuations": 31,
+      "continuation_drops": 533,
+      "covered_triggers": 14016696,
+      "descriptor_overflows": 5751
+    },
+    "6": {
+      "records": 21832272,
+      "busy": 9918,
+      "full": 44619530,
+      "triggers": 80552817,
+      "packets": 21832272,
+      "continuations": 31,
+      "continuation_drops": 23724,
+      "covered_triggers": 14123147,
+      "descriptor_overflows": 5463
+    },
+    "7": {
+      "records": 19731132,
+      "busy": 550,
+      "full": 43326248,
+      "triggers": 76629354,
+      "packets": 19731132,
+      "continuations": 31,
+      "continuation_drops": 534,
+      "covered_triggers": 13580284,
+      "descriptor_overflows": 4152
+    },
+    "8": {
+      "records": 2162279,
+      "busy": 54159,
+      "full": 85912316,
+      "triggers": 88417234,
+      "packets": 2162279,
+      "continuations": 31,
+      "continuation_drops": 3711,
+      "covered_triggers": 300504,
+      "descriptor_overflows": 94874
+    },
+    "9": {
+      "records": 2152371,
+      "busy": 44769,
+      "full": 82975072,
+      "triggers": 85424552,
+      "packets": 2152371,
+      "continuations": 31,
+      "continuation_drops": 2103,
+      "covered_triggers": 262757,
+      "descriptor_overflows": 90568
+    },
+    "10": {
+      "records": 2013085,
+      "busy": 3427,
+      "full": 76633606,
+      "triggers": 78812882,
+      "packets": 2013085,
+      "continuations": 31,
+      "continuation_drops": 2077,
+      "covered_triggers": 173151,
+      "descriptor_overflows": 3717
+    },
+    "11": {
+      "records": 1998812,
+      "busy": 3174,
+      "full": 79473963,
+      "triggers": 81624420,
+      "packets": 1998812,
+      "continuations": 31,
+      "continuation_drops": 2226,
+      "covered_triggers": 159013,
+      "descriptor_overflows": 4673
+    },
+    "12": {
+      "records": 1993637,
+      "busy": 3382,
+      "full": 77031989,
+      "triggers": 79183051,
+      "packets": 1993637,
+      "continuations": 31,
+      "continuation_drops": 2269,
+      "covered_triggers": 164626,
+      "descriptor_overflows": 4251
+    },
+    "13": {
+      "records": 2028808,
+      "busy": 5450,
+      "full": 81847402,
+      "triggers": 84058754,
+      "packets": 2028808,
+      "continuations": 31,
+      "continuation_drops": 3584,
+      "covered_triggers": 188991,
+      "descriptor_overflows": 3583
+    },
+    "14": {
+      "records": 2004799,
+      "busy": 3528,
+      "full": 78463597,
+      "triggers": 80634774,
+      "packets": 2004799,
+      "continuations": 31,
+      "continuation_drops": 2300,
+      "covered_triggers": 173471,
+      "descriptor_overflows": 3751
+    },
+    "15": {
+      "records": 1991137,
+      "busy": 4653,
+      "full": 74271500,
+      "triggers": 76415135,
+      "packets": 1991137,
+      "continuations": 31,
+      "continuation_drops": 3207,
+      "covered_triggers": 159366,
+      "descriptor_overflows": 4860
+    },
+    "16": {
+      "records": 1910174,
+      "busy": 37678,
+      "full": 70389461,
+      "triggers": 72440796,
+      "packets": 1910174,
+      "continuations": 31,
+      "continuation_drops": 1520,
+      "covered_triggers": 113321,
+      "descriptor_overflows": 72611
+    },
+    "17": {
+      "records": 1946946,
+      "busy": 45571,
+      "full": 71107688,
+      "triggers": 73224373,
+      "packets": 1946946,
+      "continuations": 31,
+      "continuation_drops": 1495,
+      "covered_triggers": 133973,
+      "descriptor_overflows": 87154
+    },
+    "18": {
+      "records": 1810718,
+      "busy": 17,
+      "full": 74962964,
+      "triggers": 76788109,
+      "packets": 1810718,
+      "continuations": 31,
+      "continuation_drops": 430,
+      "covered_triggers": 23154,
+      "descriptor_overflows": 1589
+    },
+    "19": {
+      "records": 1797598,
+      "busy": 2648,
+      "full": 74227880,
+      "triggers": 76035402,
+      "packets": 1797598,
+      "continuations": 31,
+      "continuation_drops": 1526,
+      "covered_triggers": 17117,
+      "descriptor_overflows": 1346
+    },
+    "20": {
+      "records": 1798611,
+      "busy": 1306,
+      "full": 70053628,
+      "triggers": 71860814,
+      "packets": 1798611,
+      "continuations": 31,
+      "continuation_drops": 1492,
+      "covered_triggers": 17076,
+      "descriptor_overflows": 1303
+    },
+    "21": {
+      "records": 1800456,
+      "busy": 3070,
+      "full": 73815827,
+      "triggers": 75625533,
+      "packets": 1800456,
+      "continuations": 31,
+      "continuation_drops": 1528,
+      "covered_triggers": 16022,
+      "descriptor_overflows": 2015
+    },
+    "22": {
+      "records": 1802352,
+      "busy": 2022,
+      "full": 73013166,
+      "triggers": 74826398,
+      "packets": 1802352,
+      "continuations": 31,
+      "continuation_drops": 1529,
+      "covered_triggers": 18702,
+      "descriptor_overflows": 1988
+    },
+    "23": {
+      "records": 1802912,
+      "busy": 2344,
+      "full": 72474726,
+      "triggers": 74286591,
+      "packets": 1802912,
+      "continuations": 31,
+      "continuation_drops": 1459,
+      "covered_triggers": 16384,
+      "descriptor_overflows": 1333
+    },
+    "24": {
+      "records": 1908040,
+      "busy": 40761,
+      "full": 75761723,
+      "triggers": 77798185,
+      "packets": 1908040,
+      "continuations": 31,
+      "continuation_drops": 454,
+      "covered_triggers": 96428,
+      "descriptor_overflows": 86262
+    },
+    "25": {
+      "records": 1890890,
+      "busy": 36594,
+      "full": 70403061,
+      "triggers": 72415499,
+      "packets": 1890890,
+      "continuations": 31,
+      "continuation_drops": 364,
+      "covered_triggers": 93641,
+      "descriptor_overflows": 44038
+    },
+    "26": {
+      "records": 1774512,
+      "busy": 2,
+      "full": 70281545,
+      "triggers": 72047361,
+      "packets": 1774512,
+      "continuations": 31,
+      "continuation_drops": 373,
+      "covered_triggers": 0,
+      "descriptor_overflows": 1758
+    },
+    "27": {
+      "records": 1774512,
+      "busy": 5,
+      "full": 70198261,
+      "triggers": 71964090,
+      "packets": 1774512,
+      "continuations": 31,
+      "continuation_drops": 373,
+      "covered_triggers": 0,
+      "descriptor_overflows": 951
+    },
+    "28": {
+      "records": 1774512,
+      "busy": 5,
+      "full": 66864716,
+      "triggers": 68630528,
+      "packets": 1774512,
+      "continuations": 31,
+      "continuation_drops": 387,
+      "covered_triggers": 0,
+      "descriptor_overflows": 1398
+    },
+    "29": {
+      "records": 1774512,
+      "busy": 33,
+      "full": 71464454,
+      "triggers": 73230262,
+      "packets": 1774512,
+      "continuations": 31,
+      "continuation_drops": 414,
+      "covered_triggers": 0,
+      "descriptor_overflows": 2028
+    },
+    "30": {
+      "records": 1774512,
+      "busy": 3,
+      "full": 72731639,
+      "triggers": 74497417,
+      "packets": 1774512,
+      "continuations": 31,
+      "continuation_drops": 405,
+      "covered_triggers": 0,
+      "descriptor_overflows": 1393
+    },
+    "31": {
+      "records": 1774512,
+      "busy": 3,
+      "full": 72623303,
+      "triggers": 74389082,
+      "packets": 1774512,
+      "continuations": 31,
+      "continuation_drops": 408,
+      "covered_triggers": 0,
+      "descriptor_overflows": 1600
+    }
+  },
+  "after_counters": {
+    "0": {
+      "records": 20636773,
+      "busy": 41988,
+      "full": 42408685,
+      "triggers": 77133194,
+      "packets": 20636773,
+      "continuations": 74400,
+      "continuation_drops": 1801,
+      "covered_triggers": 14130238,
+      "descriptor_overflows": 130093
+    },
+    "1": {
+      "records": 24865956,
+      "busy": 47439,
+      "full": 45603941,
+      "triggers": 85105985,
+      "packets": 24865956,
+      "continuations": 79033,
+      "continuation_drops": 2187,
+      "covered_triggers": 14678164,
+      "descriptor_overflows": 125047
+    },
+    "2": {
+      "records": 22604163,
+      "busy": 3906,
+      "full": 47896235,
+      "triggers": 85236630,
+      "packets": 22604163,
+      "continuations": 31,
+      "continuation_drops": 2344,
+      "covered_triggers": 14742992,
+      "descriptor_overflows": 5158
+    },
+    "3": {
+      "records": 21268074,
+      "busy": 15066,
+      "full": 39006257,
+      "triggers": 74159501,
+      "packets": 21268074,
+      "continuations": 31,
+      "continuation_drops": 152052,
+      "covered_triggers": 14030488,
+      "descriptor_overflows": 3922
+    },
+    "4": {
+      "records": 20908611,
+      "busy": 3292,
+      "full": 43483654,
+      "triggers": 78492601,
+      "packets": 20908611,
+      "continuations": 31,
+      "continuation_drops": 2063,
+      "covered_triggers": 14107430,
+      "descriptor_overflows": 5115
+    },
+    "5": {
+      "records": 22221630,
+      "busy": 631,
+      "full": 42270901,
+      "triggers": 78501001,
+      "packets": 22221630,
+      "continuations": 31,
+      "continuation_drops": 533,
+      "covered_triggers": 14016696,
+      "descriptor_overflows": 5751
+    },
+    "6": {
+      "records": 21832272,
+      "busy": 9918,
+      "full": 44619530,
+      "triggers": 80552817,
+      "packets": 21832272,
+      "continuations": 31,
+      "continuation_drops": 23724,
+      "covered_triggers": 14123147,
+      "descriptor_overflows": 5463
+    },
+    "7": {
+      "records": 19731132,
+      "busy": 550,
+      "full": 43326248,
+      "triggers": 76629354,
+      "packets": 19731132,
+      "continuations": 31,
+      "continuation_drops": 534,
+      "covered_triggers": 13580284,
+      "descriptor_overflows": 4152
+    },
+    "8": {
+      "records": 2262567,
+      "busy": 54159,
+      "full": 85912316,
+      "triggers": 88536352,
+      "packets": 2262567,
+      "continuations": 93994,
+      "continuation_drops": 3711,
+      "covered_triggers": 413297,
+      "descriptor_overflows": 139956
+    },
+    "9": {
+      "records": 2245163,
+      "busy": 44769,
+      "full": 82975072,
+      "triggers": 85521206,
+      "packets": 2245163,
+      "continuations": 86776,
+      "continuation_drops": 2103,
+      "covered_triggers": 353364,
+      "descriptor_overflows": 139789
+    },
+    "10": {
+      "records": 2013085,
+      "busy": 3427,
+      "full": 76633606,
+      "triggers": 78812882,
+      "packets": 2013085,
+      "continuations": 31,
+      "continuation_drops": 2077,
+      "covered_triggers": 173151,
+      "descriptor_overflows": 3717
+    },
+    "11": {
+      "records": 1998812,
+      "busy": 3174,
+      "full": 79473963,
+      "triggers": 81624420,
+      "packets": 1998812,
+      "continuations": 31,
+      "continuation_drops": 2226,
+      "covered_triggers": 159013,
+      "descriptor_overflows": 4673
+    },
+    "12": {
+      "records": 1993637,
+      "busy": 3382,
+      "full": 77031989,
+      "triggers": 79183051,
+      "packets": 1993637,
+      "continuations": 31,
+      "continuation_drops": 2269,
+      "covered_triggers": 164626,
+      "descriptor_overflows": 4251
+    },
+    "13": {
+      "records": 2028808,
+      "busy": 5450,
+      "full": 81847402,
+      "triggers": 84058754,
+      "packets": 2028808,
+      "continuations": 31,
+      "continuation_drops": 3584,
+      "covered_triggers": 188991,
+      "descriptor_overflows": 3583
+    },
+    "14": {
+      "records": 2004799,
+      "busy": 3528,
+      "full": 78463597,
+      "triggers": 80634774,
+      "packets": 2004799,
+      "continuations": 31,
+      "continuation_drops": 2300,
+      "covered_triggers": 173471,
+      "descriptor_overflows": 3751
+    },
+    "15": {
+      "records": 1991137,
+      "busy": 4653,
+      "full": 74271500,
+      "triggers": 76415135,
+      "packets": 1991137,
+      "continuations": 31,
+      "continuation_drops": 3207,
+      "covered_triggers": 159366,
+      "descriptor_overflows": 4860
+    },
+    "16": {
+      "records": 2010863,
+      "busy": 37678,
+      "full": 70389461,
+      "triggers": 72562151,
+      "packets": 2010863,
+      "continuations": 95100,
+      "continuation_drops": 1520,
+      "covered_triggers": 229056,
+      "descriptor_overflows": 126695
+    },
+    "17": {
+      "records": 2044025,
+      "busy": 45571,
+      "full": 71107688,
+      "triggers": 73336613,
+      "packets": 2044025,
+      "continuations": 90354,
+      "continuation_drops": 1495,
+      "covered_triggers": 239457,
+      "descriptor_overflows": 129910
+    },
+    "18": {
+      "records": 1810718,
+      "busy": 17,
+      "full": 74962964,
+      "triggers": 76788109,
+      "packets": 1810718,
+      "continuations": 31,
+      "continuation_drops": 430,
+      "covered_triggers": 23154,
+      "descriptor_overflows": 1589
+    },
+    "19": {
+      "records": 1797598,
+      "busy": 2648,
+      "full": 74227880,
+      "triggers": 76035402,
+      "packets": 1797598,
+      "continuations": 31,
+      "continuation_drops": 1526,
+      "covered_triggers": 17117,
+      "descriptor_overflows": 1346
+    },
+    "20": {
+      "records": 1798611,
+      "busy": 1306,
+      "full": 70053628,
+      "triggers": 71860814,
+      "packets": 1798611,
+      "continuations": 31,
+      "continuation_drops": 1492,
+      "covered_triggers": 17076,
+      "descriptor_overflows": 1303
+    },
+    "21": {
+      "records": 1800456,
+      "busy": 3070,
+      "full": 73815827,
+      "triggers": 75625533,
+      "packets": 1800456,
+      "continuations": 31,
+      "continuation_drops": 1528,
+      "covered_triggers": 16022,
+      "descriptor_overflows": 2015
+    },
+    "22": {
+      "records": 1802352,
+      "busy": 2022,
+      "full": 73013166,
+      "triggers": 74826398,
+      "packets": 1802352,
+      "continuations": 31,
+      "continuation_drops": 1529,
+      "covered_triggers": 18702,
+      "descriptor_overflows": 1988
+    },
+    "23": {
+      "records": 1802912,
+      "busy": 2344,
+      "full": 72474726,
+      "triggers": 74286591,
+      "packets": 1802912,
+      "continuations": 31,
+      "continuation_drops": 1459,
+      "covered_triggers": 16384,
+      "descriptor_overflows": 1333
+    },
+    "24": {
+      "records": 2003604,
+      "busy": 40761,
+      "full": 75761723,
+      "triggers": 77893986,
+      "packets": 2003604,
+      "continuations": 87916,
+      "continuation_drops": 454,
+      "covered_triggers": 184550,
+      "descriptor_overflows": 128618
+    },
+    "25": {
+      "records": 1975705,
+      "busy": 36594,
+      "full": 70403061,
+      "triggers": 72516476,
+      "packets": 1975705,
+      "continuations": 80507,
+      "continuation_drops": 364,
+      "covered_triggers": 190279,
+      "descriptor_overflows": 86625
+    },
+    "26": {
+      "records": 1774512,
+      "busy": 2,
+      "full": 70281545,
+      "triggers": 72047361,
+      "packets": 1774512,
+      "continuations": 31,
+      "continuation_drops": 373,
+      "covered_triggers": 0,
+      "descriptor_overflows": 1758
+    },
+    "27": {
+      "records": 1774512,
+      "busy": 5,
+      "full": 70198261,
+      "triggers": 71964090,
+      "packets": 1774512,
+      "continuations": 31,
+      "continuation_drops": 373,
+      "covered_triggers": 0,
+      "descriptor_overflows": 951
+    },
+    "28": {
+      "records": 1774512,
+      "busy": 5,
+      "full": 66864716,
+      "triggers": 68630528,
+      "packets": 1774512,
+      "continuations": 31,
+      "continuation_drops": 387,
+      "covered_triggers": 0,
+      "descriptor_overflows": 1398
+    },
+    "29": {
+      "records": 1774512,
+      "busy": 33,
+      "full": 71464454,
+      "triggers": 73230262,
+      "packets": 1774512,
+      "continuations": 31,
+      "continuation_drops": 414,
+      "covered_triggers": 0,
+      "descriptor_overflows": 2028
+    },
+    "30": {
+      "records": 1774512,
+      "busy": 3,
+      "full": 72731639,
+      "triggers": 74497417,
+      "packets": 1774512,
+      "continuations": 31,
+      "continuation_drops": 405,
+      "covered_triggers": 0,
+      "descriptor_overflows": 1393
+    },
+    "31": {
+      "records": 1774512,
+      "busy": 3,
+      "full": 72623303,
+      "triggers": 74389082,
+      "packets": 1774512,
+      "continuations": 31,
+      "continuation_drops": 408,
+      "covered_triggers": 0,
+      "descriptor_overflows": 1600
+    }
+  },
+  "delta": {
+    "0": {
+      "records": 79546,
+      "busy": 0,
+      "full": 0,
+      "triggers": 90051,
+      "packets": 79546,
+      "continuations": 74369,
+      "continuation_drops": 0,
+      "covered_triggers": 84874,
+      "descriptor_overflows": 43757
+    },
+    "1": {
+      "records": 86209,
+      "busy": 0,
+      "full": 0,
+      "triggers": 90815,
+      "packets": 86209,
+      "continuations": 79002,
+      "continuation_drops": 0,
+      "covered_triggers": 83608,
+      "descriptor_overflows": 35644
+    },
+    "2": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "3": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "4": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "5": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "6": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "7": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "8": {
+      "records": 100288,
+      "busy": 0,
+      "full": 0,
+      "triggers": 119118,
+      "packets": 100288,
+      "continuations": 93963,
+      "continuation_drops": 0,
+      "covered_triggers": 112793,
+      "descriptor_overflows": 45082
+    },
+    "9": {
+      "records": 92792,
+      "busy": 0,
+      "full": 0,
+      "triggers": 96654,
+      "packets": 92792,
+      "continuations": 86745,
+      "continuation_drops": 0,
+      "covered_triggers": 90607,
+      "descriptor_overflows": 49221
+    },
+    "10": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "11": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "12": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "13": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "14": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "15": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "16": {
+      "records": 100689,
+      "busy": 0,
+      "full": 0,
+      "triggers": 121355,
+      "packets": 100689,
+      "continuations": 95069,
+      "continuation_drops": 0,
+      "covered_triggers": 115735,
+      "descriptor_overflows": 54084
+    },
+    "17": {
+      "records": 97079,
+      "busy": 0,
+      "full": 0,
+      "triggers": 112240,
+      "packets": 97079,
+      "continuations": 90323,
+      "continuation_drops": 0,
+      "covered_triggers": 105484,
+      "descriptor_overflows": 42756
+    },
+    "18": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "19": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "20": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "21": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "22": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "23": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "24": {
+      "records": 95564,
+      "busy": 0,
+      "full": 0,
+      "triggers": 95801,
+      "packets": 95564,
+      "continuations": 87885,
+      "continuation_drops": 0,
+      "covered_triggers": 88122,
+      "descriptor_overflows": 42356
+    },
+    "25": {
+      "records": 84815,
+      "busy": 0,
+      "full": 0,
+      "triggers": 100977,
+      "packets": 84815,
+      "continuations": 80476,
+      "continuation_drops": 0,
+      "covered_triggers": 96638,
+      "descriptor_overflows": 42587
+    },
+    "26": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "27": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "28": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "29": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "30": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    },
+    "31": {
+      "records": 0,
+      "busy": 0,
+      "full": 0,
+      "triggers": 0,
+      "packets": 0,
+      "continuations": 0,
+      "continuation_drops": 0,
+      "covered_triggers": 0,
+      "descriptor_overflows": 0
+    }
+  },
+  "elapsed_unpause_through_drain_s": 0.500145612,
+  "all_selected_have_records": true,
+  "cleanup": "all channels paused and drained",
+  "final_timing": {
+    "control": "0x4",
+    "clock_status": "0x3",
+    "endpoint": "0x16",
+    "status": "0x18"
+  },
+  "final_pause_mask": "0xffffffff"
+}

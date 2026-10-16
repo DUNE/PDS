@@ -1,0 +1,173 @@
+{
+  "mode": "inspect",
+  "continuation": 0,
+  "channels": [
+    0,
+    1,
+    8,
+    9,
+    16,
+    17,
+    24,
+    25
+  ],
+  "mask": "0x3030303",
+  "requested_duration_s": 0.5,
+  "script_sha256": "b9ca8d1cd1b290e26b1cfa4f6a9cf8a4c6faac6c0f908974859c9e5c9be787bc",
+  "before_timing": {
+    "control": "0x4",
+    "clock_status": "0x3",
+    "endpoint": "0x16",
+    "status": "0x18"
+  },
+  "initial_registers": {
+    "0x88000034": "0x2",
+    "0x94000020": "0x3030303",
+    "0x94000024": "0x0",
+    "0x94000028": "0x7",
+    "0x9400002c": "0x36c0",
+    "0x94000030": "0x0",
+    "0x94000034": "0x1",
+    "0x9400003c": "0x0",
+    "0x94000044": "0x0",
+    "0xa0010f00": "0x0",
+    "0xa0010f0c": "0xffffffff"
+  },
+  "initial_channel_registers": {
+    "0": {
+      "threshold": 1,
+      "continuation": "0x80200002"
+    },
+    "1": {
+      "threshold": 1,
+      "continuation": "0x80200002"
+    },
+    "2": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "3": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "4": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "5": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "6": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "7": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "8": {
+      "threshold": 1,
+      "continuation": "0x80200002"
+    },
+    "9": {
+      "threshold": 1,
+      "continuation": "0x80200002"
+    },
+    "10": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "11": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "12": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "13": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "14": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "15": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "16": {
+      "threshold": 1,
+      "continuation": "0x80200002"
+    },
+    "17": {
+      "threshold": 1,
+      "continuation": "0x80200002"
+    },
+    "18": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "19": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "20": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "21": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "22": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "23": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "24": {
+      "threshold": 1,
+      "continuation": "0x80200002"
+    },
+    "25": {
+      "threshold": 1,
+      "continuation": "0x80200002"
+    },
+    "26": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "27": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "28": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "29": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "30": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    },
+    "31": {
+      "threshold": 16,
+      "continuation": "0x200040"
+    }
+  },
+  "final_timing": {
+    "control": "0x4",
+    "clock_status": "0x3",
+    "endpoint": "0x16",
+    "status": "0x18"
+  },
+  "final_pause_mask": "0xffffffff"
+}

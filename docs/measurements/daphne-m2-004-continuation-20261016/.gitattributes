@@ -1,0 +1,4 @@
+# Preserve captured source/evidence bytes and original line endings.
+** -text
+code/** -whitespace
+evidence/** -whitespace

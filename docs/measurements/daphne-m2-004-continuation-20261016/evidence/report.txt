@@ -1,0 +1,20 @@
+DAPHNE-M2-004: two channels per sender continuation test, 2026-10-16
+
+Channels: 0,1 / 8,9 / 16,17 / 24,25. Two physical links; four senders.
+256-CAL2 build 0x093e0579, source93e05798ac1680b254760146974e95891863d2eb.
+Offset DAC2250, VGAIN2500 on all4 firmware AFEs; no detector bias increase.
+Self-trigger mode2, software disabled, CAL2mask0. Correlation threshold1; raw continuation activity threshold2 ADC; quiet limit32; signal-delay overlap0. SSP remained disabled; noisy electronics only.
+
+Reference run45373: continuation off. A 0.5s burst produced553787 packets on the eight selected channels, with184581 busy rejections,449578 merged triggers, zero full/continuation-drop increments. Two selected complete 5ms four-source windows contain11401 frames and no continuation flags.
+
+Test run45374: continuation on. A 0.5s burst produced736982 packets, including687832 continuation packets and49150 seed packets. Busy/full/continuation-drop increments were zero for all8 channels. In3 selected complete 5ms windows,19207 frames decoded,17300 marked continuation. All17287 links with a predecessor inside the readout window have exact256-tick spacing (4.096us), with zero gaps. The remaining13 continuation frames start their observed channel/window sequences. The longest observed chain inside a selected window spans391 frames /100096 samples /1.601536ms; it may be truncated by the readout boundary.
+
+Disabled24 channels produced no record increments in both bursts. Measured trigger accounting closes on each of8 channels: trigger edges = seed packets + covered trigger decisions + busy + full. Coalesced triggers are not independent missing-waveform events. No selected ADC sample clipped at0 or16383. Official frame-decoder checks covered every selected channel in every selected window.
+
+Low residual threshold creates many noise excursions:6509 of19207 selected continuation-on frames have descriptor-overflow flags. This concerns the finite5-peak descriptor budget; raw256-sample payloads remain available and timing links above pass. Optical response and detector gain are not measured.
+
+Run45372 is retained only as diagnostic: TC windows were5ms but PDS subdetector windows still2s, producing partial/timeout flags and repeated data across requests. Both maps corrected before45373/45374. Sparse/empty windows outside bursts are excluded from the complete-window analysis and retained with original DAQ status.
+
+Final state: DAQ stopped/configured with no error; eight test channels remain enabled/configured for continuation with threshold1, but all32 channels are paused/drained (0xffffffff). Endpoint8 locked and timestamp valid. No periodic GIB/BOREAS source was started.
+
+Artifacts: summary.json, raw board counter snapshots, verified window receipts/ADC examples, original HDF5 paths and hashes in operator-evidence/. Waveform .bin files remain on CERN storage.

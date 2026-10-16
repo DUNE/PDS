@@ -1,0 +1,39 @@
+{"daphne": {"clock_source": "endpoint", "clocks_locked": true, "endpoint_state": 8, "timestamp_valid": true, "endpoint_address": 22}, "registers": {"0x94000020": "0x3030303", "0x94000024": "0x0", "0x94000028": "0x7", "0x88000034": "0x2", "0xa0010f00": "0x0", "0xa0010f0c": "0xffffffff"}}
+GIB {"event": "inspected", "clock_hz": 62500000, "snapshot": {"timestamp": 112010318564179608, "accepted": 2159044, "rejected": 0}}
+BOREAS_TLU_NP04 {"event": "inspected", "clock_hz": 62500000, "snapshot": {"timestamp": 112010318510675808, "accepted": 1498964, "rejected": 0}}
+SSP LEDs verified disabled 0xfe1408
+└────────────┴──────┴───────────┴────────────┴──────────┴──────────┴───────────┘
+Waiting for stop to complete... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━   0% -:--:--
+                            stop execution report
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Name                  ┃ Command execution     ┃ FSM transition            ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ root-controller       │ Executed Successfully │ Fsm Executed Successfully │
+│   df-controller       │ Executed Successfully │ Fsm Executed Successfully │
+│     df-s03-d1         │ Executed Successfully │ Fsm Executed Successfully │
+│     dfo-01            │ Executed Successfully │ Fsm Executed Successfully │
+│   pds-controller      │ Executed Successfully │ Fsm Executed Successfully │
+│     daphne-m2-004-app │ Executed Successfully │ Fsm Executed Successfully │
+│     runp02srv001eth1  │ Executed Successfully │ Fsm Executed Successfully │
+│   trg-controller      │ Executed Successfully │ Fsm Executed Successfully │
+│     mlt               │ Executed Successfully │ Fsm Executed Successfully │
+└───────────────────────┴───────────────────────┴───────────────────────────┘
+                   pds-vst-m2-004-continuation-2ch-r2 status
+┏━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┓
+┃ Name       ┃ Info ┃ State     ┃ Substate   ┃ In error ┃ Included ┃ Endpoint  ┃
+┡━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━┩
+│ root-cont… │      │ configur… │ configured │ No       │ Yes      │ grpc://n… │
+│   df-cont… │      │ configur… │ configured │ No       │ Yes      │ grpc://n… │
+│     df-s0… │      │ configur… │ idle       │ No       │ Yes      │ rest://n… │
+│     dfo-01 │      │ configur… │ idle       │ No       │ Yes      │ rest://n… │
+│   pds-con… │      │ configur… │ configured │ No       │ Yes      │ grpc://n… │
+│     daphn… │      │ configur… │ idle       │ No       │ Yes      │ rest://n… │
+│     runp0… │      │ configur… │ idle       │ No       │ Yes      │ rest://n… │
+│   trg-con… │      │ configur… │ configured │ No       │ Yes      │ grpc://n… │
+│     mlt    │      │ configur… │ idle       │ No       │ Yes      │ rest://n… │
+└────────────┴──────┴───────────┴────────────┴──────────┴──────────┴───────────┘
+[2026/10/16 15:35:47 UTC] INFO       shell_utils.py:165
+drunc.utils.ShellContext                           Current FSM status is
+configured. Available transitions are start, scrap. Available sequence commands
+are shutdown, start-run.
+drunc-unified-shell >

@@ -1,0 +1,51 @@
+{
+  "board": "DAPHNE-M2-004",
+  "firmware_build": "0x093e0579",
+  "channels": [
+    0,
+    1,
+    8,
+    9,
+    16,
+    17,
+    24,
+    25
+  ],
+  "enable_mask": "0x03030303",
+  "sources": [
+    804,
+    805,
+    806,
+    807
+  ],
+  "wire_stream_ids": [
+    0,
+    1,
+    64,
+    65
+  ],
+  "offset_dac": 2250,
+  "vgain_all_afes": 2500,
+  "correlation_threshold": 1,
+  "continuation_residual_threshold_adc": 2,
+  "quiet_samples": 32,
+  "burst_duration_s": 0.5,
+  "daq_window_s": 0.005,
+  "daq_trigger_hz": 10,
+  "points": [
+    {
+      "name": "continuation-off",
+      "enabled": false
+    },
+    {
+      "name": "continuation-on",
+      "enabled": true
+    }
+  ],
+  "SSP": "Disabled; independent/no optical coupling",
+  "timing_source": "self-trigger only, no periodic GIB commands",
+  "final": "all channels paused; selected eight remain configured",
+  "signal_delay_overlap": 0,
+  "configuration_revision": "r2 both TC and subdetector window maps corrected",
+  "excluded_reference_run": 45372
+}

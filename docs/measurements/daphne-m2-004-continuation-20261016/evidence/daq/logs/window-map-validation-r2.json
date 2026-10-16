@@ -1,0 +1,15 @@
+{
+  "tc-map-random": {
+    "before_ticks": 312500,
+    "after_ticks": 0
+  },
+  "pds-with-TPC-cathode": {
+    "before_ticks": 312500,
+    "after_ticks": 0
+  },
+  "pds-with-TPC-membrane": {
+    "before_ticks": 312500,
+    "after_ticks": 0
+  },
+  "random_trigger_hz": 10.0
+}
