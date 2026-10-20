@@ -1,0 +1,47 @@
+/cvmfs/dunedaq.opensciencegrid.org/spack/releases/coredaq-v5.6.2-a9-1/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/daqdataformats-v4.0.0-3eyrolvjrkglrwh4pyy77ixsc3hqqaii/include/daqdataformats/FragmentHeader.hpp
+
+'segment-controller' complete ---
+[2026/10/20 19:01:30 UTC] INFO       ssh_process_lifetime_manager_shell.py:57
+drunc.drunc.processes.ssh_process_lifetime_manager --- Shutdown stage:
+Terminating role 'root-controller' from provided UUIDs ---
+[2026/10/20 19:01:30 UTC] INFO       ssh_process_lifetime_manager_shell.py:51
+drunc.drunc.processes.ssh_process_lifetime_manager Killing 1 process(es) with
+role 'root-controller' from 11 candidates
+[2026/10/20 19:01:34 UTC] INFO       ssh_process_manager.py:305
+drunc.process_manager.SSH_SHELL_process_manager    Process 'root-controller'
+(session: 'pds-vst-daphne14-pds-ta-charge-r3', user: 'np04daq') process exited
+with exit code 0
+[2026/10/20 19:01:34 UTC] INFO       ssh_process_lifetime_manager_shell.py:10
+drunc.drunc.processes.ssh_process_lifetime_manager Remote process
+1ef1bc55-a65e-436b-9286-a04387d1107c (PID 2219601) terminated gracefully
+following SIGQUIT signal.
+[2026/10/20 19:01:34 UTC] INFO       ssh_process_lifetime_manager_shell.py:58
+drunc.drunc.processes.ssh_process_lifetime_manager --- Shutdown stage: Role
+'root-controller' complete ---
+[2026/10/20 19:01:34 UTC] INFO       ssh_process_lifetime_manager_shell.py:57
+drunc.drunc.processes.ssh_process_lifetime_manager --- Shutdown stage:
+Terminating role 'infrastructure-applications' from provided UUIDs ---
+                               Terminated process
+┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┓
+┃           ┃ friendly  ┃         ┃            ┃           ┃       ┃           ┃
+┃ session   ┃ name      ┃ user    ┃ host       ┃ uuid      ┃ alive ┃ exit-code ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━┩
+│ pds-vst-… │ root-con… │ np04daq │ np04-srv-… │ 1ef1bc55… │ False │ 0         │
+│ pds-vst-… │   df-con… │ np04daq │ np04-srv-… │ aaf5b110… │ False │ 0         │
+│ pds-vst-… │     df-s… │ np04daq │ np04-srv-… │ d631b9d9… │ False │ 0         │
+│ pds-vst-… │     dfo-… │ np04daq │ np04-srv-… │ 9058ea7e… │ False │ 0         │
+│ pds-vst-… │   pds-co… │ np04daq │ np04-srv-… │ 451a2c41… │ False │ 0         │
+│ pds-vst-… │     char… │ np04daq │ np04-srv-… │ 9ce07e0d… │ False │ 0         │
+│ pds-vst-… │     daph… │ np04daq │ np04-srv-… │ 25f5df37… │ False │ 0         │
+│ pds-vst-… │     runp… │ np04daq │ np02-srv-… │ 12a4fc69… │ False │ 0         │
+│ pds-vst-… │   trg-co… │ np04daq │ np04-srv-… │ 01ab17fb… │ False │ 0         │
+│ pds-vst-… │     mlt   │ np04daq │ np04-srv-… │ 67df8426… │ False │ 0         │
+│ pds-vst-… │     tc-m… │ np04daq │ np04-srv-… │ a6315522… │ False │ 0         │
+└───────────┴───────────┴─────────┴────────────┴───────────┴───────┴───────────┘
+[2026/10/20 19:01:34 UTC] INFO       shell_utils.py:135
+drunc.utils.ShellContext                           You will not be able to issue
+commands to the controller anymore.
+[2026/10/20 19:01:34 UTC] INFO       shell_utils.py:137
+drunc.utils.ShellContext                           Controller driver has been
+deleted.
+drunc-unified-shell >

@@ -1,0 +1,7 @@
+{
+  "legacy_bootcmd": "mmc dev 0; load mmc 0:1 ${kernel_addr_r} Image; load mmc 0:1 ${fdt_addr_r} system.dtb; load mmc 0:1 ${ramdisk_addr_r} ramdisk.cpio.gz.u-boot; setenv bootargs \"console=ttyPS0,115200 earlycon\"; booti ${kernel_addr_r} ${ramdisk_addr_r} ${fdt_addr_r}",
+  "new_bootcmd": "run daphne14_trial_bootcmd",
+  "trial_bootcmd": "mmc dev 0; if load mmc 0:1 0x18000000 /daphne14-trial-20261020/Image; then if load mmc 0:1 0x40000000 /daphne14-trial-20261020/system.dtb; then setenv bootargs earlycon console=ttyPS1,115200 root=/dev/mmcblk0p3 rootwait rw; booti 0x18000000 - 0x40000000; fi; fi",
+  "rollback_at_uboot": "setenv bootcmd run daphne14_legacy_bootcmd; saveenv; reset",
+  "boot_firmware": "Existing 2024.1 QSPI firmware retained; only its environment will be saved."
+}

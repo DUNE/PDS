@@ -1,0 +1,90 @@
+sh -c 'hostname
+> uname -a
+> id
+> uptime
+> ip -brief address
+> cat /proc/cmdline
+> cat /etc/os-release
+> lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT
+> systemctl --failed --no-pager
+> systemctl list-units --all '"'"'daphne*'"'"' '"'"'firmware*'"'"' '"'"'clockchip
+p*'"'"' '"'"'endpoint*'"'"' '"'"'hermes*'"'"' --no-pager
+> command -v python3
+> command -v daphne-gateware
+> ls -l /boot /etc/daphne* /usr/lib/daphne-server /usr/bin/daphneServer 2>/dev/nu
+ull'; printf "\n__COMPLETE_94c7ad744aac4a1ea3814251b7f22107__%s\n" "$?"
+NP04-DAPHNE-014.CERN.CH
+Linux NP04-DAPHNE-014.CERN.CH 6.6.10-xilinx-v2024.1-g3af4295e00ef #1 SMP Sat Apr 27 05:22:24 UTC 2024 aarch64 GNU/Linux
+uid=1000(petalinux) gid=1000(petalinux) groups=1000(petalinux),19(input),29(audio),44(video),985(aie),1001(spi)
+ 20:40:00 up 1 day,  8:25,  1 user,  load average: 0.00, 0.00, 0.00
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+sit0@NONE        DOWN           
+eth0             UP             10.73.137.160/24 fd01:1458:904:4::100:95/64 fe80::b8be:baff:fed1:cbff/64 
+console=ttyPS0,115200 earlycon
+ID=petalinux
+NAME="PetaLinux"
+VERSION="2024.1+release-S05201002 (langdale)"
+VERSION_ID=2024.1-release-s05201002
+PRETTY_NAME="PetaLinux 2024.1+release-S05201002 (langdale)"
+DISTRO_CODENAME="langdale"
+NAME          SIZE FSTYPE MOUNTPOINT
+mtdblock0     512K        
+mtdblock1     512K        
+mtdblock2     128K        
+mtdblock3     128K        
+mtdblock4     768K        
+mtdblock5      13M        
+mtdblock6     512K        
+mtdblock7      13M        
+mtdblock8     512K        
+mtdblock9       1M        
+mtdblock10      2M        
+mtdblock11      2M        
+mtdblock12    128K        
+mtdblock13    128K        
+mtdblock14    256K        
+mtdblock15    128K        
+mtdblock16   29.4M        
+mmcblk0      14.8G        
+|-mmcblk0p1     2G        /boot
+`-mmcblk0p2     4G        /
+mmcblk0boot0 31.5M        
+mmcblk0boot1 31.5M        
+[0m [0m[0m UNIT             [0m[0m LOAD  [0m[0m ACTIVE[0m[0m SUB   [0m[0m DESCRIPTION                         [0m
+[0;1;31m*[0m[0;1;31m [0m[0;1;31mclockchip.service[0m[0;1;31m [0mloaded [0;1;31mfailed[0m[0;1;31m [0m[0;1;31mfailed[0m[0;1;31m [0mConfigure DAPHNE external clock chip
+
+LOAD   = Reflects whether the unit definition was properly loaded.
+ACTIVE = The high-level unit activation state, i.e. generalization of SUB.
+SUB    = The low-level unit activation state, values depend on unit type.
+1 loaded units listed.
+[0m [0m[0m UNIT             [0m[0m LOAD  [0m[0m ACTIVE  [0m[0m SUB   [0m[0m DESCRIPTION                          [0m
+[0;1;31m*[0m[0;1;31m [0m[0;1;31mclockchip.service[0m[0;1;31m [0mloaded [0;1;31mfailed  [0m[0;1;31m [0m[0;1;31mfailed[0m[0;1;31m [0mConfigure DAPHNE external clock chip
+  daphne.service    loaded inactive dead   DAPHNE Slow Controller
+  endpoint.service  loaded inactive dead   Configure DAPHNE timing endpoint
+  firmware.service  loaded active   exited Program DAPHNE firmware (xmutil)
+  hermes.service    loaded inactive dead   Hermes IPBus UDP server (DAPHNE mode)
+
+LOAD   = Reflects whether the unit definition was properly loaded.
+ACTIVE = The high-level unit activation state, i.e. generalization of SUB.
+SUB    = The low-level unit activation state, values depend on unit type.
+[0;1;39m5 loaded units listed.[0m
+To show all installed unit files use 'systemctl list-unit-files'.
+/usr/bin/python3
+/boot:
+total 84704
+-rwxr-xr-x 1 root root  1691256 Feb 16  2026 BOOT.BIN
+-rwxr-xr-x 1 root root 24269312 May 14  2025 Image
+-rwxr-xr-x 1 root root     3474 Feb 16  2026 boot.scr
+drwxr-xr-x 2 root root     4096 Nov  8  2022 extlinux
+-rwxr-xr-x 1 root root 35468888 Feb 16  2026 image.ub
+-rwxr-xr-x 1 root root 24939457 May 14  2025 ramdisk.cpio.gz.u-boot
+-rwxr-xr-x 1 root root    49280 Feb 23  2026 system-zynqmp-sck-kr-g-revB.dtb
+-rwxr-xr-x 1 root root    45517 Feb 23  2026 system-zynqmp-sck-kr-g-revB.dtb.bak.20260223-170501
+-rwxr-xr-x 1 root root    46484 May  5 12:01 system.dtb
+-rwxr-xr-x 1 root root    45517 May 14  2025 system.dtb.backup.20221108-071502
+-rwxr-xr-x 1 root root    45517 May 14  2025 system.dtb.bak.20221108-062938
+-rwxr-xr-x 1 root root    45517 Feb 23  2026 system.dtb.bak.20260223-170501
+-rwxr-xr-x 1 root root    49280 May  5 12:01 system.dtb.bak.20260505-120125
+
+__COMPLETE_94c7ad744aac4a1ea3814251b7f22107__2
+[1;36mpetalinux@NP04-DAPHNE-014[0m:[1;33m~[0m$ 

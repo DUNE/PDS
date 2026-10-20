@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="ASCII"?>
+
+<!-- oks-data version 2.2 -->
+
+
+<!DOCTYPE oks-data [
+  <!ELEMENT oks-data (info, (include)?, (comments)?, (obj)+)>
+  <!ELEMENT info EMPTY>
+  <!ATTLIST info
+      name CDATA #IMPLIED
+      type CDATA #IMPLIED
+      num-of-items CDATA #REQUIRED
+      oks-format CDATA #FIXED "data"
+      oks-version CDATA #REQUIRED
+      created-by CDATA #IMPLIED
+      created-on CDATA #IMPLIED
+      creation-time CDATA #IMPLIED
+      last-modified-by CDATA #IMPLIED
+      last-modified-on CDATA #IMPLIED
+      last-modification-time CDATA #IMPLIED
+  >
+  <!ELEMENT include (file)*>
+  <!ELEMENT file EMPTY>
+  <!ATTLIST file
+      path CDATA #REQUIRED
+  >
+  <!ELEMENT comments (comment)*>
+  <!ELEMENT comment EMPTY>
+  <!ATTLIST comment
+      creation-time CDATA #REQUIRED
+      created-by CDATA #REQUIRED
+      created-on CDATA #REQUIRED
+      author CDATA #REQUIRED
+      text CDATA #REQUIRED
+  >
+  <!ELEMENT obj (attr | rel)*>
+  <!ATTLIST obj
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+  <!ELEMENT attr (data)*>
+  <!ATTLIST attr
+      name CDATA #REQUIRED
+      type (bool|s8|u8|s16|u16|s32|u32|s64|u64|float|double|date|time|string|uid|enum|class|-) "-"
+      val CDATA ""
+  >
+  <!ELEMENT data EMPTY>
+  <!ATTLIST data
+      val CDATA #REQUIRED
+  >
+  <!ELEMENT rel (ref)*>
+  <!ATTLIST rel
+      name CDATA #REQUIRED
+      class CDATA ""
+      id CDATA ""
+  >
+  <!ELEMENT ref EMPTY>
+  <!ATTLIST ref
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+]>
+
+<oks-data>
+
+<info name="" type="" num-of-items="17" oks-format="data" oks-version="862f2957270" created-by="gjc" created-on="thinkpad" creation-time="20231207T110859" last-modified-by="np04daq" last-modified-on="np04-srv-017.cern.ch" last-modification-time="20261020T185722"/>
+
+<include>
+ <file path="schema/confmodel/dunedaq.schema.xml"/>
+ <file path="defaults/fsm.data.xml"/>
+ <file path="hw/hosts.data.xml"/>
+</include>
+
+
+<obj class="ConnectivityService" id="ehn1-connectivity-service-config">
+ <attr name="interval_ms" type="u32" val="2000"/>
+ <attr name="host" type="string" val="np04-srv-017"/>
+ <rel name="service" class="Service" id="ehn1-connectivity-service"/>
+</obj>
+
+<obj class="OpMonConf" id="slow-all-monitoring">
+ <attr name="level" type="u32" val="4294967295"/>
+ <attr name="interval_s" type="u32" val="1"/>
+</obj>
+
+<obj class="OpMonURI" id="cern-opmon-uri">
+ <attr name="path" type="string" val="monkafka.cern.ch:30092/opmon_stream"/>
+ <attr name="type" type="enum" val="stream"/>
+</obj>
+
+<obj class="RCApplication" id="root-controller">
+ <attr name="application_name" type="string" val="drunc-controller"/>
+ <rel name="runs_on" class="VirtualHost" id="vh-np04-srv-024"/>
+ <rel name="exposes_service">
+  <ref class="Service" id="rc-root-controller_control"/>
+ </rel>
+ <rel name="opmon_conf" class="OpMonConf" id="slow-all-monitoring"/>
+ <rel name="fsm" class="FSMconfiguration" id="fsm-ehn1"/>
+ <rel name="broadcaster" class="RCBroadcaster" id="broadcaster-root"/>
+</obj>
+
+<obj class="Service" id="ehn1-connectivity-service">
+ <attr name="protocol" type="string" val="http"/>
+ <attr name="port" type="u16" val="30005"/>
+</obj>
+
+<obj class="Service" id="pds-controller_control">
+ <attr name="protocol" type="string" val="grpc"/>
+ <attr name="port" type="u16" val="0"/>
+</obj>
+
+<obj class="Service" id="rc-root-controller_control">
+ <attr name="protocol" type="string" val="grpc"/>
+ <attr name="port" type="u16" val="31343"/>
+</obj>
+
+<obj class="Variable" id="ehn1-env-connectivity-port">
+ <attr name="name" type="string" val="CONNECTION_PORT"/>
+ <attr name="value" type="string" val="30005"/>
+</obj>
+
+<obj class="Variable" id="ehn1-env-ers-debug-level">
+ <attr name="name" type="string" val="DUNEDAQ_ERS_DEBUG_LEVEL"/>
+ <attr name="value" type="string" val="-1"/>
+</obj>
+
+<obj class="Variable" id="ehn1-env-ers-error">
+ <attr name="name" type="string" val="DUNEDAQ_ERS_ERROR"/>
+ <attr name="value" type="string" val="erstrace,throttle,lstdout,protobufstream(monkafka.cern.ch:30092)"/>
+</obj>
+
+<obj class="Variable" id="ehn1-env-ers-fatal">
+ <attr name="name" type="string" val="DUNEDAQ_ERS_FATAL"/>
+ <attr name="value" type="string" val="erstrace,lstdout,protobufstream(monkafka.cern.ch:30092)"/>
+</obj>
+
+<obj class="Variable" id="ehn1-env-ers-info">
+ <attr name="name" type="string" val="DUNEDAQ_ERS_INFO"/>
+ <attr name="value" type="string" val="erstrace,throttle,lstdout,protobufstream(monkafka.cern.ch:30092)"/>
+</obj>
+
+<obj class="Variable" id="ehn1-env-ers-stream-libs">
+ <attr name="description" type="string" val="List of extra ERS streaming libs"/>
+ <attr name="name" type="string" val="DUNEDAQ_ERS_STREAM_LIBS"/>
+ <attr name="value" type="string" val="erskafka"/>
+</obj>
+
+<obj class="Variable" id="ehn1-env-ers-verb">
+ <attr name="name" type="string" val="DUNEDAQ_ERS_VERBOSITY_LEVEL"/>
+ <attr name="value" type="string" val="1"/>
+</obj>
+
+<obj class="Variable" id="ehn1-env-ers-warning">
+ <attr name="name" type="string" val="DUNEDAQ_ERS_WARNING"/>
+ <attr name="value" type="string" val="erstrace,throttle,lstdout,protobufstream(monkafka.cern.ch:30092)"/>
+</obj>
+
+<obj class="Variable" id="zmq-threads">
+ <attr name="description" type="string" val="number of ZMQ threads"/>
+ <attr name="name" type="string" val="IPM_ZMQ_IO_THREADS"/>
+ <attr name="value" type="string" val="2"/>
+</obj>
+
+<obj class="VariableSet" id="ehn1-variables">
+ <rel name="contains">
+  <ref class="Variable" id="ehn1-env-ers-error"/>
+  <ref class="Variable" id="ehn1-env-ers-fatal"/>
+  <ref class="Variable" id="ehn1-env-ers-info"/>
+  <ref class="Variable" id="ehn1-env-ers-stream-libs"/>
+  <ref class="Variable" id="ehn1-env-ers-verb"/>
+  <ref class="Variable" id="ehn1-env-ers-warning"/>
+  <ref class="Variable" id="ehn1-env-ers-debug-level"/>
+  <ref class="Variable" id="ehn1-env-connectivity-port"/>
+  <ref class="Variable" id="zmq-threads"/>
+ </rel>
+</obj>
+
+</oks-data>

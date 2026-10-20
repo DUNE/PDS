@@ -1,0 +1,5 @@
+CLOCK_CONFIGURATION_RESPONSE Clock status: MMCM0:LOCKED MMCM1:LOCKED
+Endpoint not ready (timeout); status=0x6
+
+AFTER_STANDARD_ALIGN {'clock_source': 'endpoint', 'clocks_locked': True, 'endpoint_state': 6, 'timestamp_valid': False, 'endpoint_address': 32}
+STATUS {'clock_source': 'endpoint', 'clocks_locked': True, 'endpoint_state': 8, 'timestamp_valid': True, 'endpoint_address': 32}

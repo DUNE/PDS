@@ -1,0 +1,4384 @@
+{
+  "run": 45392,
+  "host": "np04-srv-017",
+  "python": "3.12.12 (main, Jan  6 2026, 02:00:42) [GCC 14.3.0]",
+  "files": {
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0000_df-s03-d1_dw_0_20261020T185822.hdf5": {
+      "sha256": "12f31bc28fdaac5a09131309f614d07362e1607a55d28bc188886bb2b62a5f06",
+      "bytes": 253720
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0001_df-s03-d1_dw_0_20261020T185822.hdf5": {
+      "sha256": "d755b1a4497fca8cff4a297c382bfc2c7b6ed1d6a78dd20513239643e10fdcec",
+      "bytes": 261352
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0002_df-s03-d1_dw_0_20261020T185823.hdf5": {
+      "sha256": "3320f1f061f2b808d911adf119a22acaefcf02b0f2ba19cb39d829507f108479",
+      "bytes": 261136
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0003_df-s03-d1_dw_0_20261020T185823.hdf5": {
+      "sha256": "ec197e539da12af60c8e0c160a8328d870a7590e3e5e4c0c69d1eba60552c814",
+      "bytes": 261136
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0004_df-s03-d1_dw_0_20261020T185823.hdf5": {
+      "sha256": "902effab1fc7a4a9ac867bc253580868c8cdc5a2029330fa0eada0fca8130b74",
+      "bytes": 254008
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0005_df-s03-d1_dw_0_20261020T185824.hdf5": {
+      "sha256": "af7c05822f1348f3b77f77ae90d803d98e6a4e8b5a954b34c62fcdb6ae1f418d",
+      "bytes": 254272
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0006_df-s03-d1_dw_0_20261020T185824.hdf5": {
+      "sha256": "a1ae51a7b85458b1a06436cad0f8a3d21a289ee601cddbc2f1e5d68d4a42d45e",
+      "bytes": 260968
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0007_df-s03-d1_dw_0_20261020T185824.hdf5": {
+      "sha256": "2a016b5c63c5f464ff51d81106f50ffb8b8ad254813ae51f6aaeb095671be899",
+      "bytes": 254128
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0008_df-s03-d1_dw_0_20261020T185824.hdf5": {
+      "sha256": "4dc0482f28a939ccc74f27938935d3ce5660a8a45ae90c0cf9fd8f9ad480429b",
+      "bytes": 261160
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0009_df-s03-d1_dw_0_20261020T185825.hdf5": {
+      "sha256": "8b174788a59ec9897272ba2911d4dfeb05ba14dd4e26a8efd4ff59802ae25efc",
+      "bytes": 253864
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0010_df-s03-d1_dw_0_20261020T185825.hdf5": {
+      "sha256": "f9b2536ee724c99ce405c8f2a78a93b290640249eb3144dacbeb14fb33aaafba",
+      "bytes": 261064
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0011_df-s03-d1_dw_0_20261020T185825.hdf5": {
+      "sha256": "111c176c691b408cab4df60686180b7e62c2e0f2658601412e34653d4eb17ec1",
+      "bytes": 253720
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0012_df-s03-d1_dw_0_20261020T185826.hdf5": {
+      "sha256": "3631a629a37057c1bdea5d75032e6c6732271323510a07698ac11439d883a342",
+      "bytes": 253912
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0013_df-s03-d1_dw_0_20261020T185826.hdf5": {
+      "sha256": "fcd487f64ddd312da29224fc3e0b2e0f463bd20701b406a0d7dd5b3e605778eb",
+      "bytes": 261208
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0014_df-s03-d1_dw_0_20261020T185826.hdf5": {
+      "sha256": "a96fba218d5487016882d1329ca59d0b867e94ee9ae3eba300088f593edf4079",
+      "bytes": 261064
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0015_df-s03-d1_dw_0_20261020T185827.hdf5": {
+      "sha256": "3ee71320abc786f27f01875e39c95dfe2f76dbc0772a23f938ae578774c78e10",
+      "bytes": 261088
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0016_df-s03-d1_dw_0_20261020T185827.hdf5": {
+      "sha256": "e0be00b67ce2cd88b1e2fb42456e564e4d628278eaefcda8b2457f6c3bddac40",
+      "bytes": 261256
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0017_df-s03-d1_dw_0_20261020T185827.hdf5": {
+      "sha256": "600366bd332968965299cdec5a4614d436901217955c64ba5e60320302d5491a",
+      "bytes": 261352
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0018_df-s03-d1_dw_0_20261020T185827.hdf5": {
+      "sha256": "70ce3c266c8c765ff6f3d1c459fac3534035b292eeca09982f5939e3c405c914",
+      "bytes": 261184
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0019_df-s03-d1_dw_0_20261020T185828.hdf5": {
+      "sha256": "3788917d5abf348ebbe8788188828c618b0742019ece57386f88eddb0146514a",
+      "bytes": 253672
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0020_df-s03-d1_dw_0_20261020T185828.hdf5": {
+      "sha256": "5c2d7c6d75ab2b6f7a363ba1696b06cc82e2aab2830af99d55f489ce85a37799",
+      "bytes": 261544
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0021_df-s03-d1_dw_0_20261020T185828.hdf5": {
+      "sha256": "0f93dac1c468cc973f1e2ca752550d61d2c5d9d8a302ea970ef2965ecec94298",
+      "bytes": 253624
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0022_df-s03-d1_dw_0_20261020T185829.hdf5": {
+      "sha256": "7168e340a509e567651c0a48e8661a255aed126050b8da2723373df3df52b6c3",
+      "bytes": 253936
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0023_df-s03-d1_dw_0_20261020T185829.hdf5": {
+      "sha256": "2a582d8b4dec29f686366b0eddbd52411fd055d8dbf52042f0b45420b322f816",
+      "bytes": 260944
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0024_df-s03-d1_dw_0_20261020T185829.hdf5": {
+      "sha256": "a279e7558dcf77fe17c2d3bfd5c4c39eb4d7be527ccfe2c576f4f59654ee6d78",
+      "bytes": 260704
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0025_df-s03-d1_dw_0_20261020T185830.hdf5": {
+      "sha256": "a7876291b3852a721134bc74a36a12c6a3c498f2d8a0d12a72c107b172269de8",
+      "bytes": 254080
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0026_df-s03-d1_dw_0_20261020T185830.hdf5": {
+      "sha256": "e52d12e06866b869e20e361618a864f8765076c4f352f672da9b62d05824ebfc",
+      "bytes": 253840
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0027_df-s03-d1_dw_0_20261020T185831.hdf5": {
+      "sha256": "91e657efa8c8b8421dab4360ce788e80106fcee5f40e2939d1217d6b4e9b5d9c",
+      "bytes": 253528
+    },
+    "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0028_df-s03-d1_dw_0_20261020T185831.hdf5": {
+      "sha256": "765db7afec470d9f232d446cd6aa5cbdcece9b814504aaf6fa7bfe89fcfa975a",
+      "bytes": 260992
+    }
+  },
+  "records": [
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0000_df-s03-d1_dw_0_20261020T185822.hdf5",
+      "record": [
+        1,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668886408056,
+          "end": 112032668886470556
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668886408056,
+          "end": 112032668886470556
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668886408056,
+          "end": 112032668886470556
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668886408056,
+          "end": 112032668886470556
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032668886408056,
+          "end": 112032668886470556
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032668886408056,
+          "end": 112032668886470556
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 18,
+          "begin": 112032668886408056,
+          "end": 112032668886470556
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 288,
+          "status": 0,
+          "begin": 112032668886408056,
+          "end": 112032668886470556
+        }
+      ],
+      "charge_first_timestamp": 112032668886407613,
+      "charge_last_timestamp": 112032668886469053,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 18,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032668886439306,
+          "end": 112032668886439307,
+          "activity": 112032668886439306,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032668886439306,
+          "end": 112032668886439307,
+          "candidate": 112032668886439306,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0001_df-s03-d1_dw_0_20261020T185822.hdf5",
+      "record": [
+        2,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668905158051,
+          "end": 112032668905220551
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668905158051,
+          "end": 112032668905220551
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668905158051,
+          "end": 112032668905220551
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668905158051,
+          "end": 112032668905220551
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032668905158051,
+          "end": 112032668905220551
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032668905158051,
+          "end": 112032668905220551
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032668905158051,
+          "end": 112032668905220551
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 720,
+          "status": 0,
+          "begin": 112032668905158051,
+          "end": 112032668905220551
+        }
+      ],
+      "charge_first_timestamp": 112032668905157053,
+      "charge_last_timestamp": 112032668905220541,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032668905189301,
+          "end": 112032668905189302,
+          "activity": 112032668905189301,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032668905189301,
+          "end": 112032668905189302,
+          "candidate": 112032668905189301,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0002_df-s03-d1_dw_0_20261020T185823.hdf5",
+      "record": [
+        3,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668923908359,
+          "end": 112032668923970859
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668923908359,
+          "end": 112032668923970859
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668923908359,
+          "end": 112032668923970859
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668923908359,
+          "end": 112032668923970859
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032668923908359,
+          "end": 112032668923970859
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032668923908359,
+          "end": 112032668923970859
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032668923908359,
+          "end": 112032668923970859
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 504,
+          "status": 0,
+          "begin": 112032668923908359,
+          "end": 112032668923970859
+        }
+      ],
+      "charge_first_timestamp": 112032668923906493,
+      "charge_last_timestamp": 112032668923969981,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032668923939609,
+          "end": 112032668923939610,
+          "activity": 112032668923939609,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032668923939609,
+          "end": 112032668923939610,
+          "candidate": 112032668923939609,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0003_df-s03-d1_dw_0_20261020T185823.hdf5",
+      "record": [
+        4,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668955158631,
+          "end": 112032668955221131
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668955158631,
+          "end": 112032668955221131
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668955158631,
+          "end": 112032668955221131
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668955158631,
+          "end": 112032668955221131
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032668955158631,
+          "end": 112032668955221131
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032668955158631,
+          "end": 112032668955221131
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032668955158631,
+          "end": 112032668955221131
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 504,
+          "status": 0,
+          "begin": 112032668955158631,
+          "end": 112032668955221131
+        }
+      ],
+      "charge_first_timestamp": 112032668955156925,
+      "charge_last_timestamp": 112032668955220413,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032668955189881,
+          "end": 112032668955189882,
+          "activity": 112032668955189881,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032668955189881,
+          "end": 112032668955189882,
+          "candidate": 112032668955189881,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0004_df-s03-d1_dw_0_20261020T185823.hdf5",
+      "record": [
+        5,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668970783591,
+          "end": 112032668970846091
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668970783591,
+          "end": 112032668970846091
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668970783591,
+          "end": 112032668970846091
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668970783591,
+          "end": 112032668970846091
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032668970783591,
+          "end": 112032668970846091
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032668970783591,
+          "end": 112032668970846091
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032668970783591,
+          "end": 112032668970846091
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 576,
+          "status": 0,
+          "begin": 112032668970783591,
+          "end": 112032668970846091
+        }
+      ],
+      "charge_first_timestamp": 112032668970783165,
+      "charge_last_timestamp": 112032668970844605,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032668970814841,
+          "end": 112032668970814842,
+          "activity": 112032668970814841,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032668970814841,
+          "end": 112032668970814842,
+          "candidate": 112032668970814841,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0005_df-s03-d1_dw_0_20261020T185824.hdf5",
+      "record": [
+        6,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668995783844,
+          "end": 112032668995846344
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668995783844,
+          "end": 112032668995846344
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668995783844,
+          "end": 112032668995846344
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032668995783844,
+          "end": 112032668995846344
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032668995783844,
+          "end": 112032668995846344
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032668995783844,
+          "end": 112032668995846344
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032668995783844,
+          "end": 112032668995846344
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 840,
+          "status": 0,
+          "begin": 112032668995783844,
+          "end": 112032668995846344
+        }
+      ],
+      "charge_first_timestamp": 112032668995783101,
+      "charge_last_timestamp": 112032668995844541,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032668995815094,
+          "end": 112032668995815095,
+          "activity": 112032668995815094,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032668995815094,
+          "end": 112032668995815095,
+          "candidate": 112032668995815094,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0006_df-s03-d1_dw_0_20261020T185824.hdf5",
+      "record": [
+        7,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669008283855,
+          "end": 112032669008346355
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669008283855,
+          "end": 112032669008346355
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669008283855,
+          "end": 112032669008346355
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669008283855,
+          "end": 112032669008346355
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669008283855,
+          "end": 112032669008346355
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669008283855,
+          "end": 112032669008346355
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669008283855,
+          "end": 112032669008346355
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 336,
+          "status": 0,
+          "begin": 112032669008283855,
+          "end": 112032669008346355
+        }
+      ],
+      "charge_first_timestamp": 112032669008282045,
+      "charge_last_timestamp": 112032669008345533,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669008315105,
+          "end": 112032669008315106,
+          "activity": 112032669008315105,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669008315105,
+          "end": 112032669008315106,
+          "candidate": 112032669008315105,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0007_df-s03-d1_dw_0_20261020T185824.hdf5",
+      "record": [
+        8,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669027034028,
+          "end": 112032669027096528
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669027034028,
+          "end": 112032669027096528
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669027034028,
+          "end": 112032669027096528
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669027034028,
+          "end": 112032669027096528
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032669027034028,
+          "end": 112032669027096528
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669027034028,
+          "end": 112032669027096528
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669027034028,
+          "end": 112032669027096528
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 696,
+          "status": 0,
+          "begin": 112032669027034028,
+          "end": 112032669027096528
+        }
+      ],
+      "charge_first_timestamp": 112032669027033533,
+      "charge_last_timestamp": 112032669027094973,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669027065278,
+          "end": 112032669027065281,
+          "activity": 112032669027065278,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669027065278,
+          "end": 112032669027065281,
+          "candidate": 112032669027065278,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0008_df-s03-d1_dw_0_20261020T185824.hdf5",
+      "record": [
+        9,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669039534142,
+          "end": 112032669039596642
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669039534142,
+          "end": 112032669039596642
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669039534142,
+          "end": 112032669039596642
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669039534142,
+          "end": 112032669039596642
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669039534142,
+          "end": 112032669039596642
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669039534142,
+          "end": 112032669039596642
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669039534142,
+          "end": 112032669039596642
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 528,
+          "status": 0,
+          "begin": 112032669039534142,
+          "end": 112032669039596642
+        }
+      ],
+      "charge_first_timestamp": 112032669039532477,
+      "charge_last_timestamp": 112032669039595965,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669039565392,
+          "end": 112032669039565393,
+          "activity": 112032669039565392,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669039565392,
+          "end": 112032669039565393,
+          "candidate": 112032669039565392,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0009_df-s03-d1_dw_0_20261020T185825.hdf5",
+      "record": [
+        10,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669055159345,
+          "end": 112032669055221845
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669055159345,
+          "end": 112032669055221845
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669055159345,
+          "end": 112032669055221845
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669055159345,
+          "end": 112032669055221845
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032669055159345,
+          "end": 112032669055221845
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669055159345,
+          "end": 112032669055221845
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669055159345,
+          "end": 112032669055221845
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 432,
+          "status": 0,
+          "begin": 112032669055159345,
+          "end": 112032669055221845
+        }
+      ],
+      "charge_first_timestamp": 112032669055158717,
+      "charge_last_timestamp": 112032669055220157,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669055190595,
+          "end": 112032669055190596,
+          "activity": 112032669055190595,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669055190595,
+          "end": 112032669055190596,
+          "candidate": 112032669055190595,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0010_df-s03-d1_dw_0_20261020T185825.hdf5",
+      "record": [
+        11,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669067659264,
+          "end": 112032669067721764
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669067659264,
+          "end": 112032669067721764
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669067659264,
+          "end": 112032669067721764
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669067659264,
+          "end": 112032669067721764
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669067659264,
+          "end": 112032669067721764
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669067659264,
+          "end": 112032669067721764
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669067659264,
+          "end": 112032669067721764
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 432,
+          "status": 0,
+          "begin": 112032669067659264,
+          "end": 112032669067721764
+        }
+      ],
+      "charge_first_timestamp": 112032669067657661,
+      "charge_last_timestamp": 112032669067721149,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669067690514,
+          "end": 112032669067690515,
+          "activity": 112032669067690514,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669067690514,
+          "end": 112032669067690515,
+          "candidate": 112032669067690514,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0011_df-s03-d1_dw_0_20261020T185825.hdf5",
+      "record": [
+        12,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669089534496,
+          "end": 112032669089596996
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669089534496,
+          "end": 112032669089596996
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669089534496,
+          "end": 112032669089596996
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669089534496,
+          "end": 112032669089596996
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032669089534496,
+          "end": 112032669089596996
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669089534496,
+          "end": 112032669089596996
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669089534496,
+          "end": 112032669089596996
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 288,
+          "status": 0,
+          "begin": 112032669089534496,
+          "end": 112032669089596996
+        }
+      ],
+      "charge_first_timestamp": 112032669089534397,
+      "charge_last_timestamp": 112032669089595837,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669089565746,
+          "end": 112032669089565747,
+          "activity": 112032669089565746,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669089565746,
+          "end": 112032669089565747,
+          "candidate": 112032669089565746,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0012_df-s03-d1_dw_0_20261020T185826.hdf5",
+      "record": [
+        13,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669114534524,
+          "end": 112032669114597024
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669114534524,
+          "end": 112032669114597024
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669114534524,
+          "end": 112032669114597024
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669114534524,
+          "end": 112032669114597024
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032669114534524,
+          "end": 112032669114597024
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669114534524,
+          "end": 112032669114597024
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669114534524,
+          "end": 112032669114597024
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 480,
+          "status": 0,
+          "begin": 112032669114534524,
+          "end": 112032669114597024
+        }
+      ],
+      "charge_first_timestamp": 112032669114534333,
+      "charge_last_timestamp": 112032669114595773,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669114565774,
+          "end": 112032669114565776,
+          "activity": 112032669114565774,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669114565774,
+          "end": 112032669114565776,
+          "candidate": 112032669114565774,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0013_df-s03-d1_dw_0_20261020T185826.hdf5",
+      "record": [
+        14,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669133284766,
+          "end": 112032669133347266
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669133284766,
+          "end": 112032669133347266
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669133284766,
+          "end": 112032669133347266
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669133284766,
+          "end": 112032669133347266
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669133284766,
+          "end": 112032669133347266
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669133284766,
+          "end": 112032669133347266
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669133284766,
+          "end": 112032669133347266
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 576,
+          "status": 0,
+          "begin": 112032669133284766,
+          "end": 112032669133347266
+        }
+      ],
+      "charge_first_timestamp": 112032669133283773,
+      "charge_last_timestamp": 112032669133347261,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669133316016,
+          "end": 112032669133316018,
+          "activity": 112032669133316016,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669133316016,
+          "end": 112032669133316018,
+          "candidate": 112032669133316016,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0014_df-s03-d1_dw_0_20261020T185826.hdf5",
+      "record": [
+        15,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669158284898,
+          "end": 112032669158347398
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669158284898,
+          "end": 112032669158347398
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669158284898,
+          "end": 112032669158347398
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669158284898,
+          "end": 112032669158347398
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669158284898,
+          "end": 112032669158347398
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669158284898,
+          "end": 112032669158347398
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669158284898,
+          "end": 112032669158347398
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 432,
+          "status": 0,
+          "begin": 112032669158284898,
+          "end": 112032669158347398
+        }
+      ],
+      "charge_first_timestamp": 112032669158283709,
+      "charge_last_timestamp": 112032669158347197,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669158316148,
+          "end": 112032669158316150,
+          "activity": 112032669158316148,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669158316148,
+          "end": 112032669158316150,
+          "candidate": 112032669158316148,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0015_df-s03-d1_dw_0_20261020T185827.hdf5",
+      "record": [
+        16,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669177035162,
+          "end": 112032669177097662
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669177035162,
+          "end": 112032669177097662
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669177035162,
+          "end": 112032669177097662
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669177035162,
+          "end": 112032669177097662
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669177035162,
+          "end": 112032669177097662
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669177035162,
+          "end": 112032669177097662
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669177035162,
+          "end": 112032669177097662
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 456,
+          "status": 0,
+          "begin": 112032669177035162,
+          "end": 112032669177097662
+        }
+      ],
+      "charge_first_timestamp": 112032669177033149,
+      "charge_last_timestamp": 112032669177096637,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669177066412,
+          "end": 112032669177066414,
+          "activity": 112032669177066412,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669177066412,
+          "end": 112032669177066414,
+          "candidate": 112032669177066412,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0016_df-s03-d1_dw_0_20261020T185827.hdf5",
+      "record": [
+        17,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669189535292,
+          "end": 112032669189597792
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669189535292,
+          "end": 112032669189597792
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669189535292,
+          "end": 112032669189597792
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669189535292,
+          "end": 112032669189597792
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669189535292,
+          "end": 112032669189597792
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669189535292,
+          "end": 112032669189597792
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669189535292,
+          "end": 112032669189597792
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 624,
+          "status": 0,
+          "begin": 112032669189535292,
+          "end": 112032669189597792
+        }
+      ],
+      "charge_first_timestamp": 112032669189534141,
+      "charge_last_timestamp": 112032669189597629,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669189566542,
+          "end": 112032669189566543,
+          "activity": 112032669189566542,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669189566542,
+          "end": 112032669189566543,
+          "candidate": 112032669189566542,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0017_df-s03-d1_dw_0_20261020T185827.hdf5",
+      "record": [
+        18,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669208285405,
+          "end": 112032669208347905
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669208285405,
+          "end": 112032669208347905
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669208285405,
+          "end": 112032669208347905
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669208285405,
+          "end": 112032669208347905
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669208285405,
+          "end": 112032669208347905
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669208285405,
+          "end": 112032669208347905
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669208285405,
+          "end": 112032669208347905
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 720,
+          "status": 0,
+          "begin": 112032669208285405,
+          "end": 112032669208347905
+        }
+      ],
+      "charge_first_timestamp": 112032669208283581,
+      "charge_last_timestamp": 112032669208347069,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669208316655,
+          "end": 112032669208316658,
+          "activity": 112032669208316655,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669208316655,
+          "end": 112032669208316658,
+          "candidate": 112032669208316655,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0018_df-s03-d1_dw_0_20261020T185827.hdf5",
+      "record": [
+        19,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669217660319,
+          "end": 112032669217722819
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669217660319,
+          "end": 112032669217722819
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669217660319,
+          "end": 112032669217722819
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669217660319,
+          "end": 112032669217722819
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669217660319,
+          "end": 112032669217722819
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669217660319,
+          "end": 112032669217722819
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669217660319,
+          "end": 112032669217722819
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 552,
+          "status": 0,
+          "begin": 112032669217660319,
+          "end": 112032669217722819
+        }
+      ],
+      "charge_first_timestamp": 112032669217659325,
+      "charge_last_timestamp": 112032669217722813,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669217691569,
+          "end": 112032669217691570,
+          "activity": 112032669217691569,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669217691569,
+          "end": 112032669217691570,
+          "candidate": 112032669217691569,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0019_df-s03-d1_dw_0_20261020T185828.hdf5",
+      "record": [
+        20,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669245785487,
+          "end": 112032669245847987
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669245785487,
+          "end": 112032669245847987
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669245785487,
+          "end": 112032669245847987
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669245785487,
+          "end": 112032669245847987
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032669245785487,
+          "end": 112032669245847987
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669245785487,
+          "end": 112032669245847987
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669245785487,
+          "end": 112032669245847987
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 240,
+          "status": 0,
+          "begin": 112032669245785487,
+          "end": 112032669245847987
+        }
+      ],
+      "charge_first_timestamp": 112032669245784509,
+      "charge_last_timestamp": 112032669245845949,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669245816737,
+          "end": 112032669245816738,
+          "activity": 112032669245816737,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669245816737,
+          "end": 112032669245816738,
+          "candidate": 112032669245816737,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0020_df-s03-d1_dw_0_20261020T185828.hdf5",
+      "record": [
+        21,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669261410612,
+          "end": 112032669261473112
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669261410612,
+          "end": 112032669261473112
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669261410612,
+          "end": 112032669261473112
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669261410612,
+          "end": 112032669261473112
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669261410612,
+          "end": 112032669261473112
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669261410612,
+          "end": 112032669261473112
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669261410612,
+          "end": 112032669261473112
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 912,
+          "status": 0,
+          "begin": 112032669261410612,
+          "end": 112032669261473112
+        }
+      ],
+      "charge_first_timestamp": 112032669261408701,
+      "charge_last_timestamp": 112032669261472189,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669261441862,
+          "end": 112032669261441863,
+          "activity": 112032669261441862,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669261441862,
+          "end": 112032669261441863,
+          "candidate": 112032669261441862,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0021_df-s03-d1_dw_0_20261020T185828.hdf5",
+      "record": [
+        22,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669277035690,
+          "end": 112032669277098190
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669277035690,
+          "end": 112032669277098190
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669277035690,
+          "end": 112032669277098190
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669277035690,
+          "end": 112032669277098190
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032669277035690,
+          "end": 112032669277098190
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669277035690,
+          "end": 112032669277098190
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669277035690,
+          "end": 112032669277098190
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 192,
+          "status": 0,
+          "begin": 112032669277035690,
+          "end": 112032669277098190
+        }
+      ],
+      "charge_first_timestamp": 112032669277034941,
+      "charge_last_timestamp": 112032669277096381,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669277066940,
+          "end": 112032669277066941,
+          "activity": 112032669277066940,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669277066940,
+          "end": 112032669277066941,
+          "candidate": 112032669277066940,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0022_df-s03-d1_dw_0_20261020T185829.hdf5",
+      "record": [
+        23,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669308286077,
+          "end": 112032669308348577
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669308286077,
+          "end": 112032669308348577
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669308286077,
+          "end": 112032669308348577
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669308286077,
+          "end": 112032669308348577
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032669308286077,
+          "end": 112032669308348577
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669308286077,
+          "end": 112032669308348577
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669308286077,
+          "end": 112032669308348577
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 504,
+          "status": 0,
+          "begin": 112032669308286077,
+          "end": 112032669308348577
+        }
+      ],
+      "charge_first_timestamp": 112032669308285373,
+      "charge_last_timestamp": 112032669308346813,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669308317327,
+          "end": 112032669308317328,
+          "activity": 112032669308317327,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669308317327,
+          "end": 112032669308317328,
+          "candidate": 112032669308317327,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0023_df-s03-d1_dw_0_20261020T185829.hdf5",
+      "record": [
+        24,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669327036065,
+          "end": 112032669327098565
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669327036065,
+          "end": 112032669327098565
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669327036065,
+          "end": 112032669327098565
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669327036065,
+          "end": 112032669327098565
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669327036065,
+          "end": 112032669327098565
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669327036065,
+          "end": 112032669327098565
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669327036065,
+          "end": 112032669327098565
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 312,
+          "status": 0,
+          "begin": 112032669327036065,
+          "end": 112032669327098565
+        }
+      ],
+      "charge_first_timestamp": 112032669327034813,
+      "charge_last_timestamp": 112032669327098301,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669327067315,
+          "end": 112032669327067316,
+          "activity": 112032669327067315,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669327067315,
+          "end": 112032669327067316,
+          "candidate": 112032669327067315,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0024_df-s03-d1_dw_0_20261020T185829.hdf5",
+      "record": [
+        25,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669348911402,
+          "end": 112032669348973902
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669348911402,
+          "end": 112032669348973902
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669348911402,
+          "end": 112032669348973902
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669348911402,
+          "end": 112032669348973902
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669348911402,
+          "end": 112032669348973902
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669348911402,
+          "end": 112032669348973902
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669348911402,
+          "end": 112032669348973902
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 72,
+          "status": 0,
+          "begin": 112032669348911402,
+          "end": 112032669348973902
+        }
+      ],
+      "charge_first_timestamp": 112032669348909501,
+      "charge_last_timestamp": 112032669348972989,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669348942652,
+          "end": 112032669348942653,
+          "activity": 112032669348942652,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669348942652,
+          "end": 112032669348942653,
+          "candidate": 112032669348942652,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0025_df-s03-d1_dw_0_20261020T185830.hdf5",
+      "record": [
+        26,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669370786425,
+          "end": 112032669370848925
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669370786425,
+          "end": 112032669370848925
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669370786425,
+          "end": 112032669370848925
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669370786425,
+          "end": 112032669370848925
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032669370786425,
+          "end": 112032669370848925
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669370786425,
+          "end": 112032669370848925
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669370786425,
+          "end": 112032669370848925
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 648,
+          "status": 0,
+          "begin": 112032669370786425,
+          "end": 112032669370848925
+        }
+      ],
+      "charge_first_timestamp": 112032669370786237,
+      "charge_last_timestamp": 112032669370847677,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669370817675,
+          "end": 112032669370817676,
+          "activity": 112032669370817675,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669370817675,
+          "end": 112032669370817676,
+          "candidate": 112032669370817675,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0026_df-s03-d1_dw_0_20261020T185830.hdf5",
+      "record": [
+        27,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669389536625,
+          "end": 112032669389599125
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669389536625,
+          "end": 112032669389599125
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669389536625,
+          "end": 112032669389599125
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669389536625,
+          "end": 112032669389599125
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032669389536625,
+          "end": 112032669389599125
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669389536625,
+          "end": 112032669389599125
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669389536625,
+          "end": 112032669389599125
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 408,
+          "status": 0,
+          "begin": 112032669389536625,
+          "end": 112032669389599125
+        }
+      ],
+      "charge_first_timestamp": 112032669389535677,
+      "charge_last_timestamp": 112032669389597117,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669389567875,
+          "end": 112032669389567876,
+          "activity": 112032669389567875,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669389567875,
+          "end": 112032669389567876,
+          "candidate": 112032669389567875,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0027_df-s03-d1_dw_0_20261020T185831.hdf5",
+      "record": [
+        28,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669417661846,
+          "end": 112032669417724346
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669417661846,
+          "end": 112032669417724346
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669417661846,
+          "end": 112032669417724346
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669417661846,
+          "end": 112032669417724346
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 223200,
+          "status": 0,
+          "begin": 112032669417661846,
+          "end": 112032669417724346
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669417661846,
+          "end": 112032669417724346
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669417661846,
+          "end": 112032669417724346
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 96,
+          "status": 0,
+          "begin": 112032669417661846,
+          "end": 112032669417724346
+        }
+      ],
+      "charge_first_timestamp": 112032669417660861,
+      "charge_last_timestamp": 112032669417722301,
+      "charge_frames": 31,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669417693096,
+          "end": 112032669417693097,
+          "activity": 112032669417693096,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669417693096,
+          "end": 112032669417693097,
+          "candidate": 112032669417693096,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    },
+    {
+      "file": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw/np02vd_raw_run045392_0028_df-s03-d1_dw_0_20261020T185831.hdf5",
+      "record": [
+        29,
+        0
+      ],
+      "fragments": [
+        {
+          "source": 800,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669436412020,
+          "end": 112032669436474520
+        },
+        {
+          "source": 801,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669436412020,
+          "end": 112032669436474520
+        },
+        {
+          "source": 802,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669436412020,
+          "end": 112032669436474520
+        },
+        {
+          "source": 803,
+          "type": 18,
+          "detector": 8,
+          "bytes": 4096,
+          "status": 0,
+          "begin": 112032669436412020,
+          "end": 112032669436474520
+        },
+        {
+          "source": 900,
+          "type": 12,
+          "detector": 10,
+          "bytes": 230400,
+          "status": 0,
+          "begin": 112032669436412020,
+          "end": 112032669436474520
+        },
+        {
+          "source": 1,
+          "type": 7,
+          "detector": 1,
+          "bytes": 112,
+          "status": 0,
+          "begin": 112032669436412020,
+          "end": 112032669436474520
+        },
+        {
+          "source": 2,
+          "type": 8,
+          "detector": 1,
+          "bytes": 136,
+          "status": 0,
+          "begin": 112032669436412020,
+          "end": 112032669436474520
+        },
+        {
+          "source": 904,
+          "type": 6,
+          "detector": 1,
+          "bytes": 360,
+          "status": 0,
+          "begin": 112032669436412020,
+          "end": 112032669436474520
+        }
+      ],
+      "charge_first_timestamp": 112032669436410301,
+      "charge_last_timestamp": 112032669436473789,
+      "charge_frames": 32,
+      "metadata_status": {
+        "1": 0,
+        "2": 0,
+        "904": 0
+      },
+      "frames": 32,
+      "channels": {
+        "0": 1,
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 1,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1,
+        "13": 1,
+        "14": 1,
+        "15": 1,
+        "16": 1,
+        "17": 1,
+        "18": 1,
+        "19": 1,
+        "20": 1,
+        "21": 1,
+        "22": 1,
+        "23": 1,
+        "24": 1,
+        "25": 1,
+        "26": 1,
+        "27": 1,
+        "28": 1,
+        "29": 1,
+        "30": 1,
+        "31": 1
+      },
+      "tas": [
+        {
+          "start": 112032669436443270,
+          "end": 112032669436443271,
+          "activity": 112032669436443270,
+          "type": "Type.kPDS",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8,
+          "inputs": 1
+        }
+      ],
+      "tcs": [
+        {
+          "start": 112032669436443270,
+          "end": 112032669436443271,
+          "candidate": 112032669436443270,
+          "type": "Type.kPrescale",
+          "algorithm": "Algorithm.kPrescale",
+          "detid": 8
+        }
+      ]
+    }
+  ],
+  "record_count": 29,
+  "pds_frames": 928,
+  "channel_frames": {
+    "0": 29,
+    "1": 29,
+    "2": 29,
+    "3": 29,
+    "4": 29,
+    "5": 29,
+    "6": 29,
+    "7": 29,
+    "8": 29,
+    "9": 29,
+    "10": 29,
+    "11": 29,
+    "12": 29,
+    "13": 29,
+    "14": 29,
+    "15": 29,
+    "16": 29,
+    "17": 29,
+    "18": 29,
+    "19": 29,
+    "20": 29,
+    "21": 29,
+    "22": 29,
+    "23": 29,
+    "24": 29,
+    "25": 29,
+    "26": 29,
+    "27": 29,
+    "28": 29,
+    "29": 29,
+    "30": 29,
+    "31": 29
+  },
+  "fragment_status_counts": {
+    "0": 231,
+    "18": 1
+  },
+  "window_ticks": 62500,
+  "window_ms": 1.0,
+  "all_records_have_all32_channels": true,
+  "all_records_have_charge": true,
+  "all_tas_are_pds": true,
+  "all_tcs_are_prescale": true,
+  "script_sha256": "f56ee7a83d49ac4d28a12b78571c8600c58d3b207437c1b14e892052b48ad82f",
+  "fully_zero_status_records": 28,
+  "metadata_flagged_records": [
+    [
+      1,
+      0
+    ]
+  ]
+}

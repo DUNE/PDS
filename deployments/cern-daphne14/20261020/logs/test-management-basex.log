@@ -1,0 +1,42 @@
+sudo -p __SERIAL_AUTH__ sh -c 'set +e
+> export SYSTEMD_PAGER=cat PAGER=cat
+> original=$(devmem 0xff0b0004 32)
+> control=$(devmem 0xff0b0200 32)
+> advert=$(devmem 0xff0b0210 32)
+> echo "BEFORE $original $control $advert"
+> devmem 0xff0b0004 32 "$(printf '"'"'0x%08x'"'"' "$((original & ~0x08000000))")"
+"
+> devmem 0xff0b0210 32 0x00000020
+> devmem 0xff0b0200 32 "$(printf '"'"'0x%08x'"'"' "$((control | 0x1200))")"
+> sleep 1
+> ping -c 3 -W 1 10.73.137.1
+> result=$?
+> ip -s link show end0
+> if test "$result" != 0; then
+>  devmem 0xff0b0004 32 "$original"
+>  devmem 0xff0b0210 32 "$advert"
+>  devmem 0xff0b0200 32 "$control"
+>  echo RESTORED_SGMII
+> else
+>  echo BASEX_GATEWAY_OK
+> fi'; printf "\n__COMPLETE_6cb8b41b6c4443f29f1790c8f9e7a8a8__%s\n" "$?"
+__SERIAL_AUTH__
+BEFORE 0x092E0C4A 0x00000140 0x00000001
+PING 10.73.137.1 (10.73.137.1): 56 data bytes
+64 bytes from 10.73.137.1: seq=0 ttl=64 time=0.669 ms
+64 bytes from 10.73.137.1: seq=1 ttl=64 time=0.653 ms
+64 bytes from 10.73.137.1: seq=2 ttl=64 time=0.554 ms
+
+--- 10.73.137.1 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.554/0.625/0.669 ms
+3: end0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether ba:be:ba:d1:cb:ff brd ff:ff:ff:ff:ff:ff permaddr ba:be:ba:d1:ca:fe
+    RX:  bytes packets errors dropped  missed   mcast           
+          4362      36      0       0       0       1 
+    TX:  bytes packets errors dropped carrier collsns           
+          7001      82      0       0       0       0 
+BASEX_GATEWAY_OK
+
+__COMPLETE_6cb8b41b6c4443f29f1790c8f9e7a8a8__0
+petalinux@NP04-DAPHNE-014:~$ 

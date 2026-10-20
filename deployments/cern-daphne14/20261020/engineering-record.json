@@ -1,0 +1,40 @@
+{
+  "recorded_utc": "2026-10-20T19:08:00.603661+00:00",
+  "requirement": "Deploy M2-004-compatible OS, gateware and services on DAPHNE-14 and exercise PDS-TA-driven PDS/charge DAQ windows.",
+  "board": "NP04-DAPHNE-014",
+  "result": "Functional test passed with one first-record TC metadata status flag; persistent boot verified.",
+  "reviewer": null,
+  "qualification": "Engineering functional test; not production approval or detector response qualification.",
+  "run": 45392,
+  "raw_data_root": "/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw",
+  "os_artifacts": "/nfs/home/marroyav/daphne14-os-trial-20261020",
+  "source_reference_004": "/home/arroyave/work/PDS-runtime-calibration/deployments/cern-daphne-m2-004/20261016",
+  "prescale_library_sha256": "e105be45d67dbf041d4db08b41d11cba14f66187532721bc6c0ac2170fb01f3f",
+  "source_cleanliness": "DAQ source repos clean; PDS documentation/helper changes recorded in evidence/source-provenance.json.",
+  "acceptance": {
+    "all_32_hardware_channels_accept_200": true,
+    "new_busy_or_full_counts": 0,
+    "saved_windows_with_all32_pds_and_charge": 29,
+    "fully_zero_status_records": 28,
+    "window_ticks": 62500,
+    "pds_tas_detector8": true,
+    "prescale_tcs_detector8": true,
+    "ta_tc_readout_timestamp_match": true,
+    "charge_frame_coverage_verified": true,
+    "saved_boot_into_new_root_verified": true,
+    "serial_working": true,
+    "jtag_enumeration_verified": true,
+    "jtag_ram_boot_tested": false,
+    "physical_charge_used": false,
+    "ssp_commanded": false
+  },
+  "final_state": {
+    "gateware": "self-trigger-256-cal2",
+    "endpoint": 32,
+    "endpoint_state": 8,
+    "timestamp_valid": true,
+    "daq": "stopped and all processes exited0",
+    "channels": "all32 paused"
+  },
+  "command_records": "support/ and logs/"
+}

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="ASCII"?>
+
+<!-- oks-data version 2.2 -->
+
+
+<!DOCTYPE oks-data [
+  <!ELEMENT oks-data (info, (include)?, (comments)?, (obj)+)>
+  <!ELEMENT info EMPTY>
+  <!ATTLIST info
+      name CDATA #IMPLIED
+      type CDATA #IMPLIED
+      num-of-items CDATA #REQUIRED
+      oks-format CDATA #FIXED "data"
+      oks-version CDATA #REQUIRED
+      created-by CDATA #IMPLIED
+      created-on CDATA #IMPLIED
+      creation-time CDATA #IMPLIED
+      last-modified-by CDATA #IMPLIED
+      last-modified-on CDATA #IMPLIED
+      last-modification-time CDATA #IMPLIED
+  >
+  <!ELEMENT include (file)*>
+  <!ELEMENT file EMPTY>
+  <!ATTLIST file
+      path CDATA #REQUIRED
+  >
+  <!ELEMENT comments (comment)*>
+  <!ELEMENT comment EMPTY>
+  <!ATTLIST comment
+      creation-time CDATA #REQUIRED
+      created-by CDATA #REQUIRED
+      created-on CDATA #REQUIRED
+      author CDATA #REQUIRED
+      text CDATA #REQUIRED
+  >
+  <!ELEMENT obj (attr | rel)*>
+  <!ATTLIST obj
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+  <!ELEMENT attr (data)*>
+  <!ATTLIST attr
+      name CDATA #REQUIRED
+      type (bool|s8|u8|s16|u16|s32|u32|s64|u64|float|double|date|time|string|uid|enum|class|-) "-"
+      val CDATA ""
+  >
+  <!ELEMENT data EMPTY>
+  <!ATTLIST data
+      val CDATA #REQUIRED
+  >
+  <!ELEMENT rel (ref)*>
+  <!ATTLIST rel
+      name CDATA #REQUIRED
+      class CDATA ""
+      id CDATA ""
+  >
+  <!ELEMENT ref EMPTY>
+  <!ATTLIST ref
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+]>
+
+<oks-data>
+  <info name="" type="" num-of-items="8" oks-format="data" oks-version="862f2957270" created-by="gjc" created-on="thinkpad" creation-time="20240306T144154" last-modified-by="np04daq" last-modified-on="np04-srv-024.cern.ch" last-modification-time="20251202T110539" />
+  <include>
+    <file path="schema/confmodel/dunedaq.schema.xml" />
+    <file path="schema/appmodel/application.schema.xml" />
+    <file path="schema/appmodel/fdmodules.schema.xml" />
+    <file path="schema/appmodel/wiec.schema.xml" />
+    <file path="defaults/fsm.data.xml" />
+    <file path="defaults/ccm.data.xml" />
+    <file path="defaults/connections.data.xml" />
+    <file path="defaults/moduleconfs.data.xml" />
+    <file path="defaults/wiecconfs.data.xml" />
+    <file path="hw/hosts.data.xml" />
+    <file path="segments/dataflow.data.xml" />
+    <file path="segments/trigger.data.xml" />
+    <file path="segments/pds-vst.data.xml" />
+    <file path="test-additions.data.xml" />
+  </include>
+  <obj class="DetectorConfig" id="np02-detector">
+    <attr name="tpg_channel_map" type="string" val="PD2VDTPCChannelMap" />
+    <attr name="clock_speed_hz" type="u32" val="62500000" />
+    <attr name="op_env" type="string" val="np02vd" />
+    <attr name="offline_data_stream" type="string" val="cosmics" />
+  </obj>
+  <obj class="RCApplication" id="pds-controller">
+    <attr name="commandline_parameters" type="string">
+      <data val="" />
+    </attr>
+    <attr name="application_name" type="string" val="drunc-controller" />
+    <rel name="runs_on" class="VirtualHost" id="vh-np04-srv-024" />
+    <rel name="exposes_service">
+      <ref class="Service" id="pds-controller_control" />
+    </rel>
+    <rel name="opmon_conf" class="OpMonConf" id="slow-all-monitoring" />
+    <rel name="fsm" class="FSMconfiguration" id="FSMconfiguration_noAction" />
+    <rel name="broadcaster" class="RCBroadcaster" id="broadcaster-root" />
+  </obj>
+  <obj class="ReadoutApplication" id="runp02srv001eth1">
+    <attr name="application_name" type="string" val="daq_application" />
+    <attr name="tp_generation_enabled" type="bool" val="1" />
+    <attr name="ta_generation_enabled" type="bool" val="1" />
+    <rel name="runs_on" class="VirtualHost" id="vh-np02-srv-001" />
+    <rel name="exposes_service">
+      <ref class="Service" id="runp02srv001eth0_control" />
+    </rel>
+    <rel name="opmon_conf" class="OpMonConf" id="slow-all-monitoring" />
+    <rel name="action_plans">
+      <ref class="ActionPlan" id="eth-readout-start" />
+      <ref class="ActionPlan" id="eth-readout-stop" />
+    </rel>
+    <rel name="queue_rules">
+      <ref class="QueueConnectionRule" id="fd-dlh-data-requests-queue-rule" />
+      <ref class="QueueConnectionRule" id="fa-queue-rule" />
+      <ref class="QueueConnectionRule" id="tp-queue-rule" />
+      <ref class="QueueConnectionRule" id="daphne-eth-callback-raw-data-rule" />
+    </rel>
+    <rel name="network_rules">
+      <ref class="NetworkConnectionRule" id="ta-net-rule" />
+      <ref class="NetworkConnectionRule" id="tpset-net-rule" />
+      <ref class="NetworkConnectionRule" id="ts-net-rule" />
+      <ref class="NetworkConnectionRule" id="data-req-readout-net-rule" />
+    </rel>
+    <rel name="uses" class="RoHwConfig" id="generic-dpdk-hw-cfg" />
+    <rel name="link_handler" class="DataHandlerConf" id="pds-eth-handler-numa0-selftrigger" />
+    <rel name="tp_source_ids">
+      <ref class="SourceIDConf" id="pds-test-tp-source" />
+    </rel>
+    <rel name="tp_handler" class="DataHandlerConf" id="def-pds-tp-handler" />
+    <rel name="data_reader" class="DPDKReaderConf" id="def-nic-receiver-conf" />
+    <rel name="fragment_aggregator" class="FragmentAggregatorConf" id="frag-agg-01" />
+    <rel name="detector_connections">
+      <ref class="NetworkDetectorToDaqConnection" id="daphne14-connection" />
+    </rel>
+    <rel name="callback_desc" class="DataMoveCallbackDescriptor" id="daphne-eth-raw-input" />
+  </obj>
+  <obj class="Segment" id="pds-segment">
+    <rel name="applications">
+      <ref class="DaphneApplication" id="daphne14-app" />
+      <ref class="ReadoutApplication" id="runp02srv001eth1" />
+      <ref class="ReadoutApplication" id="charge-emu" />
+    </rel>
+    <rel name="controller" class="RCApplication" id="pds-controller" />
+  </obj>
+  <obj class="Segment" id="root-segment">
+    <rel name="segments">
+      <ref class="Segment" id="df-segment" />
+      <ref class="Segment" id="trg-segment" />
+      <ref class="Segment" id="pds-segment" />
+    </rel>
+    <rel name="controller" class="RCApplication" id="root-controller" />
+  </obj>
+  <obj class="Service" id="runp02srv001eth0_control">
+    <attr name="protocol" type="string" val="rest" />
+    <attr name="port" type="u16" val="0" />
+  </obj>
+  <obj class="Session" id="pds-daphne14">
+    <attr name="data_request_timeout_ms" type="u32" val="1000" />
+    <attr name="data_rate_slowdown_factor" type="u32" val="1" />
+    <attr name="controller_log_level" type="enum" val="INFO" />
+    <attr name="log_path" type="string" val="/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/logs/calibration" />
+    <rel name="disabled">
+      <ref class="DFApplication" id="df-s01-d2" />
+      <ref class="DFApplication" id="df-s01-d3" />
+      <ref class="DFApplication" id="df-s02-d0" />
+      <ref class="DFApplication" id="df-s02-d1" />
+      <ref class="DFApplication" id="df-s02-d2" />
+      <ref class="DFApplication" id="df-s02-d3" />
+      <ref class="DFApplication" id="df-s03-d0" />
+      <ref class="DFApplication" id="df-s03-d2" />
+      <ref class="DFApplication" id="df-s03-d3" />
+      <ref class="DFApplication" id="df-s04-d0" />
+      <ref class="DFApplication" id="df-s04-d1" />
+      <ref class="DFApplication" id="df-s04-d2" />
+      <ref class="DFApplication" id="df-s04-d3" />
+      <ref class="DFApplication" id="df-s05-d0" />
+      <ref class="DFApplication" id="df-s05-d1" />
+      <ref class="DFApplication" id="df-s05-d2" />
+      <ref class="DFApplication" id="df-s05-d3" />
+      <ref class="DFApplication" id="df-s05-d4" />
+      <ref class="DFApplication" id="df-s05-d5" />
+      <ref class="DFApplication" id="df-for-testing" />
+      <ref class="TPStreamWriterApplication" id="tp-stream-writer" />
+    </rel>
+    <rel name="connectivity_service" class="ConnectivityService" id="ehn1-connectivity-service-config" />
+    <rel name="environment">
+      <ref class="VariableSet" id="ehn1-variables" />
+      <ref class="Variable" id="np02-logbook" />
+      <ref class="Variable" id="pds-prescale-compat-preload" />
+    </rel>
+    <rel name="segment" class="Segment" id="root-segment" />
+    <rel name="detector_configuration" class="DetectorConfig" id="np02-detector" />
+    <rel name="opmon_uri" class="OpMonURI" id="cern-opmon-uri" />
+  </obj>
+  <obj class="SourceIDConf" id="pds-test-tp-source">
+    <attr name="sid" type="u32" val="904" />
+    <attr name="subsystem" type="enum" val="Trigger" />
+  </obj>
+</oks-data>

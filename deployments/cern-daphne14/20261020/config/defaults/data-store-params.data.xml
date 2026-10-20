@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="ASCII"?>
+
+<!-- oks-data version 2.2 -->
+
+
+<!DOCTYPE oks-data [
+  <!ELEMENT oks-data (info, (include)?, (comments)?, (obj)+)>
+  <!ELEMENT info EMPTY>
+  <!ATTLIST info
+      name CDATA #IMPLIED
+      type CDATA #IMPLIED
+      num-of-items CDATA #REQUIRED
+      oks-format CDATA #FIXED "data"
+      oks-version CDATA #REQUIRED
+      created-by CDATA #IMPLIED
+      created-on CDATA #IMPLIED
+      creation-time CDATA #IMPLIED
+      last-modified-by CDATA #IMPLIED
+      last-modified-on CDATA #IMPLIED
+      last-modification-time CDATA #IMPLIED
+  >
+  <!ELEMENT include (file)*>
+  <!ELEMENT file EMPTY>
+  <!ATTLIST file
+      path CDATA #REQUIRED
+  >
+  <!ELEMENT comments (comment)*>
+  <!ELEMENT comment EMPTY>
+  <!ATTLIST comment
+      creation-time CDATA #REQUIRED
+      created-by CDATA #REQUIRED
+      created-on CDATA #REQUIRED
+      author CDATA #REQUIRED
+      text CDATA #REQUIRED
+  >
+  <!ELEMENT obj (attr | rel)*>
+  <!ATTLIST obj
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+  <!ELEMENT attr (data)*>
+  <!ATTLIST attr
+      name CDATA #REQUIRED
+      type (bool|s8|u8|s16|u16|s32|u32|s64|u64|float|double|date|time|string|uid|enum|class|-) "-"
+      val CDATA ""
+  >
+  <!ELEMENT data EMPTY>
+  <!ATTLIST data
+      val CDATA #REQUIRED
+  >
+  <!ELEMENT rel (ref)*>
+  <!ATTLIST rel
+      name CDATA #REQUIRED
+      class CDATA ""
+      id CDATA ""
+  >
+  <!ELEMENT ref EMPTY>
+  <!ATTLIST ref
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+]>
+
+<oks-data>
+  <info name="" type="" num-of-items="18" oks-format="data" oks-version="862f2957270" created-by="eflumerf" created-on="ironvirt9.mshome.net" creation-time="20240112T161946" last-modified-by="maroda" last-modified-on="np04-srv-015.cern.ch" last-modification-time="20250409T105648" />
+  <include>
+    <file path="schema/appmodel/application.schema.xml" />
+  </include>
+  <obj class="DataStoreConf" id="default_tp_store_conf">
+    <attr name="type" type="string" val="HDF5DataStore" />
+    <attr name="directory_path" type="string" val="/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/primitives" />
+    <attr name="mode" type="enum" val="all-per-file" />
+    <attr name="max_file_size" type="u64" val="4294967296" />
+    <attr name="disable_unique_filename_suffix" type="bool" val="0" />
+    <attr name="free_space_safety_factor" type="s32" val="5" />
+    <rel name="file_layout_params" class="HDF5FileLayoutParams" id="tp_file_layout" />
+    <rel name="filename_params" class="FilenameParams" id="tp-file-params" />
+  </obj>
+  <obj class="DataStoreConf" id="testing-datastore">
+    <attr name="type" type="string" val="HDF5DataStore" />
+    <attr name="directory_path" type="string" val="/data3/test/pds-bandwidth-20260930" />
+    <attr name="mode" type="enum" val="all-per-file" />
+    <attr name="max_file_size" type="u64" val="4294967296" />
+    <attr name="disable_unique_filename_suffix" type="bool" val="0" />
+    <attr name="free_space_safety_factor" type="s32" val="5" />
+    <rel name="file_layout_params" class="HDF5FileLayoutParams" id="default" />
+    <rel name="filename_params" class="FilenameParams" id="default" />
+  </obj>
+  <obj class="DataStoreConf" id="tr-data0">
+    <attr name="type" type="string" val="HDF5DataStore" />
+    <attr name="directory_path" type="string" val="/data0" />
+    <attr name="mode" type="enum" val="all-per-file" />
+    <attr name="max_file_size" type="u64" val="4294967296" />
+    <attr name="disable_unique_filename_suffix" type="bool" val="0" />
+    <attr name="free_space_safety_factor" type="s32" val="5" />
+    <rel name="file_layout_params" class="HDF5FileLayoutParams" id="default" />
+    <rel name="filename_params" class="FilenameParams" id="default" />
+  </obj>
+  <obj class="DataStoreConf" id="tr-data1">
+    <attr name="type" type="string" val="HDF5DataStore" />
+    <attr name="directory_path" type="string" val="/nfs/home/np04daq/vst/daphne14-pds-ta-charge-20261020/data/calibration/raw" />
+    <attr name="mode" type="enum" val="one-event-per-file" />
+    <attr name="max_file_size" type="u64" val="4294967296" />
+    <attr name="disable_unique_filename_suffix" type="bool" val="0" />
+    <attr name="free_space_safety_factor" type="s32" val="5" />
+    <rel name="file_layout_params" class="HDF5FileLayoutParams" id="default" />
+    <rel name="filename_params" class="FilenameParams" id="default" />
+  </obj>
+  <obj class="DataStoreConf" id="tr-data2">
+    <attr name="type" type="string" val="HDF5DataStore" />
+    <attr name="directory_path" type="string" val="/data2" />
+    <attr name="mode" type="enum" val="all-per-file" />
+    <attr name="max_file_size" type="u64" val="4294967296" />
+    <attr name="disable_unique_filename_suffix" type="bool" val="0" />
+    <attr name="free_space_safety_factor" type="s32" val="5" />
+    <rel name="file_layout_params" class="HDF5FileLayoutParams" id="default" />
+    <rel name="filename_params" class="FilenameParams" id="default" />
+  </obj>
+  <obj class="DataStoreConf" id="tr-data3">
+    <attr name="type" type="string" val="HDF5DataStore" />
+    <attr name="directory_path" type="string" val="/data3" />
+    <attr name="mode" type="enum" val="all-per-file" />
+    <attr name="max_file_size" type="u64" val="4294967296" />
+    <attr name="disable_unique_filename_suffix" type="bool" val="0" />
+    <attr name="free_space_safety_factor" type="s32" val="5" />
+    <rel name="file_layout_params" class="HDF5FileLayoutParams" id="default" />
+    <rel name="filename_params" class="FilenameParams" id="default" />
+  </obj>
+  <obj class="DataStoreConf" id="tr-data4">
+    <attr name="type" type="string" val="HDF5DataStore" />
+    <attr name="directory_path" type="string" val="/data4" />
+    <attr name="mode" type="enum" val="all-per-file" />
+    <attr name="max_file_size" type="u64" val="4294967296" />
+    <attr name="disable_unique_filename_suffix" type="bool" val="0" />
+    <attr name="free_space_safety_factor" type="s32" val="5" />
+    <rel name="file_layout_params" class="HDF5FileLayoutParams" id="default" />
+    <rel name="filename_params" class="FilenameParams" id="default" />
+  </obj>
+  <obj class="DataStoreConf" id="tr-data5">
+    <attr name="type" type="string" val="HDF5DataStore" />
+    <attr name="directory_path" type="string" val="/data5" />
+    <attr name="mode" type="enum" val="all-per-file" />
+    <attr name="max_file_size" type="u64" val="4294967296" />
+    <attr name="disable_unique_filename_suffix" type="bool" val="0" />
+    <attr name="free_space_safety_factor" type="s32" val="5" />
+    <rel name="file_layout_params" class="HDF5FileLayoutParams" id="default" />
+    <rel name="filename_params" class="FilenameParams" id="default" />
+  </obj>
+  <obj class="FilenameParams" id="default">
+    <attr name="file_type_prefix" type="enum" val="raw" />
+    <attr name="run_number_prefix" type="string" val="run" />
+    <attr name="digits_for_run_number" type="s32" val="6" />
+    <attr name="digits_for_file_index" type="s32" val="4" />
+    <attr name="digits_for_trigger_number" type="s32" val="6" />
+  </obj>
+  <obj class="FilenameParams" id="tp-file-params">
+    <attr name="file_type_prefix" type="enum" val="tp" />
+    <attr name="run_number_prefix" type="string" val="run" />
+    <attr name="digits_for_run_number" type="s32" val="6" />
+    <attr name="digits_for_file_index" type="s32" val="4" />
+    <attr name="digits_for_trigger_number" type="s32" val="6" />
+  </obj>
+  <obj class="HDF5FileLayoutParams" id="default">
+    <attr name="record_name_prefix" type="string" val="TriggerRecord" />
+    <attr name="digits_for_record_number" type="s32" val="5" />
+    <attr name="digits_for_sequence_number" type="s32" val="4" />
+    <attr name="record_header_dataset_name" type="string" val="TriggerRecordHeader" />
+    <attr name="raw_data_group_name" type="string" val="RawData" />
+    <attr name="view_group_name" type="string" val="Views" />
+    <rel name="path_params_list">
+      <ref class="HDF5PathParams" id="DataSelection" />
+      <ref class="HDF5PathParams" id="HSI" />
+      <ref class="HDF5PathParams" id="NDLArPDS" />
+      <ref class="HDF5PathParams" id="NDLarTPC" />
+      <ref class="HDF5PathParams" id="PDS" />
+      <ref class="HDF5PathParams" id="TPC" />
+    </rel>
+  </obj>
+  <obj class="HDF5FileLayoutParams" id="tp_file_layout">
+    <attr name="record_name_prefix" type="string" val="TimeSlice" />
+    <attr name="digits_for_record_number" type="s32" val="6" />
+    <attr name="digits_for_sequence_number" type="s32" val="0" />
+    <attr name="record_header_dataset_name" type="string" val="TimeSliceHeader" />
+    <attr name="raw_data_group_name" type="string" val="RawData" />
+    <attr name="view_group_name" type="string" val="Views" />
+    <rel name="path_params_list">
+      <ref class="HDF5PathParams" id="TPC" />
+    </rel>
+  </obj>
+  <obj class="HDF5PathParams" id="DataSelection">
+    <attr name="detector_group_type" type="string" val="Trigger" />
+    <attr name="detector_group_name" type="string" val="DataSelection" />
+    <attr name="element_name_prefix" type="string" val="Element" />
+    <attr name="digits_for_element_number" type="s32" val="5" />
+  </obj>
+  <obj class="HDF5PathParams" id="HSI">
+    <attr name="detector_group_type" type="string" val="HW_Signals_Interface" />
+    <attr name="detector_group_name" type="string" val="HSI" />
+    <attr name="element_name_prefix" type="string" val="Element" />
+    <attr name="digits_for_element_number" type="s32" val="5" />
+  </obj>
+  <obj class="HDF5PathParams" id="NDLArPDS">
+    <attr name="detector_group_type" type="string" val="Detector_Readout" />
+    <attr name="detector_group_name" type="string" val="NDLArPDS" />
+    <attr name="element_name_prefix" type="string" val="Element" />
+    <attr name="digits_for_element_number" type="s32" val="5" />
+  </obj>
+  <obj class="HDF5PathParams" id="NDLarTPC">
+    <attr name="detector_group_type" type="string" val="Detector_Readout" />
+    <attr name="detector_group_name" type="string" val="NDLArTPC" />
+    <attr name="element_name_prefix" type="string" val="Element" />
+    <attr name="digits_for_element_number" type="s32" val="5" />
+  </obj>
+  <obj class="HDF5PathParams" id="PDS">
+    <attr name="detector_group_type" type="string" val="Detector_Readout" />
+    <attr name="detector_group_name" type="string" val="PDS" />
+    <attr name="element_name_prefix" type="string" val="Element" />
+    <attr name="digits_for_element_number" type="s32" val="5" />
+  </obj>
+  <obj class="HDF5PathParams" id="TPC">
+    <attr name="detector_group_type" type="string" val="Detector_Readout" />
+    <attr name="detector_group_name" type="string" val="TPC" />
+    <attr name="element_name_prefix" type="string" val="Link" />
+    <attr name="digits_for_element_number" type="s32" val="5" />
+  </obj>
+</oks-data>

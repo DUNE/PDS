@@ -1,0 +1,26 @@
+{
+  "before": {
+    "clock_source": "endpoint",
+    "clocks_locked": true,
+    "endpoint_state": 6,
+    "timestamp_valid": false,
+    "endpoint_address": 32
+  },
+  "clock_response": "Clock status: MMCM0:LOCKED MMCM1:LOCKED\nEndpoint not ready (timeout); status=0x6\n",
+  "master_preflight": {
+    "event": "inspected",
+    "clock_hz": 62500000,
+    "snapshot": {
+      "timestamp": 112032691054280582,
+      "accepted": 2159044,
+      "rejected": 0
+    }
+  },
+  "after": {
+    "clock_source": "endpoint",
+    "clocks_locked": true,
+    "endpoint_state": 8,
+    "timestamp_valid": true,
+    "endpoint_address": 32
+  }
+}

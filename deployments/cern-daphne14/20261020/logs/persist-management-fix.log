@@ -1,0 +1,17 @@
+default profile: self-trigger-256-cal2
+active profile: self-trigger-256-cal2
+app: daphne_selftrigger_ol_93e0579
+server mode: self-trigger
+runtime target: active
+identity ok: profile=self-trigger-256-cal2 ABI=2.0 variant=1 build=0x093E0579
+Linux NP04-DAPHNE-014 6.18.10-xilinx-g6627b6ab1760 #1 SMP Tue May 26 15:23:35 UTC 2026 aarch64 GNU/Linux
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+sit0@NONE        DOWN           
+end0             UP             10.73.137.160/24 
+ID=petalinux
+NAME="PetaLinux"
+VERSION="2026.1+release-S06060014 (scarthgap)"
+VERSION_ID=2026.1-release-s06060014
+VERSION_CODENAME="scarthgap"
+PRETTY_NAME="PetaLinux 2026.1+release-S06060014 (scarthgap)"
+CPE_NAME="cpe:/o:openembedded:petalinux:2026.1+release-S06060014"

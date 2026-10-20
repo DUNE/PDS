@@ -1,0 +1,38 @@
+NP04-DAPHNE-014
+Linux NP04-DAPHNE-014 6.18.10-xilinx-g6627b6ab1760 #1 SMP Tue May 26 15:23:35 UTC 2026 aarch64 GNU/Linux
+ID=petalinux
+NAME="PetaLinux"
+VERSION="2026.1+release-S06060014 (scarthgap)"
+VERSION_ID=2026.1-release-s06060014
+VERSION_CODENAME="scarthgap"
+PRETTY_NAME="PetaLinux 2026.1+release-S06060014 (scarthgap)"
+CPE_NAME="cpe:/o:openembedded:petalinux:2026.1+release-S06060014"
+earlycon console=ttyPS1,115200 root=/dev/mmcblk0p3 rootwait rw
+ROOT_MOUNT ['/dev/root / ext4 rw,relatime 0 0']
+MGMT_MAC ba:be:ba:d1:cb:ff
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+sit0@NONE        DOWN           
+end0             UP             10.73.137.160/24 
+  UNIT LOAD ACTIVE SUB DESCRIPTION
+
+0 loaded units listed.
+default profile: self-trigger-256-cal2
+active profile: self-trigger-256-cal2
+app: daphne_selftrigger_ol_93e0579
+server mode: self-trigger
+runtime target: active
+identity ok: profile=self-trigger-256-cal2 ABI=2.0 variant=1 build=0x093E0579
+full-stream: app=daphne_fullstream_ol_b24e416 mode=full-stream ABI=2.0 variant=2 ready build=0x0B24E416
+self-trigger-1024: app=daphne_selftrigger_ol_3f17f1b mode=self-trigger ABI=2.0 variant=1 ready build=0x03F17F1B
+self-trigger-256-cal2: app=daphne_selftrigger_ol_93e0579 mode=self-trigger ABI=2.0 variant=1 ready build=0x093E0579
+self-trigger: app=daphne_selftrigger_ol_3f17f1b mode=self-trigger ABI=2.0 variant=1 ready build=0x03F17F1B
+ENDPOINT_ADDR_HEX=0x20
+TIMING_PROFILE=endpoint-sync-v14
+ENDPOINT_WAIT_MS=3000
+ENDPOINT_SUCCESS_STATES=0x6,0x8
+i2c-0	i2c       	Cadence I2C at ff030000         	I2C adapter
+i2c-1	i2c       	xiic-i2c 9c000000.i2c           	I2C adapter
+6b786fa74f6c73e8f23af957bd5f55746b9a5774bc7913c0a37eef439505f82c  /opt/daphne-server/cal2-vst-frame-monitor-20261008/bin/daphneServer
+aad491f7b9bf21165ae3f190fa0db16f58ae0e5e801a4499e95429f0d4eb2f3b  /usr/bin/hermes_udp_srv
+887f495fd0e584d5fc026404397abcc33adf6041e17c52c6ff777d4658686b71  /boot/daphne14-trial-20261020/Image
+ebebc8a865353a820fa6a26b59c36c8f723066b37e81cdf712d2aeb01d881b02  /boot/daphne14-trial-20261020/system.dtb

@@ -1,0 +1,59 @@
+{
+  "run": 45392,
+  "host": "np04-srv-017",
+  "python": "3.12.12 (main, Jan  6 2026, 02:00:42) [GCC 14.3.0]",
+  "record_count": 29,
+  "pds_frames": 928,
+  "channel_frames": {
+    "0": 29,
+    "1": 29,
+    "2": 29,
+    "3": 29,
+    "4": 29,
+    "5": 29,
+    "6": 29,
+    "7": 29,
+    "8": 29,
+    "9": 29,
+    "10": 29,
+    "11": 29,
+    "12": 29,
+    "13": 29,
+    "14": 29,
+    "15": 29,
+    "16": 29,
+    "17": 29,
+    "18": 29,
+    "19": 29,
+    "20": 29,
+    "21": 29,
+    "22": 29,
+    "23": 29,
+    "24": 29,
+    "25": 29,
+    "26": 29,
+    "27": 29,
+    "28": 29,
+    "29": 29,
+    "30": 29,
+    "31": 29
+  },
+  "fragment_status_counts": {
+    "0": 231,
+    "18": 1
+  },
+  "window_ticks": 62500,
+  "window_ms": 1.0,
+  "all_records_have_all32_channels": true,
+  "all_records_have_charge": true,
+  "all_tas_are_pds": true,
+  "all_tcs_are_prescale": true,
+  "script_sha256": "f56ee7a83d49ac4d28a12b78571c8600c58d3b207437c1b14e892052b48ad82f",
+  "fully_zero_status_records": 28,
+  "metadata_flagged_records": [
+    [
+      1,
+      0
+    ]
+  ]
+}

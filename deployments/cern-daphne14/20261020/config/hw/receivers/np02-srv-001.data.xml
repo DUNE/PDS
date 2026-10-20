@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="ASCII"?>
+
+<!-- oks-data version 2.2 -->
+
+
+<!DOCTYPE oks-data [
+  <!ELEMENT oks-data (info, (include)?, (comments)?, (obj)+)>
+  <!ELEMENT info EMPTY>
+  <!ATTLIST info
+      name CDATA #IMPLIED
+      type CDATA #IMPLIED
+      num-of-items CDATA #REQUIRED
+      oks-format CDATA #FIXED "data"
+      oks-version CDATA #REQUIRED
+      created-by CDATA #IMPLIED
+      created-on CDATA #IMPLIED
+      creation-time CDATA #IMPLIED
+      last-modified-by CDATA #IMPLIED
+      last-modified-on CDATA #IMPLIED
+      last-modification-time CDATA #IMPLIED
+  >
+  <!ELEMENT include (file)*>
+  <!ELEMENT file EMPTY>
+  <!ATTLIST file
+      path CDATA #REQUIRED
+  >
+  <!ELEMENT comments (comment)*>
+  <!ELEMENT comment EMPTY>
+  <!ATTLIST comment
+      creation-time CDATA #REQUIRED
+      created-by CDATA #REQUIRED
+      created-on CDATA #REQUIRED
+      author CDATA #REQUIRED
+      text CDATA #REQUIRED
+  >
+  <!ELEMENT obj (attr | rel)*>
+  <!ATTLIST obj
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+  <!ELEMENT attr (data)*>
+  <!ATTLIST attr
+      name CDATA #REQUIRED
+      type (bool|s8|u8|s16|u16|s32|u32|s64|u64|float|double|date|time|string|uid|enum|class|-) "-"
+      val CDATA ""
+  >
+  <!ELEMENT data EMPTY>
+  <!ATTLIST data
+      val CDATA #REQUIRED
+  >
+  <!ELEMENT rel (ref)*>
+  <!ATTLIST rel
+      name CDATA #REQUIRED
+      class CDATA ""
+      id CDATA ""
+  >
+  <!ELEMENT ref EMPTY>
+  <!ATTLIST ref
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+]>
+
+<oks-data>
+  <info name="" type="" num-of-items="6" oks-format="data" oks-version="862f2957270" created-by="thea" created-on="np04-srv-031.cern.ch" creation-time="20240704T150225" last-modified-by="thea" last-modified-on="np02-srv-004.cern.ch" last-modification-time="20250708T104201" />
+  <include>
+    <file path="schema/confmodel/dunedaq.schema.xml" />
+    <file path="schema/appmodel/application.schema.xml" />
+    <file path="schema/appmodel/fdmodules.schema.xml" />
+    <file path="defaults/wiecconfs.data.xml" />
+  </include>
+  <obj class="DPDKPortConfiguration" id="dpdk-np02srv001-numa0-conf">
+    <attr name="flow_control" type="bool" val="1" />
+    <attr name="mtu" type="u32" val="9000" />
+    <attr name="rx_ring_size" type="u32" val="4096" />
+    <attr name="tx_ring_size" type="u32" val="1024" />
+    <attr name="num_bufs" type="u32" val="16384" />
+    <attr name="burst_size" type="u32" val="2048" />
+    <attr name="lcore_sleep_us" type="u32" val="10" />
+    <attr name="source_to_rx_queue_multiplexing" type="s16" val="1" />
+    <attr name="processing_queue_batches" type="u32" val="256" />
+    <rel name="processing_cores">
+      <ref class="ProcessingResource" id="frame-processing-np02srv001-numa0" />
+    </rel>
+    <attr name="descriptor_queue_batches" type="u32" val="256" />
+    <rel name="descriptor_cores">
+      <ref class="ProcessingResource" id="descriptor-processing-np02srv001-numa0" />
+    </rel>
+    <rel name="used_lcores">
+      <ref class="ProcessingResource" id="lcores-np02srv001-numa0" />
+    </rel>
+  </obj>
+  <obj class="DPDKReceiver" id="dpdk-np02srv001-receiver0-p1">
+    <rel name="uses" class="NetworkDevice" id="nic-np02srv001-numa0-p1" />
+    <rel name="configuration" class="DPDKPortConfiguration" id="dpdk-np02srv001-numa0-conf" />
+  </obj>
+  <obj class="NetworkDevice" id="nic-np02srv001-numa0-p1">
+    <attr name="mac_address" type="string" val="6c:fe:54:47:a1:29" />
+    <attr name="ip_address" type="string">
+      <data val="10.73.139.121" />
+    </attr>
+    <attr name="network_name" type="enum" val="Control" />
+    <attr name="pcie_addr" type="string" val="0000:01:00.1" />
+  </obj>
+  <obj class="ProcessingResource" id="lcores-np02srv001-numa0">
+    <attr name="cpu_cores" type="u16">
+      <data val="3" />
+      <data val="7" />
+      <data val="11" />
+      <data val="15" />
+      <data val="35" />
+      <data val="39" />
+      <data val="43" />
+      <data val="47" />
+    </attr>
+  </obj>
+  <obj class="ProcessingResource" id="frame-processing-np02srv001-numa0">
+    <attr name="cpu_cores" type="u16">
+      <data val="1" />
+      <data val="5" />
+    </attr>
+  </obj>
+  <obj class="ProcessingResource" id="descriptor-processing-np02srv001-numa0">
+    <attr name="cpu_cores" type="u16">
+      <data val="9" />
+      <data val="13" />
+    </attr>
+  </obj>
+</oks-data>

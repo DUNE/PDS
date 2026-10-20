@@ -1,0 +1,34 @@
+EXTRACTING_ROOT
+Python 3.12.12
+daphneServer 
+
+
+/opt/daphne-server/cal2-vst-frame-monitor-20261008/bin/daphneServer [OPTIONS]
+
+
+OPTIONS:
+  -h,     --help              Print this help message and exit 
+          --bind TEXT [tcp://*:9876]  
+                              ZeroMQ bind endpoint 
+          --gateware-mode TEXT REQUIRED 
+                              Expected gateware variant: self-trigger or full-stream 
+          --expected-gateware-build-id TEXT 
+                              Optional expected 32-bit gateware build ID (decimal or 
+                              0x-prefixed hex) 
+          --disable-monitoring 
+                              Disable background I2C monitoring threads 
+          --monitor-period-ms INT [200]  
+                              Monitoring period in milliseconds 
+          --sndhwm INT [20000]  
+                              ZMQ SNDHWM 
+          --rcvhwm INT [20000]  
+                              ZMQ RCVHWM 
+          --sndbuf INT [4194304]  
+                              ZMQ SNDBUF bytes 
+          --max-envelope-bytes UINT [4194304]  
+                              Max incoming envelope bytes 
+full-stream: app=daphne_fullstream_ol_b24e416 mode=full-stream ABI=2.0 variant=2 ready build=0x0B24E416
+self-trigger-1024: app=daphne_selftrigger_ol_3f17f1b mode=self-trigger ABI=2.0 variant=1 ready build=0x03F17F1B
+self-trigger-256-cal2: app=daphne_selftrigger_ol_93e0579 mode=self-trigger ABI=2.0 variant=1 ready build=0x093E0579
+self-trigger: app=daphne_selftrigger_ol_3f17f1b mode=self-trigger ABI=2.0 variant=1 ready build=0x03F17F1B
+TRIAL_OS_STAGED

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ASCII"?>
+
+<!-- oks-data version 2.2 -->
+
+
+<!DOCTYPE oks-data [
+  <!ELEMENT oks-data (info, (include)?, (comments)?, (obj)+)>
+  <!ELEMENT info EMPTY>
+  <!ATTLIST info
+      name CDATA #IMPLIED
+      type CDATA #IMPLIED
+      num-of-items CDATA #REQUIRED
+      oks-format CDATA #FIXED "data"
+      oks-version CDATA #REQUIRED
+      created-by CDATA #IMPLIED
+      created-on CDATA #IMPLIED
+      creation-time CDATA #IMPLIED
+      last-modified-by CDATA #IMPLIED
+      last-modified-on CDATA #IMPLIED
+      last-modification-time CDATA #IMPLIED
+  >
+  <!ELEMENT include (file)*>
+  <!ELEMENT file EMPTY>
+  <!ATTLIST file
+      path CDATA #REQUIRED
+  >
+  <!ELEMENT comments (comment)*>
+  <!ELEMENT comment EMPTY>
+  <!ATTLIST comment
+      creation-time CDATA #REQUIRED
+      created-by CDATA #REQUIRED
+      created-on CDATA #REQUIRED
+      author CDATA #REQUIRED
+      text CDATA #REQUIRED
+  >
+  <!ELEMENT obj (attr | rel)*>
+  <!ATTLIST obj
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+  <!ELEMENT attr (data)*>
+  <!ATTLIST attr
+      name CDATA #REQUIRED
+      type (bool|s8|u8|s16|u16|s32|u32|s64|u64|float|double|date|time|string|uid|enum|class|-) "-"
+      val CDATA ""
+  >
+  <!ELEMENT data EMPTY>
+  <!ATTLIST data
+      val CDATA #REQUIRED
+  >
+  <!ELEMENT rel (ref)*>
+  <!ATTLIST rel
+      name CDATA #REQUIRED
+      class CDATA ""
+      id CDATA ""
+  >
+  <!ELEMENT ref EMPTY>
+  <!ATTLIST ref
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+]>
+
+<oks-data>
+  <info name="" type="" num-of-items="1" oks-format="data" oks-version="862f2957270" created-by="glehmann" created-on="np04-srv-024.cern.ch" creation-time="20241013T161605" last-modified-by="np04daq" last-modified-on="np04-srv-024.cern.ch" last-modification-time="20251202T110539" />
+  <include>
+    <file path="schema/confmodel/dunedaq.schema.xml" />
+    <file path="schema/appmodel/application.schema.xml" />
+    <file path="schema/appmodel/fdmodules.schema.xml" />
+    <file path="hw/senders/pds-vst-senders.data.xml" />
+    <file path="hw/receivers/np02-srv-001.data.xml" />
+  </include>
+  <obj class="NetworkDetectorToDaqConnection" id="daphne14-connection">
+    <rel name="net_senders">
+      <ref class="HermesDataSender" id="hds-daphne14" />
+      <ref class="HermesDataSender" id="hds-daphne14-link1" />
+    </rel>
+    <rel name="net_receiver" class="DPDKReceiver" id="dpdk-np02srv001-receiver0-p1" />
+  </obj>
+</oks-data>

@@ -1,0 +1,44 @@
+-- Found pybind11: /cvmfs/dunedaq.opensciencegrid.org/spack/externals/ext-v2.3/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/py-pybind11-2.12.0-zrxgdsmuijot3qfvlvzp64r3ajp57vld/include (found version "2.12.0")
+-- Found nlohmann_json: /cvmfs/dunedaq.opensciencegrid.org/spack/externals/ext-v2.3/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/nlohmann-json-3.12.0-x3ctizymtth3vk7x44dq5gvsonacidfg/share/cmake/nlohmann_json/nlohmann_jsonConfig.cmake (found version "3.12.0")
+-- Project "detdataformats" will be treated as installed package (found in /cvmfs/dunedaq.opensciencegrid.org/spack/releases/coredaq-v5.6.2-a9-1/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/detdataformats-v4.3.0-3uo5dc7e3ofeokiwlvb7xxu5qgq4ykm2/lib64/detdataformats/cmake)
+-- Project "trgdataformats" will be treated as installed package (found in /cvmfs/dunedaq.opensciencegrid.org/spack/releases/coredaq-v5.6.2-a9-1/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/trgdataformats-v2.0.2-dqguncwfhnn4yjhhaan3utayeao6zrcy/lib64/trgdataformats/cmake)
+CMake Warning (dev) at /cvmfs/dunedaq.opensciencegrid.org/spack/externals/ext-v2.3/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/cmake-4.1.2-au2mafnuke4lucd6hsira63wii34adja/share/cmake-4.1/Modules/CMakeFindDependencyMacro.cmake:78 (find_package):
+  Policy CMP0167 is not set: The FindBoost module is removed.  Run "cmake
+  --help-policy CMP0167" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+
+Call Stack (most recent call first):
+  /cvmfs/dunedaq.opensciencegrid.org/spack/releases/coredaq-v5.6.2-a9-1/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/ers-v1.5.5-hkrj5g33t5yyjv7pyn74pdtcad4cex22/lib64/ers/cmake/ersConfig.cmake:34 (find_dependency)
+  /cvmfs/dunedaq.opensciencegrid.org/spack/externals/ext-v2.3/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/cmake-4.1.2-au2mafnuke4lucd6hsira63wii34adja/share/cmake-4.1/Modules/CMakeFindDependencyMacro.cmake:78 (find_package)
+  /cvmfs/dunedaq.opensciencegrid.org/spack/releases/coredaq-v5.6.2-a9-1/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/detchannelmaps-v1.10.0-5z7a55p4bnhv4yl6balssqhtbtwzttoe/lib64/detchannelmaps/cmake/detchannelmapsConfig.cmake:30 (find_dependency)
+  /cvmfs/dunedaq.opensciencegrid.org/spack/externals/ext-v2.3/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/cmake-4.1.2-au2mafnuke4lucd6hsira63wii34adja/share/cmake-4.1/Modules/CMakeFindDependencyMacro.cmake:78 (find_package)
+  /cvmfs/dunedaq.opensciencegrid.org/spack/releases/coredaq-v5.6.2-a9-1/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/triggeralgs-v1.6.0-n7mxqwslkfhpg3kkke7uj2fopmy3wn6c/lib64/triggeralgs/cmake/triggeralgsConfig.cmake:39 (find_dependency)
+  CMakeLists.txt:6 (find_package)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Project "ers" will be treated as installed package (found in /cvmfs/dunedaq.opensciencegrid.org/spack/releases/coredaq-v5.6.2-a9-1/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/ers-v1.5.5-hkrj5g33t5yyjv7pyn74pdtcad4cex22/lib64/ers/cmake)
+-- Project "logging" will be treated as installed package (found in /cvmfs/dunedaq.opensciencegrid.org/spack/releases/coredaq-v5.6.2-a9-1/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/logging-v2.0.1-k5mxobr3blu6kls2vbpvhpdmrfd3pegq/lib64/logging/cmake)
+-- Project "detchannelmaps" will be treated as installed package (found in /cvmfs/dunedaq.opensciencegrid.org/spack/releases/coredaq-v5.6.2-a9-1/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/detchannelmaps-v1.10.0-5z7a55p4bnhv4yl6balssqhtbtwzttoe/lib64/detchannelmaps/cmake)
+-- Project "triggeralgs" will be treated as installed package (found in /cvmfs/dunedaq.opensciencegrid.org/spack/releases/coredaq-v5.6.2-a9-1/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/triggeralgs-v1.6.0-n7mxqwslkfhpg3kkke7uj2fopmy3wn6c/lib64/triggeralgs/cmake)
+-- Project "ers" will be treated as installed package (found in /cvmfs/dunedaq.opensciencegrid.org/spack/releases/coredaq-v5.6.2-a9-1/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/ers-v1.5.5-hkrj5g33t5yyjv7pyn74pdtcad4cex22/lib64/ers/cmake)
+-- Project "logging" will be treated as installed package (found in /cvmfs/dunedaq.opensciencegrid.org/spack/releases/coredaq-v5.6.2-a9-1/spack-0.22.0/opt/spack/linux-almalinux9-x86_64/gcc-14.3.0/logging-v2.0.1-k5mxobr3blu6kls2vbpvhpdmrfd3pegq/lib64/logging/cmake)
+-- Configuring done (0.4s)
+-- Generating done (0.1s)
+-- Build files have been written to: /nfs/home/np04daq/vst/daphne-m2-004-pds-ta-charge-20261020/prescale-compat/build-r2
+[ 20%] Generating phony_pds_prescale_compat_build_info.json
+[ 40%] Building CXX object CMakeFiles/pds_prescale_compat.dir/prescale_compat.cpp.o
+[0;33mWarning: local source code directory [0;35m/nfs/home/np04daq/vst/daphne-m2-004-pds-ta-charge-20261020/prescale-compat[0;33m is not inside a git repo work tree.[0m
+[ 40%] Built target pds_prescale_compat_build_info
+[ 60%] Building CXX object CMakeFiles/test_prescale.dir/test_prescale.cpp.o
+[ 80%] Linking CXX shared library libpds_prescale_compat.so
+[ 80%] Built target pds_prescale_compat
+[ 80%] Built target pds_prescale_compat_pre_build_stage_done
+[100%] Linking CXX executable test_prescale
+[100%] Built target test_prescale
+Test project /nfs/home/np04daq/vst/daphne-m2-004-pds-ta-charge-20261020/prescale-compat/build-r2
+    Start 1: prescale_timestamp_type_rate
+1/1 Test #1: prescale_timestamp_type_rate .....   Passed    0.17 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.19 sec

@@ -1,0 +1,68 @@
+│     tc-make… │      │ ready │ idle     │ No       │ Yes      │ rest://np04-… │
+└──────────────┴──────┴───────┴──────────┴──────────┴──────────┴───────────────┘
+                                    Run Info
+┌───────────────────────┬──────────────────────────────────────────────────────┐
+│ Run number            │ 45392                                                │
+│ Run type              │ TEST                                                 │
+│ Start time            │ 2026/10/20 18:58:03 UTC                              │
+│ Duration              │ 0:00:11                                              │
+│ Trigger rate          │ 0.0000 Hz                                            │
+│ Data storage disabled │ False                                                │
+│ Config file           │ oksconflibs:/nfs/home/np04daq/vst/daphne14-pds-ta-c… │
+│ Config ID             │ pds-daphne14                                         │
+└───────────────────────┴──────────────────────────────────────────────────────┘
+[2026/10/20 18:58:14 UTC] INFO       shell_utils.py:165
+drunc.utils.ShellContext                           Current FSM status is ready.
+Available transitions are enable-triggers, drain-dataflow, change-rate.
+Available sequence commands are shutdown, start-run, stop-run.
+[2026/10/20 18:58:14 UTC] INFO       shell_utils.py:112
+drunc.unified_shell.shell_utils                    Running command:
+'enable-triggers'
+[2026/10/20 18:58:14 UTC] INFO       shell_utils.py:517
+drunc.controller.iface.shell_utils                 Running transition
+'enable_triggers' on controller 'root-controller', targeting: 'root-controller'
+                    pds-vst-daphne14-pds-ta-charge-r3 status
+┏━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┓
+┃ Name         ┃ Info ┃ State   ┃ Substate ┃ In error ┃ Included ┃ Endpoint    ┃
+┡━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━┩
+│ root-contro… │      │ running │ running  │ No       │ Yes      │ grpc://np0… │
+│   df-contro… │      │ running │ running  │ No       │ Yes      │ grpc://np0… │
+│     df-s03-… │      │ running │ idle     │ No       │ Yes      │ rest://np0… │
+│     dfo-01   │      │ running │ idle     │ No       │ Yes      │ rest://np0… │
+│   pds-contr… │      │ running │ running  │ No       │ Yes      │ grpc://np0… │
+│     charge-… │      │ running │ idle     │ No       │ Yes      │ rest://np0… │
+│     daphne1… │      │ running │ idle     │ No       │ Yes      │ rest://np0… │
+│     runp02s… │      │ running │ idle     │ No       │ Yes      │ rest://np0… │
+│   trg-contr… │      │ running │ running  │ No       │ Yes      │ grpc://np0… │
+│     mlt      │      │ running │ idle     │ No       │ Yes      │ rest://np0… │
+│     tc-make… │      │ running │ idle     │ No       │ Yes      │ rest://np0… │
+└──────────────┴──────┴─────────┴──────────┴──────────┴──────────┴─────────────┘
+                                    Run Info
+┌───────────────────────┬──────────────────────────────────────────────────────┐
+│ Run number            │ 45392                                                │
+│ Run type              │ TEST                                                 │
+│ Start time            │ 2026/10/20 18:58:03 UTC                              │
+│ Duration              │ 0:00:12                                              │
+│ Trigger rate          │ 0.0000 Hz                                            │
+│ Data storage disabled │ False                                                │
+│ Config file           │ oksconflibs:/nfs/home/np04daq/vst/daphne14-pds-ta-c… │
+│ Config ID             │ pds-daphne14                                         │
+└───────────────────────┴──────────────────────────────────────────────────────┘
+Waiting for enable_triggers to complete... ━━━━━━━━━━━━━━━━━━━━━━━━   0% -:--:--
+                      enable_triggers execution report
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Name                 ┃ Command execution     ┃ FSM transition            ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ root-controller      │ Executed Successfully │ Fsm Executed Successfully │
+│   df-controller      │ Executed Successfully │ Fsm Executed Successfully │
+│     df-s03-d1        │ Executed Successfully │ Fsm Executed Successfully │
+│     dfo-01           │ Executed Successfully │ Fsm Executed Successfully │
+│   pds-controller     │ Executed Successfully │ Fsm Executed Successfully │
+│     charge-emu       │ Executed Successfully │ Fsm Executed Successfully │
+│     daphne14-app     │ Executed Successfully │ Fsm Executed Successfully │
+│     runp02srv001eth1 │ Executed Successfully │ Fsm Executed Successfully │
+│   trg-controller     │ Executed Successfully │ Fsm Executed Successfully │
+│     mlt              │ Executed Successfully │ Fsm Executed Successfully │
+│     tc-maker-pds     │ Executed Successfully │ Fsm Executed Successfully │
+└──────────────────────┴───────────────────────┴───────────────────────────┘
+

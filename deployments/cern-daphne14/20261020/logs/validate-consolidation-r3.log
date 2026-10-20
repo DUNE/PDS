@@ -1,0 +1,22 @@
+(oksfile: str, output_file: str, session_id: Optional[str] = None) -> None
+def consolidate_db(oksfile: str, output_file: str, session_id: Optional[str] = None)->None:
+    """Consolidates a single session
+
+    :param oksfile: OKS file(s) to consolidate
+    :param output_file: File to output consolidated database to 
+    :param session_id: Name of session, defaults to None
+    """    
+    log.info(f"Consolidating database into output database '{output_file}'. Input database: '{oksfile}'.")
+
+    sys.setrecursionlimit(10000)  # for example
+    db, new_db = create_copy_template(oksfile, output_file)
+
+    if session_id is None:
+        log.debug("Consolidating all dals in %s into %s", oksfile, output_file)
+        consolidate_full(db, new_db)
+    else:
+        log.debug("Consolidating all dals in session %s from %s into %s", session_id, oksfile, output_file)
+
+        consolidate_session(db, new_db, session_id)
+
+CONSOLIDATION_PASS

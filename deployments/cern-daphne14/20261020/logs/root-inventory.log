@@ -1,0 +1,146 @@
+ba:be:ba:d1:cb:ff
+# stock fstab - you probably want to override this with a machine specific one
+
+/dev/root            /                    auto       defaults              1  1
+proc                 /proc                proc       defaults              0  0
+devpts               /dev/pts             devpts     mode=0620,ptmxmode=0666,gid=5      0  0
+tmpfs                /run                 tmpfs      mode=0755,nodev,nosuid,strictatime 0  0
+tmpfs                /var/volatile        tmpfs      defaults              0  0
+
+# uncomment this if your device has a SD/MMC/Transflash slot
+#/dev/mmcblk0p1       /media/card          auto       defaults,sync,noauto  0  0
+
+LABEL=boot	/boot	vfat	defaults	0	0
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/mmcblk0p2  3.8G  2.2G  1.4G  61% /
+/dev/mmcblk0p1  2.0G   83M  2.0G   5% /boot
+APP=daphne_selftrigger_ol_a389fcd  
+ENDPOINT_ADDR_HEX=0x20
+ENDPOINT_WAIT_MS=1000
+ENDPOINT_SUCCESS_STATES=0x6,0x8
+# /etc/systemd/system/firmware.service
+[Unit]
+Description=Program DAPHNE firmware (xmutil)
+After=local-fs.target dfx-mgrd.service clockchip.service
+Wants=dfx-mgrd.service clockchip.service
+Before=hermes.service daphne.service endpoint.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/default/firmware
+Environment=ACCEL_CONFIG_PATH=/lib/firmware/xilinx
+ExecStart=/usr/local/bin/daphne-fw.sh
+ExecStop=/usr/local/bin/daphne-fw-stop.sh
+TimeoutStartSec=20
+TimeoutStopSec=20
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+
+# /etc/systemd/system/clockchip.service
+[Unit]
+Description=Configure DAPHNE external clock chip
+After=local-fs.target
+Wants=local-fs.target
+Before=firmware.service endpoint.service hermes.service daphne.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/petalinux/daphne-server/utils
+ExecStart=/bin/bash -c '/home/petalinux/daphne-server/utils/clk_conf.sh'
+RemainAfterExit=yes
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+
+# /etc/systemd/system/endpoint.service
+[Unit]
+Description=Configure DAPHNE timing endpoint
+After=clockchip.service firmware.service
+Requires=clockchip.service firmware.service
+Before=hermes.service daphne.service
+PartOf=clockchip.service firmware.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/default/firmware
+WorkingDirectory=/home/petalinux/daphne-server/utils
+ExecStart=/bin/bash -c '/home/petalinux/daphne-server/utils/endpoint.sh --configure --clock endpoint --addr "0x20" --wait-ms "1000" --success-states "0x6,0x8"'
+TimeoutStartSec=300
+RemainAfterExit=yes
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+
+# /etc/systemd/system/hermes.service
+[Unit]
+Description=Hermes IPBus UDP server (DAPHNE mode)
+After=clockchip.service endpoint.service firmware.service
+Requires=clockchip.service endpoint.service firmware.service
+PartOf=clockchip.service firmware.service
+
+[Service]
+Type=simple
+WorkingDirectory=/
+ExecStartPre=/bin/echo Starting Hermes IPBus UDP server \(daphne mode\)
+ExecStart=/bin/sh -c '/bin/hermes_udp_srv -d daphne -c true \
+  2>/var/log/hermes_udp_srv.err >/var/log/hermes_udp_srv.log'
+Restart=on-failure
+RestartSec=1
+TimeoutStopSec=5s
+
+[Install]
+WantedBy=multi-user.target
+
+# /etc/systemd/system/hermes.service.d/override.conf
+[Unit]
+After=firmware.service
+Requires=firmware.service
+
+# /etc/systemd/system/hermes.service.d/timeout.conf
+[Service]
+TimeoutStopSec=5s
+
+# /etc/systemd/system/daphne.service
+[Unit]
+Description=DAPHNE Slow Controller
+After=clockchip.service endpoint.service hermes.service firmware.service
+Requires=clockchip.service endpoint.service firmware.service
+PartOf=clockchip.service firmware.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/petalinux/daphne-server/build-petalinux
+ExecStart=/home/petalinux/daphne-server/build-petalinux/daphneServer --bind tcp://*:40001
+Restart=on-failure
+RestartSec=1
+TimeoutStopSec=5s
+
+[Install]
+WantedBy=multi-user.target
+Nov 08 15:00:21 NP04-DAPHNE-014.CERN.CH systemd[1]: Starting Configure DAPHNE external clock chip...
+Nov 08 15:00:21 NP04-DAPHNE-014.CERN.CH bash[816]: --------------------------------------------------
+Nov 08 15:00:21 NP04-DAPHNE-014.CERN.CH bash[816]: starting to program the clock chip
+Mar 12 13:13:34 NP04-DAPHNE-014.CERN.CH bash[816]: reseting the clock chip
+Mar 12 13:13:34 NP04-DAPHNE-014.CERN.CH bash[816]:  done configuring the clock chip
+Mar 12 13:13:34 NP04-DAPHNE-014.CERN.CH bash[816]:  -----------------------------------------------------------------
+Mar 12 13:13:34 NP04-DAPHNE-014.CERN.CH bash[816]:  -----------------------------------------------------------------
+Mar 12 13:13:34 NP04-DAPHNE-014.CERN.CH bash[816]: ✅ Programmed 0 register(s) on bus 2, chip 0x70.
+Mar 12 13:13:34 NP04-DAPHNE-014.CERN.CH bash[816]: ⚠️  Completed with 185 error(s)/mismatch(es). See log:
+Mar 12 13:13:34 NP04-DAPHNE-014.CERN.CH bash[816]:    ./logs/clk_conf_20221108_150021_bus2_chip7.log
+Mar 12 13:13:35 NP04-DAPHNE-014.CERN.CH systemd[1]: clockchip.service: Main process exited, code=exited, status=1/FAILURE
+Mar 12 13:13:35 NP04-DAPHNE-014.CERN.CH systemd[1]: clockchip.service: Failed with result 'exit-code'.
+Mar 12 13:13:35 NP04-DAPHNE-014.CERN.CH systemd[1]: Failed to start Configure DAPHNE external clock chip.
+total 16
+drw-r--r-- 2 root      root      4096 Feb 11  2026 MEZ_SELF_TRIG_V15_OL_UPGRADED
+drwxr-xr-x 2 root      root      4096 Mar  9  2018 _k26-starter-kits.disabled
+drwxr-xr-x 2 petalinux petalinux 4096 Apr  1  2026 daphne_selftrigger_ol_7f032ac
+drw-r--r-- 2 petalinux petalinux 4096 Apr 17  2026 daphne_selftrigger_ol_a389fcd
+Python 3.10.6
+ldd (GNU libc) 2.36
+sh: line 11: ss: command not found

@@ -1,0 +1,18 @@
+{
+  "boot-reference.tar.gz": {
+    "bytes": 13141286,
+    "sha256": "9adf58d537f2dc28060f01902bc8bae04b0a060138f15b6681ed39042a2c2404"
+  },
+  "rootfs-reference.tar.gz": {
+    "bytes": 58420471,
+    "sha256": "13502f238e9099f342dec30be6dbdacd8fbf3acae567142f61639261584a88a5"
+  },
+  "provenance": {
+    "kind": "runtime filesystem export; not an immutable build release",
+    "source_host": "daphne-004",
+    "source_ip": "10.73.137.113",
+    "kernel": "6.18.10-xilinx-g6627b6ab1760",
+    "source_boot_id": "e30ece62-1201-487c-9c5c-1927b988633e",
+    "excluded": "machine identity, credentials, SSH keys, board/network configuration, mutable logs/cache"
+  }
+}

@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="ASCII"?>
+
+<!-- oks-data version 2.2 -->
+
+
+<!DOCTYPE oks-data [
+  <!ELEMENT oks-data (info, (include)?, (comments)?, (obj)+)>
+  <!ELEMENT info EMPTY>
+  <!ATTLIST info
+      name CDATA #IMPLIED
+      type CDATA #IMPLIED
+      num-of-items CDATA #REQUIRED
+      oks-format CDATA #FIXED "data"
+      oks-version CDATA #REQUIRED
+      created-by CDATA #IMPLIED
+      created-on CDATA #IMPLIED
+      creation-time CDATA #IMPLIED
+      last-modified-by CDATA #IMPLIED
+      last-modified-on CDATA #IMPLIED
+      last-modification-time CDATA #IMPLIED
+  >
+  <!ELEMENT include (file)*>
+  <!ELEMENT file EMPTY>
+  <!ATTLIST file
+      path CDATA #REQUIRED
+  >
+  <!ELEMENT comments (comment)*>
+  <!ELEMENT comment EMPTY>
+  <!ATTLIST comment
+      creation-time CDATA #REQUIRED
+      created-by CDATA #REQUIRED
+      created-on CDATA #REQUIRED
+      author CDATA #REQUIRED
+      text CDATA #REQUIRED
+  >
+  <!ELEMENT obj (attr | rel)*>
+  <!ATTLIST obj
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+  <!ELEMENT attr (data)*>
+  <!ATTLIST attr
+      name CDATA #REQUIRED
+      type (bool|s8|u8|s16|u16|s32|u32|s64|u64|float|double|date|time|string|uid|enum|class|-) "-"
+      val CDATA ""
+  >
+  <!ELEMENT data EMPTY>
+  <!ATTLIST data
+      val CDATA #REQUIRED
+  >
+  <!ELEMENT rel (ref)*>
+  <!ATTLIST rel
+      name CDATA #REQUIRED
+      class CDATA ""
+      id CDATA ""
+  >
+  <!ELEMENT ref EMPTY>
+  <!ATTLIST ref
+      class CDATA #REQUIRED
+      id CDATA #REQUIRED
+  >
+]>
+
+<oks-data>
+  <info name="PDS TA and emulated charge test" type="" num-of-items="36" oks-format="data" oks-version="test-20261020" />
+  <obj class="TAMakerPrescaleAlgorithm" id="pds-tam-prescale">
+    <attr name="prescale" type="u32" val="100" />
+    <attr name="max_samples_over_threshold" type="u32" val="256" />
+  </obj>
+  <obj class="TriggerApplication" id="tc-maker-pds">
+    <attr name="application_name" type="string" val="daq_application" />
+    <attr name="tx_generation_disabled" type="bool" val="0" />
+    <rel name="runs_on" class="VirtualHost" id="vh-np04-srv-017">
+      </rel>
+    <rel name="exposes_service">
+      <ref class="Service" id="tc-maker-pds_control" />
+      <ref class="Service" id="triggerActivities" />
+      <ref class="Service" id="dataRequests" />
+    </rel>
+    <rel name="opmon_conf" class="OpMonConf" id="slow-all-monitoring" />
+    <rel name="action_plans">
+      <ref class="ActionPlan" id="tc-maker-start" />
+    </rel>
+    <rel name="source_id" class="SourceIDConf" id="ta-srcid-1" />
+    <rel name="queue_rules">
+      <ref class="QueueConnectionRule" id="ta-queue-rule" />
+    </rel>
+    <rel name="network_rules">
+      <ref class="NetworkConnectionRule" id="ta-net-rule" />
+      <ref class="NetworkConnectionRule" id="tc-net-rule" />
+      <ref class="NetworkConnectionRule" id="data-req-trig-net-rule" />
+    </rel>
+    <rel name="data_subscriber" class="DataReaderConf" id="ta-subscriber-1" />
+    <rel name="trigger_inputs_handler" class="DataHandlerConf" id="def-ta-handler" />
+  </obj>
+  <obj class="Service" id="tc-maker-pds_control">
+    <attr name="protocol" type="string" val="rest" />
+    <attr name="port" type="u16" val="0" />
+  </obj>
+  <obj class="DataHandlerConf" id="def-ta-handler">
+    <attr name="template_for" type="class" val="TriggerDataHandlerModule" />
+    <attr name="input_data_type" type="string" val="TriggerActivity" />
+    <attr name="generate_timesync" type="bool" val="0" />
+    <attr name="post_processing_delay_ticks" type="u64" val="312500" />
+    <attr name="post_processing_delay_min_wait" type="u64" val="1" />
+    <attr name="post_processing_delay_max_wait" type="u64" val="50" />
+    <rel name="request_handler" class="RequestHandler" id="def-ta-request-handler" />
+    <rel name="latency_buffer" class="LatencyBuffer" id="ta-latency-buf" />
+    <rel name="data_processor" class="TADataProcessor" id="ta-processor" />
+  </obj>
+  <obj class="TADataProcessor" id="ta-processor">
+    <attr name="queue_sizes" type="u32" val="10000" />
+    <attr name="thread_names_prefix" type="string" val="taproc-" />
+    <attr name="latency_monitoring" type="bool" val="1" />
+    <attr name="print_ta_info" type="bool" val="1" />
+    <rel name="algorithms">
+      <ref class="TCMakerPrescaleAlgorithm" id="pds-tcm-prescale" />
+    </rel>
+  </obj>
+  <obj class="TCMakerPrescaleAlgorithm" id="pds-tcm-prescale">
+    <attr name="prescale" type="u32" val="1" />
+    <attr name="tc_type_name" type="string" val="kPrescale" />
+  </obj>
+  <obj class="TCReadoutMap" id="pds-tc-readout-map">
+    <attr name="tc_type_name" type="string" val="kPrescale" />
+    <attr name="time_before" type="u32" val="31250" />
+    <attr name="time_after" type="u32" val="31250" />
+  </obj>
+  <obj class="ReadoutApplication" id="charge-emu">
+    <attr name="application_name" type="string" val="daq_application" />
+    <attr name="tp_generation_enabled" type="bool" val="0" />
+    <attr name="ta_generation_enabled" type="bool" val="0" />
+    <rel name="runs_on" class="VirtualHost" id="vh-np04-srv-017">
+      </rel>
+    <rel name="exposes_service">
+      <ref class="Service" id="charge-emu_control" />
+    </rel>
+    <rel name="opmon_conf" class="OpMonConf" id="slow-all-monitoring" />
+    <rel name="action_plans">
+      <ref class="ActionPlan" id="emu-readout-start" />
+      <ref class="ActionPlan" id="emu-readout-stop" />
+    </rel>
+    <rel name="queue_rules">
+      <ref class="QueueConnectionRule" id="fd-dlh-data-requests-queue-rule" />
+      <ref class="QueueConnectionRule" id="fa-queue-rule" />
+      <ref class="QueueConnectionRule" id="tp-queue-rule" />
+      <ref class="QueueConnectionRule" id="daphne-eth-callback-raw-data-rule" />
+    </rel>
+    <rel name="network_rules">
+      <ref class="NetworkConnectionRule" id="ta-net-rule" />
+      <ref class="NetworkConnectionRule" id="tpset-net-rule" />
+      <ref class="NetworkConnectionRule" id="ts-net-rule" />
+      <ref class="NetworkConnectionRule" id="data-req-readout-net-rule" />
+    </rel>
+    <rel name="uses" class="RoHwConfig" id="generic-dpdk-hw-cfg" />
+    <rel name="link_handler" class="DataHandlerConf" id="charge-emu-handler">
+      </rel>
+    <rel name="tp_source_ids">
+   </rel>
+    <rel name="tp_handler" class="DataHandlerConf" id="def-pds-tp-handler" />
+    <rel name="data_reader" class="DPDKReaderConf" id="def-emu-nic-receiver-conf">
+      </rel>
+    <rel name="fragment_aggregator" class="FragmentAggregatorConf" id="frag-agg-01" />
+    <rel name="detector_connections">
+      <ref class="NetworkDetectorToDaqConnection" id="charge-emu-connection" />
+    </rel>
+    <rel name="callback_desc" class="DataMoveCallbackDescriptor" id="wib-eth-raw-input">
+      </rel>
+  </obj>
+  <obj class="Service" id="charge-emu_control">
+    <attr name="protocol" type="string" val="rest" />
+    <attr name="port" type="u16" val="0" />
+  </obj>
+  <obj class="GeoId" id="charge-emu-geo">
+    <attr name="detector_id" type="u32" val="10" />
+    <attr name="crate_id" type="u32" val="10" />
+    <attr name="slot_id" type="u32" val="0" />
+    <attr name="stream_id" type="u32" val="0" />
+  </obj>
+  <obj class="DetectorStream" id="charge-emu-stream">
+    <attr name="source_id" type="u32" val="900" />
+    <rel name="geo_id" class="GeoId" id="charge-emu-geo">
+      </rel>
+  </obj>
+  <obj class="HermesDataSender" id="charge-emu-sender">
+    <attr name="port" type="u32" val="17476" />
+    <attr name="control_host" type="string" val="software-emulation-only" />
+    <rel name="streams">
+      <ref class="DetectorStream" id="charge-emu-stream" />
+    </rel>
+    <rel name="uses" class="NetworkInterface" id="nw-np04-daphne-014-d0" />
+  </obj>
+  <obj class="NetworkDetectorToDaqConnection" id="charge-emu-connection">
+    <rel name="net_senders">
+      <ref class="HermesDataSender" id="charge-emu-sender" />
+    </rel>
+    <rel name="net_receiver" class="DPDKReceiver" id="dpdk-np02srv001-receiver0-p1">
+      </rel>
+  </obj>
+  <obj class="DataHandlerConf" id="charge-emu-handler">
+    <attr name="template_for" type="class" val="FDDataHandlerModule" />
+    <attr name="input_data_type" type="string" val="WIBEthFrame" />
+    <attr name="generate_timesync" type="bool" val="0" />
+    <rel name="request_handler" class="RequestHandler" id="def-data-request-handler">
+      </rel>
+    <rel name="latency_buffer" class="LatencyBuffer" id="charge-emu-buffer">
+      </rel>
+    <rel name="data_processor" class="TPCRawDataProcessor" id="charge-emu-processor">
+      </rel>
+  </obj>
+  <obj class="LatencyBuffer" id="charge-emu-buffer">
+    <attr name="size" type="u32" val="20000" />
+    <attr name="numa_aware" type="bool" val="0" />
+    <attr name="intrinsic_allocator" type="bool" val="0" />
+    <attr name="alignment_size" type="u32" val="4096" />
+    <attr name="preallocation" type="bool" val="1" />
+  </obj>
+  <obj class="TPCRawDataProcessor" id="charge-emu-processor">
+    <attr name="queue_sizes" type="u32" val="50000" />
+    <attr name="thread_names_prefix" type="string" val="rawproc-" />
+    <attr name="latency_monitoring" type="bool" val="1" />
+    <attr name="channel_map" type="string" val="PD2VDTPCChannelMap" />
+    <attr name="frame_count_limit" type="u32" val="100" />
+    <rel name="sot_minima" class="SamplesOverThresholdMinima" id="def-sot-minima" />
+      <rel name="processing_steps"><ref class="AVXFrugalPedestalSubtractProcessor" id="charge-emu-unused-pedsub" /></rel>
+  </obj>
+  <obj class="DPDKReaderConf" id="def-emu-nic-receiver-conf">
+    <attr name="template_for" type="class" val="FDFakeReaderModule" />
+    <attr name="emulation_mode" type="bool" val="1" />
+    <rel name="emulation_conf" class="StreamEmulationParameters" id="stream-emu" />
+  </obj>
+  <obj class="StreamEmulationParameters" id="stream-emu">
+    <attr name="data_file_name" type="string" val="/cvmfs/dunedaq.opensciencegrid.org/assets/files/d/d/1/wibeth_output_all_zeros.bin" />
+    <attr name="input_file_size_limit" type="u32" val="1000000" />
+    <attr name="set_t0" type="bool" val="1" />
+    <attr name="random_population_size" type="u32" val="100000" />
+    <attr name="frame_error_rate_hz" type="float" val="0" />
+    <attr name="generate_periodic_adc_pattern" type="bool" val="0" />
+    <attr name="TP_rate_per_channel" type="float" val="0" />
+  </obj>
+  <obj class="DataMoveCallbackDescriptor" id="wib-eth-raw-input">
+    <attr name="uid_base" type="string" val="raw_input_" />
+    <attr name="data_type" type="string" val="WIBEthFrame" />
+  </obj>
+  <obj class="ActionPlan" id="emu-readout-start">
+    <attr name="execution_policy" type="enum" val="modules-in-parallel" />
+    <rel name="command" class="FSMCommand" id="start" />
+    <rel name="steps">
+      <ref class="DaqModulesGroupByType" id="aggregator-step" />
+      <ref class="DaqModulesGroupByType" id="tp-handler-step" />
+      <ref class="DaqModulesGroupByType" id="dlh-step" />
+      <ref class="DaqModulesGroupByType" id="fake-data-source-step" />
+    </rel>
+  </obj>
+  <obj class="ActionPlan" id="emu-readout-stop">
+    <attr name="execution_policy" type="enum" val="modules-in-parallel" />
+    <rel name="command" class="FSMCommand" id="stop_trigger_sources" />
+    <rel name="steps">
+      <ref class="DaqModulesGroupByType" id="fake-data-source-step" />
+      <ref class="DaqModulesGroupByType" id="dlh-step" />
+      <ref class="DaqModulesGroupByType" id="tp-handler-step" />
+      <ref class="DaqModulesGroupByType" id="aggregator-step" />
+    </rel>
+  </obj>
+  <obj class="VirtualHost" id="vh-np04-srv-017">
+    <rel name="uses">
+      <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-0" />
+      <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-1" />
+    </rel>
+    <rel name="runs_on" class="PhysicalHost" id="np04-srv-017" />
+  </obj>
+  <obj class="ActionPlan" id="tc-maker-start">
+    <attr name="execution_policy" type="enum" val="modules-in-series" />
+    <rel name="command" class="FSMCommand" id="start" />
+    <rel name="steps">
+      <ref class="DaqModulesGroupByType" id="ta-handler-step" />
+      <ref class="DaqModulesGroupByType" id="subscriber-step" />
+    </rel>
+  </obj>
+  <obj class="SourceIDConf" id="ta-srcid-1">
+    <attr name="sid" type="u32" val="1" />
+    <attr name="subsystem" type="enum" val="Trigger" />
+  </obj>
+  <obj class="QueueConnectionRule" id="ta-queue-rule">
+    <attr name="destination_class" type="class" val="TriggerDataHandlerModule" />
+    <rel name="descriptor" class="QueueDescriptor" id="ta-input" />
+  </obj>
+  <obj class="DataReaderConf" id="ta-subscriber-1">
+    <attr name="template_for" type="class" val="DataSubscriberModule" />
+    <attr name="emulation_mode" type="bool" val="0" />
+  </obj>
+  <obj class="RequestHandler" id="def-ta-request-handler">
+    <attr name="handler_threads" type="u16" val="1" />
+    <attr name="request_timeout" type="u32" val="50" />
+    <attr name="pop_limit_pct" type="float" val="0.85" />
+    <attr name="pop_size_pct" type="float" val="0.1" />
+    <attr name="warn_on_timeout" type="bool" val="0" />
+    <attr name="warn_on_empty_buffer" type="bool" val="0" />
+  </obj>
+  <obj class="LatencyBuffer" id="ta-latency-buf">
+    <attr name="size" type="u32" val="120000" />
+    <attr name="numa_aware" type="bool" val="0" />
+    <attr name="intrinsic_allocator" type="bool" val="0" />
+    <attr name="alignment_size" type="u32" val="4096" />
+    <attr name="preallocation" type="bool" val="0" />
+  </obj>
+  <obj class="SamplesOverThresholdMinima" id="def-sot-minima">
+    <attr name="sot_minimum_plane0" type="u16" val="1" />
+    <attr name="sot_minimum_plane1" type="u16" val="1" />
+    <attr name="sot_minimum_plane2" type="u16" val="1" />
+  </obj>
+  <obj class="DaqModulesGroupByType" id="fake-data-source-step">
+    <attr name="optional" type="bool" val="0" />
+    <attr name="modules" type="class">
+      <data val="FDFakeReaderModule" />
+    </attr>
+  </obj>
+  <obj class="PhysicalHost" id="np04-srv-017">
+    <rel name="contains">
+      <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-0" />
+      <ref class="ProcessingResource" id="Xeon-E5-2620-v4-2.10GHz-1" />
+    </rel>
+  </obj>
+  <obj class="DaqModulesGroupByType" id="ta-handler-step">
+    <attr name="optional" type="bool" val="0" />
+    <attr name="modules" type="class">
+      <data val="TriggerDataHandlerModule" />
+    </attr>
+  </obj>
+  <obj class="DaqModulesGroupByType" id="subscriber-step">
+    <attr name="optional" type="bool" val="0" />
+    <attr name="modules" type="class">
+      <data val="DataSubscriberModule" />
+    </attr>
+  </obj>
+  <obj class="QueueDescriptor" id="ta-input">
+    <attr name="uid_base" type="string" val="ta_input_" />
+    <attr name="queue_type" type="enum" val="kFollySPSCQueue" />
+    <attr name="capacity" type="u32" val="1000" />
+    <attr name="data_type" type="string" val="TriggerActivity" />
+  </obj>
+  <obj class="Variable" id="pds-prescale-compat-preload">
+    <attr name="name" type="string" val="LD_PRELOAD" />
+    <attr name="value" type="string" val="/nfs/home/np04daq/vst/daphne-m2-004-pds-ta-charge-20261020/prescale-compat/build-r2/libpds_prescale_compat.so" />
+  </obj>
+<obj class="AVXFrugalPedestalSubtractProcessor" id="charge-emu-unused-pedsub"><attr name="accum_limit" type="u8" val="10" /></obj>
+</oks-data>
